@@ -1,0 +1,10 @@
+plugins {
+    id "eclipse"
+}
+
+eclipse {
+    classpath {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}

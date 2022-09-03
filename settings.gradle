@@ -1,0 +1,5 @@
+rootProject.name = "prox-monolith"
+
+include("domain:project")
+include("domain:profile")
+include("domain:tag")

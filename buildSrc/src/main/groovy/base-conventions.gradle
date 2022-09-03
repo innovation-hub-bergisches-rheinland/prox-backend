@@ -1,0 +1,5 @@
+plugins {
+    id "eclipse-conventions"
+    id "idea-conventions"
+    id "spotless-conventions"
+}

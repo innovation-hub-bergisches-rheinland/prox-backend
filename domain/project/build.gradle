@@ -1,0 +1,10 @@
+plugins {
+    id "java-library"
+    id "java-conventions"
+    id "java-logging-conventions"
+    id "java-test-fixtures"
+}
+
+dependencies {
+
+}

@@ -1,0 +1,34 @@
+package de.innovationhub.prox.profile.user;
+
+import java.util.UUID;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+// Users most likely will be created by our Identity Provider (Keycloak).
+// We still need a representation to it in our domain model.
+@EqualsAndHashCode(callSuper = false)
+@Data
+public class User {
+
+  private final UserId id;
+
+  @NotBlank
+  @Size(max = 1024)
+  private String name;
+
+  @Email
+  private String email;
+
+  public User(UserId id, String name, String email) {
+    this.id = id;
+    this.name = name;
+    this.email = email;
+  }
+
+  public record UserId(UUID id) {
+
+  }
+}

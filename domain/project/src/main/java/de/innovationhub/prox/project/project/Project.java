@@ -19,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
-@Builder
 public class Project {
 
   private final UUID id;

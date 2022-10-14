@@ -30,12 +30,12 @@ public class Lecturer {
   @Builder.Default
   private Set<UUID> tags = new HashSet<>();
 
-  public void setTags(Collection<UUID> tags) {
-    this.tags = new HashSet<>(tags);
-  }
-
   public Lecturer(UUID user) {
     this.user = user;
     this.id = user;
+  }
+
+  public void setTags(Collection<UUID> tags) {
+    this.tags = new HashSet<>(tags);
   }
 }

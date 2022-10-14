@@ -1,4 +1,4 @@
-rootProject.name = "prox-monolith"
+rootProject.name = "prox-backend"
 
 include("domain:project")
 include("domain:profile")

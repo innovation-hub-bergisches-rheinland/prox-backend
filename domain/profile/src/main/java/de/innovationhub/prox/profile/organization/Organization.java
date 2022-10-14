@@ -31,11 +31,17 @@ public class Organization {
   @Builder.Default
   private Set<UUID> tags = new HashSet<>();
 
-  public Organization(UUID id, String name) {
+  public Organization(UUID id, String name, UUID ownerId) {
     this.id = id;
     this.name = name;
     this.members = new HashMap<>();
-    this.members.put(id, new Membership(OrganizationRole.ADMIN));
+    this.members.put(ownerId, new Membership(OrganizationRole.ADMIN));
+  }
+
+  public Organization(UUID id, String name, Map<UUID, Membership> members) {
+    this.id = id;
+    this.name = name;
+    this.members = new HashMap<>(members);
   }
 
   public Map<UUID, Membership> getMembers() {

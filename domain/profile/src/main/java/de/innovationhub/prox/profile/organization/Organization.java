@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -18,17 +17,13 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = false)
 @Data
-@Builder
 @AllArgsConstructor
 public class Organization {
 
   private final UUID id;
   private String name;
   private OrganizationProfile profile;
-  @Builder.Default
   private Map<UUID, Membership> members = new HashMap<>();
-
-  @Builder.Default
   private Set<UUID> tags = new HashSet<>();
 
   public Organization(UUID id, String name, UUID ownerId) {

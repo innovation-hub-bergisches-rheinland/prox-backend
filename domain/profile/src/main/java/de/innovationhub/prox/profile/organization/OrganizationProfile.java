@@ -6,12 +6,14 @@ import java.util.List;
 import java.util.Map;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class OrganizationProfile {
 
   @Size(max = 255)
@@ -38,7 +40,9 @@ public class OrganizationProfile {
 
   private String headquarter;
 
+  @Builder.Default
   private List<String> quarters = new ArrayList<>();
 
+  @Builder.Default
   private Map<SocialMedia, String> socialMediaHandles = new HashMap<>();
 }

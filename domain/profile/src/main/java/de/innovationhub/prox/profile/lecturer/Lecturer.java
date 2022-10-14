@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +18,6 @@ import lombok.ToString;
 @Setter
 @EqualsAndHashCode(callSuper = false)
 @ToString(callSuper = false)
-@Builder
 @AllArgsConstructor
 public class Lecturer {
 
@@ -27,7 +25,6 @@ public class Lecturer {
   private final UUID user;
   private String name;
   private LecturerProfile profile;
-  @Builder.Default
   private Set<UUID> tags = new HashSet<>();
 
   public Lecturer(UUID user) {

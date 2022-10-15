@@ -8,16 +8,18 @@
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.24/13a394eed5c4f9efb2a6d956e2086f1d81e857d9/lombok-1.18.24.jar" />
         </processorPath>
         <module name="prox-backend.domain.profile.test" />
-        <module name="prox-backend.domain.tag.test" />
-        <module name="prox-backend.domain.commons.test" />
-        <module name="prox-backend.domain.project.main" />
         <module name="prox-backend.domain.commons.testFixtures" />
         <module name="prox-backend.domain.profile.testFixtures" />
         <module name="prox-backend.domain.project.test" />
+        <module name="prox-backend.domain.test" />
+        <module name="prox-backend.domain.profile.main" />
+        <module name="prox-backend.domain.main" />
+        <module name="prox-backend.domain.project.testFixtures" />
+        <module name="prox-backend.domain.tag.test" />
+        <module name="prox-backend.domain.commons.test" />
+        <module name="prox-backend.domain.project.main" />
         <module name="prox-backend.domain.tag.main" />
         <module name="prox-backend.domain.commons.main" />
-        <module name="prox-backend.domain.profile.main" />
-        <module name="prox-backend.domain.project.testFixtures" />
         <module name="prox-backend.domain.tag.testFixtures" />
       </profile>
     </annotationProcessing>

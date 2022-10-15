@@ -1,0 +1,10 @@
+plugins {
+    id "java-library"
+    id "java-conventions"
+}
+
+dependencies {
+    api project("profile")
+    api project("project")
+    api project("tag")
+}

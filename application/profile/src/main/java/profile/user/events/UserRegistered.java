@@ -1,6 +1,6 @@
 package profile.user.events;
 
-import de.innovationhub.prox.commons.event.Event;
+import commons.event.Event;
 import de.innovationhub.prox.profile.user.User;
 import java.util.UUID;
 

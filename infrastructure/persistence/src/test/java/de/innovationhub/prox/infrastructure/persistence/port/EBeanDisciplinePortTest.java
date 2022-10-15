@@ -2,7 +2,7 @@ package de.innovationhub.prox.infrastructure.persistence.port;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import de.innovationhub.prox.infrastructure.persistence.DisciplineEntities;
+import de.innovationhub.prox.infrastructure.persistence.fixtures.DisciplineEntities;
 import io.ebean.DB;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

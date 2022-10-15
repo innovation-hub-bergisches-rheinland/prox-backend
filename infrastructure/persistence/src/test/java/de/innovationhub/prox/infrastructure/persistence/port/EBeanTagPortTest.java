@@ -2,7 +2,7 @@ package de.innovationhub.prox.infrastructure.persistence.port;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import de.innovationhub.prox.infrastructure.persistence.TagEntities;
+import de.innovationhub.prox.infrastructure.persistence.fixtures.TagEntities;
 import de.innovationhub.prox.infrastructure.persistence.model.query.QTagEntity;
 import de.innovationhub.prox.tag.Tag;
 import io.ebean.DB;

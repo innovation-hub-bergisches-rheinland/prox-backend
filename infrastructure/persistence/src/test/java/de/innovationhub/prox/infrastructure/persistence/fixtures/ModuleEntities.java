@@ -1,4 +1,4 @@
-package de.innovationhub.prox.infrastructure.persistence;
+package de.innovationhub.prox.infrastructure.persistence.fixtures;
 
 import de.innovationhub.prox.infrastructure.persistence.model.ModuleEntity;
 import java.util.List;

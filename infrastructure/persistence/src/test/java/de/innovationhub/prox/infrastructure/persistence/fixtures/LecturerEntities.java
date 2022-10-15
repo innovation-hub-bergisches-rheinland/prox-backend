@@ -1,4 +1,4 @@
-package de.innovationhub.prox.infrastructure.persistence;
+package de.innovationhub.prox.infrastructure.persistence.fixtures;
 
 import de.innovationhub.prox.infrastructure.persistence.model.LecturerEntity;
 import java.util.List;

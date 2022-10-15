@@ -2,7 +2,7 @@ package de.innovationhub.prox.infrastructure.persistence.port;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import de.innovationhub.prox.infrastructure.persistence.OrganizationEntities;
+import de.innovationhub.prox.infrastructure.persistence.fixtures.OrganizationEntities;
 import de.innovationhub.prox.infrastructure.persistence.model.query.QOrganizationEntity;
 import de.innovationhub.prox.profile.organization.Membership;
 import de.innovationhub.prox.profile.organization.Organization;

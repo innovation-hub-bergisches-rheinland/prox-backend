@@ -1,9 +1,9 @@
 package de.innovationhub.prox.infrastructure.persistence.port;
 
-import static de.innovationhub.prox.infrastructure.persistence.UserEntities.HOMER;
+import static de.innovationhub.prox.infrastructure.persistence.fixtures.UserEntities.HOMER;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import de.innovationhub.prox.infrastructure.persistence.UserEntities;
+import de.innovationhub.prox.infrastructure.persistence.fixtures.UserEntities;
 import de.innovationhub.prox.infrastructure.persistence.model.query.QUserEntity;
 import de.innovationhub.prox.profile.user.User;
 import io.ebean.DB;

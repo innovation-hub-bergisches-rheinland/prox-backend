@@ -2,7 +2,6 @@ plugins {
     id "java-library"
     id "java-conventions"
     id "java-logging-conventions"
-    id "java-test-fixtures"
     id "ebean-conventions"
 }
 
@@ -14,9 +13,4 @@ dependencies {
     annotationProcessor "org.mapstruct:mapstruct-processor:1.5.2.Final"
 
     testRuntimeOnly "org.postgresql:postgresql:42.5.0"
-    testFixturesImplementation project.parent.parent.project("domain")
-}
-
-build {
-    dependsOn "commons:build", "domain:build"
 }

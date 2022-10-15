@@ -1,5 +1,6 @@
 rootProject.name = "prox-backend"
 
+include("domain:commons")
 include("domain:project")
 include("domain:profile")
 include("domain:tag")

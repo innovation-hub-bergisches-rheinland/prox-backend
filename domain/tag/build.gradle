@@ -6,5 +6,5 @@ plugins {
 }
 
 dependencies {
-
+    api parent.project("commons")
 }

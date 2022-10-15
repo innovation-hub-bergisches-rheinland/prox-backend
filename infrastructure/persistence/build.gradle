@@ -1,0 +1,26 @@
+plugins {
+    id "java-library"
+    id "java-conventions"
+    id "java-logging-conventions"
+    id "java-test-fixtures"
+    id "io.ebean" version "13.6.5"
+}
+
+dependencies {
+    implementation project.parent.parent.project("domain")
+    implementation project.parent.project("commons")
+    implementation "io.ebean:ebean:13.6.5"
+    implementation "org.mapstruct:mapstruct:1.5.2.Final"
+
+    annotationProcessor "io.ebean:querybean-generator:13.6.5"
+    annotationProcessor "org.mapstruct:mapstruct-processor:1.5.2.Final"
+
+    testImplementation "io.ebean:ebean-test:13.6.5"
+    testRuntimeOnly "org.postgresql:postgresql:42.5.0"
+    testFixturesImplementation project.parent.parent.project("domain")
+    testFixturesImplementation "io.ebean:ebean:13.6.5"
+}
+
+build {
+    dependsOn "common:build", "domain:build"
+}

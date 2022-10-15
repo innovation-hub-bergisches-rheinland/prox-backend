@@ -5,3 +5,7 @@ include("domain:commons")
 include("domain:project")
 include("domain:profile")
 include("domain:tag")
+
+include("infrastructure")
+include("infrastructure:commons")
+include("infrastructure:persistence")

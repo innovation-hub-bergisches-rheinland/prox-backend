@@ -6,9 +6,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * A organizational unit in PROX. This can be a company, a club/association or a laboratory. It
@@ -16,8 +17,9 @@ import lombok.EqualsAndHashCode;
  * Also it is possible to file some entities under the tenancy of an organization.
  */
 @EqualsAndHashCode(callSuper = false)
-@Data
-@AllArgsConstructor
+@ToString
+@Getter
+@Setter
 public class Organization {
 
   private final UUID id;
@@ -25,13 +27,6 @@ public class Organization {
   private OrganizationProfile profile;
   private Map<UUID, Membership> members = new HashMap<>();
   private Set<UUID> tags = new HashSet<>();
-
-  public Organization(UUID id, String name, UUID ownerId) {
-    this.id = id;
-    this.name = name;
-    this.members = new HashMap<>();
-    this.members.put(ownerId, new Membership(OrganizationRole.ADMIN));
-  }
 
   public Organization(UUID id, String name, Map<UUID, Membership> members) {
     this.id = id;

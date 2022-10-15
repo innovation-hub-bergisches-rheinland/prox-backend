@@ -22,15 +22,10 @@ import lombok.ToString;
 public class Lecturer {
 
   private final UUID id;
-  private final UUID user;
+  private final UUID userId;
   private String name;
   private LecturerProfile profile;
   private Set<UUID> tags = new HashSet<>();
-
-  public Lecturer(UUID user) {
-    this.user = user;
-    this.id = user;
-  }
 
   public void setTags(Collection<UUID> tags) {
     this.tags = new HashSet<>(tags);

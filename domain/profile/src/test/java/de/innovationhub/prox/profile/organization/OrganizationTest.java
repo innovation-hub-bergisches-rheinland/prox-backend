@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 class OrganizationTest {
   private Organization createTestOrganization(UUID ownerId) {
-    return new Organization(UUID.randomUUID(), "ACME Ltd", ownerId);
+    return new Organization(UUID.randomUUID(), "ACME Ltd", Map.of(ownerId, new Membership(OrganizationRole.ADMIN)));
   }
 
   private Organization createTestOrganization(Map<UUID, Membership> members) {

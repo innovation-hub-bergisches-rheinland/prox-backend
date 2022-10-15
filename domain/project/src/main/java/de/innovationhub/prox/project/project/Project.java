@@ -11,17 +11,20 @@ import javax.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * A project represents a course or a research project, that is in fact offered by a lecturer. A
  * project always belongs to a user, but can be created under the tenancy of an organization.
  */
-@Data
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode
+@ToString
+@Getter
+@Setter
+@AllArgsConstructor
 @Builder(access = AccessLevel.PROTECTED)
 public class Project {
 

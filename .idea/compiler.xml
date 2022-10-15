@@ -7,27 +7,33 @@
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.24/13a394eed5c4f9efb2a6d956e2086f1d81e857d9/lombok-1.18.24.jar" />
         </processorPath>
+        <module name="prox-backend.application.profile.main" />
         <module name="prox-backend.domain.profile.test" />
-        <module name="prox-backend.infrastructure.main" />
-        <module name="prox-backend.domain.commons.testFixtures" />
         <module name="prox-backend.infrastructure.commons.testFixtures" />
         <module name="prox-backend.domain.profile.testFixtures" />
         <module name="prox-backend.domain.project.test" />
         <module name="prox-backend.domain.test" />
-        <module name="prox-backend.domain.profile.main" />
-        <module name="prox-backend.domain.main" />
-        <module name="prox-backend.domain.project.testFixtures" />
+        <module name="prox-backend.application.commons.main" />
         <module name="prox-backend.infrastructure.test" />
         <module name="prox-backend.domain.tag.test" />
+        <module name="prox-backend.domain.commons.main" />
+        <module name="prox-backend.domain.tag.testFixtures" />
+        <module name="prox-backend.infrastructure.commons.test" />
+        <module name="prox-backend.infrastructure.main" />
+        <module name="prox-backend.domain.commons.testFixtures" />
+        <module name="prox-backend.application.test" />
+        <module name="prox-backend.application.profile.test" />
+        <module name="prox-backend.domain.profile.main" />
+        <module name="prox-backend.application.main" />
+        <module name="prox-backend.domain.main" />
+        <module name="prox-backend.domain.project.testFixtures" />
         <module name="prox-backend.domain.commons.test" />
         <module name="prox-backend.domain.project.main" />
         <module name="prox-backend.infrastructure.persistence.test" />
         <module name="prox-backend.domain.tag.main" />
         <module name="prox-backend.infrastructure.commons.main" />
         <module name="prox-backend.infrastructure.persistence.testFixtures" />
-        <module name="prox-backend.domain.commons.main" />
-        <module name="prox-backend.domain.tag.testFixtures" />
-        <module name="prox-backend.infrastructure.commons.test" />
+        <module name="prox-backend.application.commons.test" />
       </profile>
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />

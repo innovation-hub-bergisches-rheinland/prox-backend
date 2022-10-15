@@ -1,0 +1,9 @@
+plugins {
+    id "java-library"
+    id "java-conventions"
+}
+
+dependencies {
+    api parent.project("commons")
+    api parent.parent.project("domain:profile")
+}

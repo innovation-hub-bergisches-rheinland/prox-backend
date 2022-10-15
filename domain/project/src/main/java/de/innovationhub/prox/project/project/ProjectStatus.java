@@ -2,12 +2,20 @@ package de.innovationhub.prox.project.project;
 
 import java.time.Instant;
 import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
+@Getter
+@EqualsAndHashCode
+@ToString
+@AllArgsConstructor
 public class ProjectStatus {
   private ProjectState state;
   private Instant updatedAt;
 
-  public void updateState(ProjectState state) {
+  void updateState(ProjectState state) {
     Objects.requireNonNull(state);
 
     this.state = state;

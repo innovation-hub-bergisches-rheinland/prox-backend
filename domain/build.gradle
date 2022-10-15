@@ -4,6 +4,7 @@ plugins {
 }
 
 dependencies {
+    api project("commons")
     api project("profile")
     api project("project")
     api project("tag")

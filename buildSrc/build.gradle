@@ -12,4 +12,5 @@ repositories {
 dependencies {
     implementation "com.diffplug.spotless:spotless-plugin-gradle:6.10.0"
     implementation "io.freefair.gradle:lombok-plugin:6.5.1"
+    implementation "io.ebean:ebean-gradle-plugin:13.10.0"
 }

@@ -7,3 +7,7 @@ dependencies {
     api project("commons")
     api project("persistence")
 }
+
+build {
+    dependsOn "commons:build", "persistence:build"
+}

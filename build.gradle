@@ -4,6 +4,7 @@ plugins {
     id 'java'
     id "java-conventions"
     id "ebean-conventions"
+    id "mapstruct-conventions"
 }
 
 group = 'de.innovationhub.prox'
@@ -15,10 +16,6 @@ repositories {
 }
 
 dependencies {
-    implementation project("domain")
-    implementation project("application")
-    implementation project("infrastructure")
-
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
@@ -26,4 +23,3 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
-

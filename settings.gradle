@@ -1,15 +1,1 @@
 rootProject.name = "prox-backend"
-
-include("domain")
-include("domain:commons")
-include("domain:project")
-include("domain:profile")
-include("domain:tag")
-
-include("application")
-include("application:commons")
-include("application:profile")
-
-include("infrastructure")
-include("infrastructure:commons")
-include("infrastructure:persistence")

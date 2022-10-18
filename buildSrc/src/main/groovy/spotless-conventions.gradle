@@ -22,7 +22,7 @@ pluginManager.withPlugin("java") {
             importOrder()
 
             removeUnusedImports()
-            googleJavaFormat('1.15').reflowLongStrings()
+            googleJavaFormat('1.15.0').reflowLongStrings()
             trimTrailingWhitespace()
             endWithNewline()
         }

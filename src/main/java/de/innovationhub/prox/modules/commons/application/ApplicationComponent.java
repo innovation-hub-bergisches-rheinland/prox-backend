@@ -11,4 +11,6 @@ import java.lang.annotation.Target;
  * Marks the class as a application component that will be picked up by the IoC container and
  * provides Dependency Injection for it.
  */
-public @interface ApplicationComponent {}
+public @interface ApplicationComponent {
+
+}

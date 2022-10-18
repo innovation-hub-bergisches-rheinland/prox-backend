@@ -20,7 +20,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class LecturerEntity extends BaseEntity {
 
-  @Id private UUID id;
+  @Id
+  private UUID id;
 
   @Column(nullable = false)
   private String name;
@@ -28,12 +29,14 @@ public class LecturerEntity extends BaseEntity {
   @OneToOne(optional = false)
   private UUID userId;
 
-  @ElementCollection private List<UUID> tags;
+  @ElementCollection
+  private List<UUID> tags;
 
   private String affiliation;
   private String subject;
   private String vita;
-  @ElementCollection private List<String> publications;
+  @ElementCollection
+  private List<String> publications;
   private String room;
   private String consultationHour;
   private String email;

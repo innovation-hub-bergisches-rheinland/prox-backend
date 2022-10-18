@@ -40,7 +40,9 @@ public class OrganizationProfile {
 
   private String headquarter;
 
-  @Builder.Default private List<String> quarters = new ArrayList<>();
+  @Builder.Default
+  private List<String> quarters = new ArrayList<>();
 
-  @Builder.Default private Map<SocialMedia, String> socialMediaHandles = new HashMap<>();
+  @Builder.Default
+  private Map<SocialMedia, String> socialMediaHandles = new HashMap<>();
 }

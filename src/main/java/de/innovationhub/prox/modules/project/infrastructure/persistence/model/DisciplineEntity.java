@@ -13,7 +13,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class DisciplineEntity extends BaseEntity {
-  @Id private String key;
+
+  @Id
+  private String key;
 
   @Column(nullable = false)
   private String name;

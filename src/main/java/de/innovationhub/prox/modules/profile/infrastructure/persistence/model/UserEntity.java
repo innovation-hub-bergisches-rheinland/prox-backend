@@ -15,7 +15,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserEntity extends BaseEntity {
 
-  @Id private UUID id;
+  @Id
+  private UUID id;
 
   @Column(nullable = false)
   private String name;

@@ -12,13 +12,15 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @Data
 public class User {
+
   private final UUID id;
 
   @NotBlank
   @Size(max = 1024)
   private String name;
 
-  @Email private String email;
+  @Email
+  private String email;
 
   public User(UUID id, String name, String email) {
     this.id = id;

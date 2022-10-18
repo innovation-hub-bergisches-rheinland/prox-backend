@@ -21,7 +21,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrganizationEntity extends BaseEntity {
-  @Id private UUID id;
+
+  @Id
+  private UUID id;
 
   @Column(nullable = false)
   private String name;
@@ -41,11 +43,14 @@ public class OrganizationEntity extends BaseEntity {
   @OneToMany(cascade = CascadeType.ALL)
   private List<OrganizationMembershipEntity> memberships;
 
-  @ElementCollection private List<String> quarters;
+  @ElementCollection
+  private List<String> quarters;
 
-  @ElementCollection private Map<String, String> socialMedia;
+  @ElementCollection
+  private Map<String, String> socialMedia;
 
-  @ElementCollection private List<UUID> tags;
+  @ElementCollection
+  private List<UUID> tags;
 
   public OrganizationEntity(UUID id, String name) {
     this.id = id;

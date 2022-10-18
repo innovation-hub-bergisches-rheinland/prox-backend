@@ -28,9 +28,11 @@ import lombok.ToString;
 @Builder(access = AccessLevel.PROTECTED)
 public class Project {
 
-  @NotNull private final UUID id;
+  @NotNull
+  private final UUID id;
 
-  @NotNull private final UUID creatorId;
+  @NotNull
+  private final UUID creatorId;
 
   private UUID organizationId;
 
@@ -48,7 +50,8 @@ public class Project {
   @Size(max = 10_000)
   private String requirement;
 
-  @NotNull private CurriculumContext curriculumContext;
+  @NotNull
+  private CurriculumContext curriculumContext;
 
   @NotNull
   @Setter(AccessLevel.PROTECTED)
@@ -62,7 +65,8 @@ public class Project {
   @Builder.Default
   private Set<UUID> supervisors = new HashSet<>();
 
-  @Builder.Default private Set<UUID> tags = new HashSet<>();
+  @Builder.Default
+  private Set<UUID> tags = new HashSet<>();
 
   public void archive() {
     if (this.status.getState() != ProjectState.PROPOSED) {
@@ -119,7 +123,9 @@ public class Project {
   }
 
   public void removeSupervisor(UUID supervisor) {
-    if (!this.supervisors.contains(supervisor)) return;
+    if (!this.supervisors.contains(supervisor)) {
+      return;
+    }
 
     if (this.supervisors.size() == 1) {
       throw new RuntimeException("There must be at least one supervisor");

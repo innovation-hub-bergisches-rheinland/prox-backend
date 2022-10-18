@@ -16,7 +16,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ModuleEntity extends BaseEntity {
 
-  @Id private String key;
+  @Id
+  private String key;
 
   @Column(nullable = false)
   private String name;
@@ -24,7 +25,8 @@ public class ModuleEntity extends BaseEntity {
   @Column(nullable = false)
   private boolean active;
 
-  @ElementCollection private List<String> disciplines;
+  @ElementCollection
+  private List<String> disciplines;
 
   public ModuleEntity(String key, String name, boolean active) {
     this.key = key;

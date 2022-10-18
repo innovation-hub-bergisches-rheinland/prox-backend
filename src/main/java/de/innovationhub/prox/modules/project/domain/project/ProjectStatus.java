@@ -12,6 +12,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 public class ProjectStatus {
+
   private ProjectState state;
   private Instant updatedAt;
 

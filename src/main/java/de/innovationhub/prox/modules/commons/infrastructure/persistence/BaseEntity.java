@@ -10,9 +10,12 @@ import javax.persistence.Version;
 @MappedSuperclass
 public abstract class BaseEntity extends Model {
 
-  @Version long version;
+  @Version
+  long version;
 
-  @WhenCreated Instant whenCreated;
+  @WhenCreated
+  Instant whenCreated;
 
-  @WhenModified Instant whenModified;
+  @WhenModified
+  Instant whenModified;
 }

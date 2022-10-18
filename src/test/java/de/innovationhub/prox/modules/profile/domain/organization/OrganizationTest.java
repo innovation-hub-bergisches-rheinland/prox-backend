@@ -1,13 +1,14 @@
 package de.innovationhub.prox.modules.profile.domain.organization;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 class OrganizationTest {
+
   private Organization createTestOrganization(UUID ownerId) {
     return new Organization(
         UUID.randomUUID(), "ACME Ltd", Map.of(ownerId, new Membership(OrganizationRole.ADMIN)));

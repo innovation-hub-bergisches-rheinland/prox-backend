@@ -11,4 +11,6 @@ import java.lang.annotation.Target;
  * Marks the class as a infrastructure component that will be picked up by the IoC container and
  * provides Dependency Injection for it.
  */
-public @interface InfrastructureComponent {}
+public @interface InfrastructureComponent {
+
+}

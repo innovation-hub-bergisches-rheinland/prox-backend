@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class ProjectEntities {
+
   public static ProjectEntity DRINKING_DUFF = new ProjectEntity();
   public static List<ProjectEntity> PROJECTS = List.of(DRINKING_DUFF);
 

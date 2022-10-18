@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class ModuleType {
+
   private final String key;
   private final String name;
 

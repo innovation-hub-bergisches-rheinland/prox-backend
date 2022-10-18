@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class Discipline {
+
   private final String key;
   private final String name;
 

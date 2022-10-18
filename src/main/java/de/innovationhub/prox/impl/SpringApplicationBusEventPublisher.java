@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SpringApplicationBusEventPublisher implements EventPublisher {
+
   private final ApplicationEventPublisher eventPublisher;
 
   public SpringApplicationBusEventPublisher(ApplicationEventPublisher eventPublisher) {

@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 class TagTest {
+
   @Test
   void shouldThrowWhenTagIsBlank() {
     assertThrows(RuntimeException.class, () -> new Tag(UUID.randomUUID(), "   "));

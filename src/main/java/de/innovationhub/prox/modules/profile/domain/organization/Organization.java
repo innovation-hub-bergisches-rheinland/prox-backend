@@ -70,9 +70,9 @@ public class Organization {
     var isRemovingLastAdmin =
         role != OrganizationRole.ADMIN
             && members.values().stream()
-                    .filter(it -> it.getRole() == OrganizationRole.ADMIN)
-                    .count()
-                == 1;
+            .filter(it -> it.getRole() == OrganizationRole.ADMIN)
+            .count()
+            == 1;
 
     if (isRemovingLastAdmin) {
       throw new RuntimeException("Cannot remove the last admin from organization");

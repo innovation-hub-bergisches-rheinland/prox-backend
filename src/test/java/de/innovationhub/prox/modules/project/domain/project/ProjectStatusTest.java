@@ -6,6 +6,7 @@ import java.time.Instant;
 import org.junit.jupiter.api.Test;
 
 class ProjectStatusTest {
+
   @Test
   void shouldUpdateTimestamp() {
     var currentMoment = Instant.now();

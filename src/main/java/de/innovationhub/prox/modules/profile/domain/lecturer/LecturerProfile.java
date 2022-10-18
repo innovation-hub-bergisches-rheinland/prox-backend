@@ -16,7 +16,8 @@ public class LecturerProfile {
   private String affiliation;
   private String subject;
   private String vita;
-  @Builder.Default private List<String> publications = new ArrayList<>();
+  @Builder.Default
+  private List<String> publications = new ArrayList<>();
 
   private String room;
   // Sprechstunde

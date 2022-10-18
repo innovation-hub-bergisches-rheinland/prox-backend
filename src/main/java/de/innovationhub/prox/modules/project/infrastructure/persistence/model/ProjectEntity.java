@@ -21,7 +21,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProjectEntity extends BaseEntity {
 
-  @Id private UUID id;
+  @Id
+  private UUID id;
 
   @Column(nullable = false)
   private UUID creator;
@@ -35,16 +36,21 @@ public class ProjectEntity extends BaseEntity {
   private String description;
   private String requirement;
 
-  @ElementCollection private List<String> disciplines;
+  @ElementCollection
+  private List<String> disciplines;
 
-  @ElementCollection private List<String> modules;
+  @ElementCollection
+  private List<String> modules;
 
-  @Embedded private ProjectStatusEmbeddable status;
+  @Embedded
+  private ProjectStatusEmbeddable status;
 
   private LocalDate timeBoxStart;
   private LocalDate timeBoxEnd;
 
-  @ElementCollection private List<UUID> supervisors;
+  @ElementCollection
+  private List<UUID> supervisors;
 
-  @ElementCollection private List<UUID> tags;
+  @ElementCollection
+  private List<UUID> tags;
 }

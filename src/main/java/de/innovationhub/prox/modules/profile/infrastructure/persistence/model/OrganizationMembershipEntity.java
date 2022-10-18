@@ -20,7 +20,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class OrganizationMembershipEntity extends BaseEntity {
 
-  @EmbeddedId private OrganizationMembershipPK id;
+  @EmbeddedId
+  private OrganizationMembershipPK id;
 
   @Column(name = "user_id", nullable = false)
   private UUID userId;

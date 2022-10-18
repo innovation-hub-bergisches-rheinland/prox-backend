@@ -7,7 +7,9 @@ import javax.validation.constraints.Size;
 import lombok.Data;
 import lombok.Getter;
 
-/** A Tag is a semantic annotation */
+/**
+ * A Tag is a semantic annotation
+ */
 @Data
 public class Tag {
 

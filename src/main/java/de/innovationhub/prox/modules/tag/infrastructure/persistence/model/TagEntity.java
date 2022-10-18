@@ -15,7 +15,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class TagEntity extends BaseEntity {
 
-  @Id private UUID id;
+  @Id
+  private UUID id;
 
   @Column(unique = true, nullable = false)
   private String tag;

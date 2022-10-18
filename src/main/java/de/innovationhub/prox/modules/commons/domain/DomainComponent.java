@@ -11,4 +11,6 @@ import java.lang.annotation.Target;
  * Marks the class as a domain component that will be picked up by the IoC container and provides
  * Dependency Injection for it. This can be useful for e.g. Domain Services
  */
-public @interface DomainComponent {}
+public @interface DomainComponent {
+
+}

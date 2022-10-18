@@ -12,15 +12,16 @@ import org.springframework.context.annotation.FilterType;
 @SpringBootApplication
 @ComponentScan(
     includeFilters =
-        @ComponentScan.Filter(
-            type = FilterType.ANNOTATION,
-            value = {
-              DomainComponent.class,
-              ApplicationComponent.class,
-              InfrastructureComponent.class
-            }))
+    @ComponentScan.Filter(
+        type = FilterType.ANNOTATION,
+        value = {
+            DomainComponent.class,
+            ApplicationComponent.class,
+            InfrastructureComponent.class
+        }))
 @Slf4j
 public class ProxApplication {
+
   public static void main(String[] args) {
     SpringApplication.run(ProxApplication.class, args);
   }

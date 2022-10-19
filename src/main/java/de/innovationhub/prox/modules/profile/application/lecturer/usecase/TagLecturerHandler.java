@@ -4,7 +4,7 @@ import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.commons.application.usecase.UseCaseHandler;
 import de.innovationhub.prox.modules.profile.application.lecturer.dto.LecturerDtoMapper;
 import de.innovationhub.prox.modules.profile.application.lecturer.dto.LecturerTagsDto;
-import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerPort;
+import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
 import de.innovationhub.prox.modules.tag.application.tag.dto.TagDto;
 import de.innovationhub.prox.modules.tag.application.tag.usecase.FindOrCreateTag;
 import de.innovationhub.prox.modules.tag.application.tag.usecase.FindOrCreateTagHandler;
@@ -13,12 +13,13 @@ import lombok.RequiredArgsConstructor;
 @ApplicationComponent
 @RequiredArgsConstructor
 public class TagLecturerHandler implements UseCaseHandler<LecturerTagsDto, TagLecturer> {
+
   private final FindOrCreateTagHandler findOrCreateTagHandler;
-  private final LecturerPort lecturerPort;
+  private final LecturerRepository lecturerRepository;
   private final LecturerDtoMapper lecturerDtoMapper;
   @Override
   public LecturerTagsDto handle(TagLecturer useCase) {
-    var lecturer = lecturerPort.getById(useCase.lecturerId())
+    var lecturer = lecturerRepository.findById(useCase.lecturerId())
         .orElseThrow(() -> new RuntimeException("Lecturer does not exist"));
 
     var tags = useCase.tags()
@@ -31,7 +32,7 @@ public class TagLecturerHandler implements UseCaseHandler<LecturerTagsDto, TagLe
         .toList();
 
     lecturer.setTags(tagIds);
-    lecturerPort.save(lecturer);
+    lecturerRepository.save(lecturer);
 
     return lecturerDtoMapper.toTagsDto(tags.stream().map(TagDto::tag).toList());
   }

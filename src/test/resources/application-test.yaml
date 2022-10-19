@@ -1,5 +1,0 @@
-ebean:
-  test:
-    platform: postgres # h2, postgres, ...
-    ddlMode: dropCreate # none | dropCreate | migrations | create
-    dbName: prox_test

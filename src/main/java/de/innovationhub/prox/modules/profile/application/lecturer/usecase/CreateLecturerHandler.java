@@ -5,31 +5,32 @@ import de.innovationhub.prox.modules.commons.application.usecase.UseCaseHandler;
 import de.innovationhub.prox.modules.profile.application.lecturer.dto.LecturerDto;
 import de.innovationhub.prox.modules.profile.application.lecturer.dto.LecturerDtoMapper;
 import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
-import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerPort;
-import de.innovationhub.prox.modules.profile.domain.user.UserPort;
+import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
+import de.innovationhub.prox.modules.profile.domain.user.UserRepository;
 
 @ApplicationComponent
 public class CreateLecturerHandler implements UseCaseHandler<LecturerDto, CreateLecturer> {
-  private final LecturerPort lecturerPort;
-  private final UserPort userPort;
+
+  private final LecturerRepository lecturerRepository;
+  private final UserRepository userRepository;
   private final LecturerDtoMapper lecturerDtoMapper;
 
-  public CreateLecturerHandler(LecturerPort lecturerPort,
-      UserPort userPort, LecturerDtoMapper lecturerDtoMapper) {
-    this.lecturerPort = lecturerPort;
-    this.userPort = userPort;
+  public CreateLecturerHandler(LecturerRepository lecturerRepository,
+      UserRepository userRepository, LecturerDtoMapper lecturerDtoMapper) {
+    this.lecturerRepository = lecturerRepository;
+    this.userRepository = userRepository;
     this.lecturerDtoMapper = lecturerDtoMapper;
   }
 
   @Override
   public LecturerDto handle(CreateLecturer useCase) {
-    var exists = userPort.existsById(useCase.userId());
-    if(!exists) {
+    var exists = userRepository.existsById(useCase.userId());
+    if (!exists) {
       throw new RuntimeException("User does not exist");
     }
 
     var lecturer = new Lecturer(useCase.userId(), useCase.name());
-    lecturerPort.save(lecturer);
+    lecturerRepository.save(lecturer);
 
     return lecturerDtoMapper.toDto(lecturer);
   }

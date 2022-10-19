@@ -3,7 +3,7 @@ package de.innovationhub.prox.modules.profile.domain.organization;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.util.Map;
+import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
@@ -11,10 +11,10 @@ class OrganizationTest {
 
   private Organization createTestOrganization(UUID ownerId) {
     return new Organization(
-        UUID.randomUUID(), "ACME Ltd", Map.of(ownerId, new Membership(OrganizationRole.ADMIN)));
+        UUID.randomUUID(), "ACME Ltd", List.of(new Membership(ownerId, OrganizationRole.ADMIN)));
   }
 
-  private Organization createTestOrganization(Map<UUID, Membership> members) {
+  private Organization createTestOrganization(List<Membership> members) {
     return new Organization(UUID.randomUUID(), "ACME Ltd", members);
   }
 
@@ -23,13 +23,16 @@ class OrganizationTest {
     var userId = UUID.randomUUID();
     var org = createTestOrganization(userId);
 
-    assertThat(org.getMembers().get(userId))
+    assertThat(org.getMembers())
+        .filteredOn(m -> m.getUserId().equals(userId))
+        .hasSize(1)
+        .first()
         .extracting(Membership::getRole)
         .isEqualTo(OrganizationRole.ADMIN);
   }
 
   @Test
-  void shouldReturnMembersAsUnmodifiableMap() {
+  void shouldReturnMembersAsUnmodifiableList() {
     var userId = UUID.randomUUID();
     var org = createTestOrganization(userId);
 
@@ -45,7 +48,9 @@ class OrganizationTest {
 
     org.removeMember(userId);
 
-    assertThat(org.getMembers()).doesNotContainKey(userId);
+    assertThat(org.getMembers())
+        .filteredOn(m -> m.getUserId().equals(userId))
+        .isEmpty();
   }
 
   @Test
@@ -63,13 +68,15 @@ class OrganizationTest {
 
     org.addMember(userId, OrganizationRole.ADMIN);
 
-    assertThat(org.getMembers()).containsKey(userId);
+    assertThat(org.getMembers())
+        .filteredOn(m -> m.getUserId().equals(userId))
+        .hasSize(1);
   }
 
   @Test
   void shouldNotAddMemberTwice() {
     var userId = UUID.randomUUID();
-    var memberships = Map.of(userId, new Membership(OrganizationRole.ADMIN));
+    var memberships = List.of(new Membership(userId, OrganizationRole.ADMIN));
     var org = createTestOrganization(memberships);
 
     assertThrows(RuntimeException.class, () -> org.addMember(userId, OrganizationRole.ADMIN));
@@ -80,14 +87,17 @@ class OrganizationTest {
     var userId = UUID.randomUUID();
     var ownerId = UUID.randomUUID();
     var memberships =
-        Map.of(
-            ownerId, new Membership(OrganizationRole.ADMIN),
-            userId, new Membership(OrganizationRole.ADMIN));
+        List.of(
+            new Membership(ownerId, OrganizationRole.ADMIN),
+            new Membership(userId, OrganizationRole.ADMIN));
     var org = createTestOrganization(memberships);
 
     org.updateMembership(userId, OrganizationRole.MEMBER);
 
-    assertThat(org.getMembers().get(userId))
+    assertThat(org.getMembers())
+        .filteredOn(m -> m.getUserId().equals(userId))
+        .hasSize(1)
+        .first()
         .extracting(Membership::getRole)
         .isEqualTo(OrganizationRole.MEMBER);
   }

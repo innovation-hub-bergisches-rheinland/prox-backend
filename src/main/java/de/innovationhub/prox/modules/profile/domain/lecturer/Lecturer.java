@@ -10,8 +10,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import lombok.EqualsAndHashCode;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
@@ -19,14 +24,20 @@ import lombok.ToString;
  * between professors and research associates.
  */
 @Getter
-@EqualsAndHashCode(callSuper = false)
 @ToString(callSuper = false)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
 public class Lecturer extends AbstractAggregateRoot {
 
-  private final UUID id;
-  private final UUID userId;
+  @Id
+  private UUID id;
+  private UUID userId;
   private String name;
+
+  @OneToOne
   private LecturerProfile profile;
+
+  @ElementCollection
   private Set<UUID> tags = new HashSet<>();
 
   public static Lecturer create(UUID userId, String name) {

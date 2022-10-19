@@ -4,20 +4,17 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 
-public interface TagPort {
-
-  Tag save(Tag tag);
+public interface TagRepository extends CrudRepository<Tag, UUID> {
 
   Optional<Tag> getByTag(String tag);
 
   List<Tag> getByIdIn(Collection<UUID> ids);
 
-  List<Tag> getOrCreateTags(Collection<String> tags);
-
   boolean existsByTag(String tag);
 
+  @Query("SELECT t FROM Tag t WHERE lower(t.tag) LIKE concat('%', lower(?1), '%')")
   List<Tag> findMatching(String tag);
-
-  List<Tag> findCommon(Collection<String> tags);
 }

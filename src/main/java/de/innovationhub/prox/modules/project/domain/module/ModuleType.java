@@ -1,15 +1,23 @@
 package de.innovationhub.prox.modules.project.domain.module;
 
+import de.innovationhub.prox.modules.commons.domain.AbstractAggregateRoot;
 import java.util.List;
-import lombok.Data;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-@Data
-public class ModuleType {
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class ModuleType extends AbstractAggregateRoot {
 
-  private final String key;
-  private final String name;
+  @Id
+  private String key;
+  private String name;
 
-  private final List<String> disciplines;
+  @ElementCollection
+  private List<String> disciplines;
 
   private boolean active = true;
 

@@ -1,18 +1,21 @@
 package de.innovationhub.prox.modules.project.domain.project;
 
 import java.time.LocalDate;
-import lombok.Data;
+import javax.persistence.Embeddable;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 /**
  * Period where a project is actively worked on. It is meant to be defined vaguely, as sometimes a
  * lecturer might not have the capacity to carry out a project in a specific time frame. But we must
  * have some kind of time frame to be able to accumulate the project's progress.
  */
-@Data
+@Embeddable
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TimeBox {
 
-  private final LocalDate start;
-  private final LocalDate end;
+  private LocalDate start;
+  private LocalDate end;
 
   public TimeBox(LocalDate start, LocalDate end) {
     this.start = start;

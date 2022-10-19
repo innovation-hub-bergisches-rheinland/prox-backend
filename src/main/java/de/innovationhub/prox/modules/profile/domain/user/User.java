@@ -3,19 +3,26 @@ package de.innovationhub.prox.modules.profile.domain.user;
 import de.innovationhub.prox.modules.commons.domain.AbstractAggregateRoot;
 import de.innovationhub.prox.modules.profile.domain.user.events.UserRegistered;
 import java.util.UUID;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import lombok.Data;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 // Users most likely will be created by our Identity Provider (Keycloak).
 // We still need a representation to it in our domain model.
 @EqualsAndHashCode(callSuper = false)
-@Data
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class User extends AbstractAggregateRoot {
 
-  private final UUID id;
+  @Id
+  private UUID id;
 
   @NotBlank
   @Size(max = 1024)

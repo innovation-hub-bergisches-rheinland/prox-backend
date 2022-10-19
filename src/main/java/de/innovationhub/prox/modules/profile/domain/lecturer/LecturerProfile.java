@@ -2,21 +2,33 @@ package de.innovationhub.prox.modules.profile.domain.lecturer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
+@Getter
+@Entity
 public class LecturerProfile {
+
+  @Id
+  @Builder.Default
+  private UUID id = UUID.randomUUID();
 
   private String affiliation;
   private String subject;
   private String vita;
+
   @Builder.Default
+  @ElementCollection
   private List<String> publications = new ArrayList<>();
 
   private String room;

@@ -1,18 +1,24 @@
 package de.innovationhub.prox.modules.project.domain.project;
 
+import de.innovationhub.prox.modules.commons.domain.AbstractAggregateRoot;
 import de.innovationhub.prox.modules.project.domain.project.exception.InvalidProjectStateTransitionException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -20,19 +26,20 @@ import lombok.ToString;
  * A project represents a course or a research project, that is in fact offered by a lecturer. A
  * project always belongs to a user, but can be created under the tenancy of an organization.
  */
-@EqualsAndHashCode
 @ToString
 @Getter
 @Setter
 @AllArgsConstructor
 @Builder(access = AccessLevel.PROTECTED)
-public class Project {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
+public class Project extends AbstractAggregateRoot {
+
+  @Id
+  private UUID id;
 
   @NotNull
-  private final UUID id;
-
-  @NotNull
-  private final UUID creatorId;
+  private UUID creatorId;
 
   private UUID organizationId;
 
@@ -51,21 +58,26 @@ public class Project {
   private String requirement;
 
   @NotNull
+  @OneToOne
   private CurriculumContext curriculumContext;
 
   @NotNull
   @Setter(AccessLevel.PROTECTED)
+  @Embedded
   private ProjectStatus status;
 
   @Setter(AccessLevel.PROTECTED)
   @Builder.Default
+  @Embedded
   private TimeBox timeBox = null;
 
   @Setter(AccessLevel.PROTECTED)
   @Builder.Default
+  @ElementCollection
   private Set<UUID> supervisors = new HashSet<>();
 
   @Builder.Default
+  @ElementCollection
   private Set<UUID> tags = new HashSet<>();
 
   public void archive() {

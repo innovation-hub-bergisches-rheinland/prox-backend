@@ -5,32 +5,36 @@ import de.innovationhub.prox.modules.commons.domain.AbstractAggregateRoot;
 import de.innovationhub.prox.modules.tag.domain.tag.events.TagCreated;
 import java.util.Objects;
 import java.util.UUID;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import lombok.Data;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NaturalId;
 
 /**
  * A Tag is a semantic annotation
  */
-@Data
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Tag extends AbstractAggregateRoot {
 
-  private final UUID id;
+  @Id
+  private UUID id;
 
+  @NaturalId
   @Getter
   @NotBlank
   @Size(max = 128)
-  private final String tag;
+  private String tag;
 
   public static Tag createNew(String tag) {
     var createdTag = new Tag(UUID.randomUUID(), tag);
     createdTag.registerEvent(TagCreated.from(createdTag));
     return createdTag;
-  }
-
-  public Tag(String tag) {
-    this(UUID.randomUUID(), tag);
   }
 
   @Default

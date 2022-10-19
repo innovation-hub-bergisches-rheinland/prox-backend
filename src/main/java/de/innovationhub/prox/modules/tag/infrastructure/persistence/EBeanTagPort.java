@@ -8,6 +8,7 @@ import de.innovationhub.prox.modules.tag.infrastructure.persistence.model.query.
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @InfrastructureComponent
 public class EBeanTagPort implements TagPort {
@@ -25,6 +26,11 @@ public class EBeanTagPort implements TagPort {
   @Override
   public Optional<Tag> getByTag(String tag) {
     return qTag.tag.eq(tag).findOneOrEmpty().map(tagMapper::toDomain);
+  }
+
+  @Override
+  public List<Tag> getByIdIn(Collection<UUID> ids) {
+    return qTag.id.in(ids).findStream().map(tagMapper::toDomain).toList();
   }
 
   @Override

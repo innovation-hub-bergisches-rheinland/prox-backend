@@ -3,12 +3,15 @@ package de.innovationhub.prox.modules.tag.domain.tag;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface TagPort {
 
   Tag save(Tag tag);
 
   Optional<Tag> getByTag(String tag);
+
+  List<Tag> getByIdIn(Collection<UUID> ids);
 
   List<Tag> getOrCreateTags(Collection<String> tags);
 

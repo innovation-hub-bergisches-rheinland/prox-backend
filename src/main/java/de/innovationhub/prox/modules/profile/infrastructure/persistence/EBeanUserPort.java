@@ -25,4 +25,9 @@ public class EBeanUserPort implements UserPort {
   public Optional<User> getById(UUID id) {
     return qUser.id.eq(id).findOneOrEmpty().map(userMapper::toDomain);
   }
+
+  @Override
+  public boolean existsById(UUID id) {
+    return qUser.id.eq(id).exists();
+  }
 }

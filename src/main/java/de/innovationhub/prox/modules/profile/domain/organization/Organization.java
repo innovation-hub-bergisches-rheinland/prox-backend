@@ -8,12 +8,8 @@ import de.innovationhub.prox.modules.profile.domain.organization.events.Organiza
 import de.innovationhub.prox.modules.profile.domain.organization.events.OrganizationProfileUpdated;
 import de.innovationhub.prox.modules.profile.domain.organization.events.OrganizationTagged;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -40,8 +36,7 @@ public class Organization extends AbstractAggregateRoot {
   private OrganizationProfile profile;
   @OneToMany
   private List<Membership> members = new ArrayList<>();
-  @ElementCollection
-  private Set<UUID> tags = new HashSet<>();
+  private UUID tagCollection;
 
   public static Organization create(String name, UUID founder) {
     var founderMembership = new Membership(founder, OrganizationRole.ADMIN);
@@ -121,8 +116,8 @@ public class Organization extends AbstractAggregateRoot {
     return List.copyOf(members);
   }
 
-  public void setTags(Collection<UUID> tags) {
-    this.tags = new HashSet<>(tags);
-    this.registerEvent(OrganizationTagged.from(this.id, this.getTags()));
+  public void setTagCollection(UUID tagCollection) {
+    this.tagCollection = tagCollection;
+    this.registerEvent(new OrganizationTagged(this.id, this.getTagCollection()));
   }
 }

@@ -5,12 +5,7 @@ import de.innovationhub.prox.modules.commons.domain.AbstractAggregateRoot;
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerCreated;
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerProfileUpdated;
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerTagged;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import java.util.UUID;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
@@ -37,8 +32,7 @@ public class Lecturer extends AbstractAggregateRoot {
   @OneToOne
   private LecturerProfile profile;
 
-  @ElementCollection
-  private Set<UUID> tags = new HashSet<>();
+  private UUID tagCollection;
 
   public static Lecturer create(UUID userId, String name) {
     var createdLecturer = new Lecturer(userId, name);
@@ -47,21 +41,21 @@ public class Lecturer extends AbstractAggregateRoot {
   }
 
   public Lecturer(UUID userId, String name) {
-    this(UUID.randomUUID(), userId, name, null, new HashSet<>());
+    this(UUID.randomUUID(), userId, name, null, null);
   }
 
   @Default
-  public Lecturer(UUID id, UUID userId, String name, LecturerProfile profile, Set<UUID> tags) {
+  public Lecturer(UUID id, UUID userId, String name, LecturerProfile profile, UUID tagCollection) {
     this.id = id;
     this.userId = userId;
     this.name = name;
     this.profile = profile;
-    this.tags = tags;
+    this.tagCollection = tagCollection;
   }
 
-  public void setTags(Collection<UUID> tags) {
-    this.tags = new HashSet<>(tags);
-    this.registerEvent(LecturerTagged.from(this.id, List.copyOf(this.tags)));
+  public void setTagCollection(UUID tagCollection) {
+    this.tagCollection = tagCollection;
+    this.registerEvent(new LecturerTagged(this.id, this.tagCollection));
   }
 
   public void setProfile(LecturerProfile profile) {

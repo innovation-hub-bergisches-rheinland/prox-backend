@@ -20,6 +20,10 @@ public class Tag {
   @Size(max = 128)
   private final String tag;
 
+  public Tag(String tag) {
+    this(UUID.randomUUID(), tag);
+  }
+
   public Tag(UUID id, String tag) {
     Objects.requireNonNull(id);
     Objects.requireNonNull(tag);

@@ -3,10 +3,10 @@ package de.innovationhub.prox.modules.commons.application.usecase;
 /**
  * Interface for marking use case handlers.
  *
- * @param <E> Response Type of the handler
- * @param <T> Use Case type
+ * @param <RETURN>  Response Type of the handler
+ * @param <USECASE> Use Case type
  */
-public interface UseCaseHandler<E, T extends UseCase> {
+public interface UseCaseHandler<RETURN, USECASE extends UseCase> {
 
   /**
    * Handles the use case
@@ -14,5 +14,5 @@ public interface UseCaseHandler<E, T extends UseCase> {
    * @param useCase usecase
    * @return response
    */
-  E handle(T useCase);
+  RETURN handle(USECASE useCase);
 }

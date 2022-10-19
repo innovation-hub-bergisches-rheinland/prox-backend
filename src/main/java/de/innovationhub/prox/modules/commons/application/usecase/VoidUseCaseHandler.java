@@ -3,14 +3,14 @@ package de.innovationhub.prox.modules.commons.application.usecase;
 /**
  * Marker interface for a use case handler without a response
  *
- * @param <T> Use Case type
+ * @param <USECASE> Use Case type
  */
-public interface VoidUseCaseHandler<T extends VoidUseCase> {
+public interface VoidUseCaseHandler<USECASE extends VoidUseCase> {
 
   /**
    * Handles the use case
    *
    * @param voidUseCase
    */
-  void handle(T voidUseCase);
+  void handle(USECASE voidUseCase);
 }

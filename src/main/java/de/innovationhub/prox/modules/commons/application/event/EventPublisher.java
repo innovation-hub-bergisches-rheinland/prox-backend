@@ -7,5 +7,5 @@ package de.innovationhub.prox.modules.commons.application.event;
  */
 public interface EventPublisher {
 
-  <T extends Event> void publish(T event);
+  <EVENT extends Event> void publish(EVENT event);
 }

@@ -1,11 +1,9 @@
 package de.innovationhub.prox.modules.tag.application.tag.usecase;
 
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
-import de.innovationhub.prox.modules.commons.application.event.EventPublisher;
 import de.innovationhub.prox.modules.commons.application.usecase.UseCaseHandler;
 import de.innovationhub.prox.modules.tag.application.tag.dto.TagDto;
 import de.innovationhub.prox.modules.tag.application.tag.dto.TagDtoMapper;
-import de.innovationhub.prox.modules.tag.application.tag.events.TagCreated;
 import de.innovationhub.prox.modules.tag.domain.tag.Tag;
 import de.innovationhub.prox.modules.tag.domain.tag.TagPort;
 
@@ -13,13 +11,10 @@ import de.innovationhub.prox.modules.tag.domain.tag.TagPort;
 public class FindOrCreateTagHandler implements UseCaseHandler<TagDto, FindOrCreateTag> {
 
   private final TagPort tagPort;
-  private final EventPublisher eventPublisher;
   private final TagDtoMapper tagDtoMapper;
 
-  public FindOrCreateTagHandler(TagPort tagPort, EventPublisher eventPublisher,
-      TagDtoMapper tagDtoMapper) {
+  public FindOrCreateTagHandler(TagPort tagPort, TagDtoMapper tagDtoMapper) {
     this.tagPort = tagPort;
-    this.eventPublisher = eventPublisher;
     this.tagDtoMapper = tagDtoMapper;
   }
 
@@ -30,9 +25,8 @@ public class FindOrCreateTagHandler implements UseCaseHandler<TagDto, FindOrCrea
       return tagDtoMapper.toDto(foundTag.get());
     }
 
-    var tag = new Tag(useCase.tag());
+    var tag = Tag.createNew(useCase.tag());
     tagPort.save(tag);
-    this.eventPublisher.publish(TagCreated.from(tag));
     return tagDtoMapper.toDto(tag);
   }
 }

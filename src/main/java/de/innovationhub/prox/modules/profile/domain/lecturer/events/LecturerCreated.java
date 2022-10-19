@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.profile.application.lecturer.events;
+package de.innovationhub.prox.modules.profile.domain.lecturer.events;
 
 import de.innovationhub.prox.modules.commons.application.event.Event;
 import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;

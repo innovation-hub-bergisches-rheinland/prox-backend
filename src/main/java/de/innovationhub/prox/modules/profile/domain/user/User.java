@@ -1,5 +1,7 @@
 package de.innovationhub.prox.modules.profile.domain.user;
 
+import de.innovationhub.prox.modules.commons.domain.AbstractAggregateRoot;
+import de.innovationhub.prox.modules.profile.domain.user.events.UserRegistered;
 import java.util.UUID;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -11,7 +13,7 @@ import lombok.EqualsAndHashCode;
 // We still need a representation to it in our domain model.
 @EqualsAndHashCode(callSuper = false)
 @Data
-public class User {
+public class User extends AbstractAggregateRoot {
 
   private final UUID id;
 
@@ -21,6 +23,12 @@ public class User {
 
   @Email
   private String email;
+
+  public static User register(UUID id, String name, String email) {
+    var createdUser = new User(id, name, email);
+    createdUser.registerEvent(UserRegistered.from(createdUser));
+    return createdUser;
+  }
 
   public User(UUID id, String name, String email) {
     this.id = id;

@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.tag.application.tag.events;
+package de.innovationhub.prox.modules.tag.domain.tag.events;
 
 import de.innovationhub.prox.modules.commons.application.event.Event;
 import de.innovationhub.prox.modules.tag.domain.tag.Tag;

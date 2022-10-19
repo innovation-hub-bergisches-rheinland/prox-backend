@@ -1,11 +1,9 @@
 package de.innovationhub.prox.modules.profile.application.lecturer.usecase;
 
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
-import de.innovationhub.prox.modules.commons.application.event.EventPublisher;
 import de.innovationhub.prox.modules.commons.application.usecase.UseCaseHandler;
 import de.innovationhub.prox.modules.profile.application.lecturer.dto.LecturerDtoMapper;
 import de.innovationhub.prox.modules.profile.application.lecturer.dto.LecturerProfileDto;
-import de.innovationhub.prox.modules.profile.application.lecturer.events.LecturerProfileUpdated;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerPort;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerProfile;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UpdateLecturerProfileHandler implements UseCaseHandler<LecturerProfileDto, UpdateLecturerProfile> {
   private final LecturerPort lecturerPort;
-  private final EventPublisher eventPublisher;
   private final LecturerDtoMapper lecturerDtoMapper;
   @Override
   public LecturerProfileDto handle(UpdateLecturerProfile useCase) {
@@ -34,8 +31,6 @@ public class UpdateLecturerProfileHandler implements UseCaseHandler<LecturerProf
     );
     lecturer.setProfile(profile);
     lecturer = lecturerPort.save(lecturer);
-
-    eventPublisher.publish(LecturerProfileUpdated.from(lecturer.getId(), lecturer.getProfile()));
 
     return lecturerDtoMapper.toProfileDto(lecturer.getProfile());
   }

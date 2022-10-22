@@ -15,6 +15,8 @@ public interface TagRepository extends CrudRepository<Tag, UUID> {
 
   boolean existsByTag(String tag);
 
+  List<Tag> findAllByTagIn(Collection<String> tags);
+
   @Query("SELECT t FROM Tag t WHERE lower(t.tag) LIKE concat('%', lower(?1), '%')")
   List<Tag> findMatching(String tag);
 }

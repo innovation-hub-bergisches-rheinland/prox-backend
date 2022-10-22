@@ -2,6 +2,8 @@ package de.innovationhub.prox.modules.tag.domain.tagcollection;
 
 import de.innovationhub.prox.modules.commons.domain.AbstractAggregateRoot;
 import de.innovationhub.prox.modules.tag.domain.tagcollection.events.TagCollectionCreated;
+import de.innovationhub.prox.modules.tag.domain.tagcollection.events.TagCollectionUpdated;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -28,5 +30,10 @@ public class TagCollection extends AbstractAggregateRoot {
     var createdTagCollection = new TagCollection(id, List.copyOf(tags));
     createdTagCollection.registerEvent(TagCollectionCreated.from(createdTagCollection));
     return createdTagCollection;
+  }
+
+  public void setTags(Collection<UUID> tags) {
+    this.tags = new ArrayList<>(tags);
+    this.registerEvent(TagCollectionUpdated.from(this));
   }
 }

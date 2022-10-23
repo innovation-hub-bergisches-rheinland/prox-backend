@@ -3,7 +3,6 @@ package de.innovationhub.prox.modules.project.domain.project;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import de.innovationhub.prox.modules.project.domain.supervisor.Supervisor;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,7 +16,7 @@ class ProjectTest {
   @Test
   void shouldAddSupervisorOnOffer() {
     var project = createTestProject(ProjectState.PROPOSED);
-    var supervisor = new Supervisor(UUID.randomUUID(), "Xavier Tester");
+    var supervisor = new Supervisor(UUID.randomUUID());
 
     project.offer(supervisor);
 
@@ -26,7 +25,7 @@ class ProjectTest {
 
   @Test
   void shouldNotRemoveLastSupervisor() {
-    var supervisor = new Supervisor(UUID.randomUUID(), "Xavier Tester");
+    var supervisor = new Supervisor(UUID.randomUUID());
     var project = createProjectWithSupervisors(List.of(supervisor));
 
     assertThrows(RuntimeException.class, () -> project.removeSupervisor(supervisor));
@@ -34,8 +33,8 @@ class ProjectTest {
 
   @Test
   void shouldRemoveSupervisor() {
-    var supervisorXavier = new Supervisor(UUID.randomUUID(), "Xavier Tester");
-    var supervisorHomer = new Supervisor(UUID.randomUUID(), "Homer Simpson");
+    var supervisorXavier = new Supervisor(UUID.randomUUID());
+    var supervisorHomer = new Supervisor(UUID.randomUUID());
     var project = createProjectWithSupervisors(List.of(supervisorHomer, supervisorXavier));
 
     project.removeSupervisor(supervisorHomer);
@@ -45,8 +44,8 @@ class ProjectTest {
 
   @Test
   void shouldAddSupervisor() {
-    var supervisorXavier = new Supervisor(UUID.randomUUID(), "Xavier Tester");
-    var supervisorHomer = new Supervisor(UUID.randomUUID(), "Homer Simpson");
+    var supervisorXavier = new Supervisor(UUID.randomUUID());
+    var supervisorHomer = new Supervisor(UUID.randomUUID());
     var project = createProjectWithSupervisors(List.of(supervisorXavier));
 
     project.addSupervisor(supervisorHomer);
@@ -57,7 +56,7 @@ class ProjectTest {
   private Project createProjectWithSupervisors(Collection<Supervisor> supervisors) {
     return new Project(
         UUID.randomUUID(),
-        UUID.randomUUID(),
+        new Author(UUID.randomUUID()),
         null,
         "Test",
         "Test",
@@ -67,13 +66,13 @@ class ProjectTest {
         new ProjectStatus(ProjectState.PROPOSED, Instant.now()),
         null,
         new ArrayList<>(supervisors),
-        Collections.emptyList());
+        null);
   }
 
   private Project createTestProject(ProjectState state) {
     return new Project(
         UUID.randomUUID(),
-        UUID.randomUUID(),
+        new Author(UUID.randomUUID()),
         null,
         "Test",
         "Test",
@@ -83,6 +82,6 @@ class ProjectTest {
         new ProjectStatus(state, Instant.now()),
         null,
         Collections.emptyList(),
-        Collections.emptyList());
+        null);
   }
 }

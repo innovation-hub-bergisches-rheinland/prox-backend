@@ -34,19 +34,18 @@ public class Lecturer extends AbstractAggregateRoot {
   @OneToOne
   private LecturerProfile profile;
 
-  private UUID tagCollection;
+  private LecturerTags tags;
 
   public Lecturer(User user, String name) {
-    this(UUID.randomUUID(), user, name, null, null);
+    this(UUID.randomUUID(), user, name, null);
   }
 
   @Default
-  public Lecturer(UUID id, User user, String name, LecturerProfile profile, UUID tagCollection) {
+  public Lecturer(UUID id, User user, String name, LecturerProfile profile) {
     this.id = id;
     this.user = user;
     this.name = name;
     this.profile = profile;
-    this.tagCollection = tagCollection;
   }
 
   public static Lecturer create(User user, String name) {
@@ -55,9 +54,9 @@ public class Lecturer extends AbstractAggregateRoot {
     return createdLecturer;
   }
 
-  public void setTagCollection(UUID tagCollection) {
-    this.tagCollection = tagCollection;
-    this.registerEvent(new LecturerTagged(this.id, this.tagCollection));
+  public void setTags(LecturerTags tags) {
+    this.tags = tags;
+    this.registerEvent(new LecturerTagged(this.id, this.tags.getTagCollectionId()));
   }
 
   public void setProfile(LecturerProfile profile) {

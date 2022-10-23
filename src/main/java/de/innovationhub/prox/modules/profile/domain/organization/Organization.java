@@ -37,7 +37,7 @@ public class Organization extends AbstractAggregateRoot {
   private OrganizationProfile profile;
   @OneToMany
   private List<Membership> members = new ArrayList<>();
-  private UUID tagCollection;
+  private OrganizationTags tags;
 
   public static Organization create(String name, User founder) {
     var founderMembership = new Membership(founder, OrganizationRole.ADMIN);
@@ -117,8 +117,8 @@ public class Organization extends AbstractAggregateRoot {
     return List.copyOf(members);
   }
 
-  public void setTagCollection(UUID tagCollection) {
-    this.tagCollection = tagCollection;
-    this.registerEvent(new OrganizationTagged(this.id, this.getTagCollection()));
+  public void setTags(OrganizationTags tags) {
+    this.tags = tags;
+    this.registerEvent(new OrganizationTagged(this.id, this.tags.getTagCollectionId()));
   }
 }

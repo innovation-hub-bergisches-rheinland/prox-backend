@@ -1,10 +1,7 @@
 package de.innovationhub.prox.modules.project.domain.project;
 
 import de.innovationhub.prox.modules.commons.domain.AbstractAggregateRoot;
-import de.innovationhub.prox.modules.project.domain.partner.Partner;
-import de.innovationhub.prox.modules.project.domain.supervisor.Supervisor;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -12,8 +9,6 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -43,9 +38,10 @@ public class Project extends AbstractAggregateRoot {
   private UUID id;
 
   @NotNull
-  private UUID creatorId;
+  @Embedded
+  private Author author;
 
-  @ManyToOne(optional = true)
+  @Embedded
   private Partner partner;
 
   @NotBlank
@@ -78,12 +74,10 @@ public class Project extends AbstractAggregateRoot {
 
   @Setter(AccessLevel.PROTECTED)
   @Builder.Default
-  @ManyToMany
+  @ElementCollection
   private List<Supervisor> supervisors = new ArrayList<>();
 
-  @Builder.Default
-  @ElementCollection
-  private List<UUID> tags = new ArrayList<>();
+  private ProjectTags tags;
 
   public void archive() {
     this.status.updateState(ProjectState.ARCHIVED);
@@ -129,7 +123,7 @@ public class Project extends AbstractAggregateRoot {
     this.supervisors.remove(supervisor);
   }
 
-  public void setTags(Collection<UUID> tag) {
-    this.tags = new ArrayList<>(tag);
+  public void setTags(ProjectTags tags) {
+    this.tags = tags;
   }
 }

@@ -16,6 +16,6 @@ class TagTest {
   @Test
   void shouldConvertTagToLowercase() {
     var tag = new Tag(UUID.randomUUID(), "TEST");
-    assertThat(tag.getTag()).isEqualTo("test");
+    assertThat(tag.getTagName()).isEqualTo("test");
   }
 }

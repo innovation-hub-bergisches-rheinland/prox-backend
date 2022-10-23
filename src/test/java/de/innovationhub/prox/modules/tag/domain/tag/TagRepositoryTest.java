@@ -22,11 +22,11 @@ class TagRepositoryTest {
     var returnedTags = tagRepository.fetchOrCreateTags(tagInput);
 
     assertThat(returnedTags)
-        .extracting(Tag::getTag)
+        .extracting(Tag::getTagName)
         .containsExactlyElementsOf(tagInput);
-    assertThat(tagRepository.existsByTag("test1"))
+    assertThat(tagRepository.existsByTagName("test1"))
         .isTrue();
-    assertThat(tagRepository.existsByTag("test2"))
+    assertThat(tagRepository.existsByTagName("test2"))
         .isTrue();
   }
 
@@ -39,7 +39,7 @@ class TagRepositoryTest {
     var returnedTags = tagRepository.fetchOrCreateTags(tagInput);
 
     assertThat(returnedTags)
-        .extracting(Tag::getTag)
+        .extracting(Tag::getTagName)
         .containsExactlyElementsOf(tagInput);
   }
 }

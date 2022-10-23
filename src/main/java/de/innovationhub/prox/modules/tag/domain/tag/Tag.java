@@ -29,7 +29,7 @@ public class Tag extends AbstractAggregateRoot {
   @Getter
   @NotBlank
   @Size(max = 128)
-  private String tag;
+  private String tagName;
 
   public static Tag createNew(String tag) {
     var createdTag = new Tag(UUID.randomUUID(), tag);
@@ -38,15 +38,15 @@ public class Tag extends AbstractAggregateRoot {
   }
 
   @Default
-  public Tag(UUID id, String tag) {
+  public Tag(UUID id, String tagName) {
     Objects.requireNonNull(id);
-    Objects.requireNonNull(tag);
+    Objects.requireNonNull(tagName);
 
-    if (tag.isBlank()) {
+    if (tagName.isBlank()) {
       throw new RuntimeException("Tag cannot be blank");
     }
 
     this.id = id;
-    this.tag = tag.toLowerCase();
+    this.tagName = tagName.toLowerCase();
   }
 }

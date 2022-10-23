@@ -11,14 +11,15 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface TagRepository extends CrudRepository<Tag, UUID> {
 
-  Optional<Tag> getByTag(String tag);
+  Optional<Tag> getByTagName(String tag);
 
   List<Tag> getByIdIn(Collection<UUID> ids);
 
   default List<Tag> fetchOrCreateTags(Collection<String> tags) {
-    List<Tag> existingTags = this.findAllByTagIn(tags);
+    List<Tag> existingTags = this.findAllByTagNameIn(tags);
     List<String> notExistingTags = tags.stream()
-        .filter(strTag -> existingTags.stream().noneMatch(t -> t.getTag().equalsIgnoreCase(strTag)))
+        .filter(
+            strTag -> existingTags.stream().noneMatch(t -> t.getTagName().equalsIgnoreCase(strTag)))
         .toList();
     List<Tag> createdTags = new ArrayList<>();
     for (var tag : notExistingTags) {
@@ -31,10 +32,10 @@ public interface TagRepository extends CrudRepository<Tag, UUID> {
     return Stream.concat(existingTags.stream(), createdTags.stream()).toList();
   }
 
-  boolean existsByTag(String tag);
+  boolean existsByTagName(String tag);
 
-  List<Tag> findAllByTagIn(Collection<String> tags);
+  List<Tag> findAllByTagNameIn(Collection<String> tags);
 
-  @Query("SELECT t FROM Tag t WHERE lower(t.tag) LIKE concat('%', lower(?1), '%')")
+  @Query("SELECT t FROM Tag t WHERE lower(t.tagName) LIKE concat('%', lower(?1), '%')")
   List<Tag> findMatching(String tag);
 }

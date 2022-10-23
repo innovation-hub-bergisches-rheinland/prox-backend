@@ -24,12 +24,10 @@ public class CreateLecturerHandler implements UseCaseHandler<LecturerDto, Create
 
   @Override
   public LecturerDto handle(CreateLecturer useCase) {
-    var exists = userRepository.existsById(useCase.userId());
-    if (!exists) {
-      throw new RuntimeException("User does not exist");
-    }
+    var user = userRepository.findById(useCase.userId())
+        .orElseThrow(() -> new RuntimeException("User does not exist"));
 
-    var lecturer = new Lecturer(useCase.userId(), useCase.name());
+    var lecturer = new Lecturer(user, useCase.name());
     lecturerRepository.save(lecturer);
 
     return lecturerDtoMapper.toDto(lecturer);

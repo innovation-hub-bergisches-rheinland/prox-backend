@@ -1,15 +1,16 @@
 package de.innovationhub.prox.modules.project.domain.project;
 
 import de.innovationhub.prox.modules.commons.domain.AbstractAggregateRoot;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -73,12 +74,12 @@ public class Project extends AbstractAggregateRoot {
 
   @Setter(AccessLevel.PROTECTED)
   @Builder.Default
-  @ElementCollection
-  private Set<UUID> supervisors = new HashSet<>();
+  @ManyToMany
+  private List<Supervisor> supervisors = new ArrayList<>();
 
   @Builder.Default
   @ElementCollection
-  private Set<UUID> tags = new HashSet<>();
+  private List<UUID> tags = new ArrayList<>();
 
   public void archive() {
     this.status.updateState(ProjectState.ARCHIVED);
@@ -92,11 +93,11 @@ public class Project extends AbstractAggregateRoot {
     this.status.updateState(ProjectState.STALE);
   }
 
-  public void offer(UUID supervisor) {
+  public void offer(Supervisor supervisor) {
     Objects.requireNonNull(supervisor);
 
     this.status.updateState(ProjectState.OFFERED);
-    this.supervisors = new HashSet<>();
+    this.supervisors = new ArrayList<>();
     this.supervisors.add(supervisor);
   }
 
@@ -108,11 +109,11 @@ public class Project extends AbstractAggregateRoot {
     this.status.updateState(ProjectState.COMPLETED);
   }
 
-  public void addSupervisor(UUID supervisor) {
+  public void addSupervisor(Supervisor supervisor) {
     this.supervisors.add(supervisor);
   }
 
-  public void removeSupervisor(UUID supervisor) {
+  public void removeSupervisor(Supervisor supervisor) {
     if (!this.supervisors.contains(supervisor)) {
       return;
     }
@@ -125,6 +126,6 @@ public class Project extends AbstractAggregateRoot {
   }
 
   public void setTags(Collection<UUID> tag) {
-    this.tags = new HashSet<>(tag);
+    this.tags = new ArrayList<>(tag);
   }
 }

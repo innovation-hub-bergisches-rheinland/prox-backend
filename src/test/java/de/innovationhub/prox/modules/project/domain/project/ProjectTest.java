@@ -4,9 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -16,42 +16,44 @@ class ProjectTest {
   @Test
   void shouldAddSupervisorOnOffer() {
     var project = createTestProject(ProjectState.PROPOSED);
-    var supervisorId = UUID.randomUUID();
+    var supervisor = new Supervisor(UUID.randomUUID(), "Xavier Tester");
 
-    project.offer(supervisorId);
+    project.offer(supervisor);
 
-    assertThat(project.getSupervisors()).containsExactly(supervisorId);
+    assertThat(project.getSupervisors()).containsExactly(supervisor);
   }
 
   @Test
   void shouldNotRemoveLastSupervisor() {
-    var supervisorId = UUID.randomUUID();
-    var project = createProjectWithSupervisors(List.of(supervisorId));
+    var supervisor = new Supervisor(UUID.randomUUID(), "Xavier Tester");
+    var project = createProjectWithSupervisors(List.of(supervisor));
 
-    assertThrows(RuntimeException.class, () -> project.removeSupervisor(supervisorId));
+    assertThrows(RuntimeException.class, () -> project.removeSupervisor(supervisor));
   }
 
   @Test
   void shouldRemoveSupervisor() {
-    var supervisorId = UUID.randomUUID();
-    var project = createProjectWithSupervisors(List.of(supervisorId, UUID.randomUUID()));
+    var supervisorXavier = new Supervisor(UUID.randomUUID(), "Xavier Tester");
+    var supervisorHomer = new Supervisor(UUID.randomUUID(), "Homer Simpson");
+    var project = createProjectWithSupervisors(List.of(supervisorHomer, supervisorXavier));
 
-    project.removeSupervisor(supervisorId);
+    project.removeSupervisor(supervisorHomer);
 
-    assertThat(project.getSupervisors()).doesNotContain(supervisorId);
+    assertThat(project.getSupervisors()).doesNotContain(supervisorHomer);
   }
 
   @Test
   void shouldAddSupervisor() {
-    var supervisorId = UUID.randomUUID();
-    var project = createProjectWithSupervisors(List.of(UUID.randomUUID()));
+    var supervisorXavier = new Supervisor(UUID.randomUUID(), "Xavier Tester");
+    var supervisorHomer = new Supervisor(UUID.randomUUID(), "Homer Simpson");
+    var project = createProjectWithSupervisors(List.of(supervisorXavier));
 
-    project.addSupervisor(supervisorId);
+    project.addSupervisor(supervisorHomer);
 
-    assertThat(project.getSupervisors()).contains(supervisorId);
+    assertThat(project.getSupervisors()).contains(supervisorHomer);
   }
 
-  private Project createProjectWithSupervisors(Collection<UUID> supervisors) {
+  private Project createProjectWithSupervisors(Collection<Supervisor> supervisors) {
     return new Project(
         UUID.randomUUID(),
         UUID.randomUUID(),
@@ -63,8 +65,8 @@ class ProjectTest {
         null,
         new ProjectStatus(ProjectState.PROPOSED, Instant.now()),
         null,
-        new HashSet<>(supervisors),
-        Collections.emptySet());
+        new ArrayList<>(supervisors),
+        Collections.emptyList());
   }
 
   private Project createTestProject(ProjectState state) {
@@ -79,7 +81,7 @@ class ProjectTest {
         null,
         new ProjectStatus(state, Instant.now()),
         null,
-        Collections.emptySet(),
-        Collections.emptySet());
+        Collections.emptyList(),
+        Collections.emptyList());
   }
 }

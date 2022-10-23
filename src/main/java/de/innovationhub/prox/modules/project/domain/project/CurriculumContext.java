@@ -1,11 +1,13 @@
 package de.innovationhub.prox.modules.project.domain.project;
 
-import java.util.HashSet;
-import java.util.Set;
+import de.innovationhub.prox.modules.project.domain.discipline.Discipline;
+import de.innovationhub.prox.modules.project.domain.module.ModuleType;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -19,34 +21,35 @@ import lombok.NoArgsConstructor;
 public class CurriculumContext {
 
   public static final CurriculumContext EMPTY =
-      new CurriculumContext(new HashSet<>(), new HashSet<>());
+      new CurriculumContext(new ArrayList<>(), new ArrayList<>());
 
   @Id
   private UUID id = UUID.randomUUID();
 
-  @ElementCollection
-  private Set<UUID> disciplines;
-  @ElementCollection
-  private Set<UUID> modules;
+  @ManyToMany
+  private List<Discipline> disciplines;
 
-  public CurriculumContext(Set<UUID> disciplines, Set<UUID> modules) {
+  @ManyToMany
+  private List<ModuleType> modules;
+
+  public CurriculumContext(List<Discipline> disciplines, List<ModuleType> modules) {
     this.disciplines = disciplines;
     this.modules = modules;
   }
 
-  public void addDisciplines(UUID... disciplines) {
-    this.disciplines.addAll(Set.of(disciplines));
+  public void addDisciplines(Discipline... disciplines) {
+    this.disciplines.addAll(List.of(disciplines));
   }
 
-  public void removeDisciplines(UUID... disciplines) {
-    this.disciplines.removeAll(Set.of(disciplines));
+  public void removeDisciplines(Discipline... disciplines) {
+    this.disciplines.removeAll(List.of(disciplines));
   }
 
-  public void addModules(UUID... modules) {
-    this.modules.addAll(Set.of(modules));
+  public void addModules(ModuleType... modules) {
+    this.modules.addAll(List.of(modules));
   }
 
-  public void removeModules(UUID... modules) {
-    this.modules.removeAll(Set.of(modules));
+  public void removeModules(ModuleType... modules) {
+    this.modules.removeAll(List.of(modules));
   }
 }

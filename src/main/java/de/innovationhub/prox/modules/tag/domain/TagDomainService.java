@@ -1,7 +1,6 @@
 package de.innovationhub.prox.modules.tag.domain;
 
 import de.innovationhub.prox.modules.commons.domain.DomainComponent;
-import de.innovationhub.prox.modules.tag.domain.tag.Tag;
 import de.innovationhub.prox.modules.tag.domain.tag.TagRepository;
 import de.innovationhub.prox.modules.tag.domain.tagcollection.TagCollection;
 import de.innovationhub.prox.modules.tag.domain.tagcollection.TagCollectionRepository;
@@ -25,11 +24,8 @@ public class TagDomainService {
   @Transactional
   public TagCollection createCollection(Collection<String> tags) {
     var tagEntities = tagRepository.fetchOrCreateTags(tags);
-    var tagEntitiesIds = tagEntities
-        .stream().map(Tag::getId)
-        .toList();
 
-    var tagCollection = TagCollection.create(UUID.randomUUID(), tagEntitiesIds);
+    var tagCollection = TagCollection.create(UUID.randomUUID(), tagEntities);
     tagCollection = tagCollectionRepository.save(tagCollection);
     return tagCollection;
   }
@@ -39,10 +35,8 @@ public class TagDomainService {
     var tagCollection = tagCollectionRepository.findById(collection)
         .orElseThrow();
     var tagEntities = tagRepository.fetchOrCreateTags(tags);
-    var tagEntitiesIds = tagEntities
-        .stream().map(Tag::getId)
-        .toList();
-    tagCollection.setTags(tagEntitiesIds);
+
+    tagCollection.setTags(tagEntities);
 
     tagCollection = tagCollectionRepository.save(tagCollection);
     return tagCollection;

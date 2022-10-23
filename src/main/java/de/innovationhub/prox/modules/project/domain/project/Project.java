@@ -1,6 +1,7 @@
 package de.innovationhub.prox.modules.project.domain.project;
 
 import de.innovationhub.prox.modules.commons.domain.AbstractAggregateRoot;
+import de.innovationhub.prox.modules.project.domain.partner.Partner;
 import de.innovationhub.prox.modules.project.domain.supervisor.Supervisor;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,6 +13,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -43,7 +45,8 @@ public class Project extends AbstractAggregateRoot {
   @NotNull
   private UUID creatorId;
 
-  private UUID organizationId;
+  @ManyToOne(optional = true)
+  private Partner partner;
 
   @NotBlank
   @Size(max = 255)

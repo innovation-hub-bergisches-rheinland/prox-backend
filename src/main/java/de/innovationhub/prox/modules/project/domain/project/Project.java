@@ -1,6 +1,7 @@
 package de.innovationhub.prox.modules.project.domain.project;
 
 import de.innovationhub.prox.modules.commons.domain.AbstractAggregateRoot;
+import de.innovationhub.prox.modules.project.domain.supervisor.Supervisor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

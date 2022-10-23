@@ -3,6 +3,7 @@ package de.innovationhub.prox.modules.project.domain.project;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import de.innovationhub.prox.modules.project.domain.supervisor.Supervisor;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;

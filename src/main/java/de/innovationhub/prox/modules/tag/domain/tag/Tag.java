@@ -43,7 +43,7 @@ public class Tag extends AbstractAggregateRoot {
     Objects.requireNonNull(tagName);
 
     if (tagName.isBlank()) {
-      throw new RuntimeException("Tag cannot be blank");
+      throw new IllegalArgumentException("Tag cannot be blank");
     }
 
     this.id = id;

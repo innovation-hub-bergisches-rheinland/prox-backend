@@ -7,9 +7,10 @@ import de.innovationhub.prox.modules.profile.domain.organization.events.Organiza
 import de.innovationhub.prox.modules.profile.domain.organization.events.OrganizationMemberUpdated;
 import de.innovationhub.prox.modules.profile.domain.organization.events.OrganizationProfileUpdated;
 import de.innovationhub.prox.modules.profile.domain.organization.events.OrganizationTagged;
-import de.innovationhub.prox.modules.profile.domain.user.User;
+import de.innovationhub.prox.modules.profile.domain.user.UserAccount;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -39,8 +40,8 @@ public class Organization extends AbstractAggregateRoot {
   private List<Membership> members = new ArrayList<>();
   private OrganizationTags tags;
 
-  public static Organization create(String name, User founder) {
-    var founderMembership = new Membership(founder, OrganizationRole.ADMIN);
+  public static Organization create(String name, UserAccount founder) {
+    var founderMembership = new Membership(new Member(founder), OrganizationRole.ADMIN);
     var createdOrganization = new Organization(UUID.randomUUID(), name, List.of(founderMembership));
     createdOrganization.registerEvent(OrganizationCreated.from(createdOrganization));
     return createdOrganization;
@@ -52,18 +53,35 @@ public class Organization extends AbstractAggregateRoot {
     this.members = new ArrayList<>(members);
   }
 
-  private boolean isMember(User userId) {
-    return members.stream().anyMatch(m -> m.getUser().equals(userId));
+  private boolean isMember(UserAccount user) {
+    return getMember(user).isPresent();
   }
 
-  private boolean isLastAdmin(User userId) {
-    return members.stream().filter(m -> m.getRole() == OrganizationRole.ADMIN).count() == 1
-        && members.stream()
-        .filter(m -> m.getRole() == OrganizationRole.ADMIN && m.getUser().equals(userId)).count()
-        == 1;
+  private long countRoles(OrganizationRole role) {
+    return members.stream()
+        .filter(m -> m.getRole() == role)
+        .count();
   }
 
-  public void removeMember(User user) {
+  private boolean isLastAdmin(UserAccount user) {
+    var membership = getMembership(user);
+
+    return membership.isPresent() && membership.get().getRole() == OrganizationRole.ADMIN
+        && countRoles(OrganizationRole.ADMIN) == 1;
+  }
+
+  private Optional<Membership> getMembership(UserAccount user) {
+    return members.stream()
+        .filter(m -> m.getMember().getUser().equals(user))
+        .findFirst();
+  }
+
+  private Optional<Member> getMember(UserAccount user) {
+    return getMembership(user)
+        .map(Membership::getMember);
+  }
+
+  public void removeMember(UserAccount user) {
     if (!isMember(user)) {
       throw new RuntimeException("User is not a member of this organization");
     }
@@ -72,21 +90,23 @@ public class Organization extends AbstractAggregateRoot {
       throw new RuntimeException("Cannot remove the last admin from organization");
     }
 
-    members.removeIf(m -> m.getUser().equals(user));
-    this.registerEvent(new OrganizationMemberRemoved(this.id, user));
+    var member = getMembership(user)
+        .orElseThrow(); // Should not happen
+    members.remove(member);
+    this.registerEvent(new OrganizationMemberRemoved(this.id, member.getMember()));
   }
 
-  public void addMember(User user, OrganizationRole role) {
+  public void addMember(UserAccount user, OrganizationRole role) {
     if (isMember(user)) {
       throw new RuntimeException("User is already a member of this organization");
     }
 
-    var membership = new Membership(user, role);
+    var membership = new Membership(new Member(user), role);
     members.add(membership);
     this.registerEvent(new OrganizationMemberAdded(this.id, membership));
   }
 
-  public void updateMembership(User user, OrganizationRole role) {
+  public void updateMembership(UserAccount user, OrganizationRole role) {
     if (!isMember(user)) {
       throw new RuntimeException("User is not a member of this organization");
     }
@@ -100,12 +120,12 @@ public class Organization extends AbstractAggregateRoot {
       throw new RuntimeException("Cannot remove the last admin from organization");
     }
 
-    var membership = members.stream().filter(m -> m.getUser().equals(user)).findFirst()
+    var membership = getMembership(user)
         .orElseThrow(); // Should not happen
     this.members.remove(membership);
     membership.setRole(role);
     this.members.add(membership);
-    this.registerEvent(new OrganizationMemberUpdated(this.id, user, membership));
+    this.registerEvent(new OrganizationMemberUpdated(this.id, membership));
   }
 
   public void setProfile(OrganizationProfile profile) {

@@ -12,7 +12,7 @@ import org.mapstruct.factory.Mappers;
 public interface LecturerDtoMapper {
   LecturerDtoMapper INSTANCE = Mappers.getMapper(LecturerDtoMapper.class);
 
-  @Mapping(target = "userId", source = "user.id")
+  @Mapping(target = "userId", source = "user.userId")
   LecturerDto toDto(Lecturer lecturer);
 
   default LecturerTagsDto toTagsDto(Collection<String> tags) {

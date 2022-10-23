@@ -5,11 +5,13 @@ import de.innovationhub.prox.modules.commons.domain.AbstractAggregateRoot;
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerCreated;
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerProfileUpdated;
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerTagged;
-import de.innovationhub.prox.modules.profile.domain.user.User;
+import de.innovationhub.prox.modules.profile.domain.user.UserAccount;
 import java.util.UUID;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,8 +29,10 @@ public class Lecturer extends AbstractAggregateRoot {
 
   @Id
   private UUID id;
-  @OneToOne
-  private User user;
+
+  @Embedded
+  @NotNull
+  private UserAccount user;
   private String name;
 
   @OneToOne
@@ -36,19 +40,19 @@ public class Lecturer extends AbstractAggregateRoot {
 
   private LecturerTags tags;
 
-  public Lecturer(User user, String name) {
+  public Lecturer(UserAccount user, String name) {
     this(UUID.randomUUID(), user, name, null);
   }
 
   @Default
-  public Lecturer(UUID id, User user, String name, LecturerProfile profile) {
+  public Lecturer(UUID id, UserAccount user, String name, LecturerProfile profile) {
     this.id = id;
     this.user = user;
     this.name = name;
     this.profile = profile;
   }
 
-  public static Lecturer create(User user, String name) {
+  public static Lecturer create(UserAccount user, String name) {
     var createdLecturer = new Lecturer(user, name);
     createdLecturer.registerEvent(LecturerCreated.from(createdLecturer));
     return createdLecturer;

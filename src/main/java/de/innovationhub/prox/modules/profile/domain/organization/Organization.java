@@ -10,6 +10,7 @@ import de.innovationhub.prox.modules.profile.domain.organization.events.Organiza
 import de.innovationhub.prox.modules.profile.domain.user.UserAccount;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import javax.persistence.Entity;
@@ -40,17 +41,24 @@ public class Organization extends AbstractAggregateRoot {
   private List<Membership> members = new ArrayList<>();
   private OrganizationTags tags;
 
+  public Organization(UUID id, String name, List<Membership> members) {
+    Objects.requireNonNull(id);
+    Objects.requireNonNull(name);
+    Objects.requireNonNull(members);
+
+    this.id = id;
+    this.name = name;
+    this.members = new ArrayList<>(members);
+  }
+
   public static Organization create(String name, UserAccount founder) {
+    Objects.requireNonNull(name);
+    Objects.requireNonNull(founder);
+
     var founderMembership = new Membership(new Member(founder), OrganizationRole.ADMIN);
     var createdOrganization = new Organization(UUID.randomUUID(), name, List.of(founderMembership));
     createdOrganization.registerEvent(OrganizationCreated.from(createdOrganization));
     return createdOrganization;
-  }
-
-  public Organization(UUID id, String name, List<Membership> members) {
-    this.id = id;
-    this.name = name;
-    this.members = new ArrayList<>(members);
   }
 
   private boolean isMember(UserAccount user) {

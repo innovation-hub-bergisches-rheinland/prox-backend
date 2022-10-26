@@ -1,5 +1,7 @@
 package de.innovationhub.prox.modules.commons.application.event;
 
+import de.innovationhub.prox.modules.commons.contract.IntegrationEvent;
+import de.innovationhub.prox.modules.commons.domain.DomainEvent;
 import java.util.Collection;
 
 /**
@@ -7,11 +9,11 @@ import java.util.Collection;
  * synchronously or asynchronously using a in-process message bus or a remote message broker that
  * depends on the implementation.
  */
-public interface EventPublisher {
+public interface IntegrationEventPublisher {
 
-  <EVENT extends Event> void publish(EVENT event);
+  <EVENT extends IntegrationEvent> void publish(EVENT event);
 
-  default <EVENT extends Event> void publish(Collection<EVENT> events) {
+  default <EVENT extends IntegrationEvent> void publish(Collection<EVENT> events) {
     events.forEach(this::publish);
   }
 }

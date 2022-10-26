@@ -1,6 +1,5 @@
 package de.innovationhub.prox.modules.commons.domain;
 
-import de.innovationhub.prox.modules.commons.application.event.Event;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -10,21 +9,21 @@ import org.springframework.data.domain.DomainEvents;
 
 public class AbstractAggregateRoot {
 
-  private transient final @Transient List<Event> domainEvents = new ArrayList<>();
+  private transient final @Transient List<DomainEvent> domainDomainEvents = new ArrayList<>();
 
   @DomainEvents
-  protected List<Event> getDomainEvents() {
-    return List.copyOf(domainEvents);
+  protected List<DomainEvent> getDomainEvents() {
+    return List.copyOf(domainDomainEvents);
   }
 
-  protected void registerEvent(Event event) {
-    Objects.requireNonNull(event);
+  protected void registerEvent(DomainEvent domainEvent) {
+    Objects.requireNonNull(domainEvent);
 
-    domainEvents.add(event);
+    domainDomainEvents.add(domainEvent);
   }
 
   @AfterDomainEventPublication
   protected void clearEvents() {
-    domainEvents.clear();
+    domainDomainEvents.clear();
   }
 }

@@ -3,7 +3,6 @@ package de.innovationhub.prox.modules.commons.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import de.innovationhub.prox.modules.commons.application.event.Event;
 import org.junit.jupiter.api.Test;
 
 class AbstractAggregateRootTest {
@@ -12,7 +11,7 @@ class AbstractAggregateRootTest {
   @Test
   void shouldReturnDomainEventsAsUnmodifiableCollection() {
     var domainEvents = aggregateRoot.getDomainEvents();
-    var event = new Event() {
+    var event = new DomainEvent() {
     };
 
     assertThrows(UnsupportedOperationException.class, () -> domainEvents.add(event));
@@ -25,9 +24,9 @@ class AbstractAggregateRootTest {
 
   @Test
   void shouldReturnRegisteredEventsInOrder() {
-    var event1 = new Event() {};
-    var event2 = new Event() {};
-    var event3 = new Event() {};
+    var event1 = new DomainEvent() {};
+    var event2 = new DomainEvent() {};
+    var event3 = new DomainEvent() {};
     aggregateRoot.registerEvent(event1);
     aggregateRoot.registerEvent(event2);
     aggregateRoot.registerEvent(event3);
@@ -38,7 +37,7 @@ class AbstractAggregateRootTest {
 
   @Test
   void shouldClearEvents() {
-    var event = new Event() {};
+    var event = new DomainEvent() {};
     aggregateRoot.registerEvent(event);
 
     aggregateRoot.clearEvents();

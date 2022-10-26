@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.profile.domain.lecturer.events;
 
-import de.innovationhub.prox.modules.commons.application.event.Event;
+import de.innovationhub.prox.modules.commons.domain.DomainEvent;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerProfile;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ public record LecturerProfileUpdated(
     String telephone,
     String homepage,
     String collegePage
-) implements Event {
+) implements DomainEvent {
   public static LecturerProfileUpdated from(UUID lecturerId, LecturerProfile profile) {
     return new LecturerProfileUpdated(
         lecturerId,

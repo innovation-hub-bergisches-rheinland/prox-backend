@@ -4,10 +4,12 @@ import de.innovationhub.prox.modules.commons.domain.AbstractAggregateRoot;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Discipline extends AbstractAggregateRoot {
 
   @Id

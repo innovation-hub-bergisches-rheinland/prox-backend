@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
@@ -18,6 +19,7 @@ import lombok.NoArgsConstructor;
  */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class CurriculumContext {
 
   public static final CurriculumContext EMPTY =
@@ -30,11 +32,11 @@ public class CurriculumContext {
   private List<Discipline> disciplines;
 
   @ManyToMany
-  private List<ModuleType> modules;
+  private List<ModuleType> moduleTypes;
 
-  public CurriculumContext(List<Discipline> disciplines, List<ModuleType> modules) {
+  public CurriculumContext(List<Discipline> disciplines, List<ModuleType> moduleTypes) {
     this.disciplines = disciplines;
-    this.modules = modules;
+    this.moduleTypes = moduleTypes;
   }
 
   public void addDisciplines(Discipline... disciplines) {
@@ -46,10 +48,10 @@ public class CurriculumContext {
   }
 
   public void addModules(ModuleType... modules) {
-    this.modules.addAll(List.of(modules));
+    this.moduleTypes.addAll(List.of(modules));
   }
 
   public void removeModules(ModuleType... modules) {
-    this.modules.removeAll(List.of(modules));
+    this.moduleTypes.removeAll(List.of(modules));
   }
 }

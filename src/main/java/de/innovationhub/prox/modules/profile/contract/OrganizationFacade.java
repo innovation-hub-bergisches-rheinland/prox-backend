@@ -1,7 +1,8 @@
 package de.innovationhub.prox.modules.profile.contract;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public interface OrganizationFacade {
-    OrganizationView get(UUID id);
+    Optional<OrganizationView> get(UUID id);
 }

@@ -6,6 +6,7 @@ import de.innovationhub.prox.modules.profile.application.lecturer.usecase.FindLe
 import de.innovationhub.prox.modules.profile.contract.LecturerFacade;
 import de.innovationhub.prox.modules.profile.contract.LecturerView;
 import de.innovationhub.prox.modules.profile.contract.LecturerViewMapper;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 
@@ -16,7 +17,8 @@ public class LecturerFacadeImpl implements LecturerFacade {
   private final LecturerViewMapper lecturerViewMapper;
 
   @Override
-  public LecturerView get(UUID id) {
-    return lecturerViewMapper.toView(findLecturerHandler.handle(new FindLecturer(id)));
+  public Optional<LecturerView> get(UUID id) {
+    return findLecturerHandler.handle(new FindLecturer(id))
+        .map(lecturerViewMapper::toView);
   }
 }

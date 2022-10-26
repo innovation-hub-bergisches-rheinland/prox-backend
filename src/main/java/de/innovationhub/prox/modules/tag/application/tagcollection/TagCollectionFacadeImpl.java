@@ -9,6 +9,7 @@ import de.innovationhub.prox.modules.tag.contract.TagCollectionFacade;
 import de.innovationhub.prox.modules.tag.contract.TagCollectionView;
 import de.innovationhub.prox.modules.tag.contract.TagContractViewMapper;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 
@@ -20,9 +21,9 @@ public class TagCollectionFacadeImpl implements TagCollectionFacade {
   private final TagContractViewMapper tagContractViewMapper;
 
   @Override
-  public TagCollectionView get(UUID id) {
-    var tc = findTagCollectionHandler.handle(new FindTagCollection(id));
-    return tagContractViewMapper.toView(tc);
+  public Optional<TagCollectionView> get(UUID id) {
+    return findTagCollectionHandler.handle(new FindTagCollection(id))
+        .map(tagContractViewMapper::toView);
   }
 
   @Override

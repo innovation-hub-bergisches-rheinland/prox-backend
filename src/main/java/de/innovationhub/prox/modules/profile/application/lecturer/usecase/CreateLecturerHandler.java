@@ -1,5 +1,6 @@
 package de.innovationhub.prox.modules.profile.application.lecturer.usecase;
 
+import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.commons.application.usecase.UseCaseHandler;
 import de.innovationhub.prox.modules.profile.application.lecturer.dto.LecturerDto;
@@ -7,23 +8,19 @@ import de.innovationhub.prox.modules.profile.application.lecturer.dto.LecturerDt
 import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
 import de.innovationhub.prox.modules.profile.domain.user.UserAccount;
+import lombok.RequiredArgsConstructor;
 
 @ApplicationComponent
+@RequiredArgsConstructor
 public class CreateLecturerHandler implements UseCaseHandler<LecturerDto, CreateLecturer> {
 
   private final LecturerRepository lecturerRepository;
   private final LecturerDtoMapper lecturerDtoMapper;
-
-  public CreateLecturerHandler(LecturerRepository lecturerRepository,
-      LecturerDtoMapper lecturerDtoMapper) {
-    this.lecturerRepository = lecturerRepository;
-    this.lecturerDtoMapper = lecturerDtoMapper;
-  }
+  private final AuthenticationFacade authenticationFacade;
 
   @Override
   public LecturerDto handle(CreateLecturer useCase) {
-    // TODO: Maybe check with keycloak API
-    var user = new UserAccount(useCase.userId());
+    var user = new UserAccount(authenticationFacade.currentAuthenticated());
 
     var lecturer = new Lecturer(user, useCase.name());
     lecturerRepository.save(lecturer);

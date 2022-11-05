@@ -1,10 +1,14 @@
 package de.innovationhub.prox.modules.auth.application;
 
 import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
+import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.commons.application.exception.UnauthenticatedException;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+@RequiredArgsConstructor
+@ApplicationComponent
 public class SpringSecurityAuthenticationFacadeImpl implements AuthenticationFacade {
 
   @Override

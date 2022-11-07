@@ -18,6 +18,8 @@ interface ProjectMapper {
 
   @Mapping(target = ".", source = "project")
   @Mapping(target = "id", source = "project.id")
+  @Mapping(target = "timeBox.start", source = "project.timeBox.startDate")
+  @Mapping(target = "timeBox.end", source = "project.timeBox.endDate")
   @Mapping(target = "tags", source = "tagCollectionView.tags")
   @Mapping(target = "partner", source = "organizationView")
   @Mapping(target = "supervisors", source = "lecturerView")

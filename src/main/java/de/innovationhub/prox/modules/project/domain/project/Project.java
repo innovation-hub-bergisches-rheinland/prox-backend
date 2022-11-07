@@ -1,10 +1,19 @@
 package de.innovationhub.prox.modules.project.domain.project;
 
 import de.innovationhub.prox.modules.commons.domain.AbstractAggregateRoot;
+import de.innovationhub.prox.modules.project.domain.project.events.ProjectArchived;
+import de.innovationhub.prox.modules.project.domain.project.events.ProjectCompleted;
+import de.innovationhub.prox.modules.project.domain.project.events.ProjectCreated;
+import de.innovationhub.prox.modules.project.domain.project.events.ProjectMarkedAsStale;
+import de.innovationhub.prox.modules.project.domain.project.events.ProjectOffered;
+import de.innovationhub.prox.modules.project.domain.project.events.ProjectStarted;
+import de.innovationhub.prox.modules.project.domain.project.events.ProjectUnarchived;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -20,6 +29,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.lang.Nullable;
 
 /**
  * A project represents a course or a research project, that is in fact offered by a lecturer. A
@@ -35,7 +45,7 @@ import lombok.ToString;
 public class Project extends AbstractAggregateRoot {
 
   @Id
-  private UUID id;
+  private UUID id = UUID.randomUUID();
 
   @NotNull
   @Embedded
@@ -59,7 +69,7 @@ public class Project extends AbstractAggregateRoot {
   private String requirement;
 
   @NotNull
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL)
   private CurriculumContext curriculumContext;
 
   @NotNull
@@ -77,34 +87,67 @@ public class Project extends AbstractAggregateRoot {
   @ElementCollection
   private List<Supervisor> supervisors = new ArrayList<>();
 
+  @Embedded
   private ProjectTags tags;
+
+  public static Project create(
+      Author author,
+      @Nullable Partner partner,
+      String title,
+      String summary,
+      String description,
+      String requirement,
+      CurriculumContext context,
+      @Nullable TimeBox timeBox
+  ) {
+    var project = new Project(UUID.randomUUID(),
+        author, partner, title, summary, description, requirement, context,
+        new ProjectStatus(ProjectState.PROPOSED, Instant.now()), timeBox,
+        new ArrayList<>(), null);
+    project.registerEvent(new ProjectCreated(project.getId()));
+    return project;
+  }
 
   public void archive() {
     this.status.updateState(ProjectState.ARCHIVED);
+    this.registerEvent(new ProjectArchived(this.id));
   }
 
   public void unarchive() {
     this.status.updateState(ProjectState.PROPOSED);
+    this.registerEvent(new ProjectUnarchived(this.id));
   }
 
   public void stale() {
     this.status.updateState(ProjectState.STALE);
+    this.registerEvent(new ProjectMarkedAsStale(this.id));
   }
 
   public void offer(Supervisor supervisor) {
     Objects.requireNonNull(supervisor);
 
+    offer(List.of(supervisor));
+  }
+
+  public void offer(List<Supervisor> supervisors) {
+    Objects.requireNonNull(supervisors);
+    if (supervisors.isEmpty()) {
+      throw new RuntimeException("Cannot offer without any supervisor");
+    }
+
     this.status.updateState(ProjectState.OFFERED);
-    this.supervisors = new ArrayList<>();
-    this.supervisors.add(supervisor);
+    this.supervisors = new ArrayList<>(supervisors);
+    this.registerEvent(new ProjectOffered(this.id, supervisors));
   }
 
   public void start() {
     this.status.updateState(ProjectState.RUNNING);
+    this.registerEvent(new ProjectStarted(this.id));
   }
 
   public void complete() {
     this.status.updateState(ProjectState.COMPLETED);
+    this.registerEvent(new ProjectCompleted(this.id));
   }
 
   public void addSupervisor(Supervisor supervisor) {
@@ -125,5 +168,9 @@ public class Project extends AbstractAggregateRoot {
 
   public void setTags(ProjectTags tags) {
     this.tags = tags;
+  }
+
+  public void setTimeBox(TimeBox timeBox) {
+    this.timeBox = timeBox;
   }
 }

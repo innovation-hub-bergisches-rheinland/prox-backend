@@ -16,11 +16,11 @@ import lombok.NoArgsConstructor;
 @Getter
 public class TimeBox {
 
-  private LocalDate start;
-  private LocalDate end;
+  private LocalDate startDate;
+  private LocalDate endDate;
 
-  public TimeBox(LocalDate start, LocalDate end) {
-    this.start = start;
-    this.end = end;
+  public TimeBox(LocalDate startDate, LocalDate endDate) {
+    this.startDate = startDate;
+    this.endDate = endDate;
   }
 }

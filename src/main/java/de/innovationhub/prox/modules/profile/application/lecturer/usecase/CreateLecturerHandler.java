@@ -19,7 +19,7 @@ public class CreateLecturerHandler {
   public Lecturer handle(CreateLecturerDto dto) {
     var user = new UserAccount(authenticationFacade.currentAuthenticated());
 
-    var lecturer = new Lecturer(user, dto.name());
+    var lecturer = Lecturer.create(user, dto.name());
     var profile = new LecturerProfile();
     var dtoProfile = dto.profile();
     if (dtoProfile != null) {

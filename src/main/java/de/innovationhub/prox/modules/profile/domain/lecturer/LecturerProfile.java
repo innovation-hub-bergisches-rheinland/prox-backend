@@ -36,7 +36,7 @@ public class LecturerProfile {
 
   private String room;
   // Sprechstunde
-  // TODO: maybe "office hours" is a better name
+  // TODO: maybe "office hours" is a better title
   private String consultationHour;
   private String email;
   private String telephone;

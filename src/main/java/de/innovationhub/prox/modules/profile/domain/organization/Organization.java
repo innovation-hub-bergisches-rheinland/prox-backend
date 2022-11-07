@@ -160,7 +160,7 @@ public class Organization extends AbstractAggregateRoot {
 
   public void setName(String name) {
     if (name == null) {
-      throw new IllegalArgumentException("Organization name cannot be null");
+      throw new IllegalArgumentException("Organization title cannot be null");
     }
     if (this.name.equals(name)) {
       return;

@@ -15,39 +15,50 @@ public record ReadProjectDto(
     String description,
     String requirement,
     AuthorDto author,
-    PartnerDto partner,
-    CurriculumContextDto curriculumContext,
-    ProjectStatusDto status,
-    TimeBoxDto timeBox,
-    List<SupervisorDto> supervisors,
+    ReadPartnerDto partner,
+    ReadCurriculumContextDto curriculumContext,
+    ReadProjectStatusDto status,
+    ReadTimeBoxDto timeBox,
+    List<ReadSupervisorDto> supervisors,
     List<String> tags
 ) {
   public record AuthorDto(
       UUID userId
   ) {}
 
-  public record CurriculumContextDto(
+  public record ReadCurriculumContextDto(
       List<ReadDisciplineDto> disciplines,
       List<ReadModuleTypeDto> moduleTypes
-  ) {}
+  ) {
 
-  public record PartnerDto(
+  }
+
+  public record ReadPartnerDto(
       UUID id,
       String name
-  ) {}
+  ) {
 
-  public record ProjectStatusDto(
+  }
+
+  public record ReadProjectStatusDto(
       ProjectState state,
       Instant updatedAt
-  ) {}
+  ) {
 
-  public record SupervisorDto(
+  }
+
+  public record ReadSupervisorDto(
       UUID id,
       String name
-  ) {}
-  public record TimeBoxDto(
+  ) {
+
+  }
+
+  public record ReadTimeBoxDto(
       LocalDate start,
       LocalDate end
-  ) {}
+  ) {
+
+  }
 
 }

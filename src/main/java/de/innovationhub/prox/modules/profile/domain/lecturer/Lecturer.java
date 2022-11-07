@@ -72,7 +72,7 @@ public class Lecturer extends AbstractAggregateRoot {
 
   public void setName(String name) {
     if (name == null) {
-      throw new IllegalArgumentException("Lecturer name cannot be null");
+      throw new IllegalArgumentException("Lecturer title cannot be null");
     }
     if (this.name.equals(name)) {
       return;

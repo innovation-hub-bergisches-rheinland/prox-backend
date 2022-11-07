@@ -2,7 +2,7 @@ package de.innovationhub.prox.modules.profile.application.lecturer.usecase;
 
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.commons.core.NotImplementedYetException;
-import de.innovationhub.prox.modules.profile.application.lecturer.dto.LecturerTagsDto;
+import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.LecturerTagsDto;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;

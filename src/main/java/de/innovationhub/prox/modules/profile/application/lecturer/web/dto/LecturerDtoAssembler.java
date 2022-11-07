@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.profile.application.lecturer.dto;
+package de.innovationhub.prox.modules.profile.application.lecturer.web.dto;
 
 import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
 import de.innovationhub.prox.modules.tag.contract.TagCollectionFacade;
@@ -12,10 +12,10 @@ public class LecturerDtoAssembler {
   private final TagCollectionFacade tagCollectionFacade;
   private final LecturerDtoMapper lecturerDtoMapper;
 
-  public LecturerDto toDto(Lecturer lecturer) {
-    if(lecturer.getTags() != null) {
+  public ReadLecturerDto toDto(Lecturer lecturer) {
+    if (lecturer.getTags() != null) {
       var tagCollectionView = tagCollectionFacade.get(lecturer.getTags().getTagCollectionId());
-      if(tagCollectionView.isPresent()) {
+      if (tagCollectionView.isPresent()) {
         return lecturerDtoMapper.toDto(lecturer, tagCollectionView.get().tags());
       }
     }

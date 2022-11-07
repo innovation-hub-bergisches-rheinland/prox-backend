@@ -1,14 +1,12 @@
-package de.innovationhub.prox.modules.profile.application.organization.web;
+package de.innovationhub.prox.modules.profile.application.lecturer.web;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 
-import de.innovationhub.prox.modules.profile.application.organization.web.dto.CreateOrganizationDto;
-import de.innovationhub.prox.modules.profile.application.organization.web.dto.CreateOrganizationDto.CreateOrganizationProfileDto;
-import de.innovationhub.prox.modules.profile.domain.organization.SocialMedia;
+import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerDto;
+import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerDto.CreateLecturerProfileDto;
 import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import java.util.List;
-import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class OrganizationControllerIntegrationTest {
+class LecturerControllerIntegrationTest {
   @Autowired
   MockMvc mockMvc;
 
@@ -31,28 +29,30 @@ class OrganizationControllerIntegrationTest {
 
   @Test
   @WithMockUser(value = "8307f5bc-38fc-44ac-bab7-3c8ef85c1ec4")
-  void shouldCreateOrganization() {
-    var createOrgRequest = new CreateOrganizationDto(
-        "ACME Ltd.",
-        new CreateOrganizationProfileDto(
+  void shouldCreateLecturer() {
+    var createLecturerRequest = new CreateLecturerDto(
+        "Max Mustermann",
+        new CreateLecturerProfileDto(
             "2022-11-07",
             "200",
-            "example.org",
-            "test@example.org",
+            "Lorem Ipsum",
+            List.of("Lorem Ipsum"),
             "Lorem Ipsum",
             "Lala Land",
-            List.of(),
-            Map.of(SocialMedia.FACEBOOK, "acmeltd")
+            "test@example.org",
+            "555-1234-567",
+            "example.org",
+            "example"
         )
     );
 
     given()
         .contentType(ContentType.JSON)
         .accept(ContentType.JSON)
-        .body(createOrgRequest)
-    .when()
-        .post("organizations")
-    .then()
+        .body(createLecturerRequest)
+        .when()
+        .post("lecturers")
+        .then()
         .status(HttpStatus.CREATED);
   }
 }

@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.profile.application.organization.dto;
+package de.innovationhub.prox.modules.profile.application.organization.web.dto;
 
 import de.innovationhub.prox.modules.profile.domain.organization.SocialMedia;
 import java.util.List;

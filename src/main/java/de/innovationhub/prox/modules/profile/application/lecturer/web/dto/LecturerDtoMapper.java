@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.profile.application.lecturer.dto;
+package de.innovationhub.prox.modules.profile.application.lecturer.web.dto;
 
 import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
 import java.util.List;
@@ -13,5 +13,5 @@ interface LecturerDtoMapper {
 
   @Mapping(target = "userId", source = "lecturer.user.userId")
   @Mapping(target = "tags", source = "tags")
-  LecturerDto toDto(Lecturer lecturer, List<String> tags);
+  ReadLecturerDto toDto(Lecturer lecturer, List<String> tags);
 }

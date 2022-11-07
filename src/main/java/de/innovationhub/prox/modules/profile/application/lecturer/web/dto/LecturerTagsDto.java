@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.profile.application.lecturer.dto;
+package de.innovationhub.prox.modules.profile.application.lecturer.web.dto;
 
 import java.util.List;
 

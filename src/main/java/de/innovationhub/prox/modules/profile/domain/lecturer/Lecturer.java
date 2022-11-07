@@ -4,9 +4,11 @@ import de.innovationhub.prox.Default;
 import de.innovationhub.prox.modules.commons.domain.AbstractAggregateRoot;
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerCreated;
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerProfileUpdated;
+import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerRenamed;
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerTagged;
 import de.innovationhub.prox.modules.profile.domain.user.UserAccount;
 import java.util.UUID;
+import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -35,7 +37,7 @@ public class Lecturer extends AbstractAggregateRoot {
   private UserAccount user;
   private String name;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL)
   private LecturerProfile profile;
 
   private LecturerTags tags;
@@ -66,5 +68,17 @@ public class Lecturer extends AbstractAggregateRoot {
   public void setProfile(LecturerProfile profile) {
     this.profile = profile;
     this.registerEvent(LecturerProfileUpdated.from(this.id, this.profile));
+  }
+
+  public void setName(String name) {
+    if (name == null) {
+      throw new IllegalArgumentException("Lecturer name cannot be null");
+    }
+    if (this.name.equals(name)) {
+      return;
+    }
+
+    this.name = name;
+    this.registerEvent(new LecturerRenamed(this.id, this.name));
   }
 }

@@ -1,12 +1,12 @@
 package de.innovationhub.prox.modules.profile.application.organization.web;
 
-import de.innovationhub.prox.modules.profile.application.organization.dto.OrganizationDtoAssembler;
-import de.innovationhub.prox.modules.profile.application.organization.dto.ReadOrganizationDto;
-import de.innovationhub.prox.modules.profile.application.organization.dto.CreateOrganizationDto;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.OrganizationDtoAssembler;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.ReadOrganizationDto;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.CreateOrganizationDto;
 import de.innovationhub.prox.modules.profile.application.organization.usecase.CreateOrganizationHandler;
 import de.innovationhub.prox.modules.profile.application.organization.usecase.FindAllOrganizationsHandler;
 import de.innovationhub.prox.modules.profile.application.organization.usecase.FindOrganizationHandler;
-import de.innovationhub.prox.modules.profile.application.organization.dto.UpdateOrganizationDto;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.UpdateOrganizationDto;
 import de.innovationhub.prox.modules.profile.application.organization.usecase.UpdateOrganizationHandler;
 import java.util.List;
 import java.util.UUID;

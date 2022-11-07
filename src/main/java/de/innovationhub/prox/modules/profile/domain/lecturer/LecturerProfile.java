@@ -11,16 +11,19 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Builder
 @Getter
+@Setter
 @Entity
 public class LecturerProfile {
 
   @Id
   @Builder.Default
+  @Setter(AccessLevel.NONE)
   private UUID id = UUID.randomUUID();
 
   private String affiliation;

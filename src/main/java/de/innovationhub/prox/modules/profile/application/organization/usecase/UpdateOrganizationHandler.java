@@ -2,7 +2,7 @@ package de.innovationhub.prox.modules.profile.application.organization.usecase;
 
 import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
-import de.innovationhub.prox.modules.profile.application.organization.dto.UpdateOrganizationDto;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.UpdateOrganizationDto;
 import de.innovationhub.prox.modules.profile.domain.organization.Organization;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationProfile;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRepository;

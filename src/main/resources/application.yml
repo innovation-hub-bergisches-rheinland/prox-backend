@@ -4,3 +4,27 @@ keycloak:
   auth-server-url: http://localhost:8090/auth
   credentials:
     secret: S3Cr3t
+server:
+  port: 8080
+  forward-headers-strategy: native
+spring:
+  application:
+    name: prox-backend
+  datasource:
+    password: prox-backend
+    url: jdbc:postgresql://prox-db:5432/prox-db
+    username: prox-backend
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://login.aws.innovation-hub.de/auth/realms/innovation-hub-bergisches-rheinland

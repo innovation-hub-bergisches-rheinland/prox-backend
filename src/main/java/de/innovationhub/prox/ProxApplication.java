@@ -6,6 +6,7 @@ import de.innovationhub.prox.modules.commons.infrastructure.InfrastructureCompon
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 
@@ -19,6 +20,7 @@ import org.springframework.context.annotation.FilterType;
             ApplicationComponent.class,
             InfrastructureComponent.class
         }))
+@ConfigurationPropertiesScan
 @Slf4j
 public class ProxApplication {
 

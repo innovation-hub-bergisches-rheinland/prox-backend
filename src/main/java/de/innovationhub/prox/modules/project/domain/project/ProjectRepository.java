@@ -1,5 +1,6 @@
 package de.innovationhub.prox.modules.project.domain.project;
 
+import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -29,14 +30,17 @@ public interface ProjectRepository extends CrudRepository<Project, UUID> {
         WHERE (:status IS NULL OR p.status = :status)
             AND (:specializationKeys IS NULL OR s2.key IN (:specializationKeys))
             AND (:moduleTypeKeys IS NULL OR m.key IN (:moduleTypeKeys))
-            AND (:query <> '' IS NOT TRUE OR
-                  document @@ query
-              )
-        ORDER BY rank DESC, p.modified_at DESC;
-    """)
+              AND (:query <> '' IS NOT TRUE OR
+                    document @@ query
+                )
+          ORDER BY rank DESC, p.modified_at DESC;
+      """)
   List<Project> filterProjects(
       @Nullable @Param("status") ProjectState status,
       @Nullable @Param("specializationKeys") Collection<String> specializationKeys,
       @Nullable @Param("moduleTypeKeys") Collection<String> moduleTypeKeys,
       @Nullable @Param("query") String query);
+
+  @Query("select p from Project p where p.status.state = ?1 and p.status.updatedAt <= ?2")
+  List<Project> findWithStatusModifiedBefore(ProjectState status, Instant timestamp);
 }

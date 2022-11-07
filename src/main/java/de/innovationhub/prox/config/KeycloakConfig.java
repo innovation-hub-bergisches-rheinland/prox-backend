@@ -16,7 +16,7 @@ public class KeycloakConfig {
 
   @Value("${keycloak.credentials.secret}")
   private String secret;
-  @Value("${keycloak.resource}")
+  @Value("${keycloak.client-id}")
   private String clientId;
   @Value("${keycloak.auth-server-url}")
   private String authUrl;

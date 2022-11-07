@@ -1,9 +1,9 @@
 keycloak:
-  realm: example
-  resource: example
-  auth-server-url: http://localhost:8090/auth
+  realm: innovation-hub-bergisches-rheinland
+  client-id: prox-backend
+  auth-server-url: https://login.aws.innovation-hub.de
   credentials:
-    secret: S3Cr3t
+    secret: ${KEYCLOAK_SECRET:}
 server:
   port: 8080
   forward-headers-strategy: native

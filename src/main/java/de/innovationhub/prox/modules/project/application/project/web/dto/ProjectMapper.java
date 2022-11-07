@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.project.application.project.dto;
+package de.innovationhub.prox.modules.project.application.project.web.dto;
 
 import de.innovationhub.prox.modules.profile.contract.LecturerView;
 import de.innovationhub.prox.modules.profile.contract.OrganizationView;

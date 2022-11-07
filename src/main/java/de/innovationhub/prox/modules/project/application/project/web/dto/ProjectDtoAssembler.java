@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.project.application.project.dto;
+package de.innovationhub.prox.modules.project.application.project.web.dto;
 
 import de.innovationhub.prox.modules.profile.contract.LecturerFacade;
 import de.innovationhub.prox.modules.profile.contract.OrganizationFacade;
@@ -6,6 +6,7 @@ import de.innovationhub.prox.modules.profile.contract.OrganizationView;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.tag.contract.TagCollectionFacade;
 import de.innovationhub.prox.modules.tag.contract.TagCollectionView;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 public class ProjectDtoAssembler {
+
   private final TagCollectionFacade tagCollectionFacade;
   private final OrganizationFacade organizationFacade;
   private final LecturerFacade lecturerFacade;
@@ -22,15 +24,15 @@ public class ProjectDtoAssembler {
     OrganizationView partnerOrg = null;
     TagCollectionView tagCollectionView = null;
 
-    if(project.getPartner() != null) {
+    if (project.getPartner() != null) {
       var optOrg = organizationFacade.get(project.getPartner().getOrganizationId());
-      if(optOrg.isPresent()) {
+      if (optOrg.isPresent()) {
         partnerOrg = optOrg.get();
       }
     }
-    if(project.getTags() != null) {
+    if (project.getTags() != null) {
       var optTags = tagCollectionFacade.get(project.getTags().getTagCollectionId());
-      if(optTags.isPresent()) {
+      if (optTags.isPresent()) {
         tagCollectionView = optTags.get();
       }
     }
@@ -40,5 +42,11 @@ public class ProjectDtoAssembler {
         .map(Optional::get)
         .toList();
     return projectMapper.toDto(project, supervisors, partnerOrg, tagCollectionView);
+  }
+
+  public ReadProjectListDto toDto(List<Project> projects) {
+    return new ReadProjectListDto(projects.stream()
+        .map(this::toDto)
+        .toList());
   }
 }

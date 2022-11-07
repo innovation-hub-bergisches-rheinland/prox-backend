@@ -1,6 +1,7 @@
 package de.innovationhub.prox.modules.profile.domain.organization;
 
 import java.util.UUID;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -14,9 +15,9 @@ import lombok.NoArgsConstructor;
 public class Membership {
 
   @Id
-  private UUID id;
+  private UUID id = UUID.randomUUID();
 
-  @ManyToOne
+  @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE})
   private Member member;
   private OrganizationRole role;
 

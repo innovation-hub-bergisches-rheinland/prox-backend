@@ -12,5 +12,5 @@ interface OrganizationDtoMapper {
   OrganizationDtoMapper INSTANCE = Mappers.getMapper(OrganizationDtoMapper.class);
 
   @Mapping(target = "tags", source = "tags")
-  OrganizationDto toDto(Organization organization, List<String> tags);
+  ReadOrganizationDto toDto(Organization organization, List<String> tags);
 }

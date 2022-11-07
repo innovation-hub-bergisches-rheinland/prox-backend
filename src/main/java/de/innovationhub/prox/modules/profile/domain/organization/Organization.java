@@ -6,6 +6,7 @@ import de.innovationhub.prox.modules.profile.domain.organization.events.Organiza
 import de.innovationhub.prox.modules.profile.domain.organization.events.OrganizationMemberRemoved;
 import de.innovationhub.prox.modules.profile.domain.organization.events.OrganizationMemberUpdated;
 import de.innovationhub.prox.modules.profile.domain.organization.events.OrganizationProfileUpdated;
+import de.innovationhub.prox.modules.profile.domain.organization.events.OrganizationRenamed;
 import de.innovationhub.prox.modules.profile.domain.organization.events.OrganizationTagged;
 import de.innovationhub.prox.modules.profile.domain.user.UserAccount;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -35,9 +37,9 @@ public class Organization extends AbstractAggregateRoot {
   private UUID id;
   private String name;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL)
   private OrganizationProfile profile;
-  @OneToMany
+  @OneToMany(cascade = CascadeType.ALL)
   private List<Membership> members = new ArrayList<>();
   private OrganizationTags tags;
 
@@ -87,6 +89,12 @@ public class Organization extends AbstractAggregateRoot {
   private Optional<Member> getMember(UserAccount user) {
     return getMembership(user)
         .map(Membership::getMember);
+  }
+
+  public boolean isInRole(UUID user, OrganizationRole role) {
+    return getMembership(new UserAccount(user))
+        .map(uac -> uac.getRole() == role)
+        .orElse(false);
   }
 
   public void removeMember(UserAccount user) {
@@ -148,5 +156,17 @@ public class Organization extends AbstractAggregateRoot {
   public void setTags(OrganizationTags tags) {
     this.tags = tags;
     this.registerEvent(new OrganizationTagged(this.id, this.tags.getTagCollectionId()));
+  }
+
+  public void setName(String name) {
+    if (name == null) {
+      throw new IllegalArgumentException("Organization name cannot be null");
+    }
+    if (this.name.equals(name)) {
+      return;
+    }
+
+    this.name = name;
+    this.registerEvent(new OrganizationRenamed(this.id, this.name));
   }
 }

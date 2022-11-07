@@ -12,10 +12,10 @@ public class OrganizationDtoAssembler {
   private final TagCollectionFacade tagCollectionFacade;
   private final OrganizationDtoMapper organizationDtoMapper;
 
-  public OrganizationDto toDto(Organization organization) {
-    if(organization.getTags() != null) {
+  public ReadOrganizationDto toDto(Organization organization) {
+    if (organization.getTags() != null) {
       var tagCollectionView = tagCollectionFacade.get(organization.getTags().getTagCollectionId());
-      if(tagCollectionView.isPresent()) {
+      if (tagCollectionView.isPresent()) {
         return organizationDtoMapper.toDto(organization, tagCollectionView.get().tags());
       }
     }

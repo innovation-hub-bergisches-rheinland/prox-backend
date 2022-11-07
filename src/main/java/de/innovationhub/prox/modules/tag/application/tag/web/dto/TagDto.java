@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.tag.application.tag.dto;
+package de.innovationhub.prox.modules.tag.application.tag.web.dto;
 
 import java.util.UUID;
 

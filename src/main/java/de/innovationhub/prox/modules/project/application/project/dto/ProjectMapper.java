@@ -2,8 +2,8 @@ package de.innovationhub.prox.modules.project.application.project.dto;
 
 import de.innovationhub.prox.modules.profile.contract.LecturerView;
 import de.innovationhub.prox.modules.profile.contract.OrganizationView;
-import de.innovationhub.prox.modules.project.application.discipline.dto.DisciplineMapper;
-import de.innovationhub.prox.modules.project.application.module.dto.ModuleTypeMapper;
+import de.innovationhub.prox.modules.project.application.discipline.web.dto.DisciplineMapper;
+import de.innovationhub.prox.modules.project.application.module.web.dto.ModuleTypeMapper;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.tag.contract.TagCollectionView;
 import java.util.List;

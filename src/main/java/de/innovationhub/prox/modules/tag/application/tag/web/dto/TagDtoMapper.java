@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.tag.application.tag.dto;
+package de.innovationhub.prox.modules.tag.application.tag.web.dto;
 
 import de.innovationhub.prox.modules.tag.domain.tag.Tag;
 import java.util.List;

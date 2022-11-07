@@ -1,9 +1,8 @@
-package de.innovationhub.prox.modules.project.application.module.dto;
+package de.innovationhub.prox.modules.project.application.module.web.dto;
 
 import de.innovationhub.prox.modules.project.domain.module.ModuleType;
 import java.util.List;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 @Mapper
 public interface ModuleTypeMapper {

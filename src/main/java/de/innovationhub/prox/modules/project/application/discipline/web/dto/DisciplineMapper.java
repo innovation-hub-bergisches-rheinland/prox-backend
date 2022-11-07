@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.project.application.discipline.dto;
+package de.innovationhub.prox.modules.project.application.discipline.web.dto;
 
 import de.innovationhub.prox.modules.project.domain.discipline.Discipline;
 import java.util.List;

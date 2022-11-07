@@ -1,9 +1,9 @@
 package de.innovationhub.prox.modules.project.application.module.web;
 
-import de.innovationhub.prox.modules.project.application.module.dto.ModuleTypeMapper;
-import de.innovationhub.prox.modules.project.application.module.dto.ReadModuleTypeDto;
 import de.innovationhub.prox.modules.project.application.module.usecase.FindAllModulesHandler;
 import de.innovationhub.prox.modules.project.application.module.usecase.FindModulesByDisciplinesHandler;
+import de.innovationhub.prox.modules.project.application.module.web.dto.ModuleTypeMapper;
+import de.innovationhub.prox.modules.project.application.module.web.dto.ReadModuleTypeDto;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,7 +1,7 @@
 package de.innovationhub.prox.modules.project.application.project.dto;
 
-import de.innovationhub.prox.modules.project.application.discipline.dto.ReadDisciplineDto;
-import de.innovationhub.prox.modules.project.application.module.dto.ReadModuleTypeDto;
+import de.innovationhub.prox.modules.project.application.discipline.web.dto.ReadDisciplineDto;
+import de.innovationhub.prox.modules.project.application.module.web.dto.ReadModuleTypeDto;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
 import java.time.Instant;
 import java.time.LocalDate;

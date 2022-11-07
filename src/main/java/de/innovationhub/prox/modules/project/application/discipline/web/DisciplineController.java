@@ -1,8 +1,8 @@
 package de.innovationhub.prox.modules.project.application.discipline.web;
 
-import de.innovationhub.prox.modules.project.application.discipline.dto.DisciplineMapper;
-import de.innovationhub.prox.modules.project.application.discipline.dto.ReadDisciplineDto;
 import de.innovationhub.prox.modules.project.application.discipline.usecase.FindAllDisciplinesHandler;
+import de.innovationhub.prox.modules.project.application.discipline.web.dto.DisciplineMapper;
+import de.innovationhub.prox.modules.project.application.discipline.web.dto.ReadDisciplineDto;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

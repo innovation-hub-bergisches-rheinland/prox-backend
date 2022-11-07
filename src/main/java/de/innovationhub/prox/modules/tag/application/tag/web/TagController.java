@@ -1,10 +1,10 @@
 package de.innovationhub.prox.modules.tag.application.tag.web;
 
-import de.innovationhub.prox.modules.tag.application.tag.dto.TagDto;
-import de.innovationhub.prox.modules.tag.application.tag.dto.TagDtoMapper;
 import de.innovationhub.prox.modules.tag.application.tag.usecase.FindCommonTagsHandler;
 import de.innovationhub.prox.modules.tag.application.tag.usecase.FindMatchingTagsHandler;
 import de.innovationhub.prox.modules.tag.application.tag.usecase.FindPopularTagsHandler;
+import de.innovationhub.prox.modules.tag.application.tag.web.dto.TagDto;
+import de.innovationhub.prox.modules.tag.application.tag.web.dto.TagDtoMapper;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;

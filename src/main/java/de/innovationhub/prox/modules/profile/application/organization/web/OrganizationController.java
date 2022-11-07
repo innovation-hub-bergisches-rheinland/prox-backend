@@ -1,18 +1,26 @@
 package de.innovationhub.prox.modules.profile.application.organization.web;
 
-import de.innovationhub.prox.modules.profile.application.organization.web.dto.OrganizationDtoAssembler;
-import de.innovationhub.prox.modules.profile.application.organization.web.dto.ReadOrganizationDto;
-import de.innovationhub.prox.modules.profile.application.organization.web.dto.CreateOrganizationDto;
+import de.innovationhub.prox.modules.profile.application.organization.usecase.AddOrganizationMemberHandler;
 import de.innovationhub.prox.modules.profile.application.organization.usecase.CreateOrganizationHandler;
 import de.innovationhub.prox.modules.profile.application.organization.usecase.FindAllOrganizationsHandler;
 import de.innovationhub.prox.modules.profile.application.organization.usecase.FindOrganizationHandler;
-import de.innovationhub.prox.modules.profile.application.organization.web.dto.UpdateOrganizationDto;
+import de.innovationhub.prox.modules.profile.application.organization.usecase.FindOrganizationMembershipsHandler;
+import de.innovationhub.prox.modules.profile.application.organization.usecase.RemoveOrganizationMemberHandler;
 import de.innovationhub.prox.modules.profile.application.organization.usecase.UpdateOrganizationHandler;
+import de.innovationhub.prox.modules.profile.application.organization.usecase.UpdateOrganizationMemberHandler;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.CreateOrganizationDto;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.OrganizationDtoAssembler;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.ReadOrganizationDto;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.ReadOrganizationMembershipDto;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.UpdateOrganizationDto;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.UpdateOrganizationMembershipDto;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.ViewAllOrganizationMembershipsDto;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,16 +33,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("organizations")
 @RequiredArgsConstructor
 public class OrganizationController {
-  private final CreateOrganizationHandler createOrganizationHandler;
-  private final FindOrganizationHandler findOrganizationHandler;
-  private final FindAllOrganizationsHandler findAllOrganizationsHandler;
-  private final UpdateOrganizationHandler updateOrganizationHandler;
-  private final OrganizationDtoAssembler organizationDtoAssembler;
+
+  private final CreateOrganizationHandler create;
+  private final FindOrganizationHandler find;
+  private final FindAllOrganizationsHandler findAll;
+  private final UpdateOrganizationHandler update;
+  private final AddOrganizationMemberHandler addMember;
+  private final FindOrganizationMembershipsHandler findMember;
+  private final UpdateOrganizationMemberHandler updateMember;
+  private final RemoveOrganizationMemberHandler removeMember;
+
+  private final OrganizationDtoAssembler dtoAssembler;
 
   @GetMapping
   public ResponseEntity<List<ReadOrganizationDto>> getAll() {
-    var dtoList = findAllOrganizationsHandler.handle()
-        .stream().map(organizationDtoAssembler::toDto)
+    var dtoList = findAll.handle()
+        .stream().map(dtoAssembler::toDto)
         .toList();
     return ResponseEntity.ok(dtoList);
   }
@@ -43,8 +57,8 @@ public class OrganizationController {
   public ResponseEntity<ReadOrganizationDto> create(
       @RequestBody CreateOrganizationDto createOrganizationDto
   ) {
-    var org = createOrganizationHandler.handle(createOrganizationDto);
-    var dto = organizationDtoAssembler.toDto(org);
+    var org = create.handle(createOrganizationDto);
+    var dto = dtoAssembler.toDto(org);
     return ResponseEntity.status(HttpStatus.CREATED).body(dto);
   }
 
@@ -52,9 +66,9 @@ public class OrganizationController {
   public ResponseEntity<ReadOrganizationDto> get(
       @PathVariable("id") UUID id
   ) {
-    var dto = findOrganizationHandler.handle(id)
-        .map(organizationDtoAssembler::toDto);
-    if(dto.isEmpty()) {
+    var dto = find.handle(id)
+        .map(dtoAssembler::toDto);
+    if (dto.isEmpty()) {
       return ResponseEntity.notFound().build();
     }
 
@@ -66,8 +80,37 @@ public class OrganizationController {
       @PathVariable("id") UUID id,
       @RequestBody UpdateOrganizationDto updateOrganizationDto
   ) {
-    var org = updateOrganizationHandler.handle(id, updateOrganizationDto);
-    var dto = organizationDtoAssembler.toDto(org);
+    var org = update.handle(id, updateOrganizationDto);
+    var dto = dtoAssembler.toDto(org);
     return ResponseEntity.ok(dto);
+  }
+
+  @GetMapping("{id}/memberships")
+  public ResponseEntity<ViewAllOrganizationMembershipsDto> getAllMemberships(
+      @PathVariable("id") UUID id
+  ) {
+    var memberships = findMember.handle(id);
+    var dto = dtoAssembler.toDto(memberships);
+    return ResponseEntity.ok(new ViewAllOrganizationMembershipsDto(dto));
+  }
+
+  @PutMapping("{id}/memberships/{memberId}")
+  public ResponseEntity<ReadOrganizationMembershipDto> updateMembership(
+      @PathVariable("id") UUID id,
+      @PathVariable("memberId") UUID memberId,
+      @RequestBody UpdateOrganizationMembershipDto updateDto
+  ) {
+    var membership = updateMember.handle(id, memberId, updateDto);
+    var dto = dtoAssembler.toDto(membership);
+    return ResponseEntity.ok(dto);
+  }
+
+  @DeleteMapping("{id}/memberships/{memberId}")
+  public ResponseEntity<Void> removeMembership(
+      @PathVariable("id") UUID id,
+      @PathVariable("memberId") UUID memberId
+  ) {
+    removeMember.handle(id, memberId);
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 }

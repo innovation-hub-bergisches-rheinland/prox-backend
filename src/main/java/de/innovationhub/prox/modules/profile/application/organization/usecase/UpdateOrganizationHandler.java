@@ -18,6 +18,7 @@ public class UpdateOrganizationHandler {
 
   public Organization handle(UUID id, UpdateOrganizationDto useCase) {
     var authenticatedUser = authenticationFacade.currentAuthenticated();
+    // TODO: proper exception
     var org = organizationRepository.findById(id).orElseThrow();
 
     // TODO

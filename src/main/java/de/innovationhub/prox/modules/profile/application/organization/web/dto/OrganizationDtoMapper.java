@@ -1,5 +1,6 @@
 package de.innovationhub.prox.modules.profile.application.organization.web.dto;
 
+import de.innovationhub.prox.modules.profile.domain.organization.Membership;
 import de.innovationhub.prox.modules.profile.domain.organization.Organization;
 import java.util.List;
 import org.mapstruct.Mapper;
@@ -13,4 +14,8 @@ interface OrganizationDtoMapper {
 
   @Mapping(target = "tags", source = "tags")
   ReadOrganizationDto toDto(Organization organization, List<String> tags);
+
+  ReadOrganizationMembershipDto toDto(Membership membership);
+
+  List<ReadOrganizationMembershipDto> toDto(List<Membership> memberships);
 }

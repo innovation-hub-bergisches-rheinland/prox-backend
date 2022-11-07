@@ -1,0 +1,6 @@
+keycloak:
+  realm: example
+  resource: example
+  auth-server-url: http://localhost:8090/auth
+  credentials:
+    secret: S3Cr3t

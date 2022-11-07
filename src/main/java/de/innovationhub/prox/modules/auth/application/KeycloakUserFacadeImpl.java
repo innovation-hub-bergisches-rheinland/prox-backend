@@ -7,20 +7,25 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import javax.ws.rs.NotFoundException;
-import lombok.RequiredArgsConstructor;
 import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.admin.client.resource.UsersResource;
 
-@RequiredArgsConstructor
 @ApplicationComponent
 public class KeycloakUserFacadeImpl implements UserFacade {
+
   private final RealmResource realmResource;
   private final UsersResource usersResource;
+
+  public KeycloakUserFacadeImpl(RealmResource realmResource) {
+    this.realmResource = realmResource;
+    this.usersResource = realmResource.users();
+  }
 
   public Optional<UserView> findById(UUID id) {
     try {
       return Optional.of(this.usersResource.get(id.toString()).toRepresentation())
-          .map(rep -> new UserView(UUID.fromString(rep.getId()), rep.getFirstName() + " " + rep.getLastName()));
+          .map(rep -> new UserView(UUID.fromString(rep.getId()),
+              rep.getFirstName() + " " + rep.getLastName()));
     } catch (NotFoundException e) {
       return Optional.empty();
     }

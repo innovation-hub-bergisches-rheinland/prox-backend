@@ -2,9 +2,7 @@ package de.innovationhub.prox.modules.project.application.module.web;
 
 import de.innovationhub.prox.modules.project.application.module.dto.ModuleTypeMapper;
 import de.innovationhub.prox.modules.project.application.module.dto.ReadModuleTypeDto;
-import de.innovationhub.prox.modules.project.application.module.usecase.FindAllModules;
 import de.innovationhub.prox.modules.project.application.module.usecase.FindAllModulesHandler;
-import de.innovationhub.prox.modules.project.application.module.usecase.FindModulesByDisciplines;
 import de.innovationhub.prox.modules.project.application.module.usecase.FindModulesByDisciplinesHandler;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +30,7 @@ public class ModuleController {
   public ResponseEntity<List<ReadModuleTypeDto>> getAll() {
     return ResponseEntity.ok(
         moduleTypeMapper.toDtoList(
-            findAllModulesHandler.handle(new FindAllModules())
+            findAllModulesHandler.handle()
         )
     );
   }
@@ -42,7 +40,7 @@ public class ModuleController {
       @RequestParam("keys") List<String> disciplineKeys) {
     return ResponseEntity.ok(
         moduleTypeMapper.toDtoList(
-            findModulesByDisciplines.handle(new FindModulesByDisciplines(disciplineKeys))
+            findModulesByDisciplines.handle(disciplineKeys)
         )
     );
   }

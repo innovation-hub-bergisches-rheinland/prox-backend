@@ -1,7 +1,6 @@
 package de.innovationhub.prox.modules.project.application.module.usecase;
 
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
-import de.innovationhub.prox.modules.commons.application.usecase.UseCaseHandler;
 import de.innovationhub.prox.modules.project.domain.module.ModuleType;
 import de.innovationhub.prox.modules.project.domain.module.ModuleTypeRepository;
 import java.util.List;
@@ -10,17 +9,20 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @ApplicationComponent
-public class FindModulesByDisciplinesHandler implements UseCaseHandler<List<ModuleType>, FindModulesByDisciplines> {
+public class FindModulesByDisciplinesHandler {
+
   private final ModuleTypeRepository moduleTypeRepository;
 
-  @Override
-  public List<ModuleType> handle(FindModulesByDisciplines useCase) {
-    var keys = useCase.disciplineKeys();
-    if(keys.isEmpty()) {
+  public List<ModuleType> handle(List<String> disciplineKeys) {
+    if (disciplineKeys == null) {
+      throw new IllegalArgumentException("disciplineKeys must not be null");
+    }
+
+    if (disciplineKeys.isEmpty()) {
       return StreamSupport.stream(moduleTypeRepository.findAll().spliterator(), false)
           .toList();
     }
 
-    return moduleTypeRepository.findByDisciplineKeys(keys);
+    return moduleTypeRepository.findByDisciplineKeys(disciplineKeys);
   }
 }

@@ -2,11 +2,8 @@ package de.innovationhub.prox.modules.tag.application.tag.web;
 
 import de.innovationhub.prox.modules.tag.application.tag.dto.TagDto;
 import de.innovationhub.prox.modules.tag.application.tag.dto.TagDtoMapper;
-import de.innovationhub.prox.modules.tag.application.tag.usecase.FindCommonTags;
 import de.innovationhub.prox.modules.tag.application.tag.usecase.FindCommonTagsHandler;
-import de.innovationhub.prox.modules.tag.application.tag.usecase.FindMatchingTags;
 import de.innovationhub.prox.modules.tag.application.tag.usecase.FindMatchingTagsHandler;
-import de.innovationhub.prox.modules.tag.application.tag.usecase.FindPopularTags;
 import de.innovationhub.prox.modules.tag.application.tag.usecase.FindPopularTagsHandler;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +26,7 @@ public class TagController {
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   private ResponseEntity<List<TagDto>> findMatchingTags(@RequestParam("q") String partialTag) {
-    var result = findMatchingTagsHandler.handle(new FindMatchingTags(partialTag));
+    var result = findMatchingTagsHandler.handle(partialTag);
     var dto = tagDtoMapper.toDtoList(result);
 
     return ResponseEntity.ok(dto);
@@ -39,7 +36,7 @@ public class TagController {
   private ResponseEntity<List<TagDto>> findRecommendations(
       @RequestParam("tags") List<String> inputTags,
       @RequestParam(value = "limit", defaultValue = "10") int limit) {
-    var result = findCommonTagsHandler.handle(new FindCommonTags(inputTags, limit));
+    var result = findCommonTagsHandler.handle(inputTags, limit);
     var dto = tagDtoMapper.toDtoList(result);
 
     return ResponseEntity.ok(dto);
@@ -48,7 +45,7 @@ public class TagController {
   @GetMapping(path = "popular", produces = MediaType.APPLICATION_JSON_VALUE)
   private ResponseEntity<List<TagDto>> findPopular(
       @RequestParam(value = "limit", defaultValue = "10") int limit) {
-    var result = findPopularTagsHandler.handle(new FindPopularTags(limit));
+    var result = findPopularTagsHandler.handle(limit);
     var dto = tagDtoMapper.toDtoList(result);
 
     return ResponseEntity.ok(dto);

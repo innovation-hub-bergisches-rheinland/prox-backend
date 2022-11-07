@@ -1,7 +1,6 @@
 package de.innovationhub.prox.modules.profile.application.lecturer;
 
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
-import de.innovationhub.prox.modules.profile.application.lecturer.usecase.FindLecturer;
 import de.innovationhub.prox.modules.profile.application.lecturer.usecase.FindLecturerHandler;
 import de.innovationhub.prox.modules.profile.contract.LecturerFacade;
 import de.innovationhub.prox.modules.profile.contract.LecturerView;
@@ -18,7 +17,7 @@ public class LecturerFacadeImpl implements LecturerFacade {
 
   @Override
   public Optional<LecturerView> get(UUID id) {
-    return findLecturerHandler.handle(new FindLecturer(id))
+    return findLecturerHandler.handle(id)
         .map(lecturerViewMapper::toView);
   }
 }

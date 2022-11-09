@@ -26,12 +26,16 @@ public class TagCollection extends AbstractAggregateRoot {
   private UUID id;
 
   @ManyToMany
-  private List<Tag> tags;
+  private List<Tag> tags = new ArrayList<>();
 
-  public static TagCollection create(UUID id, Collection<Tag> tags) {
-    var createdTagCollection = new TagCollection(id, List.copyOf(tags));
+  public static TagCollection create(UUID id) {
+    var createdTagCollection = new TagCollection(id);
     createdTagCollection.registerEvent(TagCollectionCreated.from(createdTagCollection));
     return createdTagCollection;
+  }
+
+  public TagCollection(UUID id) {
+    this.id = id;
   }
 
   public void setTags(Collection<Tag> tags) {

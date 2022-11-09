@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 public interface TagRepository extends CrudRepository<Tag, UUID> {
-
   Optional<Tag> getByTagName(String tag);
 
   List<Tag> getByIdIn(Collection<UUID> ids);
@@ -23,7 +22,7 @@ public interface TagRepository extends CrudRepository<Tag, UUID> {
         .toList();
     List<Tag> createdTags = new ArrayList<>();
     for (var tag : notExistingTags) {
-      createdTags.add(Tag.createNew(tag));
+      createdTags.add(Tag.create(tag));
     }
     if (!createdTags.isEmpty()) {
       this.saveAll(createdTags);

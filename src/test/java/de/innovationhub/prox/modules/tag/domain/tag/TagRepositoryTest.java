@@ -7,8 +7,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 
 class TagRepositoryTest extends AbstractIntegrationTest {
   @Autowired
@@ -33,7 +31,7 @@ class TagRepositoryTest extends AbstractIntegrationTest {
 
   @Test
   void shouldReturnTags() {
-    var givenTags = List.of(Tag.createNew("test3"), Tag.createNew("test4"));
+    var givenTags = List.of(Tag.create("test3"), Tag.create("test4"));
     tagRepository.saveAll(givenTags);
 
     var tagInput = List.of("test3", "test4");

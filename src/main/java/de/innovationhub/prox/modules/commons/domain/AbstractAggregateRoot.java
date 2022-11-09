@@ -12,7 +12,7 @@ public class AbstractAggregateRoot {
   private transient final @Transient List<DomainEvent> domainDomainEvents = new ArrayList<>();
 
   @DomainEvents
-  protected List<DomainEvent> getDomainEvents() {
+  public List<DomainEvent> getDomainEvents() {
     return List.copyOf(domainDomainEvents);
   }
 

@@ -31,7 +31,7 @@ public class Tag extends AbstractAggregateRoot {
   @Size(max = 128)
   private String tagName;
 
-  public static Tag createNew(String tag) {
+  public static Tag create(String tag) {
     var createdTag = new Tag(UUID.randomUUID(), tag);
     createdTag.registerEvent(TagCreated.from(createdTag));
     return createdTag;

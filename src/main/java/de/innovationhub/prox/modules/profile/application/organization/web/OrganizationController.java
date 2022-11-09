@@ -9,6 +9,7 @@ import de.innovationhub.prox.modules.profile.application.organization.usecase.Re
 import de.innovationhub.prox.modules.profile.application.organization.usecase.SetOrganizationLogoHandler;
 import de.innovationhub.prox.modules.profile.application.organization.usecase.UpdateOrganizationHandler;
 import de.innovationhub.prox.modules.profile.application.organization.usecase.UpdateOrganizationMemberHandler;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.AddOrganizationMembershipDto;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.CreateOrganizationDto;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.OrganizationDtoAssembler;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.ReadOrganizationDto;
@@ -97,6 +98,16 @@ public class OrganizationController {
     var memberships = findMember.handle(id);
     var dto = dtoAssembler.toDto(memberships);
     return ResponseEntity.ok(new ViewAllOrganizationMembershipsDto(dto));
+  }
+
+  @PostMapping("{id}/memberships")
+  public ResponseEntity<ReadOrganizationMembershipDto> addMembership(
+      @PathVariable("id") UUID id,
+      @RequestBody AddOrganizationMembershipDto addMemberDto
+  ) {
+    var membership = addMember.handle(id, addMemberDto);
+    var dto = dtoAssembler.toDto(membership);
+    return ResponseEntity.status(HttpStatus.CREATED).body(dto);
   }
 
   @PutMapping("{id}/memberships/{memberId}")

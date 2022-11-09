@@ -2,6 +2,7 @@ package de.innovationhub.prox.modules.profile.application.lecturer.web;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 
+import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerDto;
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerDto.CreateLecturerProfileDto;
 import io.restassured.http.ContentType;
@@ -16,9 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-@SpringBootTest
 @AutoConfigureMockMvc
-class LecturerControllerIntegrationTest {
+class LecturerControllerIntegrationTest extends AbstractIntegrationTest {
   @Autowired
   MockMvc mockMvc;
 

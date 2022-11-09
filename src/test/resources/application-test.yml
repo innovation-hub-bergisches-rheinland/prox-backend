@@ -4,13 +4,16 @@ keycloak:
   auth-server-url: http://localhost:8081
   credentials:
     secret: ${KEYCLOAK_SECRET:prox-backend-dev}
+cloud:
+  aws:
+    credentials:
+      access-key: ${AWS_ACCESS_KEY:aws-access-key}
+      secret-key: ${AWS_SECRET_KEY:aws-secret-key}
+    s3:
+      bucket: prox-test-bucket
+    region: eu-central-1
 spring:
-  datasource:
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL
-    username: sa
-    driver-class-name: org.h2.Driver
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create-drop
   security:

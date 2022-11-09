@@ -12,6 +12,15 @@ services:
       - POSTGRES_PASSWORD=prox-backend
       - POSTGRES_DB=prox-db
       - PGDATA=/var/lib/postgresql/data/pgdata
+  localstack:
+    image: localstack/localstack:latest
+    environment:
+      SERVICES: s3
+      START_WEB: 0
+      AWS_ACCESS_KEY_ID: aws-access-key
+      AWS_SECRET_ACCESS_KEY: aws-secret-key
+    ports:
+      - "4566:4566"
 
 # TODO: It is not really a good idea to setup keycloak locally as Keycloak has very poor support
 #       for configuration as code and realm importing at startup. Although it is possible, we should

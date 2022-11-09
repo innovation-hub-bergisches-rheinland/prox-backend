@@ -7,6 +7,14 @@ keycloak:
 server:
   port: 8080
   forward-headers-strategy: native
+cloud:
+  aws:
+    region: eu-central-1
+    credentials:
+      access-key: ${AWS_ACCESS_KEY:}
+      secret-key: ${AWS_SECRET_KEY:}
+    s3:
+      bucket: ${AWS_S3_BUCKET:prox}
 spring:
   application:
     name: prox-backend

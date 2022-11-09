@@ -4,6 +4,14 @@ keycloak:
   auth-server-url: http://localhost:8081
   credentials:
     secret: ${KEYCLOAK_SECRET:prox-backend-dev}
+cloud:
+  aws:
+    credentials:
+      access-key: ${AWS_ACCESS_KEY:aws-access-key}
+      secret-key: ${AWS_SECRET_KEY:aws-secret-key}
+    s3:
+      endpoint: http://localhost:4566
+    region: eu-central-1
 spring:
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect

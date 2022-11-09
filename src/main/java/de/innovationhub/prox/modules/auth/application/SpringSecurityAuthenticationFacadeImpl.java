@@ -14,7 +14,7 @@ public class SpringSecurityAuthenticationFacadeImpl implements AuthenticationFac
   @Override
   public UUID currentAuthenticated() {
     var auth = SecurityContextHolder.getContext().getAuthentication();
-    if(!auth.isAuthenticated()) throw new UnauthenticatedException();
+    if(auth == null || !auth.isAuthenticated()) throw new UnauthenticatedException();
 
     // Name should always be a UUID. Investigate a better way.
     return UUID.fromString(auth.getName());

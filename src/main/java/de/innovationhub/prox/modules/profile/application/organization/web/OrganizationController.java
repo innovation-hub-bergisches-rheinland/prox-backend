@@ -6,6 +6,7 @@ import de.innovationhub.prox.modules.profile.application.organization.usecase.Fi
 import de.innovationhub.prox.modules.profile.application.organization.usecase.FindOrganizationHandler;
 import de.innovationhub.prox.modules.profile.application.organization.usecase.FindOrganizationMembershipsHandler;
 import de.innovationhub.prox.modules.profile.application.organization.usecase.RemoveOrganizationMemberHandler;
+import de.innovationhub.prox.modules.profile.application.organization.usecase.SetOrganizationLogoHandler;
 import de.innovationhub.prox.modules.profile.application.organization.usecase.UpdateOrganizationHandler;
 import de.innovationhub.prox.modules.profile.application.organization.usecase.UpdateOrganizationMemberHandler;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.CreateOrganizationDto;
@@ -15,6 +16,7 @@ import de.innovationhub.prox.modules.profile.application.organization.web.dto.Re
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.UpdateOrganizationDto;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.UpdateOrganizationMembershipDto;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.ViewAllOrganizationMembershipsDto;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +29,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("organizations")
@@ -42,6 +46,7 @@ public class OrganizationController {
   private final FindOrganizationMembershipsHandler findMember;
   private final UpdateOrganizationMemberHandler updateMember;
   private final RemoveOrganizationMemberHandler removeMember;
+  private final SetOrganizationLogoHandler setLogo;
 
   private final OrganizationDtoAssembler dtoAssembler;
 
@@ -112,5 +117,21 @@ public class OrganizationController {
   ) {
     removeMember.handle(id, memberId);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+  }
+
+  @PostMapping("{id}/avatar")
+  public ResponseEntity<Void> postAvatar(
+      @PathVariable("id") UUID id,
+      @RequestParam("image") MultipartFile multipartFile
+  ) throws IOException {
+    if(multipartFile.isEmpty()) {
+      return ResponseEntity.badRequest().build();
+    }
+    var contentType = multipartFile.getContentType();
+    if(contentType == null || contentType.startsWith("image/")) {
+      return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).build();
+    }
+    setLogo.handle(id, multipartFile.getBytes(), contentType);
+    return ResponseEntity.noContent().build();
   }
 }

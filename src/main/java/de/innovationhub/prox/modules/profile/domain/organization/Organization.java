@@ -2,6 +2,7 @@ package de.innovationhub.prox.modules.profile.domain.organization;
 
 import de.innovationhub.prox.modules.commons.domain.AbstractAggregateRoot;
 import de.innovationhub.prox.modules.profile.domain.organization.events.OrganizationCreated;
+import de.innovationhub.prox.modules.profile.domain.organization.events.OrganizationLogoSet;
 import de.innovationhub.prox.modules.profile.domain.organization.events.OrganizationMemberAdded;
 import de.innovationhub.prox.modules.profile.domain.organization.events.OrganizationMemberRemoved;
 import de.innovationhub.prox.modules.profile.domain.organization.events.OrganizationMemberUpdated;
@@ -42,6 +43,8 @@ public class Organization extends AbstractAggregateRoot {
   @OneToMany(cascade = CascadeType.ALL)
   private List<Membership> members = new ArrayList<>();
   private OrganizationTags tags;
+
+  private String logoKey;
 
   public Organization(UUID id, String name, List<Membership> members) {
     Objects.requireNonNull(id);
@@ -168,5 +171,10 @@ public class Organization extends AbstractAggregateRoot {
 
     this.name = name;
     this.registerEvent(new OrganizationRenamed(this.id, this.name));
+  }
+
+  public void setLogoKey(String logoKey) {
+    this.logoKey = logoKey;
+    this.registerEvent(new OrganizationLogoSet(this.id, this.logoKey));
   }
 }

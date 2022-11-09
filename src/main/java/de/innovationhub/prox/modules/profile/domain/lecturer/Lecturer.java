@@ -2,6 +2,7 @@ package de.innovationhub.prox.modules.profile.domain.lecturer;
 
 import de.innovationhub.prox.Default;
 import de.innovationhub.prox.modules.commons.domain.AbstractAggregateRoot;
+import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerAvatarSet;
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerCreated;
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerProfileUpdated;
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerRenamed;
@@ -18,6 +19,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.lang.Nullable;
 
 /**
  * Lecturers are authorized to teach courses. In PROX we don't really care about a differentiation
@@ -41,6 +43,8 @@ public class Lecturer extends AbstractAggregateRoot {
   private LecturerProfile profile;
 
   private LecturerTags tags;
+
+  private String avatarKey;
 
   public Lecturer(UserAccount user, String name) {
     this(UUID.randomUUID(), user, name, null);
@@ -80,5 +84,10 @@ public class Lecturer extends AbstractAggregateRoot {
 
     this.name = name;
     this.registerEvent(new LecturerRenamed(this.id, this.name));
+  }
+
+  public void setAvatarKey(String avatarKey) {
+    this.avatarKey = avatarKey;
+    this.registerEvent(new LecturerAvatarSet(this.id, this.avatarKey));
   }
 }

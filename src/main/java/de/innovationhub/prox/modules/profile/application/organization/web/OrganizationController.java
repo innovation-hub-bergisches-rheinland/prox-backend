@@ -7,6 +7,7 @@ import de.innovationhub.prox.modules.profile.application.organization.usecase.Fi
 import de.innovationhub.prox.modules.profile.application.organization.usecase.FindOrganizationMembershipsHandler;
 import de.innovationhub.prox.modules.profile.application.organization.usecase.RemoveOrganizationMemberHandler;
 import de.innovationhub.prox.modules.profile.application.organization.usecase.SetOrganizationLogoHandler;
+import de.innovationhub.prox.modules.profile.application.organization.usecase.SetOrganizationTagsHandler;
 import de.innovationhub.prox.modules.profile.application.organization.usecase.UpdateOrganizationHandler;
 import de.innovationhub.prox.modules.profile.application.organization.usecase.UpdateOrganizationMemberHandler;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.AddOrganizationMembershipDto;
@@ -14,9 +15,13 @@ import de.innovationhub.prox.modules.profile.application.organization.web.dto.Cr
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.OrganizationDtoAssembler;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.ReadOrganizationDto;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.ReadOrganizationMembershipDto;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.SetOrganizationTagsRequestDto;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.SetOrganizationTagsResponseDto;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.UpdateOrganizationDto;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.UpdateOrganizationMembershipDto;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.ViewAllOrganizationMembershipsDto;
+import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectTagsRequestDto;
+import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectTagsResponseDto;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -48,6 +53,7 @@ public class OrganizationController {
   private final UpdateOrganizationMemberHandler updateMember;
   private final RemoveOrganizationMemberHandler removeMember;
   private final SetOrganizationLogoHandler setLogo;
+  private final SetOrganizationTagsHandler setTags;
 
   private final OrganizationDtoAssembler dtoAssembler;
 
@@ -144,5 +150,13 @@ public class OrganizationController {
     }
     setLogo.handle(id, multipartFile.getBytes(), contentType);
     return ResponseEntity.noContent().build();
+  }
+
+  @PostMapping("{id}/tags")
+  public ResponseEntity<SetOrganizationTagsResponseDto> setTags(
+      @PathVariable("id") UUID id,
+      @RequestBody SetOrganizationTagsRequestDto tagsDto) {
+    var result = setTags.handle(id, tagsDto.tags());
+    return ResponseEntity.ok(new SetOrganizationTagsResponseDto(result));
   }
 }

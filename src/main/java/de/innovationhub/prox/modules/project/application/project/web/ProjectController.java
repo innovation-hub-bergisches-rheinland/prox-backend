@@ -5,11 +5,14 @@ import de.innovationhub.prox.modules.project.application.project.usecase.DeleteP
 import de.innovationhub.prox.modules.project.application.project.usecase.FindAllProjectsHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.FindProjectByIdHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.SearchProjectHandler;
+import de.innovationhub.prox.modules.project.application.project.usecase.SetProjectTagsHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.UpdateProjectHandler;
 import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.ProjectDtoAssembler;
 import de.innovationhub.prox.modules.project.application.project.web.dto.ReadProjectDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.ReadProjectListDto;
+import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectTagsRequestDto;
+import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectTagsResponseDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.UpdateProjectDto;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
 import java.util.Collection;
@@ -38,6 +41,7 @@ public class ProjectController {
   private final UpdateProjectHandler update;
   private final SearchProjectHandler search;
   private final DeleteProjectByIdHandler deleteById;
+  private final SetProjectTagsHandler setTags;
 
   private final ProjectDtoAssembler dtoAssembler;
 
@@ -90,5 +94,13 @@ public class ProjectController {
     var result = search.handle(status, specializationKeys, moduleTypeKeys, text);
     var dtoList = dtoAssembler.toDto(result);
     return ResponseEntity.ok(dtoList);
+  }
+
+  @PostMapping("{id}/tags")
+  public ResponseEntity<SetProjectTagsResponseDto> setTags(
+      @PathVariable("id") UUID id,
+      @RequestBody SetProjectTagsRequestDto tagsDto) {
+    var result = setTags.handle(id, tagsDto.tags());
+    return ResponseEntity.ok(new SetProjectTagsResponseDto(result));
   }
 }

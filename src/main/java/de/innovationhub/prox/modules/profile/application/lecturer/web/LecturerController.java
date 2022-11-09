@@ -4,11 +4,16 @@ import de.innovationhub.prox.modules.profile.application.lecturer.usecase.Create
 import de.innovationhub.prox.modules.profile.application.lecturer.usecase.FindAllLecturersHandler;
 import de.innovationhub.prox.modules.profile.application.lecturer.usecase.FindLecturerHandler;
 import de.innovationhub.prox.modules.profile.application.lecturer.usecase.SetLecturerAvatarHandler;
+import de.innovationhub.prox.modules.profile.application.lecturer.usecase.SetLecturerTagsHandler;
 import de.innovationhub.prox.modules.profile.application.lecturer.usecase.UpdateLecturerProfileHandler;
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerDto;
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.LecturerDtoAssembler;
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.ReadLecturerDto;
+import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.SetLecturerTagsRequestDto;
+import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.SetLecturerTagsResponseDto;
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.UpdateLecturerDto;
+import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectTagsRequestDto;
+import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectTagsResponseDto;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -34,6 +39,7 @@ public class LecturerController {
   private final FindLecturerHandler find;
   private final UpdateLecturerProfileHandler update;
   private final SetLecturerAvatarHandler setAvatar;
+  private final SetLecturerTagsHandler setTags;
   private final LecturerDtoAssembler dtoAssembler;
 
   @GetMapping
@@ -88,5 +94,13 @@ public class LecturerController {
     }
     setAvatar.handle(id, multipartFile.getBytes(), contentType);
     return ResponseEntity.noContent().build();
+  }
+
+  @PostMapping("{id}/tags")
+  public ResponseEntity<SetLecturerTagsResponseDto> setTags(
+      @PathVariable("id") UUID id,
+      @RequestBody SetLecturerTagsRequestDto tagsDto) {
+    var result = setTags.handle(id, tagsDto.tags());
+    return ResponseEntity.ok(new SetLecturerTagsResponseDto(result));
   }
 }

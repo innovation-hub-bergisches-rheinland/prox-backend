@@ -15,4 +15,8 @@ public interface TagDtoMapper {
   TagDto toDto(Tag tag);
 
   List<TagDto> toDtoList(List<Tag> tags);
+
+  default SynchronizeTagsResponse toSynchronizeTagsResponse(List<Tag> tags) {
+    return new SynchronizeTagsResponse(toDtoList(tags));
+  }
 }

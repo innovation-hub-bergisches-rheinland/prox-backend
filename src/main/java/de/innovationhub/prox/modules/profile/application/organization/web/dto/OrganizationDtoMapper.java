@@ -13,7 +13,8 @@ interface OrganizationDtoMapper {
   OrganizationDtoMapper INSTANCE = Mappers.getMapper(OrganizationDtoMapper.class);
 
   @Mapping(target = "tags", source = "tags")
-  ReadOrganizationDto toDto(Organization organization, List<String> tags);
+  @Mapping(target = "logoUrl", source = "logoUrl")
+  ReadOrganizationDto toDto(Organization organization, List<String> tags, String logoUrl);
 
   ReadOrganizationMembershipDto toDto(Membership membership);
 

@@ -7,5 +7,6 @@ public record ReadOrganizationDto(
     UUID id,
     String name,
     OrganizationProfileDto profile,
-    List<String> tags
+    List<String> tags,
+    String logoUrl
 ) { }

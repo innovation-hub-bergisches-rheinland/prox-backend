@@ -8,5 +8,6 @@ public record ReadLecturerDto(
     UUID userId,
     String name,
     LecturerProfileDto profile,
-    List<String> tags
+    List<String> tags,
+    String avatarUrl
 ) { }

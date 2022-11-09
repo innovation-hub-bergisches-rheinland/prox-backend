@@ -37,4 +37,9 @@ public class S3StorageProvider implements StorageProvider {
   public void deleteFile(String fileId) {
     s3.deleteObject(bucket, fileId);
   }
+
+  @Override
+  public String buildUrl(String fileId) {
+    return bucket + ".s3.amazonaws.com/" + fileId;
+  }
 }

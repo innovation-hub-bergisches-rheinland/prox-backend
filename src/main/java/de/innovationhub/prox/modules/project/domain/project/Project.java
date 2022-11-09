@@ -7,11 +7,15 @@ import de.innovationhub.prox.modules.project.domain.project.events.ProjectCreate
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectMarkedAsStale;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectOffered;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectStarted;
+import de.innovationhub.prox.modules.project.domain.project.events.ProjectTagged;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectUnarchived;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
@@ -87,8 +91,8 @@ public class Project extends AbstractAggregateRoot {
   @ElementCollection
   private List<Supervisor> supervisors = new ArrayList<>();
 
-  @Embedded
-  private ProjectTags tags;
+  @ElementCollection
+  private Set<UUID> tags = new HashSet<>();
 
   public static Project create(
       Author author,
@@ -166,8 +170,9 @@ public class Project extends AbstractAggregateRoot {
     this.supervisors.remove(supervisor);
   }
 
-  public void setTags(ProjectTags tags) {
-    this.tags = tags;
+  public void setTags(Collection<UUID> tags) {
+    this.tags = new HashSet<>(tags);
+    this.registerEvent(new ProjectTagged(this.id, tags));
   }
 
   public void setTimeBox(TimeBox timeBox) {

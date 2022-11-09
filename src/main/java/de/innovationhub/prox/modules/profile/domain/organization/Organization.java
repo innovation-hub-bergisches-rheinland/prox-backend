@@ -11,11 +11,15 @@ import de.innovationhub.prox.modules.profile.domain.organization.events.Organiza
 import de.innovationhub.prox.modules.profile.domain.organization.events.OrganizationTagged;
 import de.innovationhub.prox.modules.profile.domain.user.UserAccount;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -42,7 +46,9 @@ public class Organization extends AbstractAggregateRoot {
   private OrganizationProfile profile;
   @OneToMany(cascade = CascadeType.ALL)
   private List<Membership> members = new ArrayList<>();
-  private OrganizationTags tags;
+
+  @ElementCollection
+  private Set<UUID> tags = new HashSet<>();
 
   private String logoKey;
 
@@ -156,9 +162,9 @@ public class Organization extends AbstractAggregateRoot {
     return List.copyOf(members);
   }
 
-  public void setTags(OrganizationTags tags) {
-    this.tags = tags;
-    this.registerEvent(new OrganizationTagged(this.id, this.tags.getTagCollectionId()));
+  public void setTags(Collection<UUID> tags) {
+    this.tags = new HashSet<>(tags);
+    this.registerEvent(new OrganizationTagged(this.id, this.tags));
   }
 
   public void setName(String name) {

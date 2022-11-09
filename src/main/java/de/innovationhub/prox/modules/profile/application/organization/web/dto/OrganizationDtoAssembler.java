@@ -3,7 +3,7 @@ package de.innovationhub.prox.modules.profile.application.organization.web.dto;
 import de.innovationhub.prox.infra.storage.StorageProvider;
 import de.innovationhub.prox.modules.profile.domain.organization.Membership;
 import de.innovationhub.prox.modules.profile.domain.organization.Organization;
-import de.innovationhub.prox.modules.tag.contract.TagCollectionFacade;
+import de.innovationhub.prox.modules.tag.contract.TagFacade;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 public class OrganizationDtoAssembler {
-  private final TagCollectionFacade tagCollectionFacade;
+  private final TagFacade tagFacade;
   private final StorageProvider storageProvider;
   private final OrganizationDtoMapper organizationDtoMapper;
 
@@ -23,14 +23,12 @@ public class OrganizationDtoAssembler {
       logoUrl = storageProvider.buildUrl(organization.getLogoKey());
     }
 
+    List<String> tags = Collections.emptyList();
     if (organization.getTags() != null) {
-      var tagCollectionView = tagCollectionFacade.get(organization.getTags().getTagCollectionId());
-      if (tagCollectionView.isPresent()) {
-        return organizationDtoMapper.toDto(organization, tagCollectionView.get().tags(), logoUrl);
-      }
+      tags = tagFacade.getTags(organization.getTags());
     }
 
-    return organizationDtoMapper.toDto(organization, Collections.emptyList(), logoUrl);
+    return organizationDtoMapper.toDto(organization, tags, logoUrl);
   }
 
   public ReadOrganizationMembershipDto toDto(Membership membership) {

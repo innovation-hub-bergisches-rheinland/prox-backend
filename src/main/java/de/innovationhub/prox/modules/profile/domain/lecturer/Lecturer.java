@@ -8,8 +8,14 @@ import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerProf
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerRenamed;
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerTagged;
 import de.innovationhub.prox.modules.profile.domain.user.UserAccount;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -42,7 +48,8 @@ public class Lecturer extends AbstractAggregateRoot {
   @OneToOne(cascade = CascadeType.ALL)
   private LecturerProfile profile;
 
-  private LecturerTags tags;
+  @ElementCollection
+  private Set<UUID> tags = new HashSet<>();
 
   private String avatarKey;
 
@@ -64,9 +71,9 @@ public class Lecturer extends AbstractAggregateRoot {
     return createdLecturer;
   }
 
-  public void setTags(LecturerTags tags) {
-    this.tags = tags;
-    this.registerEvent(new LecturerTagged(this.id, this.tags.getTagCollectionId()));
+  public void setTags(Collection<UUID> tags) {
+    this.tags = new HashSet<>(tags);
+    this.registerEvent(new LecturerTagged(this.id, this.tags));
   }
 
   public void setProfile(LecturerProfile profile) {

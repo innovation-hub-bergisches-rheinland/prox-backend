@@ -19,11 +19,16 @@ public interface TagCollectionRepository extends CrudRepository<TagCollection, U
   List<Tag> findPopularTags(Pageable pageable);
 
   @Query("""
-        select t from TagCollection tc
-        join tc.tags t
-        where t.tagName in :givenTags
-        group by t
-        order by count(t) desc
+          select t from TagCollection tc
+          join tc.tags t
+          where tc.id IN (
+            select tc2.id from TagCollection tc2
+            join tc2.tags t2
+            where t2.tagName IN ?1
+          )
+          and t.tagName NOT IN ?1
+          group by t.id
+          order by count(t.id) desc
       """)
   List<Tag> findCommonUsedTagsWith(Collection<String> givenTags, Pageable pageable);
 }

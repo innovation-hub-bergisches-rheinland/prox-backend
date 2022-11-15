@@ -14,7 +14,7 @@ class FindAllProjectsHandlerTest {
 
   @Test
   void shouldFindAll() {
-    var projects = ProjectFixtures.ALL;
+    var projects = ProjectFixtures.build_project_list();
     when(projectRepository.findAll()).thenReturn(projects);
 
     var result = findAllProjectsHandler.handle();

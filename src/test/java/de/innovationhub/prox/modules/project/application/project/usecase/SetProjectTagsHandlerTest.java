@@ -30,7 +30,7 @@ class SetProjectTagsHandlerTest {
 
   @Test
   void shouldSaveWithTags() {
-    var project = ProjectFixtures.A_PROJECT;
+    var project = ProjectFixtures.build_a_project();
     var tags = List.of(UUID.randomUUID(), UUID.randomUUID());
     when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
 

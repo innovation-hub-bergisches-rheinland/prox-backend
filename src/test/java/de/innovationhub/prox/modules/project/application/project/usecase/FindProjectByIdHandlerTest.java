@@ -17,7 +17,7 @@ class FindProjectByIdHandlerTest {
 
   @Test
   void shouldFind() {
-    var project = ProjectFixtures.A_PROJECT;
+    var project = ProjectFixtures.build_a_project();
     when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
 
     var result = handler.handle(project.getId());

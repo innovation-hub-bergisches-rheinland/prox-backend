@@ -21,7 +21,7 @@ class MarkArchivedProposalsAsStaleHandlerTest {
 
   @Test
   void shouldArchiveInactiveProposals() {
-    var project = ProjectFixtures.A_PROJECT;
+    var project = ProjectFixtures.build_a_project();
     project.archive();
     when(projectRepository.findWithStatusModifiedBefore(any(), any()))
         .thenReturn(List.of(project));

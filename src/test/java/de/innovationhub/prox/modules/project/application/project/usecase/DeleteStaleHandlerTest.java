@@ -20,7 +20,7 @@ class DeleteStaleHandlerTest {
 
   @Test
   void shouldArchiveInactiveProposals() {
-    var project = ProjectFixtures.A_PROJECT;
+    var project = ProjectFixtures.build_a_project();
     project.archive();
     project.stale();
     when(projectRepository.findWithStatusModifiedBefore(any(), any()))

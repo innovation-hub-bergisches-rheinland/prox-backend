@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import javax.transaction.Transactional;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +46,7 @@ class LecturerControllerIntegrationTest extends AbstractIntegrationTest {
     RestAssuredMockMvc.standaloneSetup(() -> mockMvc);
   }
 
-  @After
+  @AfterEach
   void tearDown() {
     lecturerRepository.deleteAll();
   }

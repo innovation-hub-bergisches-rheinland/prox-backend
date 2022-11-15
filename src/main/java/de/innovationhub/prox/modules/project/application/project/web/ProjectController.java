@@ -22,9 +22,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,7 +52,7 @@ public class ProjectController {
     return ResponseEntity.ok(dtoList);
   }
 
-  @PostMapping
+  @PostMapping(consumes = "application/json", produces = "application/json")
   public ResponseEntity<ReadProjectDto> create(
       @RequestBody CreateProjectDto createDto
   ) {
@@ -71,7 +71,7 @@ public class ProjectController {
     return ResponseEntity.ok(projectDto.get());
   }
 
-  @PatchMapping("{id}")
+  @PutMapping(value = "{id}", consumes = "application/json", produces = "application/json")
   public ResponseEntity<ReadProjectDto> update(@PathVariable("id") UUID id, @RequestBody
   UpdateProjectDto updateProjectDto) {
     var updatedProject = update.handle(id, updateProjectDto);
@@ -88,7 +88,7 @@ public class ProjectController {
   @GetMapping("search/filter")
   public ResponseEntity<ReadProjectListDto> filter(
       @RequestParam(name = "status", required = false) ProjectState status,
-      @RequestParam(name = "specializationKeys", required = false) Collection<String> specializationKeys,
+      @RequestParam(name = "disciplineKeys", required = false) Collection<String> specializationKeys,
       @RequestParam(name = "moduleTypeKeys", required = false) Collection<String> moduleTypeKeys,
       @RequestParam(name = "text", required = false) String text) {
     var result = search.handle(status, specializationKeys, moduleTypeKeys, text);
@@ -96,7 +96,7 @@ public class ProjectController {
     return ResponseEntity.ok(dtoList);
   }
 
-  @PostMapping("{id}/tags")
+  @PostMapping(value = "{id}/tags", consumes = "application/json", produces = "application/json")
   public ResponseEntity<SetProjectTagsResponseDto> setTags(
       @PathVariable("id") UUID id,
       @RequestBody SetProjectTagsRequestDto tagsDto) {

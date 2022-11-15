@@ -20,8 +20,6 @@ import de.innovationhub.prox.modules.profile.application.organization.web.dto.Se
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.UpdateOrganizationDto;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.UpdateOrganizationMembershipDto;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.ViewAllOrganizationMembershipsDto;
-import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectTagsRequestDto;
-import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectTagsResponseDto;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -136,7 +134,7 @@ public class OrganizationController {
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 
-  @PostMapping("{id}/avatar")
+  @PostMapping(value = "{id}/logo", consumes = "multipart/form-data")
   public ResponseEntity<Void> postAvatar(
       @PathVariable("id") UUID id,
       @RequestParam("image") MultipartFile multipartFile
@@ -145,7 +143,7 @@ public class OrganizationController {
       return ResponseEntity.badRequest().build();
     }
     var contentType = multipartFile.getContentType();
-    if(contentType == null || contentType.startsWith("image/")) {
+    if (contentType == null || !contentType.startsWith("image/")) {
       return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).build();
     }
     setLogo.handle(id, multipartFile.getBytes(), contentType);

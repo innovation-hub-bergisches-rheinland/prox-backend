@@ -15,6 +15,7 @@ import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
 import de.innovationhub.prox.modules.profile.domain.user.UserAccount;
 import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import javax.transaction.Transactional;
@@ -23,6 +24,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -164,6 +166,26 @@ class LecturerControllerIntegrationTest extends AbstractIntegrationTest {
     var updatedLecturer = lecturerRepository.findById(lecturer.getId()).orElseThrow();
     assertThat(updatedLecturer.getName()).isEqualTo("Max Mustermann");
     assertThat(updatedLecturer.getProfile().getAffiliation()).isEqualTo("2022-11-07");
+  }
+
+  @Test
+  @WithMockUser(value = USER_ID)
+  void shouldSetAvatar() throws IOException {
+    var lecturer = createDummyLecturer();
+    lecturerRepository.save(lecturer);
+
+    var resource = new ClassPathResource("img/avatar.png").getFile();
+
+    given()
+        .contentType(ContentType.MULTIPART)
+        .multiPart("image", resource, "image/png")
+        .when()
+        .post("lecturers/{id}/avatar", lecturer.getId())
+        .then()
+        .status(HttpStatus.NO_CONTENT);
+
+    var lecturer1 = lecturerRepository.findById(lecturer.getId()).get();
+    assertThat(lecturer1.getAvatarKey()).isNotNull();
   }
 
   @Test

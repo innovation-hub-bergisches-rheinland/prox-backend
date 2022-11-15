@@ -78,7 +78,7 @@ public class LecturerController {
     return ResponseEntity.status(HttpStatus.OK).body(dto);
   }
 
-  @PostMapping("{id}/avatar")
+  @PostMapping(value = "{id}/avatar", consumes = "multipart/form-data")
   public ResponseEntity<Void> postAvatar(
       @PathVariable("id") UUID id,
       @RequestParam("image") MultipartFile multipartFile
@@ -87,7 +87,7 @@ public class LecturerController {
       return ResponseEntity.badRequest().build();
     }
     var contentType = multipartFile.getContentType();
-    if(contentType == null || contentType.startsWith("image/")) {
+    if (contentType == null || !contentType.startsWith("image/")) {
       return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).build();
     }
     setAvatar.handle(id, multipartFile.getBytes(), contentType);

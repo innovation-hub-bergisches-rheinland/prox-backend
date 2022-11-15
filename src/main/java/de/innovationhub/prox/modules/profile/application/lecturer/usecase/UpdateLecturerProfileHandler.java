@@ -7,6 +7,7 @@ import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerProfile;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
 import java.util.UUID;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @ApplicationComponent
@@ -16,6 +17,7 @@ public class UpdateLecturerProfileHandler {
   private final LecturerRepository lecturerRepository;
   private final AuthenticationFacade authentication;
 
+  @Transactional
   public Lecturer handle(UUID lecturerId, UpdateLecturerDto dto) {
     var lecturer = this.lecturerRepository.findById(lecturerId)
         .orElseThrow(() -> new RuntimeException("Lecturer could not be found"));

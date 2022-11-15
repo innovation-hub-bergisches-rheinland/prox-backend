@@ -6,6 +6,7 @@ import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
 import java.io.IOException;
 import java.util.UUID;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @ApplicationComponent
@@ -17,6 +18,7 @@ public class SetLecturerAvatarHandler {
   private final AuthenticationFacade authentication;
   private final LecturerRepository lecturerRepository;
 
+  @Transactional
   public void handle(UUID lecturerId, byte[] avatarImageData, String contentType) {
     var lecturer = lecturerRepository.findById(lecturerId)
         .orElseThrow(() -> new RuntimeException("Lecturer not found")); // TODO: proper exception

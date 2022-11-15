@@ -1,34 +1,60 @@
 package de.innovationhub.prox.modules.profile.application.lecturer.web;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerDto;
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerDto.CreateLecturerProfileDto;
+import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.SetLecturerTagsRequestDto;
+import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.UpdateLecturerDto;
+import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
+import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
+import de.innovationhub.prox.modules.profile.domain.user.UserAccount;
 import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import java.util.List;
+import java.util.UUID;
+import javax.transaction.Transactional;
+import org.junit.After;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 @AutoConfigureMockMvc
+@Transactional
 class LecturerControllerIntegrationTest extends AbstractIntegrationTest {
+
+  static final String USER_ID = "8307f5bc-38fc-44ac-bab7-3c8ef85c1ec4";
+
   @Autowired
   MockMvc mockMvc;
+
+  @Autowired
+  LecturerRepository lecturerRepository;
 
   @BeforeEach
   void setupRestAssured() {
     RestAssuredMockMvc.standaloneSetup(() -> mockMvc);
   }
 
+  @After
+  void tearDown() {
+    lecturerRepository.deleteAll();
+  }
+
+  private Lecturer createDummyLecturer() {
+    return Lecturer.create(new UserAccount(UUID.fromString(USER_ID)), "Max Mustermann");
+  }
+
   @Test
-  @WithMockUser(value = "8307f5bc-38fc-44ac-bab7-3c8ef85c1ec4")
+  @WithMockUser(value = USER_ID)
   void shouldCreateLecturer() {
     var createLecturerRequest = new CreateLecturerDto(
         "Max Mustermann",
@@ -46,13 +72,119 @@ class LecturerControllerIntegrationTest extends AbstractIntegrationTest {
         )
     );
 
-    given()
+    var id = given()
         .contentType(ContentType.JSON)
         .accept(ContentType.JSON)
         .body(createLecturerRequest)
         .when()
         .post("lecturers")
         .then()
-        .status(HttpStatus.CREATED);
+        .status(HttpStatus.CREATED)
+        .extract()
+        .jsonPath()
+        .getUUID("id");
+
+    var lecturer = lecturerRepository.findById(id).orElseThrow();
+    assertThat(lecturer.getUser().getUserId())
+        .isEqualTo(UUID.fromString(USER_ID));
+  }
+
+  @Test
+  void shouldGetAll() {
+    var lecturer = createDummyLecturer();
+    lecturerRepository.save(lecturer);
+
+    given()
+        .contentType(ContentType.JSON)
+        .accept(ContentType.JSON)
+        .when()
+        .get("lecturers")
+        .then()
+        .status(HttpStatus.OK)
+        .body(".", hasSize(1));
+  }
+
+  @Test
+  void shouldReturnNotFound() {
+    given()
+        .contentType(ContentType.JSON)
+        .accept(ContentType.JSON)
+        .when()
+        .get("lecturers/{id}", UUID.randomUUID())
+        .then()
+        .status(HttpStatus.NOT_FOUND);
+  }
+
+  @Test
+  void shouldGetOne() {
+    var lecturer = createDummyLecturer();
+    lecturerRepository.save(lecturer);
+
+    given()
+        .contentType(ContentType.JSON)
+        .accept(ContentType.JSON)
+        .when()
+        .get("lecturers/{id}", lecturer.getId())
+        .then()
+        .status(HttpStatus.OK)
+        .body("id", equalTo(lecturer.getId().toString()));
+  }
+
+  @Test
+  @WithMockUser(value = USER_ID)
+  void shouldUpdate() {
+    var lecturer = createDummyLecturer();
+    lecturerRepository.save(lecturer);
+
+    var updateLecturerDto = new UpdateLecturerDto(
+        "Max Mustermann",
+        new UpdateLecturerDto.CreateLecturerProfileDto(
+            "2022-11-07",
+            "200",
+            "Lorem Ipsum",
+            List.of("Lorem Ipsum"),
+            "Lorem Ipsum",
+            "Lala Land",
+            "test@example.org",
+            "555-1234-567",
+            "example.org",
+            "example"
+        )
+    );
+
+    given()
+        .contentType(ContentType.JSON)
+        .accept(ContentType.JSON)
+        .body(updateLecturerDto)
+        .when()
+        .put("lecturers/{id}", lecturer.getId().toString())
+        .then()
+        .status(HttpStatus.OK);
+
+    var updatedLecturer = lecturerRepository.findById(lecturer.getId()).orElseThrow();
+    assertThat(updatedLecturer.getName()).isEqualTo("Max Mustermann");
+    assertThat(updatedLecturer.getProfile().getAffiliation()).isEqualTo("2022-11-07");
+  }
+
+  @Test
+  @WithMockUser(value = USER_ID)
+  void shouldSetTags() {
+    var lecturer = createDummyLecturer();
+    lecturerRepository.save(lecturer);
+
+    var tags = List.of(UUID.randomUUID(), UUID.randomUUID());
+    var setTags = new SetLecturerTagsRequestDto(tags);
+
+    given()
+        .contentType(ContentType.JSON)
+        .accept(ContentType.JSON)
+        .body(setTags)
+        .when()
+        .post("lecturers/{id}/tags", lecturer.getId().toString())
+        .then()
+        .status(HttpStatus.OK);
+
+    var updatedLecturer = lecturerRepository.findById(lecturer.getId()).orElseThrow();
+    assertThat(updatedLecturer.getTags()).containsExactlyInAnyOrderElementsOf(tags);
   }
 }

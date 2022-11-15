@@ -5,6 +5,7 @@ import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
 import java.util.List;
 import java.util.UUID;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @ApplicationComponent
@@ -14,6 +15,7 @@ public class SetLecturerTagsHandler {
   private final LecturerRepository lecturerRepository;
   private final AuthenticationFacade authentication;
 
+  @Transactional
   public List<UUID> handle(UUID lecturerId,
       List<UUID> tags) {
     var lecturer = lecturerRepository.findById(lecturerId)

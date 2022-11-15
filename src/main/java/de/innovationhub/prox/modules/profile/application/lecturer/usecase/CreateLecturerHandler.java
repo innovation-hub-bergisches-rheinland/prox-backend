@@ -8,6 +8,7 @@ import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerProfile;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
 import de.innovationhub.prox.modules.profile.domain.user.UserAccount;
 import java.util.Objects;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @ApplicationComponent
@@ -17,6 +18,7 @@ public class CreateLecturerHandler {
   private final LecturerRepository lecturerRepository;
   private final AuthenticationFacade authenticationFacade;
 
+  @Transactional
   public Lecturer handle(CreateLecturerDto dto) {
     Objects.requireNonNull(dto);
 

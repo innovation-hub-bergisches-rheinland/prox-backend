@@ -12,8 +12,6 @@ import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.ReadLe
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.SetLecturerTagsRequestDto;
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.SetLecturerTagsResponseDto;
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.UpdateLecturerDto;
-import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectTagsRequestDto;
-import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectTagsResponseDto;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -77,7 +75,7 @@ public class LecturerController {
   ) {
     var lecturer = update.handle(id, updateLecturerDto);
     var dto = dtoAssembler.toDto(lecturer);
-    return ResponseEntity.status(HttpStatus.CREATED).body(dto);
+    return ResponseEntity.status(HttpStatus.OK).body(dto);
   }
 
   @PostMapping("{id}/avatar")

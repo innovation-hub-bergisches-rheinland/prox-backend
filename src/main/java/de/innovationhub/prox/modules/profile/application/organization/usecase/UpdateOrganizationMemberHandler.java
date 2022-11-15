@@ -28,7 +28,7 @@ public class UpdateOrganizationMemberHandler {
     }
 
     org.updateMembership(new UserAccount(memberId), dto.role());
-    org = organizationRepository.save(org);
+    organizationRepository.save(org);
     var optMembership = org.getMembers().stream()
         .filter(it -> it.getMember().getUser().getUserId().equals(memberId))
         .findFirst();

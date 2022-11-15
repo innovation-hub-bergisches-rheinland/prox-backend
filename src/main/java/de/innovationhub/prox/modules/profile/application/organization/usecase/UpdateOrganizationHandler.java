@@ -42,6 +42,7 @@ public class UpdateOrganizationHandler {
       profile.setContactEmail(ucProfile.contactEmail());
       profile.setNumberOfEmployees(ucProfile.numberOfEmployees());
       profile.setSocialMediaHandles(ucProfile.socialMediaHandles());
+      org.setProfile(profile);
     }
 
     return organizationRepository.save(org);

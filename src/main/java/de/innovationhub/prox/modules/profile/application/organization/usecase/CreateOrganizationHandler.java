@@ -19,7 +19,20 @@ public class CreateOrganizationHandler {
   public Organization handle(CreateOrganizationDto useCase) {
     var founder = new UserAccount(authenticationFacade.currentAuthenticated());
     var org = Organization.create(useCase.name(), founder);
-    org.setProfile(new OrganizationProfile());
+    var profile = new OrganizationProfile();
+    if (useCase.profile() != null) {
+      var ucProfile = useCase.profile();
+
+      profile.setHeadquarter(ucProfile.headquarter());
+      profile.setHomepage(ucProfile.homepage());
+      profile.setQuarters(ucProfile.quarters());
+      profile.setVita(ucProfile.vita());
+      profile.setFoundingDate(ucProfile.foundingDate());
+      profile.setContactEmail(ucProfile.contactEmail());
+      profile.setNumberOfEmployees(ucProfile.numberOfEmployees());
+      profile.setSocialMediaHandles(ucProfile.socialMediaHandles());
+    }
+    org.setProfile(profile);
 
     return organizationRepository.save(org);
   }

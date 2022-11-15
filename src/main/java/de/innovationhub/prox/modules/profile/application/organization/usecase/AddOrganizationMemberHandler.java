@@ -28,7 +28,7 @@ public class AddOrganizationMemberHandler {
     }
 
     org.addMember(new UserAccount(dto.member()), dto.role());
-    org = organizationRepository.save(org);
+    organizationRepository.save(org);
     var optMembership = org.getMembers().stream()
         .filter(it -> it.getMember().getUser().getUserId().equals(dto.member()))
         .findFirst();

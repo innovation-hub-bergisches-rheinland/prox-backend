@@ -26,5 +26,6 @@ public class RemoveOrganizationMemberHandler {
     }
 
     org.removeMember(new UserAccount(memberId));
+    organizationRepository.save(org);
   }
 }

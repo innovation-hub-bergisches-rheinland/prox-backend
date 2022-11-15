@@ -3,7 +3,6 @@ package de.innovationhub.prox.modules.profile.application.organization.usecase;
 import de.innovationhub.prox.infra.storage.StorageProvider;
 import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
-import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRepository;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRole;
 import java.io.IOException;
@@ -30,6 +29,7 @@ public class SetOrganizationLogoHandler {
     try {
       storage.storeFile(fileId, avatarImageData, contentType);
       org.setLogoKey(fileId);
+      organizationRepository.save(org);
     } catch (IOException e) {
       throw new RuntimeException("Failed to store avatar image", e); // TODO: proper exception
     }

@@ -3,6 +3,10 @@ package de.innovationhub.prox.modules.profile.domain.organization;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import de.innovationhub.prox.modules.profile.domain.organization.events.OrganizationCreated;
+import de.innovationhub.prox.modules.profile.domain.organization.events.OrganizationMemberAdded;
+import de.innovationhub.prox.modules.profile.domain.organization.events.OrganizationMemberRemoved;
+import de.innovationhub.prox.modules.profile.domain.organization.events.OrganizationMemberUpdated;
 import de.innovationhub.prox.modules.profile.domain.user.UserAccount;
 import java.util.List;
 import java.util.UUID;
@@ -11,9 +15,7 @@ import org.junit.jupiter.api.Test;
 class OrganizationTest {
 
   private Organization createTestOrganization(UserAccount user) {
-    return new Organization(
-        UUID.randomUUID(), "ACME Ltd",
-        List.of(new Membership(new Member(user), OrganizationRole.ADMIN)));
+    return Organization.create("ACME Ltd", user);
   }
 
   private Organization createTestOrganization(List<Membership> members) {
@@ -54,6 +56,9 @@ class OrganizationTest {
     assertThat(org.getMembers())
         .filteredOn(m -> m.getMember().getUser().equals(homer))
         .isEmpty();
+    assertThat(org.getDomainEvents())
+        .filteredOn(e -> e instanceof OrganizationMemberRemoved)
+        .hasSize(1);
   }
 
   @Test
@@ -74,6 +79,9 @@ class OrganizationTest {
 
     assertThat(org.getMembers())
         .filteredOn(m -> m.getMember().getUser().equals(homer))
+        .hasSize(1);
+    assertThat(org.getDomainEvents())
+        .filteredOn(e -> e instanceof OrganizationMemberAdded)
         .hasSize(1);
   }
 
@@ -104,5 +112,21 @@ class OrganizationTest {
         .first()
         .extracting(Membership::getRole)
         .isEqualTo(OrganizationRole.MEMBER);
+
+    assertThat(org.getDomainEvents())
+        .filteredOn(e -> e instanceof OrganizationMemberUpdated)
+        .hasSize(1);
+  }
+
+  @Test
+  void shouldRegisterOrganizationCreatedEventOnCreate() {
+    var user = new UserAccount(UUID.randomUUID());
+    var org = createTestOrganization(user);
+    var domainEvents = org.getDomainEvents();
+
+    assertThat(domainEvents)
+        .hasSize(1)
+        .first()
+        .isInstanceOf(OrganizationCreated.class);
   }
 }

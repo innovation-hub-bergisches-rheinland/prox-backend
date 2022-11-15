@@ -43,6 +43,11 @@ public class UpdateProjectHandler {
     project.setCurriculumContext(context);
     project.setTimeBox(timeBox);
 
+    project.setTitle(projectDto.title());
+    project.setDescription(projectDto.description());
+    project.setSummary(projectDto.summary());
+    project.setRequirement(projectDto.requirement());
+
     if (!supervisors.isEmpty()) {
       project.offer(supervisors);
     }
@@ -75,7 +80,7 @@ public class UpdateProjectHandler {
     List<Discipline> disciplines = List.of();
     if (dtoContext != null) {
       if (dtoContext.moduleTypeKeys() != null && !dtoContext.moduleTypeKeys().isEmpty()) {
-        moduleTypes = moduleTypeRepository.findByDisciplineKeys(dtoContext.moduleTypeKeys());
+        moduleTypes = moduleTypeRepository.findByKeyIn(dtoContext.moduleTypeKeys());
       }
       if (dtoContext.disciplineKeys() != null && !dtoContext.disciplineKeys().isEmpty()) {
         disciplines = disciplineRepository.findByKeyIn(dtoContext.disciplineKeys());

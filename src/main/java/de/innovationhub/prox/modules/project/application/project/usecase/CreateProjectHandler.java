@@ -78,7 +78,7 @@ public class CreateProjectHandler {
     List<Discipline> disciplines = List.of();
     if (dtoContext != null) {
       if (dtoContext.moduleTypeKeys() != null && !dtoContext.moduleTypeKeys().isEmpty()) {
-        moduleTypes = moduleTypeRepository.findByDisciplineKeys(dtoContext.moduleTypeKeys());
+        moduleTypes = moduleTypeRepository.findByKeyIn(dtoContext.moduleTypeKeys());
       }
       if (dtoContext.disciplineKeys() != null && !dtoContext.disciplineKeys().isEmpty()) {
         disciplines = disciplineRepository.findByKeyIn(dtoContext.disciplineKeys());

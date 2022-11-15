@@ -28,6 +28,7 @@ public class SetLecturerAvatarHandler {
     try {
       storage.storeFile(fileId, avatarImageData, contentType);
       lecturer.setAvatarKey(fileId);
+      lecturerRepository.save(lecturer);
     } catch (IOException e) {
       throw new RuntimeException("Failed to store avatar image", e); // TODO: proper exception
     }

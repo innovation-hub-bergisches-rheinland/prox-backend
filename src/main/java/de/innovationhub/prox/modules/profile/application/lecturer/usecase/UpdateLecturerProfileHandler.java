@@ -1,5 +1,6 @@
 package de.innovationhub.prox.modules.profile.application.lecturer.usecase;
 
+import de.innovationhub.prox.modules.auth.application.exception.UnauthorizedAccessException;
 import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.UpdateLecturerDto;
@@ -22,7 +23,7 @@ public class UpdateLecturerProfileHandler {
     var lecturer = this.lecturerRepository.findById(lecturerId)
         .orElseThrow(() -> new RuntimeException("Lecturer could not be found"));
     if (!authentication.currentAuthenticated().equals(lecturer.getUser().getUserId())) {
-      throw new RuntimeException("Not authorized"); // TODO: proper exception
+      throw new UnauthorizedAccessException();
     }
 
     lecturer.setName(dto.name());

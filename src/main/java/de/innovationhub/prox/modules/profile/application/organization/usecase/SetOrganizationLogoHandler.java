@@ -1,8 +1,10 @@
 package de.innovationhub.prox.modules.profile.application.organization.usecase;
 
 import de.innovationhub.prox.infra.storage.StorageProvider;
+import de.innovationhub.prox.modules.auth.application.exception.UnauthorizedAccessException;
 import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
+import de.innovationhub.prox.modules.profile.application.organization.exception.OrganizationNotFoundException;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRepository;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRole;
 import java.io.IOException;
@@ -20,9 +22,9 @@ public class SetOrganizationLogoHandler {
 
   public void handle(UUID orgId, byte[] avatarImageData, String contentType) {
     var org = organizationRepository.findById(orgId)
-        .orElseThrow(() -> new RuntimeException("Organization not found")); // TODO: proper exception
+        .orElseThrow(OrganizationNotFoundException::new);
     if(!org.isInRole(authentication.currentAuthenticated(), OrganizationRole.ADMIN)) {
-      throw new RuntimeException("Not authorized"); // TODO: proper exception
+      throw new UnauthorizedAccessException();
     }
 
     var fileId = LOGO_FILE_PREFIX + orgId;
@@ -31,7 +33,7 @@ public class SetOrganizationLogoHandler {
       org.setLogoKey(fileId);
       organizationRepository.save(org);
     } catch (IOException e) {
-      throw new RuntimeException("Failed to store avatar image", e); // TODO: proper exception
+      throw new RuntimeException("Failed to store avatar image", e);
     }
   }
 }

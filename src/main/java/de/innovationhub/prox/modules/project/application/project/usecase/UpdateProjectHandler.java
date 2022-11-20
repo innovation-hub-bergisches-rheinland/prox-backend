@@ -2,6 +2,7 @@ package de.innovationhub.prox.modules.project.application.project.usecase;
 
 import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
+import de.innovationhub.prox.modules.project.application.project.exception.ProjectNotFoundException;
 import de.innovationhub.prox.modules.project.application.project.web.dto.CurriculumContextDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.PartnerDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.SupervisorDto;
@@ -30,8 +31,8 @@ public class UpdateProjectHandler {
   private final AuthenticationFacade authenticationFacade;
 
   public Project handle(UUID projectId, UpdateProjectDto projectDto) {
-    // TODO: Proper exception
-    var project = projectRepository.findById(projectId).orElseThrow();
+    var project = projectRepository.findById(projectId)
+        .orElseThrow(ProjectNotFoundException::new);
 
     // TODO: Authorization
     var partner = buildPartner(projectDto.partner());

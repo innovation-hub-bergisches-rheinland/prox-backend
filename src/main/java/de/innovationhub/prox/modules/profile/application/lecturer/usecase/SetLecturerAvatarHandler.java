@@ -1,8 +1,10 @@
 package de.innovationhub.prox.modules.profile.application.lecturer.usecase;
 
 import de.innovationhub.prox.infra.storage.StorageProvider;
+import de.innovationhub.prox.modules.auth.application.exception.UnauthorizedAccessException;
 import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
+import de.innovationhub.prox.modules.profile.application.lecturer.exception.LecturerNotFoundException;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
 import java.io.IOException;
 import java.util.UUID;
@@ -21,9 +23,9 @@ public class SetLecturerAvatarHandler {
   @Transactional
   public void handle(UUID lecturerId, byte[] avatarImageData, String contentType) {
     var lecturer = lecturerRepository.findById(lecturerId)
-        .orElseThrow(() -> new RuntimeException("Lecturer not found")); // TODO: proper exception
+        .orElseThrow(LecturerNotFoundException::new);
     if(!authentication.currentAuthenticated().equals(lecturer.getUser().getUserId())) {
-      throw new RuntimeException("Not authorized"); // TODO: proper exception
+      throw new UnauthorizedAccessException();
     }
 
     var fileId = AVATAR_FILE_PREFIX + lecturerId;
@@ -32,7 +34,7 @@ public class SetLecturerAvatarHandler {
       lecturer.setAvatarKey(fileId);
       lecturerRepository.save(lecturer);
     } catch (IOException e) {
-      throw new RuntimeException("Failed to store avatar image", e); // TODO: proper exception
+      throw new RuntimeException("Failed to store avatar image", e);
     }
   }
 }

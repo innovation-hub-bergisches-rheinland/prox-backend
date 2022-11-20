@@ -1,7 +1,9 @@
 package de.innovationhub.prox.modules.profile.application.organization.usecase;
 
+import de.innovationhub.prox.modules.auth.application.exception.UnauthorizedAccessException;
 import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
+import de.innovationhub.prox.modules.profile.application.organization.exception.OrganizationNotFoundException;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRepository;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRole;
 import java.util.List;
@@ -18,13 +20,11 @@ public class SetOrganizationTagsHandler {
   public List<UUID> handle(UUID organizationId,
       List<UUID> tags) {
     var organization = organizationRepository.findById(organizationId)
-        .orElseThrow(
-            () -> new RuntimeException("Organization not found")); // TODO: Create custom exception
+        .orElseThrow(OrganizationNotFoundException::new);
     var authenticatedUser = authenticationFacade.currentAuthenticated();
 
-    // TODO
     if (!organization.isInRole(authenticatedUser, OrganizationRole.ADMIN)) {
-      throw new RuntimeException("Unauthorized");
+      throw new UnauthorizedAccessException();
     }
 
     organization.setTags(tags);

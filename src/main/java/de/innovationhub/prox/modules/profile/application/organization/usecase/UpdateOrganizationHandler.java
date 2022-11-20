@@ -1,7 +1,9 @@
 package de.innovationhub.prox.modules.profile.application.organization.usecase;
 
+import de.innovationhub.prox.modules.auth.application.exception.UnauthorizedAccessException;
 import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
+import de.innovationhub.prox.modules.profile.application.organization.exception.OrganizationNotFoundException;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.UpdateOrganizationDto;
 import de.innovationhub.prox.modules.profile.domain.organization.Organization;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationProfile;
@@ -18,19 +20,18 @@ public class UpdateOrganizationHandler {
 
   public Organization handle(UUID id, UpdateOrganizationDto useCase) {
     var authenticatedUser = authenticationFacade.currentAuthenticated();
-    // TODO: proper exception
-    var org = organizationRepository.findById(id).orElseThrow();
+    var org = organizationRepository.findById(id)
+        .orElseThrow(OrganizationNotFoundException::new);
 
-    // TODO
     if (!org.isInRole(authenticatedUser, OrganizationRole.ADMIN)) {
-      throw new RuntimeException("Unauthorized");
+      throw new UnauthorizedAccessException();
     }
 
     org.setName(useCase.name());
     var ucProfile = useCase.profile();
-    if(ucProfile != null) {
+    if (ucProfile != null) {
       var profile = org.getProfile();
-      if(profile == null) {
+      if (profile == null) {
         profile = new OrganizationProfile();
       }
 

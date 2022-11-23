@@ -1,3 +1,9 @@
 plugins {
     id 'net.researchgate.release'
 }
+
+release {
+    // We assume that we don't have that much remote changes that we have a benefit from failing
+    // here. It might be annoying to push changes every time beforehand.
+    failOnPublishNeeded = false
+}

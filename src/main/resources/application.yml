@@ -19,9 +19,9 @@ spring:
   application:
     name: prox-backend
   datasource:
-    password: ${DB_USER:prox-backend}
+    password: ${DB_PASSWORD:prox-backend}
     url: jdbc:postgresql://prox-db:5432/prox-db
-    username: ${DB_PASSWORD:prox-backend}
+    username: ${DB_USER:prox-backend}
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:

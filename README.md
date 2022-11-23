@@ -1,5 +1,7 @@
 # PROX Backend
 
+[![Docker Repository on Quay](https://quay.io/repository/innovation-hub-bergisches-rheinland/prox-backend/status "Docker Repository on Quay")](https://quay.io/repository/innovation-hub-bergisches-rheinland/prox-backend)
+
 Backend service of the web-application [PROX](https://prox.aws.innovation-hub.de).
 
 ## Architectural Decisions

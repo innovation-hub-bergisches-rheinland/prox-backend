@@ -20,4 +20,4 @@ jobs:
       - name: Lint Helm
         uses: WyriHaximus/github-action-helm3@v2
         with:
-          exec: helm lint ./src/main/k8s/helm
+          exec: helm lint ./src/main/k8s/prox-backend

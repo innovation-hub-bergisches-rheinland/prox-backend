@@ -37,7 +37,6 @@ dependencies {
 
     // K8s
     implementation 'org.springframework.cloud:spring-cloud-starter-kubernetes-fabric8-config'
-    implementation 'org.springframework.cloud:spring-cloud-starter-kubernetes-client-config'
 
     runtimeOnly 'org.postgresql:postgresql'
 

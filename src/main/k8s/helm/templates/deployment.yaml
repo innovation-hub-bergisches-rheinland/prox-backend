@@ -37,6 +37,9 @@ spec:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "k8s"
           livenessProbe:
             httpGet:
               path: /

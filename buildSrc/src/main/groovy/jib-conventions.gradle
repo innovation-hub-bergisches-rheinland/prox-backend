@@ -1,0 +1,16 @@
+plugins {
+    id "com.google.cloud.tools.jib"
+}
+
+jib {
+  from {
+    image = "eclipse-temurin:17-jdk-alpine"
+  }
+  to {
+    image = "quay.io/innovation-hub-bergisches-rheinland/prox-backend"
+    tags = ["latest"]
+  }
+  container {
+    format = "OCI"
+  }
+}

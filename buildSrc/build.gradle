@@ -12,4 +12,5 @@ repositories {
 dependencies {
     implementation "io.freefair.gradle:lombok-plugin:6.5.1"
     implementation "io.ebean:ebean-gradle-plugin:13.10.0"
+    implementation "com.google.cloud.tools:jib-gradle-plugin:3.3.1"
 }

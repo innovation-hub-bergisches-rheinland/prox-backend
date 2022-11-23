@@ -1,7 +1,0 @@
-plugins {
-    id 'net.researchgate.release'
-}
-
-release {
-    tagTemplate = 'v${version}'
-}

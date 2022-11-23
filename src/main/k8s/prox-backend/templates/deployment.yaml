@@ -44,7 +44,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.config.existingSecret | default (include "prox-backend.fullname" .) }}
-                  key: superUserPassword
+                  key: dbUser
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:

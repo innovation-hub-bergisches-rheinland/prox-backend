@@ -26,11 +26,6 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: validate
-    properties:
-      hibernate:
-        jdbc:
-          lob:
-            non_contextual_creation: true
   security:
     oauth2:
       resourceserver:

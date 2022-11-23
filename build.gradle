@@ -28,6 +28,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    implementation "org.flywaydb:flyway-core"
+
     implementation "org.keycloak:keycloak-admin-client:20.0.0"
     // AWS
     implementation "com.amazonaws:aws-java-sdk:1.12.332"

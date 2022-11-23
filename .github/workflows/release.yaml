@@ -62,6 +62,6 @@ jobs:
         uses: stefanprodan/helm-gh-pages@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          charts_dir: ./src/main/k8s/helm
+          charts_dir: ./src/main/k8s
           app_version: ${{ steps.get_version.outputs.version }}
           chart_version: ${{ steps.get_version.outputs.version }}

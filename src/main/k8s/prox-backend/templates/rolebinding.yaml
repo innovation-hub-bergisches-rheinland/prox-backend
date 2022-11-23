@@ -1,7 +1,7 @@
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: {{ include "prox-backend.fullname" . }}-role
+  name: {{ include "prox-backend.fullname" . }}
 rules:
   - apiGroups: [ "", "extensions", "apps" ]
     resources: [ "configmaps", "pods", "services", "endpoints", "secrets" ]
@@ -10,11 +10,11 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: {{ include "prox-backend.fullname" . }}-role
+  name: {{ include "prox-backend.fullname" . }}
 roleRef:
   kind: Role
   apiGroup: rbac.authorization.k8s.io
-  name: prox-backend-view-configmaps
+  name: {{ include "prox-backend.fullname" . }}
 subjects:
   - kind: ServiceAccount
     name: {{ include "prox-backend.serviceAccountName" . }}

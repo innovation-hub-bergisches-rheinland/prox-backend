@@ -5,6 +5,7 @@ plugins {
     id "java-conventions"
     id "mapstruct-conventions"
     id "jib-conventions"
+    id "release-conventions"
 }
 
 group = 'de.innovationhub.prox'

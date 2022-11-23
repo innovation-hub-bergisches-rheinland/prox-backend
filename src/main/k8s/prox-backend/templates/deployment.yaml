@@ -40,6 +40,31 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "k8s"
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.config.existingSecret | default (include "prox-project-service.fullname" .) }}
+                  key: superUserPassword
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.config.existingSecret | default (include "prox-project-service.fullname" .) }}
+                  key: dbPassword
+            - name: KEYCLOAK_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.config.existingSecret | default (include "prox-project-service.fullname" .) }}
+                  key: keycloakSecret
+            - name: AWS_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.config.existingSecret | default (include "prox-project-service.fullname" .) }}
+                  key: awsSecretKey
+            - name: AWS_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.config.existingSecret | default (include "prox-project-service.fullname" .) }}
+                  key: awsAccessKey
           livenessProbe:
             httpGet:
               path: /

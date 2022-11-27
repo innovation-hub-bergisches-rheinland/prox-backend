@@ -1,5 +1,6 @@
 package de.innovationhub.prox.modules.project.application.project.web;
 
+import de.innovationhub.prox.modules.project.application.project.usecase.ApplyCommitmentHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.CreateProjectHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.DeleteProjectByIdHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.FindAllProjectsHandler;
@@ -42,6 +43,7 @@ public class ProjectController {
   private final SearchProjectHandler search;
   private final DeleteProjectByIdHandler deleteById;
   private final SetProjectTagsHandler setTags;
+  private final ApplyCommitmentHandler applyCommitment;
 
   private final ProjectDtoAssembler dtoAssembler;
 
@@ -75,6 +77,13 @@ public class ProjectController {
   public ResponseEntity<ReadProjectDto> update(@PathVariable("id") UUID id, @RequestBody
   UpdateProjectDto updateProjectDto) {
     var updatedProject = update.handle(id, updateProjectDto);
+    var dto = dtoAssembler.toDto(updatedProject);
+    return ResponseEntity.ok(dto);
+  }
+
+  @PostMapping(value = "{id}/commitment", consumes = "application/json", produces = "application/json")
+  public ResponseEntity<ReadProjectDto> commitment(@PathVariable("id") UUID id) {
+    var updatedProject = applyCommitment.handle(id);
     var dto = dtoAssembler.toDto(updatedProject);
     return ResponseEntity.ok(dto);
   }

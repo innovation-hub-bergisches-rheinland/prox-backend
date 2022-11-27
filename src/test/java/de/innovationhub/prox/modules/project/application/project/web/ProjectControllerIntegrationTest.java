@@ -4,6 +4,7 @@ import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.modules.project.DisciplineFixtures;
@@ -20,6 +21,7 @@ import de.innovationhub.prox.modules.project.domain.discipline.DisciplineReposit
 import de.innovationhub.prox.modules.project.domain.module.ModuleTypeRepository;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
+import de.innovationhub.prox.modules.project.domain.project.Supervisor;
 import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import java.time.LocalDate;
@@ -196,6 +198,29 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
         .then()
         .statusCode(200)
         .body("title", equalTo("A Changed Project"));
+  }
+
+  @Test
+  @WithMockUser(value = "00000000-0000-0000-0000-000000000001")
+  void shouldApplyCommitment() {
+    var aProject = ProjectFixtures.build_a_project();
+    projectRepository.save(aProject);
+
+    given()
+        .contentType("application/json")
+        .accept("application/json")
+        .when()
+        .post("/projects/{id}/commitment" , aProject.getId())
+        .then()
+        .statusCode(200)
+        .body("supervisors[0].id", is("00000000-0000-0000-0000-000000000001"));
+
+    projectRepository.findById(aProject.getId()).ifPresent(project -> {
+      assertThat(project.getSupervisors())
+          .hasSize(1)
+          .extracting(Supervisor::getLecturerId)
+          .containsExactly(UUID.fromString("00000000-0000-0000-0000-000000000001"));
+    });
   }
 
   @Test

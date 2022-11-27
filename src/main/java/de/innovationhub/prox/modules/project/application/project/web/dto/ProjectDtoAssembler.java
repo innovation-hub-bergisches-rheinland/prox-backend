@@ -1,13 +1,13 @@
 package de.innovationhub.prox.modules.project.application.project.web.dto;
 
 import de.innovationhub.prox.modules.profile.contract.LecturerFacade;
+import de.innovationhub.prox.modules.profile.contract.LecturerView;
 import de.innovationhub.prox.modules.profile.contract.OrganizationFacade;
 import de.innovationhub.prox.modules.profile.contract.OrganizationView;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -36,9 +36,8 @@ public class ProjectDtoAssembler {
     }
 
     var supervisors = project.getSupervisors()
-        .stream().map(s -> lecturerFacade.get(s.getLecturerId()))
-        .filter(Optional::isPresent)
-        .map(Optional::get)
+        .stream()
+        .map(s -> lecturerFacade.get(s.getLecturerId()).orElse(new LecturerView(s.getLecturerId(), "???")))
         .toList();
     return projectMapper.toDto(project, supervisors, partnerOrg, tags);
   }

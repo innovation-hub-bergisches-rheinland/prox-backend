@@ -9,7 +9,6 @@ import static org.mockito.Mockito.when;
 
 import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.profile.OrganizationFixtures;
-import de.innovationhub.prox.modules.profile.application.organization.web.dto.AddOrganizationMembershipDto;
 import de.innovationhub.prox.modules.profile.domain.organization.Organization;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRepository;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRole;
@@ -18,11 +17,11 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
-class AddOrganizationUUIDHandlerTest {
+class RemoveOrganizationMemberHandlerTest {
   OrganizationRepository organizationRepository = mock(OrganizationRepository.class);
   AuthenticationFacade authenticationFacade = mock(AuthenticationFacade.class);
 
-  AddOrganizationMemberHandler handler = new AddOrganizationMemberHandler(organizationRepository,
+  RemoveOrganizationMemberHandler handler = new RemoveOrganizationMemberHandler(organizationRepository,
       authenticationFacade);
 
   @Test
@@ -33,30 +32,32 @@ class AddOrganizationUUIDHandlerTest {
   }
 
   @Test
-  void shouldThrowWhenUserNotMember() {
+  void shouldThrowWhenUserNotAdmin() {
     var org = OrganizationFixtures.ACME_LTD;
+    var userId = UUID.randomUUID();
+    org.addMember(userId, OrganizationRole.MEMBER);
     when(organizationRepository.findById(org.getId())).thenReturn(Optional.of(org));
-    when(authenticationFacade.currentAuthenticatedId()).thenReturn(UUID.randomUUID());
+    when(authenticationFacade.currentAuthenticatedId()).thenReturn(userId);
 
     assertThrows(RuntimeException.class, () -> handler.handle(UUID.randomUUID(), null));
   }
 
   @Test
-  void shouldAddMember() {
+  void shouldRemoveMember() {
     var org = OrganizationFixtures.ACME_LTD;
+    var userId = UUID.randomUUID();
+    org.addMember(userId, OrganizationRole.MEMBER);
     when(organizationRepository.findById(org.getId())).thenReturn(Optional.of(org));
     when(authenticationFacade.currentAuthenticatedId()).thenReturn(OrganizationFixtures.ACME_ADMIN);
 
-    var userId = UUID.randomUUID();
-    var request = new AddOrganizationMembershipDto(userId, OrganizationRole.MEMBER);
-
-    var membership = handler.handle(org.getId(), request);
-    assertThat(membership.getMemberId()).isEqualTo(userId);
-    assertThat(membership.getRole()).isEqualTo(OrganizationRole.MEMBER);
+    handler.handle(org.getId(), userId);
 
     var captor = ArgumentCaptor.forClass(Organization.class);
     verify(organizationRepository).save(captor.capture());
-    var saved = captor.getValue();
-    assertThat(saved.isInRole(userId, OrganizationRole.MEMBER)).isTrue();
+    assertThat(captor.getValue().getMembers())
+        .filteredOn(m -> m.getMemberId().equals(userId))
+        .isEmpty();
   }
+
+
 }

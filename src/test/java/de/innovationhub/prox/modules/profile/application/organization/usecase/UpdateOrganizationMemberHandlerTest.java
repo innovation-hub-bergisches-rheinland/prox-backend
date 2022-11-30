@@ -18,7 +18,7 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
-class UpdateOrganizationUUIDHandlerTest {
+class UpdateOrganizationMemberHandlerTest {
   OrganizationRepository organizationRepository = mock(OrganizationRepository.class);
   AuthenticationFacade authenticationFacade = mock(AuthenticationFacade.class);
 

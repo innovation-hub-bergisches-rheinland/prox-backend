@@ -19,7 +19,7 @@ public class UpdateOrganizationHandler {
   private final AuthenticationFacade authenticationFacade;
 
   public Organization handle(UUID id, UpdateOrganizationDto useCase) {
-    var authenticatedUser = authenticationFacade.currentAuthenticated();
+    var authenticatedUser = authenticationFacade.currentAuthenticatedId();
     var org = organizationRepository.findById(id)
         .orElseThrow(OrganizationNotFoundException::new);
 

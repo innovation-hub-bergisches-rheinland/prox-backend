@@ -18,7 +18,7 @@ public class ApplyCommitmentHandler {
 
   @PreAuthorize("hasRole('professor')")
   public Project handle(UUID projectId) {
-    var auth = authenticationFacade.currentAuthenticated();
+    var auth = authenticationFacade.currentAuthenticatedId();
     var project = projectRepository.findById(projectId)
         .orElseThrow(ProjectNotFoundException::new);
 

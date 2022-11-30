@@ -24,7 +24,7 @@ class CreateLecturerHandlerTest {
 
   @BeforeEach
   void setUp() {
-    when(authenticationFacade.currentAuthenticated()).thenReturn(authenticatedUserId);
+    when(authenticationFacade.currentAuthenticatedId()).thenReturn(authenticatedUserId);
   }
 
   @Test

@@ -20,7 +20,7 @@ public class AddOrganizationMemberHandler {
   private final AuthenticationFacade authenticationFacade;
 
   public Membership handle(UUID organizationId, AddOrganizationMembershipDto dto) {
-    var authenticatedUser = authenticationFacade.currentAuthenticated();
+    var authenticatedUser = authenticationFacade.currentAuthenticatedId();
 
     var org = organizationRepository.findById(organizationId).orElseThrow(
         OrganizationNotFoundException::new);

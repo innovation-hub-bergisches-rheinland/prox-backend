@@ -28,7 +28,7 @@ class CreateOrganizationHandlerTest {
   @Test
   void shouldCreateNewOrganization() {
     var userId = UUID.randomUUID();
-    when(authenticationFacade.currentAuthenticated()).thenReturn(userId);
+    when(authenticationFacade.currentAuthenticatedId()).thenReturn(userId);
 
     var request = new CreateOrganizationDto("ACME Ltd.",
         new CreateOrganizationProfileDto(

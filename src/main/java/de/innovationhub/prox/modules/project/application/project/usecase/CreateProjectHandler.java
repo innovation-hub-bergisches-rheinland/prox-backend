@@ -89,7 +89,7 @@ public class CreateProjectHandler {
   }
 
   private Author buildAuthor() {
-    var authenticatedUser = authenticationFacade.currentAuthenticated();
+    var authenticatedUser = authenticationFacade.currentAuthenticatedId();
     return new Author(authenticatedUser);
   }
 }

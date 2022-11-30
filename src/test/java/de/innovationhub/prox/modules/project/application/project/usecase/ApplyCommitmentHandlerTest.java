@@ -23,7 +23,7 @@ class ApplyCommitmentHandlerTest {
   @Test
   void shouldApplyCommitment() {
     var userId = UUID.randomUUID();
-    when(authenticationFacade.currentAuthenticated()).thenReturn(userId);
+    when(authenticationFacade.currentAuthenticatedId()).thenReturn(userId);
     var project = ProjectFixtures.build_a_project();
     when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
     when(projectRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
@@ -41,7 +41,7 @@ class ApplyCommitmentHandlerTest {
   @Test
   void shouldNotApplyCommitment() {
     var userId = UUID.randomUUID();
-    when(authenticationFacade.currentAuthenticated()).thenReturn(userId);
+    when(authenticationFacade.currentAuthenticatedId()).thenReturn(userId);
     var project = ProjectFixtures.build_a_project();
     project.offer(new Supervisor(UUID.randomUUID()));
     when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));

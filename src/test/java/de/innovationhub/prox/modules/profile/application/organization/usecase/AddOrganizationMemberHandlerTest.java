@@ -36,7 +36,7 @@ class AddOrganizationMemberHandlerTest {
   void shouldThrowWhenUserNotMember() {
     var org = OrganizationFixtures.ACME_LTD;
     when(organizationRepository.findById(org.getId())).thenReturn(Optional.of(org));
-    when(authenticationFacade.currentAuthenticated()).thenReturn(UUID.randomUUID());
+    when(authenticationFacade.currentAuthenticatedId()).thenReturn(UUID.randomUUID());
 
     assertThrows(RuntimeException.class, () -> handler.handle(UUID.randomUUID(), null));
   }
@@ -45,7 +45,7 @@ class AddOrganizationMemberHandlerTest {
   void shouldAddMember() {
     var org = OrganizationFixtures.ACME_LTD;
     when(organizationRepository.findById(org.getId())).thenReturn(Optional.of(org));
-    when(authenticationFacade.currentAuthenticated()).thenReturn(OrganizationFixtures.ACME_ADMIN);
+    when(authenticationFacade.currentAuthenticatedId()).thenReturn(OrganizationFixtures.ACME_ADMIN);
 
     var userId = UUID.randomUUID();
     var request = new AddOrganizationMembershipDto(userId, OrganizationRole.MEMBER);

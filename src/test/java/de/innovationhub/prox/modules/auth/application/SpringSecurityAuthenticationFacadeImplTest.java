@@ -1,5 +1,6 @@
 package de.innovationhub.prox.modules.auth.application;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
@@ -7,7 +8,6 @@ import de.innovationhub.prox.modules.commons.application.exception.Unauthenticat
 import java.util.Collection;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,13 +22,19 @@ class SpringSecurityAuthenticationFacadeImplTest extends AbstractIntegrationTest
 
   @Test
   void shouldThrowWhenUnauthenticated() {
-    assertThrows(UnauthenticatedException.class, () -> authenticationFacade.currentAuthenticated());
+    assertThrows(UnauthenticatedException.class, () -> authenticationFacade.currentAuthenticatedId());
+    assertThrows(UnauthenticatedException.class, () -> authenticationFacade.getAuthentication());
   }
 
   @Test
   @WithMockUser(username = "5f230652-c1d7-40f5-b076-f0a9baa684dd")
   void shouldReturnMockUser() {
-    assertEquals("5f230652-c1d7-40f5-b076-f0a9baa684dd", authenticationFacade.currentAuthenticated().toString());
+    assertEquals("5f230652-c1d7-40f5-b076-f0a9baa684dd", authenticationFacade.currentAuthenticatedId().toString());
+    assertThat(authenticationFacade.getAuthentication())
+        .satisfies(authentication -> {
+          assertThat(authentication.isAuthenticated()).isTrue();
+          assertThat(authentication.getName()).isEqualTo("5f230652-c1d7-40f5-b076-f0a9baa684dd");
+        });
   }
 
   @Test
@@ -42,6 +48,7 @@ class SpringSecurityAuthenticationFacadeImplTest extends AbstractIntegrationTest
     var context = SecurityContextHolder.getContext();
     context.setAuthentication(token);
 
-    assertEquals("0d77461b-748e-4f1d-891a-2749f9746018", authenticationFacade.currentAuthenticated().toString());
+    assertEquals("0d77461b-748e-4f1d-891a-2749f9746018", authenticationFacade.currentAuthenticatedId().toString());
+    assertThat(authenticationFacade.getAuthentication()).isEqualTo(token);
   }
 }

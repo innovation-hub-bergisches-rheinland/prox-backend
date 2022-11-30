@@ -29,7 +29,7 @@ class DeleteProjectByIdHandlerTest {
   @Test
   void shouldDelete() {
     var project = ProjectFixtures.build_a_project();
-    when(authenticationFacade.currentAuthenticated()).thenReturn(ProjectFixtures.A_PROJECT_CREATOR_ID);
+    when(authenticationFacade.currentAuthenticatedId()).thenReturn(ProjectFixtures.A_PROJECT_CREATOR_ID);
     when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
 
     deleteProjectByIdHandler.handle(project.getId());

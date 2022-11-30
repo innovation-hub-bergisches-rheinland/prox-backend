@@ -22,7 +22,7 @@ public class UpdateLecturerProfileHandler {
   public Lecturer handle(UUID lecturerId, UpdateLecturerDto dto) {
     var lecturer = this.lecturerRepository.findById(lecturerId)
         .orElseThrow(() -> new RuntimeException("Lecturer could not be found"));
-    if (!authentication.currentAuthenticated().equals(lecturer.getUser().getUserId())) {
+    if (!authentication.currentAuthenticatedId().equals(lecturer.getUser().getUserId())) {
       throw new UnauthorizedAccessException();
     }
 

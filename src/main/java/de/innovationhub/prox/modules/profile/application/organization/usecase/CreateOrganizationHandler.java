@@ -17,7 +17,7 @@ public class CreateOrganizationHandler {
   private final AuthenticationFacade authenticationFacade;
 
   public Organization handle(CreateOrganizationDto useCase) {
-    var founder = new UserAccount(authenticationFacade.currentAuthenticated());
+    var founder = new UserAccount(authenticationFacade.currentAuthenticatedId());
     var org = Organization.create(useCase.name(), founder);
     var profile = new OrganizationProfile();
     if (useCase.profile() != null) {

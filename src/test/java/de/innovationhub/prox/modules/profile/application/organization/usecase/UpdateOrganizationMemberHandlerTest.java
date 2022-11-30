@@ -39,7 +39,7 @@ class UpdateOrganizationMemberHandlerTest {
     var userId = UUID.randomUUID();
     org.addMember(new UserAccount(userId), OrganizationRole.MEMBER);
     when(organizationRepository.findById(org.getId())).thenReturn(Optional.of(org));
-    when(authenticationFacade.currentAuthenticated()).thenReturn(userId);
+    when(authenticationFacade.currentAuthenticatedId()).thenReturn(userId);
 
     assertThrows(RuntimeException.class, () -> handler.handle(UUID.randomUUID(), null, null));
   }
@@ -50,7 +50,7 @@ class UpdateOrganizationMemberHandlerTest {
     var userId = UUID.randomUUID();
     org.addMember(new UserAccount(userId), OrganizationRole.MEMBER);
     when(organizationRepository.findById(org.getId())).thenReturn(Optional.of(org));
-    when(authenticationFacade.currentAuthenticated()).thenReturn(OrganizationFixtures.ACME_ADMIN);
+    when(authenticationFacade.currentAuthenticatedId()).thenReturn(OrganizationFixtures.ACME_ADMIN);
 
     handler.handle(org.getId(), userId, new UpdateOrganizationMembershipDto(OrganizationRole.ADMIN));
 

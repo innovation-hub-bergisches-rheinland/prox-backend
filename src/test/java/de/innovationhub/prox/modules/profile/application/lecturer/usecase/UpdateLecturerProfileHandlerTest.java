@@ -58,7 +58,7 @@ class UpdateLecturerProfileHandlerTest {
     var lecturer = createDummyLecturer();
     var dto = createDummyDto();
     when(lecturerRepository.findById(any())).thenReturn(Optional.of(lecturer));
-    when(authentication.currentAuthenticated()).thenReturn(lecturer.getUser().getUserId());
+    when(authentication.currentAuthenticatedId()).thenReturn(lecturer.getUser().getUserId());
 
     handler.handle(lecturer.getId(), dto);
 

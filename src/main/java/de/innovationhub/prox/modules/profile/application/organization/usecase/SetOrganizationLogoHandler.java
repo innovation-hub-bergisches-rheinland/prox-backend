@@ -23,7 +23,7 @@ public class SetOrganizationLogoHandler {
   public void handle(UUID orgId, byte[] avatarImageData, String contentType) {
     var org = organizationRepository.findById(orgId)
         .orElseThrow(OrganizationNotFoundException::new);
-    if(!org.isInRole(authentication.currentAuthenticated(), OrganizationRole.ADMIN)) {
+    if(!org.isInRole(authentication.currentAuthenticatedId(), OrganizationRole.ADMIN)) {
       throw new UnauthorizedAccessException();
     }
 

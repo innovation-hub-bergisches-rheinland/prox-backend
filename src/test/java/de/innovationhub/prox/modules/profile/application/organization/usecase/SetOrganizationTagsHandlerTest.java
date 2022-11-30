@@ -34,7 +34,7 @@ class SetOrganizationTagsHandlerTest {
     var org = OrganizationFixtures.ACME_LTD;
     var tags = List.of(UUID.randomUUID(), UUID.randomUUID());
     when(organizationRepository.findById(any())).thenReturn(Optional.of(org));
-    when(authentication.currentAuthenticated()).thenReturn(OrganizationFixtures.ACME_ADMIN);
+    when(authentication.currentAuthenticatedId()).thenReturn(OrganizationFixtures.ACME_ADMIN);
 
     handler.handle(org.getId(), tags);
 

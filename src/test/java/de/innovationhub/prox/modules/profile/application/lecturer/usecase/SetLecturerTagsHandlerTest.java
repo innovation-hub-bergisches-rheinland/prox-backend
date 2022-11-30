@@ -38,7 +38,7 @@ class SetLecturerTagsHandlerTest {
     var lecturer = createDummyLecturer();
     var tags = List.of(UUID.randomUUID(), UUID.randomUUID());
     when(lecturerRepository.findById(any())).thenReturn(Optional.of(lecturer));
-    when(authentication.currentAuthenticated()).thenReturn(lecturer.getUser().getUserId());
+    when(authentication.currentAuthenticatedId()).thenReturn(lecturer.getUser().getUserId());
 
     handler.handle(lecturer.getId(), tags);
 

@@ -41,7 +41,7 @@ class SetLecturerAvatarHandlerTest {
   void shouldSetLecturerAvatar() throws IOException {
     var lecturer = createDummyLecturer();
     when(lecturerRepository.findById(any())).thenReturn(Optional.of(lecturer));
-    when(authenticationFacade.currentAuthenticated()).thenReturn(lecturer.getUser().getUserId());
+    when(authenticationFacade.currentAuthenticatedId()).thenReturn(lecturer.getUser().getUserId());
 
     var content = new byte[] { 1, 2, 3 };
     var contentType = "image/test";

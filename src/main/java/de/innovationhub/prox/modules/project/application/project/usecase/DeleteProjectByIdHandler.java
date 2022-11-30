@@ -14,7 +14,7 @@ public class DeleteProjectByIdHandler {
   private final AuthenticationFacade authenticationFacade;
 
   public void handle(UUID id) {
-    var auth = authenticationFacade.currentAuthenticated();
+    var auth = authenticationFacade.currentAuthenticatedId();
     var project = projectRepository.findById(id)
         .orElseThrow(ProjectNotFoundException::new);
 

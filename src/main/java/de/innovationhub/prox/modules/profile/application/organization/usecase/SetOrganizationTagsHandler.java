@@ -21,7 +21,7 @@ public class SetOrganizationTagsHandler {
       List<UUID> tags) {
     var organization = organizationRepository.findById(organizationId)
         .orElseThrow(OrganizationNotFoundException::new);
-    var authenticatedUser = authenticationFacade.currentAuthenticated();
+    var authenticatedUser = authenticationFacade.currentAuthenticatedId();
 
     if (!organization.isInRole(authenticatedUser, OrganizationRole.ADMIN)) {
       throw new UnauthorizedAccessException();

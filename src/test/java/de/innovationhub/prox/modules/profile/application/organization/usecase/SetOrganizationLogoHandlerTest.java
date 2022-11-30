@@ -37,7 +37,7 @@ class SetOrganizationLogoHandlerTest {
   void shouldSetOrganizationLogo() throws IOException {
     var org = OrganizationFixtures.ACME_LTD;
     when(organizationRepository.findById(any())).thenReturn(Optional.of(org));
-    when(authenticationFacade.currentAuthenticated()).thenReturn(OrganizationFixtures.ACME_ADMIN);
+    when(authenticationFacade.currentAuthenticatedId()).thenReturn(OrganizationFixtures.ACME_ADMIN);
 
     var content = new byte[] { 1, 2, 3 };
     var contentType = "image/test";

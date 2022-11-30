@@ -17,7 +17,7 @@ public class RemoveOrganizationMemberHandler {
   private final AuthenticationFacade authenticationFacade;
 
   public void handle(UUID organizationId, UUID memberId) {
-    var authenticatedUser = authenticationFacade.currentAuthenticated();
+    var authenticatedUser = authenticationFacade.currentAuthenticatedId();
 
     var org = organizationRepository.findById(organizationId).orElseThrow(
         OrganizationNotFoundException::new);

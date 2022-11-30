@@ -35,7 +35,7 @@ class CreateProjectHandlerTest {
   @Test
   void shouldCreate() {
     var userId = UUID.randomUUID();
-    when(authenticationFacade.currentAuthenticated()).thenReturn(userId);
+    when(authenticationFacade.currentAuthenticatedId()).thenReturn(userId);
     when(moduleTypeRepository.findByKeyIn(any())).thenReturn(ModuleTypeFixtures.ALL);
     when(disciplineRepository.findByKeyIn(any())).thenReturn(DisciplineFixtures.ALL);
 

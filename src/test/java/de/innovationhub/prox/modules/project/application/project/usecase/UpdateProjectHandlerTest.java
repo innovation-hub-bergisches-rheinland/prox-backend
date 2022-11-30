@@ -47,7 +47,7 @@ class UpdateProjectHandlerTest {
   void shouldUpdate() {
     var project = ProjectFixtures.build_a_project();
     when(projectRepository.findById(any())).thenReturn(Optional.of(project));
-    when(authenticationFacade.currentAuthenticated()).thenReturn(ProjectFixtures.A_PROJECT_CREATOR_ID);
+    when(authenticationFacade.currentAuthenticatedId()).thenReturn(ProjectFixtures.A_PROJECT_CREATOR_ID);
     when(moduleTypeRepository.findByKeyIn(any())).thenReturn(ModuleTypeFixtures.ALL);
     when(disciplineRepository.findByKeyIn(any())).thenReturn(DisciplineFixtures.ALL);
 

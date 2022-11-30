@@ -20,6 +20,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 @AutoConfigureMockMvc
@@ -119,6 +120,7 @@ class TagControllerIntegrationTest extends AbstractIntegrationTest {
   }
 
   @Test
+  @WithMockUser
   void shouldSaveNewTag() {
     var tag1 = UUID.randomUUID().toString();
     var request = new SynchronizeTagsRequest(List.of(tag1));
@@ -145,6 +147,7 @@ class TagControllerIntegrationTest extends AbstractIntegrationTest {
   }
 
   @Test
+  @WithMockUser
   void shouldReturnExistingTag() {
     var givenTag = createTags("tag1");
     var request = new SynchronizeTagsRequest(List.of("tag1"));

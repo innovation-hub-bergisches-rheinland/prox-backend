@@ -9,6 +9,7 @@ import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRol
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @ApplicationComponent
 @RequiredArgsConstructor
@@ -17,6 +18,7 @@ public class SetOrganizationTagsHandler {
   private final OrganizationRepository organizationRepository;
   private final AuthenticationFacade authenticationFacade;
 
+  @PreAuthorize("@organizationPermissionEvaluator.hasPermission(#organizationId, authentication)")
   public List<UUID> handle(UUID organizationId,
       List<UUID> tags) {
     var organization = organizationRepository.findById(organizationId)

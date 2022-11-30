@@ -8,7 +8,9 @@ import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRep
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRole;
 import de.innovationhub.prox.modules.profile.domain.user.UserAccount;
 import java.util.UUID;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @RequiredArgsConstructor
 @ApplicationComponent
@@ -16,6 +18,8 @@ public class RemoveOrganizationMemberHandler {
   private final OrganizationRepository organizationRepository;
   private final AuthenticationFacade authenticationFacade;
 
+  @Transactional
+  @PreAuthorize("@organizationPermissionEvaluator.hasPermission(#organizationId, authentication)")
   public void handle(UUID organizationId, UUID memberId) {
     var authenticatedUser = authenticationFacade.currentAuthenticatedId();
 

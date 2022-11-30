@@ -21,6 +21,7 @@ import de.innovationhub.prox.modules.project.domain.project.TimeBox;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @ApplicationComponent
 @RequiredArgsConstructor
@@ -30,6 +31,7 @@ public class UpdateProjectHandler {
   private final DisciplineRepository disciplineRepository;
   private final AuthenticationFacade authenticationFacade;
 
+  @PreAuthorize("@projectPermissionEvaluator.hasPermission(#projectId, authentication)")
   public Project handle(UUID projectId, UpdateProjectDto projectDto) {
     var project = projectRepository.findById(projectId)
         .orElseThrow(ProjectNotFoundException::new);

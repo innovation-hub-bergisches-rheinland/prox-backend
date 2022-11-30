@@ -201,7 +201,7 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
   }
 
   @Test
-  @WithMockUser(value = "00000000-0000-0000-0000-000000000001")
+  @WithMockUser(value = "00000000-0000-0000-0000-000000000001", roles = { "professor" })
   void shouldApplyCommitment() {
     var aProject = ProjectFixtures.build_a_project();
     projectRepository.save(aProject);

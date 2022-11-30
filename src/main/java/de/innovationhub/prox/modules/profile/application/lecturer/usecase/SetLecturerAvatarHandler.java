@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.UUID;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @ApplicationComponent
 @RequiredArgsConstructor
@@ -21,6 +22,7 @@ public class SetLecturerAvatarHandler {
   private final LecturerRepository lecturerRepository;
 
   @Transactional
+  @PreAuthorize("@lecturerPermissionEvaluator.hasPermission(#lecturerId, authentication)")
   public void handle(UUID lecturerId, byte[] avatarImageData, String contentType) {
     var lecturer = lecturerRepository.findById(lecturerId)
         .orElseThrow(LecturerNotFoundException::new);

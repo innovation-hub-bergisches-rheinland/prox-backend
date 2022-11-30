@@ -10,6 +10,7 @@ import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
 import java.util.UUID;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @ApplicationComponent
 @RequiredArgsConstructor
@@ -19,6 +20,7 @@ public class UpdateLecturerProfileHandler {
   private final AuthenticationFacade authentication;
 
   @Transactional
+  @PreAuthorize("@lecturerPermissionEvaluator.hasPermission(#lecturerId, authentication)")
   public Lecturer handle(UUID lecturerId, UpdateLecturerDto dto) {
     var lecturer = this.lecturerRepository.findById(lecturerId)
         .orElseThrow(() -> new RuntimeException("Lecturer could not be found"));

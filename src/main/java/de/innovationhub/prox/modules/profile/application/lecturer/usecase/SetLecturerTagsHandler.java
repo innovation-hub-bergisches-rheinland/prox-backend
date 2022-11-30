@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @ApplicationComponent
 @RequiredArgsConstructor
@@ -18,6 +19,7 @@ public class SetLecturerTagsHandler {
   private final AuthenticationFacade authentication;
 
   @Transactional
+  @PreAuthorize("@lecturerPermissionEvaluator.hasPermission(#lecturerId, authentication)")
   public List<UUID> handle(UUID lecturerId,
       List<UUID> tags) {
     var lecturer = lecturerRepository.findById(lecturerId)

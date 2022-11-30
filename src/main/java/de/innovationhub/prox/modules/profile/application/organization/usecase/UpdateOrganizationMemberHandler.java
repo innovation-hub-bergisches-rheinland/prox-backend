@@ -12,6 +12,7 @@ import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRol
 import de.innovationhub.prox.modules.profile.domain.user.UserAccount;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @RequiredArgsConstructor
 @ApplicationComponent
@@ -19,6 +20,7 @@ public class UpdateOrganizationMemberHandler {
   private final OrganizationRepository organizationRepository;
   private final AuthenticationFacade authenticationFacade;
 
+  @PreAuthorize("@organizationPermissionEvaluator.hasPermission(#organizationId, authentication)")
   public Membership handle(UUID organizationId, UUID memberId, UpdateOrganizationMembershipDto dto) {
     var authenticatedUser = authenticationFacade.currentAuthenticatedId();
 

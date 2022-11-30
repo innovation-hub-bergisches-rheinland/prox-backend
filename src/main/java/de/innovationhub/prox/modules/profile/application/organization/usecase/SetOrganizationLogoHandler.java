@@ -10,6 +10,7 @@ import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRol
 import java.io.IOException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @ApplicationComponent
 @RequiredArgsConstructor
@@ -20,6 +21,7 @@ public class SetOrganizationLogoHandler {
   private final AuthenticationFacade authentication;
   private final OrganizationRepository organizationRepository;
 
+  @PreAuthorize("@organizationPermissionEvaluator.hasPermission(#orgId, authentication)")
   public void handle(UUID orgId, byte[] avatarImageData, String contentType) {
     var org = organizationRepository.findById(orgId)
         .orElseThrow(OrganizationNotFoundException::new);

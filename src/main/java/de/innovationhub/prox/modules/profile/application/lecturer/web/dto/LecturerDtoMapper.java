@@ -11,7 +11,7 @@ interface LecturerDtoMapper {
 
   LecturerDtoMapper INSTANCE = Mappers.getMapper(LecturerDtoMapper.class);
 
-  @Mapping(target = "userId", source = "lecturer.user.userId")
+  @Mapping(target = "userId", source = "lecturer.userId")
   @Mapping(target = "tags", source = "tags")
   @Mapping(target = "avatarUrl", source = "avatarUrl")
   ReadLecturerDto toDto(Lecturer lecturer, List<String> tags, String avatarUrl);

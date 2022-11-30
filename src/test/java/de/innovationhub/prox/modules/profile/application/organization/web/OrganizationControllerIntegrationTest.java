@@ -17,7 +17,6 @@ import de.innovationhub.prox.modules.profile.application.organization.web.dto.Up
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRepository;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRole;
 import de.innovationhub.prox.modules.profile.domain.organization.SocialMedia;
-import de.innovationhub.prox.modules.profile.domain.user.UserAccount;
 import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import java.io.IOException;
@@ -188,7 +187,7 @@ class OrganizationControllerIntegrationTest extends AbstractIntegrationTest {
   void shouldUpdateMembership() {
     var org = OrganizationFixtures.ACME_LTD;
     var userId = UUID.randomUUID();
-    org.addMember(new UserAccount(userId), OrganizationRole.MEMBER);
+    org.addMember(userId, OrganizationRole.MEMBER);
     organizationRepository.save(org);
 
     var updateMembershipDto = new UpdateOrganizationMembershipDto(
@@ -213,7 +212,7 @@ class OrganizationControllerIntegrationTest extends AbstractIntegrationTest {
   void shouldRemoveMembership() {
     var org = OrganizationFixtures.ACME_LTD;
     var userId = UUID.randomUUID();
-    org.addMember(new UserAccount(userId), OrganizationRole.MEMBER);
+    org.addMember(userId, OrganizationRole.MEMBER);
     organizationRepository.save(org);
 
     given()
@@ -226,7 +225,7 @@ class OrganizationControllerIntegrationTest extends AbstractIntegrationTest {
 
     var updatedOrg = organizationRepository.findById(org.getId()).get();
     assertThat(updatedOrg.getMembers())
-        .filteredOn(m -> m.getMember().getUser().getUserId().equals(userId))
+        .filteredOn(m -> m.getMemberId().equals(userId))
         .isEmpty();
   }
 

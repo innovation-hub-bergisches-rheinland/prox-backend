@@ -18,7 +18,7 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
-class AddOrganizationMemberHandlerTest {
+class AddOrganizationUUIDHandlerTest {
   OrganizationRepository organizationRepository = mock(OrganizationRepository.class);
   AuthenticationFacade authenticationFacade = mock(AuthenticationFacade.class);
 
@@ -51,7 +51,7 @@ class AddOrganizationMemberHandlerTest {
     var request = new AddOrganizationMembershipDto(userId, OrganizationRole.MEMBER);
 
     var membership = handler.handle(org.getId(), request);
-    assertThat(membership.getMember().getUser().getUserId()).isEqualTo(userId);
+    assertThat(membership.getMemberId()).isEqualTo(userId);
     assertThat(membership.getRole()).isEqualTo(OrganizationRole.MEMBER);
 
     var captor = ArgumentCaptor.forClass(Organization.class);

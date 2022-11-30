@@ -5,7 +5,6 @@ import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,7 +15,7 @@ public class LecturerPermissionEvaluator {
   public boolean hasPermission(Lecturer target, Authentication authentication) {
     if(authentication == null || !authentication.isAuthenticated()) return false;
 
-    return authentication.getName().equals(target.getUser().getUserId().toString());
+    return authentication.getName().equals(target.getUserId().toString());
   }
 
   public boolean hasPermission(UUID lecturerId, Authentication authentication) {

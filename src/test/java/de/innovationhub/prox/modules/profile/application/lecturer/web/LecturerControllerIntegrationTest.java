@@ -12,7 +12,7 @@ import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.SetLec
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.UpdateLecturerDto;
 import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
-import de.innovationhub.prox.modules.profile.domain.user.UserAccount;
+
 import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import java.io.IOException;
@@ -52,7 +52,7 @@ class LecturerControllerIntegrationTest extends AbstractIntegrationTest {
   }
 
   private Lecturer createDummyLecturer() {
-    return Lecturer.create(new UserAccount(UUID.fromString(USER_ID)), "Max Mustermann");
+    return Lecturer.create(UUID.fromString(USER_ID), "Max Mustermann");
   }
 
   @Test
@@ -87,7 +87,7 @@ class LecturerControllerIntegrationTest extends AbstractIntegrationTest {
         .getUUID("id");
 
     var lecturer = lecturerRepository.findById(id).orElseThrow();
-    assertThat(lecturer.getUser().getUserId())
+    assertThat(lecturer.getUserId())
         .isEqualTo(UUID.fromString(USER_ID));
   }
 

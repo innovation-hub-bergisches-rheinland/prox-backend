@@ -15,7 +15,6 @@ import de.innovationhub.prox.modules.profile.domain.organization.Organization;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRepository;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRole;
 import de.innovationhub.prox.modules.profile.domain.organization.SocialMedia;
-import de.innovationhub.prox.modules.profile.domain.user.UserAccount;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -41,7 +40,7 @@ class UpdateOrganizationHandlerTest {
   void shouldThrowWhenUserNotAdmin() {
     var org = OrganizationFixtures.ACME_LTD;
     var userId = UUID.randomUUID();
-    org.addMember(new UserAccount(userId), OrganizationRole.MEMBER);
+    org.addMember(userId, OrganizationRole.MEMBER);
     when(organizationRepository.findById(org.getId())).thenReturn(Optional.of(org));
     when(authenticationFacade.currentAuthenticatedId()).thenReturn(userId);
 

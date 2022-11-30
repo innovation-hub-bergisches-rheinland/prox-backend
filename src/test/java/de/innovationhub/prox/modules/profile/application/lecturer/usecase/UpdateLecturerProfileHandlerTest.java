@@ -12,7 +12,7 @@ import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.Update
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.UpdateLecturerDto.CreateLecturerProfileDto;
 import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
-import de.innovationhub.prox.modules.profile.domain.user.UserAccount;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -27,7 +27,7 @@ class UpdateLecturerProfileHandlerTest {
       authentication);
 
   private Lecturer createDummyLecturer() {
-    return Lecturer.create(new UserAccount(UUID.randomUUID()), "Max Mustermann");
+    return Lecturer.create(UUID.randomUUID(), "Max Mustermann");
   }
 
   private UpdateLecturerDto createDummyDto() {
@@ -58,7 +58,7 @@ class UpdateLecturerProfileHandlerTest {
     var lecturer = createDummyLecturer();
     var dto = createDummyDto();
     when(lecturerRepository.findById(any())).thenReturn(Optional.of(lecturer));
-    when(authentication.currentAuthenticatedId()).thenReturn(lecturer.getUser().getUserId());
+    when(authentication.currentAuthenticatedId()).thenReturn(lecturer.getUserId());
 
     handler.handle(lecturer.getId(), dto);
 

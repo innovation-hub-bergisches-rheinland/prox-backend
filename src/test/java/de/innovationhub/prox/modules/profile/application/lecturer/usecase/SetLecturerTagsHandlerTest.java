@@ -10,7 +10,7 @@ import static org.mockito.Mockito.when;
 import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
-import de.innovationhub.prox.modules.profile.domain.user.UserAccount;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -23,7 +23,7 @@ class SetLecturerTagsHandlerTest {
   SetLecturerTagsHandler handler = new SetLecturerTagsHandler(lecturerRepository, authentication);
 
   private Lecturer createDummyLecturer() {
-    return Lecturer.create(new UserAccount(UUID.randomUUID()), "Max Mustermann");
+    return Lecturer.create(UUID.randomUUID(), "Max Mustermann");
   }
 
   @Test
@@ -38,7 +38,7 @@ class SetLecturerTagsHandlerTest {
     var lecturer = createDummyLecturer();
     var tags = List.of(UUID.randomUUID(), UUID.randomUUID());
     when(lecturerRepository.findById(any())).thenReturn(Optional.of(lecturer));
-    when(authentication.currentAuthenticatedId()).thenReturn(lecturer.getUser().getUserId());
+    when(authentication.currentAuthenticatedId()).thenReturn(lecturer.getUserId());
 
     handler.handle(lecturer.getId(), tags);
 

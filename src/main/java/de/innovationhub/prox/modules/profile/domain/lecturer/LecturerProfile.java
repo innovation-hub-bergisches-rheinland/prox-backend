@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import javax.persistence.ElementCollection;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import lombok.AccessLevel;
@@ -18,14 +19,8 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
-@Entity
+@Embeddable
 public class LecturerProfile {
-
-  @Id
-  @Builder.Default
-  @Setter(AccessLevel.NONE)
-  private UUID id = UUID.randomUUID();
-
   private String affiliation;
   private String subject;
   private String vita;

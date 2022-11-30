@@ -7,25 +7,19 @@ import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerCrea
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerProfileUpdated;
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerRenamed;
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerTagged;
-import de.innovationhub.prox.modules.profile.domain.user.UserAccount;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.springframework.lang.Nullable;
 
 /**
  * Lecturers are authorized to teach courses. In PROX we don't really care about a differentiation
@@ -40,12 +34,11 @@ public class Lecturer extends AbstractAggregateRoot {
   @Id
   private UUID id;
 
-  @Embedded
   @NotNull
-  private UserAccount user;
+  private UUID userId;
   private String name;
 
-  @OneToOne(cascade = CascadeType.ALL)
+  @Embedded
   private LecturerProfile profile;
 
   @ElementCollection
@@ -53,19 +46,19 @@ public class Lecturer extends AbstractAggregateRoot {
 
   private String avatarKey;
 
-  public Lecturer(UserAccount user, String name) {
-    this(UUID.randomUUID(), user, name, null);
+  public Lecturer(UUID userId, String name) {
+    this(UUID.randomUUID(), userId, name, null);
   }
 
   @Default
-  public Lecturer(UUID id, UserAccount user, String name, LecturerProfile profile) {
+  public Lecturer(UUID id, UUID userId, String name, LecturerProfile profile) {
     this.id = id;
-    this.user = user;
+    this.userId = userId;
     this.name = name;
     this.profile = profile;
   }
 
-  public static Lecturer create(UserAccount user, String name) {
+  public static Lecturer create(UUID user, String name) {
     var createdLecturer = new Lecturer(user, name);
     createdLecturer.registerEvent(LecturerCreated.from(createdLecturer));
     return createdLecturer;

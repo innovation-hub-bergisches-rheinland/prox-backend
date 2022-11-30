@@ -12,7 +12,7 @@ public record LecturerCreated(
   public static LecturerCreated from(Lecturer lecturer) {
     return new LecturerCreated(
         lecturer.getId(),
-        lecturer.getUser().getUserId(),
+        lecturer.getUserId(),
         lecturer.getName()
     );
   }

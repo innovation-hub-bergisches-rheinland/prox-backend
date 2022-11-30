@@ -24,7 +24,7 @@ public class SetLecturerTagsHandler {
       List<UUID> tags) {
     var lecturer = lecturerRepository.findById(lecturerId)
         .orElseThrow(LecturerNotFoundException::new);
-    if (!authentication.currentAuthenticatedId().equals(lecturer.getUser().getUserId())) {
+    if (!authentication.currentAuthenticatedId().equals(lecturer.getUserId())) {
       throw new UnauthorizedAccessException();
     }
     lecturer.setTags(tags);

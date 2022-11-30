@@ -54,7 +54,7 @@ class CreateLecturerHandlerTest {
 
     var lecturer = handler.handle(request);
 
-    assertThat(lecturer.getUser().getUserId()).isEqualTo(authenticatedUserId);
+    assertThat(lecturer.getUserId()).isEqualTo(authenticatedUserId);
     assertThat(lecturer.getName()).isEqualTo("Max Mustermann");
     assertThat(lecturer.getProfile().getAffiliation()).isEqualTo("affiliation");
     assertThat(lecturer.getProfile().getSubject()).isEqualTo("subject");

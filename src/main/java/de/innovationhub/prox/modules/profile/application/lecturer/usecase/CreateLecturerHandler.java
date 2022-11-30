@@ -6,7 +6,6 @@ import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.Create
 import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerProfile;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
-import de.innovationhub.prox.modules.profile.domain.user.UserAccount;
 import java.util.Objects;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +21,7 @@ public class CreateLecturerHandler {
   public Lecturer handle(CreateLecturerDto dto) {
     Objects.requireNonNull(dto);
 
-    var user = new UserAccount(authenticationFacade.currentAuthenticatedId());
+    var user = authenticationFacade.currentAuthenticatedId();
 
     var lecturer = Lecturer.create(user, dto.name());
     var profile = new LecturerProfile();

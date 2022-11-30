@@ -7,14 +7,14 @@ import de.innovationhub.prox.modules.profile.domain.organization.events.Organiza
 import de.innovationhub.prox.modules.profile.domain.organization.events.OrganizationMemberAdded;
 import de.innovationhub.prox.modules.profile.domain.organization.events.OrganizationMemberRemoved;
 import de.innovationhub.prox.modules.profile.domain.organization.events.OrganizationMemberUpdated;
-import de.innovationhub.prox.modules.profile.domain.user.UserAccount;
+
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 class OrganizationTest {
 
-  private Organization createTestOrganization(UserAccount user) {
+  private Organization createTestOrganization(UUID user) {
     return Organization.create("ACME Ltd", user);
   }
 
@@ -24,11 +24,11 @@ class OrganizationTest {
 
   @Test
   void shouldAddOwnerAsAdmin() {
-    var user = new UserAccount(UUID.randomUUID());
+    var user = UUID.randomUUID();
     var org = createTestOrganization(user);
 
     assertThat(org.getMembers())
-        .filteredOn(m -> m.getMember().getUser().equals(user))
+        .filteredOn(m -> m.getMemberId().equals(user))
         .hasSize(1)
         .first()
         .extracting(Membership::getRole)
@@ -37,7 +37,7 @@ class OrganizationTest {
 
   @Test
   void shouldReturnMembersAsUnmodifiableList() {
-    var user = new UserAccount(UUID.randomUUID());
+    var user = UUID.randomUUID();
     var org = createTestOrganization(user);
 
     var members = org.getMembers();
@@ -46,15 +46,15 @@ class OrganizationTest {
 
   @Test
   void shouldRemoveMember() {
-    var owner = new UserAccount(UUID.randomUUID());
-    var homer = new UserAccount(UUID.randomUUID());
+    var owner = UUID.randomUUID();
+    var homer = UUID.randomUUID();
     var org = createTestOrganization(owner);
     org.addMember(homer, OrganizationRole.ADMIN);
 
     org.removeMember(homer);
 
     assertThat(org.getMembers())
-        .filteredOn(m -> m.getMember().getUser().equals(homer))
+        .filteredOn(m -> m.getMemberId().equals(homer))
         .isEmpty();
     assertThat(org.getDomainEvents())
         .filteredOn(e -> e instanceof OrganizationMemberRemoved)
@@ -63,7 +63,7 @@ class OrganizationTest {
 
   @Test
   void shouldNotRemoveLastAdmin() {
-    var owner = new UserAccount(UUID.randomUUID());
+    var owner = UUID.randomUUID();
     var org = createTestOrganization(owner);
 
     assertThrows(RuntimeException.class, () -> org.removeMember(owner));
@@ -71,14 +71,14 @@ class OrganizationTest {
 
   @Test
   void shouldAddMember() {
-    var owner = new UserAccount(UUID.randomUUID());
-    var homer = new UserAccount(UUID.randomUUID());
+    var owner = UUID.randomUUID();
+    var homer = UUID.randomUUID();
     var org = createTestOrganization(owner);
 
     org.addMember(homer, OrganizationRole.ADMIN);
 
     assertThat(org.getMembers())
-        .filteredOn(m -> m.getMember().getUser().equals(homer))
+        .filteredOn(m -> m.getMemberId().equals(homer))
         .hasSize(1);
     assertThat(org.getDomainEvents())
         .filteredOn(e -> e instanceof OrganizationMemberAdded)
@@ -87,8 +87,8 @@ class OrganizationTest {
 
   @Test
   void shouldNotAddMemberTwice() {
-    var owner = new UserAccount(UUID.randomUUID());
-    var memberships = List.of(new Membership(new Member(owner), OrganizationRole.ADMIN));
+    var owner = UUID.randomUUID();
+    var memberships = List.of(new Membership(owner, OrganizationRole.ADMIN));
     var org = createTestOrganization(memberships);
 
     assertThrows(RuntimeException.class, () -> org.addMember(owner, OrganizationRole.ADMIN));
@@ -96,18 +96,18 @@ class OrganizationTest {
 
   @Test
   void shouldUpdateMember() {
-    var owner = new UserAccount(UUID.randomUUID());
-    var homer = new UserAccount(UUID.randomUUID());
+    var owner = UUID.randomUUID();
+    var homer = UUID.randomUUID();
     var memberships =
         List.of(
-            new Membership(new Member(owner), OrganizationRole.ADMIN),
-            new Membership(new Member(homer), OrganizationRole.ADMIN));
+            new Membership(owner, OrganizationRole.ADMIN),
+            new Membership(homer, OrganizationRole.ADMIN));
     var org = createTestOrganization(memberships);
 
     org.updateMembership(owner, OrganizationRole.MEMBER);
 
     assertThat(org.getMembers())
-        .filteredOn(m -> m.getMember().getUser().equals(owner))
+        .filteredOn(m -> m.getMemberId().equals(owner))
         .hasSize(1)
         .first()
         .extracting(Membership::getRole)
@@ -120,7 +120,7 @@ class OrganizationTest {
 
   @Test
   void shouldRegisterOrganizationCreatedEventOnCreate() {
-    var user = new UserAccount(UUID.randomUUID());
+    var user = UUID.randomUUID();
     var org = createTestOrganization(user);
     var domainEvents = org.getDomainEvents();
 

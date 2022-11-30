@@ -9,7 +9,6 @@ import de.innovationhub.prox.modules.profile.application.organization.web.dto.Up
 import de.innovationhub.prox.modules.profile.domain.organization.Membership;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRepository;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRole;
-import de.innovationhub.prox.modules.profile.domain.user.UserAccount;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,10 +30,10 @@ public class UpdateOrganizationMemberHandler {
       throw new UnauthorizedAccessException();
     }
 
-    org.updateMembership(new UserAccount(memberId), dto.role());
+    org.updateMembership(memberId, dto.role());
     organizationRepository.save(org);
     var optMembership = org.getMembers().stream()
-        .filter(it -> it.getMember().getUser().getUserId().equals(memberId))
+        .filter(it -> it.getMemberId().equals(memberId))
         .findFirst();
 
     if(optMembership.isEmpty()) {

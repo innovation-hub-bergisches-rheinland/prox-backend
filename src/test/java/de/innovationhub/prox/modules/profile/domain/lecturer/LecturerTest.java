@@ -7,14 +7,14 @@ import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerCrea
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerProfileUpdated;
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerRenamed;
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerTagged;
-import de.innovationhub.prox.modules.profile.domain.user.UserAccount;
+
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 class LecturerTest {
   private Lecturer createDummyLecturer() {
-    return Lecturer.create(new UserAccount(UUID.randomUUID()), "Max Mustermann");
+    return Lecturer.create(UUID.randomUUID(), "Max Mustermann");
   }
 
   @Test

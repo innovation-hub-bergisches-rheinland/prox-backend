@@ -9,7 +9,6 @@ import de.innovationhub.prox.modules.profile.domain.organization.events.Organiza
 import de.innovationhub.prox.modules.profile.domain.organization.events.OrganizationProfileUpdated;
 import de.innovationhub.prox.modules.profile.domain.organization.events.OrganizationRenamed;
 import de.innovationhub.prox.modules.profile.domain.organization.events.OrganizationTagged;
-import de.innovationhub.prox.modules.profile.domain.user.UserAccount;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -20,10 +19,10 @@ import java.util.Set;
 import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,7 +41,7 @@ public class Organization extends AbstractAggregateRoot {
   private UUID id;
   private String name;
 
-  @OneToOne(cascade = CascadeType.ALL)
+  @Embedded
   private OrganizationProfile profile;
   @OneToMany(cascade = CascadeType.ALL)
   private List<Membership> members = new ArrayList<>();
@@ -62,17 +61,17 @@ public class Organization extends AbstractAggregateRoot {
     this.members = new ArrayList<>(members);
   }
 
-  public static Organization create(String name, UserAccount founder) {
+  public static Organization create(String name, UUID founder) {
     Objects.requireNonNull(name);
     Objects.requireNonNull(founder);
 
-    var founderMembership = new Membership(new Member(founder), OrganizationRole.ADMIN);
+    var founderMembership = new Membership(founder, OrganizationRole.ADMIN);
     var createdOrganization = new Organization(UUID.randomUUID(), name, List.of(founderMembership));
     createdOrganization.registerEvent(OrganizationCreated.from(createdOrganization));
     return createdOrganization;
   }
 
-  private boolean isMember(UserAccount user) {
+  private boolean isMember(UUID user) {
     return getMember(user).isPresent();
   }
 
@@ -82,31 +81,31 @@ public class Organization extends AbstractAggregateRoot {
         .count();
   }
 
-  private boolean isLastAdmin(UserAccount user) {
+  private boolean isLastAdmin(UUID user) {
     var membership = getMembership(user);
 
     return membership.isPresent() && membership.get().getRole() == OrganizationRole.ADMIN
         && countRoles(OrganizationRole.ADMIN) == 1;
   }
 
-  private Optional<Membership> getMembership(UserAccount user) {
+  private Optional<Membership> getMembership(UUID user) {
     return members.stream()
-        .filter(m -> m.getMember().getUser().equals(user))
+        .filter(m -> m.getMemberId().equals(user))
         .findFirst();
   }
 
-  private Optional<Member> getMember(UserAccount user) {
+  private Optional<UUID> getMember(UUID user) {
     return getMembership(user)
-        .map(Membership::getMember);
+        .map(Membership::getMemberId);
   }
 
   public boolean isInRole(UUID user, OrganizationRole role) {
-    return getMembership(new UserAccount(user))
+    return getMembership(user)
         .map(uac -> uac.getRole() == role)
         .orElse(false);
   }
 
-  public void removeMember(UserAccount user) {
+  public void removeMember(UUID user) {
     if (!isMember(user)) {
       throw new RuntimeException("User is not a member of this organization");
     }
@@ -118,20 +117,20 @@ public class Organization extends AbstractAggregateRoot {
     var member = getMembership(user)
         .orElseThrow(); // Should not happen
     members.remove(member);
-    this.registerEvent(new OrganizationMemberRemoved(this.id, member.getMember()));
+    this.registerEvent(new OrganizationMemberRemoved(this.id, member.getMemberId()));
   }
 
-  public void addMember(UserAccount user, OrganizationRole role) {
+  public void addMember(UUID user, OrganizationRole role) {
     if (isMember(user)) {
       throw new RuntimeException("User is already a member of this organization");
     }
 
-    var membership = new Membership(new Member(user), role);
+    var membership = new Membership(user, role);
     members.add(membership);
     this.registerEvent(new OrganizationMemberAdded(this.id, membership));
   }
 
-  public void updateMembership(UserAccount user, OrganizationRole role) {
+  public void updateMembership(UUID user, OrganizationRole role) {
     if (!isMember(user)) {
       throw new RuntimeException("User is not a member of this organization");
     }

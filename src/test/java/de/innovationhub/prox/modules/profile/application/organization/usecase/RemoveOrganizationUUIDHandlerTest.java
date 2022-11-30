@@ -12,13 +12,12 @@ import de.innovationhub.prox.modules.profile.OrganizationFixtures;
 import de.innovationhub.prox.modules.profile.domain.organization.Organization;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRepository;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRole;
-import de.innovationhub.prox.modules.profile.domain.user.UserAccount;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
-class RemoveOrganizationMemberHandlerTest {
+class RemoveOrganizationUUIDHandlerTest {
   OrganizationRepository organizationRepository = mock(OrganizationRepository.class);
   AuthenticationFacade authenticationFacade = mock(AuthenticationFacade.class);
 
@@ -36,7 +35,7 @@ class RemoveOrganizationMemberHandlerTest {
   void shouldThrowWhenUserNotAdmin() {
     var org = OrganizationFixtures.ACME_LTD;
     var userId = UUID.randomUUID();
-    org.addMember(new UserAccount(userId), OrganizationRole.MEMBER);
+    org.addMember(userId, OrganizationRole.MEMBER);
     when(organizationRepository.findById(org.getId())).thenReturn(Optional.of(org));
     when(authenticationFacade.currentAuthenticatedId()).thenReturn(userId);
 
@@ -47,7 +46,7 @@ class RemoveOrganizationMemberHandlerTest {
   void shouldRemoveMember() {
     var org = OrganizationFixtures.ACME_LTD;
     var userId = UUID.randomUUID();
-    org.addMember(new UserAccount(userId), OrganizationRole.MEMBER);
+    org.addMember(userId, OrganizationRole.MEMBER);
     when(organizationRepository.findById(org.getId())).thenReturn(Optional.of(org));
     when(authenticationFacade.currentAuthenticatedId()).thenReturn(OrganizationFixtures.ACME_ADMIN);
 
@@ -56,7 +55,7 @@ class RemoveOrganizationMemberHandlerTest {
     var captor = ArgumentCaptor.forClass(Organization.class);
     verify(organizationRepository).save(captor.capture());
     assertThat(captor.getValue().getMembers())
-        .filteredOn(m -> m.getMember().getUser().getUserId().equals(userId))
+        .filteredOn(m -> m.getMemberId().equals(userId))
         .isEmpty();
   }
 

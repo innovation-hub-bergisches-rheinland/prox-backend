@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
-import de.innovationhub.prox.modules.profile.domain.user.UserAccount;
+
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ class LecturerFacadeImplIntegrationTest extends AbstractIntegrationTest {
   LecturerRepository lecturerRepository;
 
   private Lecturer createDummyLecturer() {
-    return Lecturer.create(new UserAccount(UUID.randomUUID()), "Max Mustermann");
+    return Lecturer.create(UUID.randomUUID(), "Max Mustermann");
   }
 
   @Test

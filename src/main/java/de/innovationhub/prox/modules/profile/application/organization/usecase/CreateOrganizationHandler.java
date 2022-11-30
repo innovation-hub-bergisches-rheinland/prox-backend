@@ -6,7 +6,6 @@ import de.innovationhub.prox.modules.profile.application.organization.web.dto.Cr
 import de.innovationhub.prox.modules.profile.domain.organization.Organization;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationProfile;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRepository;
-import de.innovationhub.prox.modules.profile.domain.user.UserAccount;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -17,7 +16,7 @@ public class CreateOrganizationHandler {
   private final AuthenticationFacade authenticationFacade;
 
   public Organization handle(CreateOrganizationDto useCase) {
-    var founder = new UserAccount(authenticationFacade.currentAuthenticatedId());
+    var founder = authenticationFacade.currentAuthenticatedId();
     var org = Organization.create(useCase.name(), founder);
     var profile = new OrganizationProfile();
     if (useCase.profile() != null) {

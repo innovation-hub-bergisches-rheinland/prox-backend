@@ -6,6 +6,4 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface LecturerRepository extends CrudRepository<Lecturer, UUID> {
 
-  @Query("select l from Lecturer l where l.user.userId = :id")
-  boolean existsByUserId(UUID id);
 }

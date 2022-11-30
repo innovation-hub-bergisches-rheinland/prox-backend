@@ -6,7 +6,6 @@ import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.profile.application.organization.exception.OrganizationNotFoundException;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRepository;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRole;
-import de.innovationhub.prox.modules.profile.domain.user.UserAccount;
 import java.util.UUID;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +29,7 @@ public class RemoveOrganizationMemberHandler {
       throw new UnauthorizedAccessException();
     }
 
-    org.removeMember(new UserAccount(memberId));
+    org.removeMember(memberId);
     organizationRepository.save(org);
   }
 }

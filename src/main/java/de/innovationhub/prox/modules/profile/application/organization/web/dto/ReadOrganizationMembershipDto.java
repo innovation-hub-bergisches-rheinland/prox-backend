@@ -4,6 +4,6 @@ import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRol
 import java.util.UUID;
 
 public record ReadOrganizationMembershipDto(
-    UUID id,
+    UUID member,
     OrganizationRole role
 ) { }

@@ -26,7 +26,7 @@ public class SetLecturerAvatarHandler {
   public void handle(UUID lecturerId, byte[] avatarImageData, String contentType) {
     var lecturer = lecturerRepository.findById(lecturerId)
         .orElseThrow(LecturerNotFoundException::new);
-    if(!authentication.currentAuthenticatedId().equals(lecturer.getUser().getUserId())) {
+    if(!authentication.currentAuthenticatedId().equals(lecturer.getUserId())) {
       throw new UnauthorizedAccessException();
     }
 

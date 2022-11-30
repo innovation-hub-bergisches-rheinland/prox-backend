@@ -13,7 +13,7 @@ import de.innovationhub.prox.infra.storage.StorageProvider;
 import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
-import de.innovationhub.prox.modules.profile.domain.user.UserAccount;
+
 import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
@@ -27,7 +27,7 @@ class SetLecturerAvatarHandlerTest {
   SetLecturerAvatarHandler handler = new SetLecturerAvatarHandler(storageProvider, authenticationFacade, lecturerRepository);
 
   private Lecturer createDummyLecturer() {
-    return Lecturer.create(new UserAccount(UUID.randomUUID()), "Max Mustermann");
+    return Lecturer.create(UUID.randomUUID(), "Max Mustermann");
   }
 
   @Test
@@ -41,7 +41,7 @@ class SetLecturerAvatarHandlerTest {
   void shouldSetLecturerAvatar() throws IOException {
     var lecturer = createDummyLecturer();
     when(lecturerRepository.findById(any())).thenReturn(Optional.of(lecturer));
-    when(authenticationFacade.currentAuthenticatedId()).thenReturn(lecturer.getUser().getUserId());
+    when(authenticationFacade.currentAuthenticatedId()).thenReturn(lecturer.getUserId());
 
     var content = new byte[] { 1, 2, 3 };
     var contentType = "image/test";

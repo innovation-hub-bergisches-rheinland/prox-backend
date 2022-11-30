@@ -44,6 +44,7 @@ class LecturerControllerIntegrationTest extends AbstractIntegrationTest {
   @BeforeEach
   void setupRestAssured() {
     RestAssuredMockMvc.standaloneSetup(() -> mockMvc);
+    lecturerRepository.deleteAll();
   }
 
   @AfterEach

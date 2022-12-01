@@ -12,7 +12,7 @@ import de.innovationhub.prox.modules.project.ModuleTypeFixtures;
 import de.innovationhub.prox.modules.project.ProjectFixtures;
 import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.CurriculumContextDto;
-import de.innovationhub.prox.modules.project.application.project.web.dto.PartnerDto;
+import de.innovationhub.prox.modules.project.application.project.web.dto.SetPartnerRequestDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectTagsRequestDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.SupervisorDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.TimeBoxDto;
@@ -104,7 +104,6 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
             List.of("BA"),
             List.of("INF")
         ),
-        new PartnerDto(UUID.randomUUID()),
         new TimeBoxDto(
             LocalDate.EPOCH,
             LocalDate.EPOCH.plusDays(1)
@@ -141,7 +140,6 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
             List.of("BA"),
             List.of("INF")
         ),
-        new PartnerDto(UUID.randomUUID()),
         new TimeBoxDto(
             LocalDate.EPOCH,
             LocalDate.now()
@@ -181,7 +179,6 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
             List.of("BA"),
             List.of("INF")
         ),
-        new PartnerDto(UUID.randomUUID()),
         new TimeBoxDto(
             LocalDate.EPOCH,
             LocalDate.now()
@@ -198,6 +195,30 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
         .then()
         .statusCode(200)
         .body("title", equalTo("A Changed Project"));
+  }
+
+  @Test
+  @WithMockUser(value = "00000000-0000-0000-0000-000000000001")
+  void shouldSetPartner() {
+    var aProject = ProjectFixtures.build_a_project();
+    projectRepository.save(aProject);
+
+    var orgId = UUID.randomUUID();
+    var request = new SetPartnerRequestDto(orgId);
+
+    given()
+        .contentType("application/json")
+        .accept("application/json")
+        .body(request)
+        .when()
+        .put("/projects/{id}/partner" , aProject.getId())
+        .then()
+        .statusCode(200)
+        .body("partner.id", equalTo(orgId.toString()));
+
+    projectRepository.findById(aProject.getId()).ifPresent(project -> {
+      assertThat(project.getPartner().getOrganizationId()).isEqualTo(orgId);
+    });
   }
 
   @Test

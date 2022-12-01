@@ -8,6 +8,7 @@ import de.innovationhub.prox.modules.project.domain.project.events.ProjectComple
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectCreated;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectMarkedAsStale;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectOffered;
+import de.innovationhub.prox.modules.project.domain.project.events.ProjectPartnered;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectStarted;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectTagged;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectUnarchived;
@@ -23,7 +24,7 @@ class ProjectTest {
 
   @Test
   void shouldRegisterCreateEvent() {
-    var project = Project.create(new Author(UUID.randomUUID()), null, "Test Project", "Test",
+    var project = Project.create(new Author(UUID.randomUUID()), "Test Project", "Test",
         "Test", "Test", new CurriculumContext(), null);
     assertThat(project.getDomainEvents())
         .filteredOn(event -> event instanceof ProjectCreated)
@@ -48,6 +49,25 @@ class ProjectTest {
         .first()
         .isInstanceOfSatisfying(ProjectArchived.class, event -> {
           assertThat(event.projectId()).isEqualTo(project.getId());
+        });
+  }
+
+  @Test
+  void shouldPartner() {
+    var project = createTestProject(ProjectState.PROPOSED);
+    var organizationId = UUID.randomUUID();
+
+    project.setPartner(new Partner(organizationId));
+
+    assertThat(project.getPartner().getOrganizationId())
+        .isEqualTo(organizationId);
+    assertThat(project.getDomainEvents())
+        .filteredOn(event -> event instanceof ProjectPartnered)
+        .hasSize(1)
+        .first()
+        .isInstanceOfSatisfying(ProjectPartnered.class, event -> {
+          assertThat(event.projectId()).isEqualTo(project.getId());
+          assertThat(event.organizationId()).isEqualTo(organizationId);
         });
   }
 

@@ -6,6 +6,7 @@ import de.innovationhub.prox.modules.project.domain.project.events.ProjectComple
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectCreated;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectMarkedAsStale;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectOffered;
+import de.innovationhub.prox.modules.project.domain.project.events.ProjectPartnered;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectStarted;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectTagged;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectUnarchived;
@@ -96,7 +97,6 @@ public class Project extends AbstractAggregateRoot {
 
   public static Project create(
       Author author,
-      @Nullable Partner partner,
       String title,
       String summary,
       String description,
@@ -105,7 +105,7 @@ public class Project extends AbstractAggregateRoot {
       @Nullable TimeBox timeBox
   ) {
     var project = new Project(UUID.randomUUID(),
-        author, partner, title, summary, description, requirement, context,
+        author, null, title, summary, description, requirement, context,
         new ProjectStatus(ProjectState.PROPOSED, Instant.now()), timeBox,
         new ArrayList<>(), null);
     project.registerEvent(new ProjectCreated(project.getId()));
@@ -177,5 +177,10 @@ public class Project extends AbstractAggregateRoot {
 
   public void setTimeBox(TimeBox timeBox) {
     this.timeBox = timeBox;
+  }
+
+  public void setPartner(Partner partner) {
+    this.partner = partner;
+    this.registerEvent(new ProjectPartnered(this.id, partner.getOrganizationId()));
   }
 }

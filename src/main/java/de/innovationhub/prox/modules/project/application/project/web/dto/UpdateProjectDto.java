@@ -9,7 +9,6 @@ public record UpdateProjectDto(
     String summary,
     String requirement,
     CurriculumContextDto context,
-    PartnerDto partner,
     TimeBoxDto timeboxDto,
     List<SupervisorDto> supervisors) {
 }

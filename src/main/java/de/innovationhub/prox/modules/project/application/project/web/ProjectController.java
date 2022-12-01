@@ -6,12 +6,14 @@ import de.innovationhub.prox.modules.project.application.project.usecase.DeleteP
 import de.innovationhub.prox.modules.project.application.project.usecase.FindAllProjectsHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.FindProjectByIdHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.SearchProjectHandler;
+import de.innovationhub.prox.modules.project.application.project.usecase.SetProjectPartnerHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.SetProjectTagsHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.UpdateProjectHandler;
 import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.ProjectDtoAssembler;
 import de.innovationhub.prox.modules.project.application.project.web.dto.ReadProjectDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.ReadProjectListDto;
+import de.innovationhub.prox.modules.project.application.project.web.dto.SetPartnerRequestDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectTagsRequestDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectTagsResponseDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.UpdateProjectDto;
@@ -44,6 +46,7 @@ public class ProjectController {
   private final DeleteProjectByIdHandler deleteById;
   private final SetProjectTagsHandler setTags;
   private final ApplyCommitmentHandler applyCommitment;
+  private final SetProjectPartnerHandler setPartner;
 
   private final ProjectDtoAssembler dtoAssembler;
 
@@ -77,6 +80,14 @@ public class ProjectController {
   public ResponseEntity<ReadProjectDto> update(@PathVariable("id") UUID id, @RequestBody
   UpdateProjectDto updateProjectDto) {
     var updatedProject = update.handle(id, updateProjectDto);
+    var dto = dtoAssembler.toDto(updatedProject);
+    return ResponseEntity.ok(dto);
+  }
+
+  @PutMapping(value = "{id}/partner", consumes = "application/json", produces = "application/json")
+  public ResponseEntity<ReadProjectDto> setPartner(@PathVariable("id") UUID id, @RequestBody
+  SetPartnerRequestDto requestDto) {
+    var updatedProject = setPartner.handle(id, requestDto.organizationId());
     var dto = dtoAssembler.toDto(updatedProject);
     return ResponseEntity.ok(dto);
   }

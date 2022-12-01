@@ -4,7 +4,6 @@ import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.CurriculumContextDto;
-import de.innovationhub.prox.modules.project.application.project.web.dto.PartnerDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.SupervisorDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.TimeBoxDto;
 import de.innovationhub.prox.modules.project.domain.discipline.Discipline;
@@ -13,7 +12,6 @@ import de.innovationhub.prox.modules.project.domain.module.ModuleType;
 import de.innovationhub.prox.modules.project.domain.module.ModuleTypeRepository;
 import de.innovationhub.prox.modules.project.domain.project.Author;
 import de.innovationhub.prox.modules.project.domain.project.CurriculumContext;
-import de.innovationhub.prox.modules.project.domain.project.Partner;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
 import de.innovationhub.prox.modules.project.domain.project.Supervisor;
@@ -32,13 +30,11 @@ public class CreateProjectHandler {
 
   public Project handle(CreateProjectDto projectDto) {
     var author = buildAuthor();
-    var partner = buildPartner(projectDto.partner());
     var context = buildContext(projectDto.context());
     var supervisors = buildSupervisors(projectDto.supervisors());
     var timeBox = buildTimeBox(projectDto.timeboxDto());
 
     var project = Project.create(author,
-        partner,
         projectDto.title(),
         projectDto.summary(),
         projectDto.description(),
@@ -51,13 +47,6 @@ public class CreateProjectHandler {
     }
 
     return this.projectRepository.save(project);
-  }
-
-  private Partner buildPartner(PartnerDto partnerDto) {
-    if (partnerDto == null) {
-      return null;
-    }
-    return new Partner(partnerDto.organizationId());
   }
 
   private TimeBox buildTimeBox(TimeBoxDto dto) {

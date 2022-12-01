@@ -9,7 +9,6 @@ public record CreateProjectDto(
     String summary,
     String requirement,
     CurriculumContextDto context,
-    PartnerDto partner,
     TimeBoxDto timeboxDto,
     List<SupervisorDto> supervisors) {
 }

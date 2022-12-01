@@ -11,7 +11,6 @@ import de.innovationhub.prox.modules.project.DisciplineFixtures;
 import de.innovationhub.prox.modules.project.ModuleTypeFixtures;
 import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.CurriculumContextDto;
-import de.innovationhub.prox.modules.project.application.project.web.dto.PartnerDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.SupervisorDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.TimeBoxDto;
 import de.innovationhub.prox.modules.project.domain.discipline.DisciplineRepository;
@@ -48,7 +47,6 @@ class CreateProjectHandlerTest {
             List.of("BA"),
             List.of("ING", "INF")
         ),
-        new PartnerDto(UUID.randomUUID()),
         new TimeBoxDto(
             LocalDate.now(),
             LocalDate.now()
@@ -71,7 +69,6 @@ class CreateProjectHandlerTest {
               .containsExactlyInAnyOrderElementsOf(ModuleTypeFixtures.ALL);
           assertThat(p.getCurriculumContext().getDisciplines())
               .containsExactlyInAnyOrderElementsOf(DisciplineFixtures.ALL);
-          assertThat(p.getPartner().getOrganizationId()).isEqualTo(command.partner().organizationId());
           assertThat(p.getTimeBox().getStartDate()).isEqualTo(command.timeboxDto().start());
           assertThat(p.getTimeBox().getEndDate()).isEqualTo(command.timeboxDto().end());
         });

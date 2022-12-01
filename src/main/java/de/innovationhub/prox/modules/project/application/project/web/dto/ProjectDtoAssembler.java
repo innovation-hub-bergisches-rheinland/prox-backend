@@ -24,10 +24,9 @@ public class ProjectDtoAssembler {
     OrganizationView partnerOrg = null;
 
     if (project.getPartner() != null) {
-      var optOrg = organizationFacade.get(project.getPartner().getOrganizationId());
-      if (optOrg.isPresent()) {
-        partnerOrg = optOrg.get();
-      }
+      var orgId = project.getPartner().getOrganizationId();
+      partnerOrg = organizationFacade.get(orgId)
+          .orElse(new OrganizationView(orgId, null));
     }
 
     List<String> tags = Collections.emptyList();
@@ -37,7 +36,7 @@ public class ProjectDtoAssembler {
 
     var supervisors = project.getSupervisors()
         .stream()
-        .map(s -> lecturerFacade.get(s.getLecturerId()).orElse(new LecturerView(s.getLecturerId(), "???")))
+        .map(s -> lecturerFacade.get(s.getLecturerId()).orElse(new LecturerView(s.getLecturerId(), null)))
         .toList();
     return projectMapper.toDto(project, supervisors, partnerOrg, tags);
   }

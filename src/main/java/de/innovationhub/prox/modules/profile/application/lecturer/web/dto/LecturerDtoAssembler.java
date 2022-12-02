@@ -33,7 +33,9 @@ public class LecturerDtoAssembler {
       tags = tagFacade.getTags(lecturer.getTags());
     }
 
-    var permissions = new LecturerPermissions(lecturerPermissionEvaluator.hasPermission(lecturer, authenticationFacade.getAuthentication()));
+    var permissions = new LecturerPermissions(
+        lecturerPermissionEvaluator.hasPermission(lecturer, authenticationFacade.getAuthentication())
+    );
 
     return lecturerDtoMapper.toDto(lecturer, tags, avatarUrl, permissions);
   }

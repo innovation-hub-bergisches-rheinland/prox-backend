@@ -1,7 +1,9 @@
 package de.innovationhub.prox.modules.auth.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.modules.commons.application.exception.UnauthenticatedException;
@@ -23,7 +25,11 @@ class SpringSecurityAuthenticationFacadeImplTest extends AbstractIntegrationTest
   @Test
   void shouldThrowWhenUnauthenticated() {
     assertThrows(UnauthenticatedException.class, () -> authenticationFacade.currentAuthenticatedId());
-    assertThrows(UnauthenticatedException.class, () -> authenticationFacade.getAuthentication());
+  }
+
+  @Test
+  void shouldReturnNullWhenUnauthenticated() {
+    assertNull(authenticationFacade.getAuthentication());
   }
 
   @Test

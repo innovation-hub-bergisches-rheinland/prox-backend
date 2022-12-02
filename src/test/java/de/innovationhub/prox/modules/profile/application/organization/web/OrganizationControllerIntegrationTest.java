@@ -36,6 +36,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @AutoConfigureMockMvc
 @Transactional
+@WithMockUser(value = "8307f5bc-38fc-44ac-bab7-3c8ef85c1ec4")
 class OrganizationControllerIntegrationTest extends AbstractIntegrationTest {
 
   @Autowired
@@ -55,7 +56,6 @@ class OrganizationControllerIntegrationTest extends AbstractIntegrationTest {
   }
 
   @Test
-  @WithMockUser(value = "8307f5bc-38fc-44ac-bab7-3c8ef85c1ec4")
   void shouldCreateOrganization() {
     var createOrgRequest = new CreateOrganizationDto(
         "ACME Ltd.",

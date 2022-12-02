@@ -1,5 +1,6 @@
 package de.innovationhub.prox.modules.project.application.project.web.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import de.innovationhub.prox.modules.project.application.discipline.web.dto.ReadDisciplineDto;
 import de.innovationhub.prox.modules.project.application.module.web.dto.ReadModuleTypeDto;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
@@ -20,7 +21,9 @@ public record ReadProjectDto(
     ReadProjectStatusDto status,
     ReadTimeBoxDto timeBox,
     List<ReadSupervisorDto> supervisors,
-    List<String> tags
+    List<String> tags,
+    @JsonProperty("_permissions")
+    ProjectPermissions permissions
 ) {
   public record AuthorDto(
       UUID userId

@@ -14,7 +14,7 @@ interface OrganizationDtoMapper {
 
   @Mapping(target = "tags", source = "tags")
   @Mapping(target = "logoUrl", source = "logoUrl")
-  ReadOrganizationDto toDto(Organization organization, List<String> tags, String logoUrl);
+  ReadOrganizationDto toDto(Organization organization, List<String> tags, String logoUrl, OrganizationPermissions permissions);
 
   @Mapping(target = "member", source = "memberId")
   ReadOrganizationMembershipDto toDto(Membership membership);

@@ -1,9 +1,11 @@
 package de.innovationhub.prox.modules.project.application.project.web.dto;
 
+import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.profile.contract.LecturerFacade;
 import de.innovationhub.prox.modules.profile.contract.LecturerView;
 import de.innovationhub.prox.modules.profile.contract.OrganizationFacade;
 import de.innovationhub.prox.modules.profile.contract.OrganizationView;
+import de.innovationhub.prox.modules.project.application.ProjectPermissionEvaluator;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
 import java.util.Collections;
@@ -19,6 +21,10 @@ public class ProjectDtoAssembler {
   private final OrganizationFacade organizationFacade;
   private final LecturerFacade lecturerFacade;
   private final ProjectMapper projectMapper;
+
+  // TODO: EXPERIMENTAL
+  private final ProjectPermissionEvaluator projectPermissionEvaluator;
+  private final AuthenticationFacade authenticationFacade;
 
   public ReadProjectDto toDto(Project project) {
     OrganizationView partnerOrg = null;
@@ -38,7 +44,10 @@ public class ProjectDtoAssembler {
         .stream()
         .map(s -> lecturerFacade.get(s.getLecturerId()).orElse(new LecturerView(s.getLecturerId(), null)))
         .toList();
-    return projectMapper.toDto(project, supervisors, partnerOrg, tags);
+
+    var permissions = new ProjectPermissions(projectPermissionEvaluator.hasPermission(project, authenticationFacade.getAuthentication()));
+
+    return projectMapper.toDto(project, supervisors, partnerOrg, tags, permissions);
   }
 
   public ReadProjectListDto toDto(List<Project> projects) {

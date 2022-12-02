@@ -1,6 +1,8 @@
 package de.innovationhub.prox.modules.profile.application.lecturer.web.dto;
 
 import de.innovationhub.prox.infra.storage.StorageProvider;
+import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
+import de.innovationhub.prox.modules.profile.application.lecturer.LecturerPermissionEvaluator;
 import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
 import java.util.Collections;
@@ -15,6 +17,10 @@ public class LecturerDtoAssembler {
   private final LecturerDtoMapper lecturerDtoMapper;
   private final StorageProvider storageProvider;
 
+  // TODO: EXPERIMENTAL
+  private final LecturerPermissionEvaluator lecturerPermissionEvaluator;
+  private final AuthenticationFacade authenticationFacade;
+
   public ReadLecturerDto toDto(Lecturer lecturer) {
     String avatarUrl = null;
 
@@ -27,6 +33,8 @@ public class LecturerDtoAssembler {
       tags = tagFacade.getTags(lecturer.getTags());
     }
 
-    return lecturerDtoMapper.toDto(lecturer, tags, avatarUrl);
+    var permissions = new LecturerPermissions(lecturerPermissionEvaluator.hasPermission(lecturer, authenticationFacade.getAuthentication()));
+
+    return lecturerDtoMapper.toDto(lecturer, tags, avatarUrl, permissions);
   }
 }

@@ -1,6 +1,8 @@
 package de.innovationhub.prox.modules.profile.application.organization.web.dto;
 
 import de.innovationhub.prox.infra.storage.StorageProvider;
+import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
+import de.innovationhub.prox.modules.profile.application.organization.OrganizationPermissionEvaluator;
 import de.innovationhub.prox.modules.profile.domain.organization.Membership;
 import de.innovationhub.prox.modules.profile.domain.organization.Organization;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
@@ -16,6 +18,10 @@ public class OrganizationDtoAssembler {
   private final StorageProvider storageProvider;
   private final OrganizationDtoMapper organizationDtoMapper;
 
+  // TODO: EXPERIMENTAL
+  private final OrganizationPermissionEvaluator organizationPermissionEvaluator;
+  private final AuthenticationFacade authenticationFacade;
+
   public ReadOrganizationDto toDto(Organization organization) {
     String logoUrl = null;
 
@@ -28,7 +34,11 @@ public class OrganizationDtoAssembler {
       tags = tagFacade.getTags(organization.getTags());
     }
 
-    return organizationDtoMapper.toDto(organization, tags, logoUrl);
+    var permissions = new OrganizationPermissions(
+        organizationPermissionEvaluator.hasPermission(organization, authenticationFacade.getAuthentication())
+    );
+
+    return organizationDtoMapper.toDto(organization, tags, logoUrl, permissions);
   }
 
   public ReadOrganizationMembershipDto toDto(Membership membership) {

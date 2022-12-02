@@ -39,6 +39,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @AutoConfigureMockMvc
 @Transactional
+@WithMockUser(value = "8307f5bc-38fc-44ac-bab7-3c8ef85c1ec4")
 class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
   @Autowired
   MockMvc mockMvc;

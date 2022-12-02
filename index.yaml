@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   prox-backend:
   - apiVersion: v2
+    appVersion: 0.1.13
+    created: "2022-12-02T20:56:05.785235646Z"
+    description: Helm Chart for PROX Backend
+    digest: 04f6f88da2ca67ac97de6c86128439558871254dab3be2d879196b9231e9c89a
+    name: prox-backend
+    type: application
+    urls:
+    - https://innovation-hub-bergisches-rheinland.github.io/prox-backend/prox-backend-0.1.13.tgz
+    version: 0.1.13
+  - apiVersion: v2
     appVersion: 0.1.12
     created: "2022-12-02T20:42:40.893344521Z"
     description: Helm Chart for PROX Backend
@@ -131,4 +141,4 @@ entries:
     urls:
     - https://innovation-hub-bergisches-rheinland.github.io/prox-backend/prox-backend-0.1.0.tgz
     version: 0.1.0
-generated: "2022-12-02T20:42:40.892189004Z"
+generated: "2022-12-02T20:56:05.783848725Z"

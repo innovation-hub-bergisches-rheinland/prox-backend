@@ -64,10 +64,14 @@ spec:
                   name: {{ .Values.config.existingSecret | default (include "prox-backend.fullname" .) }}
                   key: awsAccessKey
           livenessProbe:
+            # slow java
+            initialDelaySeconds: 90
             httpGet:
               path: /actuator/health/liveness
               port: http
           readinessProbe:
+            # slow java
+            initialDelaySeconds: 90
             httpGet:
               path: /actuator/health/readiness
               port: http

@@ -33,6 +33,8 @@ class SecurityConfig {
                     .mvcMatchers(HttpMethod.GET, "/projects/**", "/tags/**", "/organizations/**",
                         "/lecturers/**")
                     .permitAll()
+                    .mvcMatchers(HttpMethod.GET, "/actuator/health/**")
+                    .permitAll()
                     .mvcMatchers("/projects/**", "/tags/**", "/organizations/**", "/lecturers/**")
                     .authenticated()
                     .anyRequest()

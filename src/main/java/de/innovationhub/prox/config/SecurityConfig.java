@@ -25,6 +25,8 @@ class SecurityConfig {
         .and()
         .csrf()
         .disable()
+        .anonymous()
+        .disable()
         .oauth2ResourceServer(
             oauth2 -> oauth2.jwt().jwtAuthenticationConverter(jwtAuthenticationConverter()))
         .authorizeHttpRequests(

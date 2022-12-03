@@ -31,7 +31,6 @@ public class CreateProjectHandler {
   public Project handle(CreateProjectDto projectDto) {
     var author = buildAuthor();
     var context = buildContext(projectDto.context());
-    var supervisors = buildSupervisors(projectDto.supervisors());
     var timeBox = buildTimeBox(projectDto.timeboxDto());
 
     var project = Project.create(author,
@@ -42,9 +41,6 @@ public class CreateProjectHandler {
         context,
         timeBox
     );
-    if (!supervisors.isEmpty()) {
-      project.offer(supervisors);
-    }
 
     return this.projectRepository.save(project);
   }

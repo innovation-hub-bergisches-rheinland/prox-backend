@@ -1,6 +1,5 @@
 package de.innovationhub.prox.modules.project.application.project.web;
 
-import de.innovationhub.prox.modules.project.application.project.usecase.ApplyCommitmentHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.CreateProjectHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.DeleteProjectByIdHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.FindAllProjectsHandler;
@@ -8,6 +7,7 @@ import de.innovationhub.prox.modules.project.application.project.usecase.FindPro
 import de.innovationhub.prox.modules.project.application.project.usecase.SearchProjectHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.SetProjectPartnerHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.SetProjectTagsHandler;
+import de.innovationhub.prox.modules.project.application.project.usecase.SetSupervisorsHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.UpdateProjectHandler;
 import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.ProjectDtoAssembler;
@@ -19,6 +19,7 @@ import de.innovationhub.prox.modules.project.application.project.web.dto.SetProj
 import de.innovationhub.prox.modules.project.application.project.web.dto.UpdateProjectDto;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -45,7 +46,7 @@ public class ProjectController {
   private final SearchProjectHandler search;
   private final DeleteProjectByIdHandler deleteById;
   private final SetProjectTagsHandler setTags;
-  private final ApplyCommitmentHandler applyCommitment;
+  private final SetSupervisorsHandler setSupervisors;
   private final SetProjectPartnerHandler setPartner;
 
   private final ProjectDtoAssembler dtoAssembler;
@@ -92,9 +93,9 @@ public class ProjectController {
     return ResponseEntity.ok(dto);
   }
 
-  @PostMapping(value = "{id}/commitment", consumes = "application/json", produces = "application/json")
-  public ResponseEntity<ReadProjectDto> commitment(@PathVariable("id") UUID id) {
-    var updatedProject = applyCommitment.handle(id);
+  @PostMapping(value = "{id}/supervisors", consumes = "application/json", produces = "application/json")
+  public ResponseEntity<ReadProjectDto> commitment(@PathVariable("id") UUID id, @RequestBody List<UUID> supervisorIds) {
+    var updatedProject = setSupervisors.handle(id, supervisorIds);
     var dto = dtoAssembler.toDto(updatedProject);
     return ResponseEntity.ok(dto);
   }

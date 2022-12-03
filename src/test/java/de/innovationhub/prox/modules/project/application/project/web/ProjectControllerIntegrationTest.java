@@ -108,8 +108,7 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
         new TimeBoxDto(
             LocalDate.EPOCH,
             LocalDate.EPOCH.plusDays(1)
-        ),
-        List.of()
+        )
     );
 
     var id = given()
@@ -144,8 +143,7 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
         new TimeBoxDto(
             LocalDate.EPOCH,
             LocalDate.now()
-        ),
-        List.of(new SupervisorDto(UUID.randomUUID()))
+        )
     );
 
     var id = given()
@@ -161,7 +159,7 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
         .getUUID("id");
 
     var found = projectRepository.findById(id).get();
-    assertThat(found.getStatus().getState()).isEqualTo(ProjectState.OFFERED);
+    assertThat(found.getStatus().getState()).isEqualTo(ProjectState.PROPOSED);
     assertThat(found.getAuthor().getUserId()).isEqualTo(UUID.fromString("00000000-0000-0000-0000-000000000001"));
   }
 
@@ -224,15 +222,17 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
 
   @Test
   @WithMockUser(value = "00000000-0000-0000-0000-000000000001", roles = { "professor" })
-  void shouldApplyCommitment() {
+  void shouldSetSupervisors() {
     var aProject = ProjectFixtures.build_a_project();
     projectRepository.save(aProject);
+    var supervisorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
     given()
         .contentType("application/json")
         .accept("application/json")
+        .body(List.of(supervisorId))
         .when()
-        .post("/projects/{id}/commitment" , aProject.getId())
+        .post("/projects/{id}/supervisors" , aProject.getId())
         .then()
         .statusCode(200)
         .body("supervisors[0].id", is("00000000-0000-0000-0000-000000000001"));

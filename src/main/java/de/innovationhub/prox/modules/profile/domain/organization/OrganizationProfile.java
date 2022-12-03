@@ -1,13 +1,10 @@
 package de.innovationhub.prox.modules.profile.domain.organization;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
-import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -50,9 +47,7 @@ public class OrganizationProfile {
 
   private String headquarter;
 
-  @Builder.Default
-  @ElementCollection
-  private List<String> quarters = new ArrayList<>();
+  private String quarters;
 
   @Builder.Default
   @ElementCollection

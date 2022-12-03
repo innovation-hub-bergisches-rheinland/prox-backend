@@ -66,7 +66,7 @@ class OrganizationControllerIntegrationTest extends AbstractIntegrationTest {
             "test@example.org",
             "Lorem Ipsum",
             "Lala Land",
-            List.of(),
+            "Lala Land",
             Map.of(SocialMedia.FACEBOOK, "acmeltd")
         )
     );
@@ -142,7 +142,7 @@ class OrganizationControllerIntegrationTest extends AbstractIntegrationTest {
             "test@example.org",
             "Lorem Ipsum",
             "Lala Land",
-            List.of(),
+            "Lala Land",
             Map.of(SocialMedia.FACEBOOK, "acmeltd")
         )
     );

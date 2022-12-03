@@ -1,7 +1,6 @@
 package de.innovationhub.prox.modules.profile.application.organization.web.dto;
 
 import de.innovationhub.prox.modules.profile.domain.organization.SocialMedia;
-import java.util.List;
 import java.util.Map;
 
 public record CreateOrganizationDto(
@@ -16,7 +15,7 @@ public record CreateOrganizationDto(
       String contactEmail,
       String vita,
       String headquarter,
-      List<String> quarters,
+      String quarters,
       Map<SocialMedia, String> socialMediaHandles
   ) {
 

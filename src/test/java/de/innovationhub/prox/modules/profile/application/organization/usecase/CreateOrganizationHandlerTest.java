@@ -12,7 +12,6 @@ import de.innovationhub.prox.modules.profile.domain.organization.Organization;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRepository;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRole;
 import de.innovationhub.prox.modules.profile.domain.organization.SocialMedia;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -38,7 +37,7 @@ class CreateOrganizationHandlerTest {
             "test@example.org",
             "Lorem Ipsum",
             "Lala Land",
-            List.of(),
+            "Lala Land",
             Map.of(SocialMedia.FACEBOOK, "acmeltd")
         ));
 

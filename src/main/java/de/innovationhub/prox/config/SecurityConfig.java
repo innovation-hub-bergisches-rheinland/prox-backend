@@ -33,7 +33,7 @@ class SecurityConfig {
             registry ->
                 registry
                     .mvcMatchers(HttpMethod.GET, "/projects/**", "/tags/**", "/organizations/**",
-                        "/lecturers/**")
+                        "/lecturers/**", "/disciplines/**", "/modules/**")
                     .permitAll()
                     .mvcMatchers(HttpMethod.GET, "/users/search")
                     .authenticated()

@@ -24,6 +24,7 @@ public class S3StorageProvider implements StorageProvider {
   public void storeFile(String fileId, byte[] file, String contentType) {
     var metadata = new ObjectMetadata();
     metadata.setContentType(contentType);
+    metadata.setContentLength(file.length);
     s3.putObject(bucket, fileId, new ByteArrayInputStream(file), metadata);
   }
 

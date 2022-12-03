@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableMethodSecurity
@@ -22,6 +23,7 @@ class SecurityConfig {
   @Bean
   public SecurityFilterChain configure(HttpSecurity http) throws Exception {
     http.cors()
+        .configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())
         .and()
         .csrf()
         .disable()
@@ -41,6 +43,8 @@ class SecurityConfig {
                     .permitAll()
                     .mvcMatchers("/projects/**", "/tags/**", "/organizations/**", "/lecturers/**")
                     .authenticated()
+                    .mvcMatchers(HttpMethod.OPTIONS)
+                    .permitAll()
                     .anyRequest()
                     .denyAll()
         );

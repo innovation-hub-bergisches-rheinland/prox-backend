@@ -31,7 +31,7 @@ public class CreateProjectHandler {
   public Project handle(CreateProjectDto projectDto) {
     var author = buildAuthor();
     var context = buildContext(projectDto.context());
-    var timeBox = buildTimeBox(projectDto.timeboxDto());
+    var timeBox = buildTimeBox(projectDto.timeBox());
 
     var project = Project.create(author,
         projectDto.title(),

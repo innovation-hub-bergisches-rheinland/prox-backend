@@ -67,8 +67,8 @@ class CreateProjectHandlerTest {
               .containsExactlyInAnyOrderElementsOf(ModuleTypeFixtures.ALL);
           assertThat(p.getCurriculumContext().getDisciplines())
               .containsExactlyInAnyOrderElementsOf(DisciplineFixtures.ALL);
-          assertThat(p.getTimeBox().getStartDate()).isEqualTo(command.timeboxDto().start());
-          assertThat(p.getTimeBox().getEndDate()).isEqualTo(command.timeboxDto().end());
+          assertThat(p.getTimeBox().getStartDate()).isEqualTo(command.timeBox().start());
+          assertThat(p.getTimeBox().getEndDate()).isEqualTo(command.timeBox().end());
         });
   }
 }

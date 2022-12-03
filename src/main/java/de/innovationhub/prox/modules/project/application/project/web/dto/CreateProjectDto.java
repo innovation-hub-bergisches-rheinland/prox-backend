@@ -7,5 +7,5 @@ public record CreateProjectDto(
     String summary,
     String requirement,
     CurriculumContextDto context,
-    TimeBoxDto timeboxDto) {
+    TimeBoxDto timeBox) {
 }

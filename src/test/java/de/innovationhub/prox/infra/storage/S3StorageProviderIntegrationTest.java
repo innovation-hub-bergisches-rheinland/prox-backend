@@ -44,30 +44,6 @@ class S3StorageProviderIntegrationTest extends AbstractIntegrationTest {
   }
 
   @Test
-  void shouldReadFile() throws IOException {
-    var content = "test";
-    var fileId = UUID.randomUUID().toString();
-    s3Client.putObject(config.s3().bucket(), fileId, content);
-
-    var bytes = s3StorageProvider.getFile(fileId);
-
-    assertThat(content).isEqualTo(new String(bytes));
-  }
-
-  @Test
-  void shouldDeleteFile() {
-    var content = "test";
-    var fileId = UUID.randomUUID().toString();
-    s3Client.putObject(config.s3().bucket(), fileId, content);
-
-    s3StorageProvider.deleteFile(fileId);
-
-    var exists = s3Client.doesObjectExist(config.s3().bucket(), fileId);
-    assertThat(exists)
-        .isFalse();
-  }
-
-  @Test
   void shouldGetUrl() {
     var content = "test";
     var fileId = UUID.randomUUID().toString();

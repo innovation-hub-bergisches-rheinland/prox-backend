@@ -34,7 +34,7 @@ dependencies {
 
     implementation "org.keycloak:keycloak-admin-client:20.0.0"
     // AWS
-    implementation "com.amazonaws:aws-java-sdk:1.12.332"
+    implementation "com.amazonaws:aws-java-sdk-s3:1.12.353"
 
     // K8s
     implementation 'org.springframework.cloud:spring-cloud-starter-kubernetes-fabric8-config'

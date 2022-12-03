@@ -2,8 +2,8 @@ package de.innovationhub.prox.infra.storage;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -25,18 +25,10 @@ public class S3StorageProvider implements StorageProvider {
     var metadata = new ObjectMetadata();
     metadata.setContentType(contentType);
     metadata.setContentLength(file.length);
-    s3.putObject(bucket, fileId, new ByteArrayInputStream(file), metadata);
-  }
 
-  @Override
-  public byte[] getFile(String fileId) throws IOException {
-    var object = s3.getObject(bucket, fileId);
-    return object.getObjectContent().readAllBytes();
-  }
+    PutObjectRequest request = new PutObjectRequest(bucket, fileId, new ByteArrayInputStream(file), metadata);
 
-  @Override
-  public void deleteFile(String fileId) {
-    s3.deleteObject(bucket, fileId);
+    s3.putObject(request);
   }
 
   @Override

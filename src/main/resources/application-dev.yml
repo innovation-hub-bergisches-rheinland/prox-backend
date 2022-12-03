@@ -1,13 +1,13 @@
 cloud:
   aws:
     credentials:
-      access-key: ${AWS_ACCESS_KEY:aws-access-key}
-      secret-key: ${AWS_SECRET_KEY:aws-secret-key}
+      access-key: ${AWS_ACCESS_KEY:accesskey}
+      secret-key: ${AWS_SECRET_KEY:secretkey}
     s3:
-      endpoint: http://localhost:4566
-    region: eu-central-1
+      endpoint: http://127.0.0.1:4566
+    region: us-east-1
 spring:
   datasource:
     password: prox-backend
-    url: jdbc:postgresql://localhost:5432/prox-db
+    url: jdbc:postgresql://127.0.0.1:5432/prox-db
     username: prox-backend

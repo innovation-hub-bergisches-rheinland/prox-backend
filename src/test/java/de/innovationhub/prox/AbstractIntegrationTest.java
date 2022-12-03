@@ -16,7 +16,7 @@ public class AbstractIntegrationTest {
       .withDatabaseName("prox")
       .withUsername("prox")
       .withPassword("prox");
-  static LocalStackContainer localStack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:latest"))
+  static LocalStackContainer localStack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:1.3"))
       .withServices(LocalStackContainer.Service.S3);
 
   static {

@@ -5,5 +5,6 @@ import java.util.UUID;
 
 public record ReadOrganizationMembershipDto(
     UUID member,
+    String name,
     OrganizationRole role
 ) { }

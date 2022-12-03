@@ -2,6 +2,8 @@ package de.innovationhub.prox.modules.profile.application.organization.web.dto;
 
 import de.innovationhub.prox.infra.storage.StorageProvider;
 import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
+import de.innovationhub.prox.modules.auth.contract.UserFacade;
+import de.innovationhub.prox.modules.auth.contract.UserView;
 import de.innovationhub.prox.modules.profile.application.organization.OrganizationPermissionEvaluator;
 import de.innovationhub.prox.modules.profile.domain.organization.Membership;
 import de.innovationhub.prox.modules.profile.domain.organization.Organization;
@@ -17,6 +19,7 @@ public class OrganizationDtoAssembler {
   private final TagFacade tagFacade;
   private final StorageProvider storageProvider;
   private final OrganizationDtoMapper organizationDtoMapper;
+  private final UserFacade userFacade;
 
   // TODO: EXPERIMENTAL
   private final OrganizationPermissionEvaluator organizationPermissionEvaluator;
@@ -42,10 +45,12 @@ public class OrganizationDtoAssembler {
   }
 
   public ReadOrganizationMembershipDto toDto(Membership membership) {
-    return organizationDtoMapper.toDto(membership);
+    var userView = userFacade.findById(membership.getMemberId());
+    var name = userView.map(UserView::name).orElse(null);
+    return organizationDtoMapper.toDto(membership, name);
   }
 
   public List<ReadOrganizationMembershipDto> toDto(List<Membership> memberships) {
-    return organizationDtoMapper.toDto(memberships);
+    return memberships.stream().map(this::toDto).toList();
   }
 }

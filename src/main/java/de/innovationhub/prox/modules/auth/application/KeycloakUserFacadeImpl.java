@@ -6,7 +6,7 @@ import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import javax.ws.rs.NotFoundException;
+import javax.ws.rs.ProcessingException;
 import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.admin.client.resource.UsersResource;
 
@@ -23,11 +23,15 @@ public class KeycloakUserFacadeImpl implements UserFacade {
 
   public Optional<UserView> findById(UUID id) {
     try {
-      return Optional.of(this.usersResource.get(id.toString()).toRepresentation())
+      var userRepresentation = this.usersResource.get(id.toString()).toRepresentation();
+      return Optional.of(userRepresentation)
           .map(rep -> new UserView(UUID.fromString(rep.getId()),
               rep.getFirstName() + " " + rep.getLastName()));
-    } catch (NotFoundException e) {
-      return Optional.empty();
+    } catch (ProcessingException e) {
+      if(e.getCause() instanceof javax.ws.rs.NotFoundException) {
+        return Optional.empty();
+      }
+      throw e;
     }
   }
 

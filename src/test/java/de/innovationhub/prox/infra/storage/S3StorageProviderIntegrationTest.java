@@ -1,12 +1,10 @@
 package de.innovationhub.prox.infra.storage;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
 import de.innovationhub.prox.AbstractIntegrationTest;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -67,5 +65,18 @@ class S3StorageProviderIntegrationTest extends AbstractIntegrationTest {
     var exists = s3Client.doesObjectExist(config.s3().bucket(), fileId);
     assertThat(exists)
         .isFalse();
+  }
+
+  @Test
+  void shouldGetUrl() {
+    var content = "test";
+    var fileId = UUID.randomUUID().toString();
+    s3Client.putObject(config.s3().bucket(), fileId, content);
+
+    var url = s3StorageProvider.buildUrl(fileId);
+
+    assertThat(url)
+        .startsWith("http://")
+        .endsWith(fileId);
   }
 }

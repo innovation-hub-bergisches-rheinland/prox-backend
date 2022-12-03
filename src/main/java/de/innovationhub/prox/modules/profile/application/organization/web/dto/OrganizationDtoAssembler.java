@@ -11,10 +11,12 @@ import de.innovationhub.prox.modules.tag.contract.TagFacade;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
+@Slf4j
 public class OrganizationDtoAssembler {
   private final TagFacade tagFacade;
   private final StorageProvider storageProvider;
@@ -45,8 +47,14 @@ public class OrganizationDtoAssembler {
   }
 
   public ReadOrganizationMembershipDto toDto(Membership membership) {
-    var userView = userFacade.findById(membership.getMemberId());
-    var name = userView.map(UserView::name).orElse(null);
+    String name = null;
+    try {
+      var userView = userFacade.findById(membership.getMemberId());
+      name = userView.map(UserView::name).orElse(null);
+    }
+    catch (RuntimeException e) {
+      log.error("Unable to fetch user name for user with id {}", membership.getMemberId(), e);
+    }
     return organizationDtoMapper.toDto(membership, name);
   }
 

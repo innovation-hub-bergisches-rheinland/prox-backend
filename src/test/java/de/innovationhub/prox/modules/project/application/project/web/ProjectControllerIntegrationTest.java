@@ -14,7 +14,6 @@ import de.innovationhub.prox.modules.project.application.project.web.dto.CreateP
 import de.innovationhub.prox.modules.project.application.project.web.dto.CurriculumContextDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.SetPartnerRequestDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectTagsRequestDto;
-import de.innovationhub.prox.modules.project.application.project.web.dto.SupervisorDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.TimeBoxDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.UpdateProjectDto;
 import de.innovationhub.prox.modules.project.domain.discipline.DisciplineRepository;
@@ -181,8 +180,7 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
         new TimeBoxDto(
             LocalDate.EPOCH,
             LocalDate.now()
-        ),
-        List.of(new SupervisorDto(UUID.randomUUID()))
+        )
     );
 
     given()

@@ -12,7 +12,6 @@ import de.innovationhub.prox.modules.project.DisciplineFixtures;
 import de.innovationhub.prox.modules.project.ModuleTypeFixtures;
 import de.innovationhub.prox.modules.project.ProjectFixtures;
 import de.innovationhub.prox.modules.project.application.project.web.dto.CurriculumContextDto;
-import de.innovationhub.prox.modules.project.application.project.web.dto.SupervisorDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.TimeBoxDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.UpdateProjectDto;
 import de.innovationhub.prox.modules.project.domain.discipline.DisciplineRepository;
@@ -62,8 +61,7 @@ class UpdateProjectHandlerTest {
         new TimeBoxDto(
             LocalDate.now(),
             LocalDate.now()
-        ),
-        List.of(new SupervisorDto(UUID.randomUUID()))
+        )
     );
 
     createProjectHandler.handle(project.getId(), command);

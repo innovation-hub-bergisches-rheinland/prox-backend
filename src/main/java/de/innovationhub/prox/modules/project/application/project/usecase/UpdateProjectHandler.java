@@ -4,7 +4,6 @@ import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.project.application.project.exception.ProjectNotFoundException;
 import de.innovationhub.prox.modules.project.application.project.web.dto.CurriculumContextDto;
-import de.innovationhub.prox.modules.project.application.project.web.dto.SupervisorDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.TimeBoxDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.UpdateProjectDto;
 import de.innovationhub.prox.modules.project.domain.discipline.Discipline;
@@ -14,7 +13,6 @@ import de.innovationhub.prox.modules.project.domain.module.ModuleTypeRepository;
 import de.innovationhub.prox.modules.project.domain.project.CurriculumContext;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
-import de.innovationhub.prox.modules.project.domain.project.Supervisor;
 import de.innovationhub.prox.modules.project.domain.project.TimeBox;
 import java.util.List;
 import java.util.UUID;
@@ -35,7 +33,6 @@ public class UpdateProjectHandler {
         .orElseThrow(ProjectNotFoundException::new);
 
     var context = buildContext(projectDto.context());
-    var supervisors = buildSupervisors(projectDto.supervisors());
     var timeBox = buildTimeBox(projectDto.timeboxDto());
 
     project.setCurriculumContext(context);
@@ -46,10 +43,6 @@ public class UpdateProjectHandler {
     project.setSummary(projectDto.summary());
     project.setRequirement(projectDto.requirement());
 
-    if (!supervisors.isEmpty()) {
-      project.offer(supervisors);
-    }
-
     return this.projectRepository.save(project);
   }
 
@@ -58,12 +51,6 @@ public class UpdateProjectHandler {
       return null;
     }
     return new TimeBox(dto.start(), dto.end());
-  }
-
-  private List<Supervisor> buildSupervisors(List<SupervisorDto> supervisorDtos) {
-    return supervisorDtos.stream()
-        .map(dto -> new Supervisor(dto.id()))
-        .toList();
   }
 
   private CurriculumContext buildContext(CurriculumContextDto dtoContext) {

@@ -17,10 +17,15 @@ services:
     environment:
       SERVICES: s3
       START_WEB: 0
+      DEBUG: 1
       AWS_ACCESS_KEY_ID: aws-access-key
       AWS_SECRET_ACCESS_KEY: aws-secret-key
+      DATA_DIR: /tmp/localstack/data
     ports:
       - "4566:4566"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - localstack-data:/tmp/localstack
 
 # TODO: It is not really a good idea to setup keycloak locally as Keycloak has very poor support
 #       for configuration as code and realm importing at startup. Although it is possible, we should
@@ -61,3 +66,4 @@ services:
 volumes:
   prox-db-data: {}
   keycloak-db-data: {}
+  localstack-data: {}

@@ -23,7 +23,9 @@ public record ReadProjectDto(
     List<ReadSupervisorDto> supervisors,
     List<String> tags,
     @JsonProperty("_permissions")
-    ProjectPermissions permissions
+    ProjectPermissions permissions,
+    Instant createdAt,
+    Instant modifiedAt
 ) {
   public record AuthorDto(
       UUID userId

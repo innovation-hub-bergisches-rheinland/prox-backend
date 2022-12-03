@@ -1,8 +1,12 @@
 package de.innovationhub.prox.modules.project.application.discipline.web.dto;
 
+import java.time.Instant;
+
 public record ReadDisciplineDto(
     String key,
-    String name
+    String name,
+    Instant createdAt,
+    Instant modifiedAt
 ) {
 
 }

@@ -1,6 +1,7 @@
 package de.innovationhub.prox.modules.profile.application.lecturer.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,5 +13,8 @@ public record ReadLecturerDto(
     List<String> tags,
     String avatarUrl,
     @JsonProperty("_permissions")
-    LecturerPermissions permissions
+    LecturerPermissions permissions,
+
+    Instant createdAt,
+    Instant modifiedAt
 ) { }

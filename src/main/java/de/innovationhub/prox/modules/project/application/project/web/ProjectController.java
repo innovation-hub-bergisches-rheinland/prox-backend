@@ -4,6 +4,8 @@ import de.innovationhub.prox.modules.project.application.project.usecase.CreateP
 import de.innovationhub.prox.modules.project.application.project.usecase.DeleteProjectByIdHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.FindAllProjectsHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.FindProjectByIdHandler;
+import de.innovationhub.prox.modules.project.application.project.usecase.FindProjectsOfPartnerHandler;
+import de.innovationhub.prox.modules.project.application.project.usecase.FindProjectsOfSupervisorHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.SearchProjectHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.SetProjectPartnerHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.SetProjectTagsHandler;
@@ -48,6 +50,8 @@ public class ProjectController {
   private final SetProjectTagsHandler setTags;
   private final SetSupervisorsHandler setSupervisors;
   private final SetProjectPartnerHandler setPartner;
+  private final FindProjectsOfPartnerHandler findByPartner;
+  private final FindProjectsOfSupervisorHandler findBySupervisor;
 
   private final ProjectDtoAssembler dtoAssembler;
 
@@ -113,6 +117,22 @@ public class ProjectController {
       @RequestParam(name = "moduleTypeKeys", required = false) Collection<String> moduleTypeKeys,
       @RequestParam(name = "text", required = false) String text) {
     var result = search.handle(status, specializationKeys, moduleTypeKeys, text);
+    var dtoList = dtoAssembler.toDto(result);
+    return ResponseEntity.ok(dtoList);
+  }
+
+  @GetMapping("search/findBySupervisor")
+  public ResponseEntity<ReadProjectListDto> findBySupervisor(
+      @RequestParam(name = "supervisor") UUID supervisorId) {
+    var result = findBySupervisor.handle(supervisorId);
+    var dtoList = dtoAssembler.toDto(result);
+    return ResponseEntity.ok(dtoList);
+  }
+
+  @GetMapping("search/findByPartner")
+  public ResponseEntity<ReadProjectListDto> findByPartner(
+      @RequestParam(name = "partner") UUID partner) {
+    var result = findByPartner.handle(partner);
     var dtoList = dtoAssembler.toDto(result);
     return ResponseEntity.ok(dtoList);
   }

@@ -276,6 +276,36 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
   }
 
   @Test
+  void shouldFindByPartner() {
+    var aProject = ProjectFixtures.build_a_project();
+    projectRepository.save(aProject);
+
+    given()
+        .param("partner", aProject.getPartner().getOrganizationId())
+        .when()
+        .get("/projects/search/findByPartner")
+        .then()
+        .statusCode(200)
+        .body("projects", hasSize(1));
+  }
+
+  @Test
+  void shouldFindBySupervisor() {
+    var aProject = ProjectFixtures.build_a_project();
+    var supervisorId = UUID.randomUUID();
+    aProject.offer(new Supervisor(supervisorId));
+    projectRepository.save(aProject);
+
+    given()
+        .param("supervisor", supervisorId)
+        .when()
+        .get("/projects/search/findBySupervisor")
+        .then()
+        .statusCode(200)
+        .body("projects", hasSize(1));
+  }
+
+  @Test
   @WithMockUser(value = "00000000-0000-0000-0000-000000000001")
   void shouldSetTags() {
     var project = ProjectFixtures.build_a_project();

@@ -38,4 +38,10 @@ public interface ProjectRepository extends CrudRepository<Project, UUID> {
 
   @Query("select p from Project p where p.status.state = ?1 and p.status.updatedAt <= ?2")
   List<Project> findWithStatusModifiedBefore(ProjectState status, Instant timestamp);
+
+  @Query("select p from Project p where p.partner.organizationId = ?1")
+  List<Project> findByPartner(UUID partnerId);
+
+  @Query("select p from Project p join p.supervisors s where s.lecturerId = ?1")
+  List<Project> findBySupervisor(UUID supervisorId);
 }

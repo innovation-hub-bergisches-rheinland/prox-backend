@@ -1,0 +1,2 @@
+alter table organization_members drop constraint UK_3qoxo6mk3ake4mept5t1krtm3;
+alter table organization_members add constraint UK_3qoxo6mk3ake4mept5t1krtm3 unique (organization_id, members_member_id);

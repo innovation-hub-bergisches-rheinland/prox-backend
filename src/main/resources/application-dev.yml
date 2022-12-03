@@ -1,9 +1,3 @@
-keycloak:
-  realm: prox-backend-dev
-  client-id: prox-backend-dev
-  auth-server-url: http://localhost:8081
-  credentials:
-    secret: ${KEYCLOAK_SECRET:prox-backend-dev}
 cloud:
   aws:
     credentials:
@@ -17,8 +11,3 @@ spring:
     password: prox-backend
     url: jdbc:postgresql://localhost:5432/prox-db
     username: prox-backend
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: https://localhost:8080/auth/realms/prox-backend-dev

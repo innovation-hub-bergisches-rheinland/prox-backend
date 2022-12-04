@@ -29,6 +29,7 @@ class ProjectStatusTest {
             arguments ->
                 Arrays.stream(ProjectState.values())
                     .filter(s -> s != arguments.get()[0])
+                    .filter(s -> s != arguments.get()[1])
                     .map(s -> Arguments.of(s, arguments.get()[1])));
   }
 

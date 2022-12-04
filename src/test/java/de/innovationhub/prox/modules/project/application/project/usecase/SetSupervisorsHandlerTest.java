@@ -1,7 +1,6 @@
 package de.innovationhub.prox.modules.project.application.project.usecase;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -34,16 +33,5 @@ class SetSupervisorsHandlerTest {
         .containsExactly(userId);
     assertThat(response.getStatus().getState())
         .isEqualTo(ProjectState.OFFERED);
-  }
-
-  @Test
-  void shouldNotApplyCommitment() {
-    var userId = UUID.randomUUID();
-    var project = ProjectFixtures.build_a_project();
-    project.offer(new Supervisor(UUID.randomUUID()));
-    when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
-
-    assertThatThrownBy(() -> setSupervisorsHandler.handle(project.getId(), List.of(userId)))
-        .isInstanceOf(RuntimeException.class);
   }
 }

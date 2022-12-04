@@ -54,6 +54,14 @@ class ProjectStatusTest {
   }
 
   @Test
+  void shouldAllowTransitionToItself() {
+    var status = new ProjectStatus(ProjectState.OFFERED, Instant.now());
+    status.updateState(ProjectState.OFFERED);
+
+    assertThat(status.getState()).isEqualTo(ProjectState.OFFERED);
+  }
+
+  @Test
   void shouldUpdateTimestamp() {
     var currentMoment = Instant.now();
     var status = new ProjectStatus(ProjectState.OFFERED, currentMoment);

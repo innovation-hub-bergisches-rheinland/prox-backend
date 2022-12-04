@@ -32,6 +32,11 @@ public class ProjectStatus {
    */
   void updateState(ProjectState state) {
     Objects.requireNonNull(state);
+
+    if(state == this.state) {
+      return;
+    }
+
     if (ProjectState.TRANSITIONS.getOrDefault(this.state, List.of()).contains(state)) {
       this.state = state;
       this.updatedAt = Instant.now();

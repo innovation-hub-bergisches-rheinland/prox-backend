@@ -113,9 +113,9 @@ public class ProjectController {
   @GetMapping("search/filter")
   public ResponseEntity<ReadProjectListDto> filter(
       @RequestParam(name = "status", required = false) ProjectState status,
-      @RequestParam(name = "disciplineKeys", required = false) Collection<String> specializationKeys,
-      @RequestParam(name = "moduleTypeKeys", required = false) Collection<String> moduleTypeKeys,
-      @RequestParam(name = "text", required = false) String text) {
+      @RequestParam(name = "disciplineKeys", required = false, defaultValue = "") Collection<String> specializationKeys,
+      @RequestParam(name = "moduleTypeKeys", required = false, defaultValue = "") Collection<String> moduleTypeKeys,
+      @RequestParam(name = "text", required = false, defaultValue = "") String text) {
     var result = search.handle(status, specializationKeys, moduleTypeKeys, text);
     var dtoList = dtoAssembler.toDto(result);
     return ResponseEntity.ok(dtoList);

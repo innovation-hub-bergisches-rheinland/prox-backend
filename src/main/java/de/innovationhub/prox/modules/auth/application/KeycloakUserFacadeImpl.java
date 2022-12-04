@@ -1,5 +1,6 @@
 package de.innovationhub.prox.modules.auth.application;
 
+import de.innovationhub.prox.config.CacheConfig;
 import de.innovationhub.prox.modules.auth.contract.UserFacade;
 import de.innovationhub.prox.modules.auth.contract.UserView;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
@@ -9,6 +10,7 @@ import java.util.UUID;
 import javax.ws.rs.ProcessingException;
 import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.admin.client.resource.UsersResource;
+import org.springframework.cache.annotation.Cacheable;
 
 @ApplicationComponent
 public class KeycloakUserFacadeImpl implements UserFacade {
@@ -21,6 +23,7 @@ public class KeycloakUserFacadeImpl implements UserFacade {
     this.usersResource = realmResource.users();
   }
 
+  @Cacheable(CacheConfig.USERS)
   public Optional<UserView> findById(UUID id) {
     try {
       var userRepresentation = this.usersResource.get(id.toString()).toRepresentation();
@@ -39,6 +42,7 @@ public class KeycloakUserFacadeImpl implements UserFacade {
     return this.findById(id).isPresent();
   }
 
+  @Cacheable(CacheConfig.USERS)
   public List<UserView> search(String query) {
     return this.realmResource.users().search(query, 0, 100, true).stream()
         .map(u -> new UserView(UUID.fromString(u.getId()), u.getFirstName() + " " + u.getLastName()))

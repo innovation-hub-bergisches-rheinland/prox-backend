@@ -20,6 +20,9 @@ import de.innovationhub.prox.modules.project.application.project.web.dto.SetProj
 import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectTagsResponseDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.UpdateProjectDto;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -39,6 +42,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("projects")
 @RequiredArgsConstructor
+@Tag(name = "Project", description = "Project API")
 public class ProjectController {
 
   private final FindAllProjectsHandler findAll;
@@ -63,6 +67,9 @@ public class ProjectController {
   }
 
   @PostMapping(consumes = "application/json", produces = "application/json")
+  @Operation(security = {
+      @SecurityRequirement(name = "oidc")
+  })
   public ResponseEntity<ReadProjectDto> create(
       @RequestBody CreateProjectDto createDto
   ) {
@@ -82,6 +89,9 @@ public class ProjectController {
   }
 
   @PutMapping(value = "{id}", consumes = "application/json", produces = "application/json")
+  @Operation(security = {
+      @SecurityRequirement(name = "oidc")
+  })
   public ResponseEntity<ReadProjectDto> update(@PathVariable("id") UUID id, @RequestBody
   UpdateProjectDto updateProjectDto) {
     var updatedProject = update.handle(id, updateProjectDto);
@@ -90,6 +100,9 @@ public class ProjectController {
   }
 
   @PutMapping(value = "{id}/partner", consumes = "application/json", produces = "application/json")
+  @Operation(security = {
+      @SecurityRequirement(name = "oidc")
+  })
   public ResponseEntity<ReadProjectDto> setPartner(@PathVariable("id") UUID id, @RequestBody
   SetPartnerRequestDto requestDto) {
     var updatedProject = setPartner.handle(id, requestDto.organizationId());
@@ -98,6 +111,9 @@ public class ProjectController {
   }
 
   @PostMapping(value = "{id}/supervisors", consumes = "application/json", produces = "application/json")
+  @Operation(security = {
+      @SecurityRequirement(name = "oidc")
+  })
   public ResponseEntity<ReadProjectDto> commitment(@PathVariable("id") UUID id, @RequestBody List<UUID> supervisorIds) {
     var updatedProject = setSupervisors.handle(id, supervisorIds);
     var dto = dtoAssembler.toDto(updatedProject);
@@ -105,6 +121,9 @@ public class ProjectController {
   }
 
   @DeleteMapping("{id}")
+  @Operation(security = {
+      @SecurityRequirement(name = "oidc")
+  })
   public ResponseEntity<Void> deleteById(@PathVariable("id") UUID id) {
     deleteById.handle(id);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -138,6 +157,9 @@ public class ProjectController {
   }
 
   @PostMapping(value = "{id}/tags", consumes = "application/json", produces = "application/json")
+  @Operation(security = {
+      @SecurityRequirement(name = "oidc")
+  })
   public ResponseEntity<SetProjectTagsResponseDto> setTags(
       @PathVariable("id") UUID id,
       @RequestBody SetProjectTagsRequestDto tagsDto) {

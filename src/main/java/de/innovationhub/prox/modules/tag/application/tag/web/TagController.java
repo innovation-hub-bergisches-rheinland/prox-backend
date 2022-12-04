@@ -8,6 +8,9 @@ import de.innovationhub.prox.modules.tag.application.tag.web.dto.SynchronizeTags
 import de.innovationhub.prox.modules.tag.application.tag.web.dto.SynchronizeTagsResponse;
 import de.innovationhub.prox.modules.tag.application.tag.web.dto.TagDto;
 import de.innovationhub.prox.modules.tag.application.tag.web.dto.TagDtoMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("tags")
 @RequiredArgsConstructor
+@Tag(name = "Tag", description = "Tag API")
 public class TagController {
 
   private final FindMatchingTagsHandler findMatching;
@@ -58,6 +62,9 @@ public class TagController {
   }
 
   @PostMapping(path = "synchronization", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+  @Operation(security = {
+      @SecurityRequirement(name = "oidc")
+  })
   public ResponseEntity<SynchronizeTagsResponse> synchronizeTags(
       @RequestBody SynchronizeTagsRequest request) {
     var result = synchronize.handle(request.tags());

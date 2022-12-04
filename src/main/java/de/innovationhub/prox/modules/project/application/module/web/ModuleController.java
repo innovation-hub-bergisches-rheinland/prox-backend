@@ -4,6 +4,7 @@ import de.innovationhub.prox.modules.project.application.module.usecase.FindAllM
 import de.innovationhub.prox.modules.project.application.module.usecase.FindModulesByDisciplinesHandler;
 import de.innovationhub.prox.modules.project.application.module.web.dto.ModuleTypeMapper;
 import de.innovationhub.prox.modules.project.application.module.web.dto.ReadModuleTypeDto;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("modules")
+@Tag(name = "Curriculum")
 public class ModuleController {
 
   private final FindAllModulesHandler findAllModulesHandler;

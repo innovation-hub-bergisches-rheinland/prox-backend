@@ -13,6 +13,9 @@ import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.ReadLe
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.SetLecturerTagsRequestDto;
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.SetLecturerTagsResponseDto;
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.UpdateLecturerDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -32,6 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("lecturers")
 @RequiredArgsConstructor
+@Tag(name = "Lecturer", description = "Lecturer API")
 public class LecturerController {
   private final CreateLecturerHandler create;
   private final FindAllLecturersHandler findAll;
@@ -62,6 +66,9 @@ public class LecturerController {
   }
 
   @PostMapping
+  @Operation(security = {
+      @SecurityRequirement(name = "oidc")
+  })
   public ResponseEntity<ReadLecturerDto> create(
       @RequestBody CreateLecturerDto createLecturerDto
   ) {
@@ -71,6 +78,9 @@ public class LecturerController {
   }
 
   @PutMapping("{id}")
+  @Operation(security = {
+      @SecurityRequirement(name = "oidc")
+  })
   public ResponseEntity<ReadLecturerDto> update(
       @PathVariable("id") UUID id,
       @RequestBody UpdateLecturerDto updateLecturerDto
@@ -81,6 +91,9 @@ public class LecturerController {
   }
 
   @PostMapping(value = "{id}/avatar", consumes = "multipart/form-data")
+  @Operation(security = {
+      @SecurityRequirement(name = "oidc")
+  })
   public ResponseEntity<Void> postAvatar(
       @PathVariable("id") UUID id,
       @RequestParam("image") MultipartFile multipartFile
@@ -97,6 +110,9 @@ public class LecturerController {
   }
 
   @PostMapping("{id}/tags")
+  @Operation(security = {
+      @SecurityRequirement(name = "oidc")
+  })
   public ResponseEntity<SetLecturerTagsResponseDto> setTags(
       @PathVariable("id") UUID id,
       @RequestBody SetLecturerTagsRequestDto tagsDto) {

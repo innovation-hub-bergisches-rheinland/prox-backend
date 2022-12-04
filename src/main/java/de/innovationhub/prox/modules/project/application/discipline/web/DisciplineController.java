@@ -3,6 +3,7 @@ package de.innovationhub.prox.modules.project.application.discipline.web;
 import de.innovationhub.prox.modules.project.application.discipline.usecase.FindAllDisciplinesHandler;
 import de.innovationhub.prox.modules.project.application.discipline.web.dto.DisciplineMapper;
 import de.innovationhub.prox.modules.project.application.discipline.web.dto.ReadDisciplineDto;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("disciplines")
+@Tag(name = "Curriculum")
 public class DisciplineController {
 
   private final FindAllDisciplinesHandler findAllDisciplines;

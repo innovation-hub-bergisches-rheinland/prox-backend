@@ -20,6 +20,9 @@ import de.innovationhub.prox.modules.profile.application.organization.web.dto.Se
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.UpdateOrganizationDto;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.UpdateOrganizationMembershipDto;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.ViewAllOrganizationMembershipsDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -40,6 +43,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("organizations")
 @RequiredArgsConstructor
+@Tag(name = "Organization", description = "Organization API")
 public class OrganizationController {
 
   private final CreateOrganizationHandler create;
@@ -86,6 +90,9 @@ public class OrganizationController {
   }
 
   @PutMapping("{id}")
+  @Operation(security = {
+      @SecurityRequirement(name = "oidc")
+  })
   public ResponseEntity<ReadOrganizationDto> update(
       @PathVariable("id") UUID id,
       @RequestBody UpdateOrganizationDto updateOrganizationDto
@@ -105,6 +112,9 @@ public class OrganizationController {
   }
 
   @PostMapping("{id}/memberships")
+  @Operation(security = {
+      @SecurityRequirement(name = "oidc")
+  })
   public ResponseEntity<ReadOrganizationMembershipDto> addMembership(
       @PathVariable("id") UUID id,
       @RequestBody AddOrganizationMembershipDto addMemberDto
@@ -115,6 +125,9 @@ public class OrganizationController {
   }
 
   @PutMapping("{id}/memberships/{memberId}")
+  @Operation(security = {
+      @SecurityRequirement(name = "oidc")
+  })
   public ResponseEntity<ReadOrganizationMembershipDto> updateMembership(
       @PathVariable("id") UUID id,
       @PathVariable("memberId") UUID memberId,
@@ -126,6 +139,9 @@ public class OrganizationController {
   }
 
   @DeleteMapping("{id}/memberships/{memberId}")
+  @Operation(security = {
+      @SecurityRequirement(name = "oidc")
+  })
   public ResponseEntity<Void> removeMembership(
       @PathVariable("id") UUID id,
       @PathVariable("memberId") UUID memberId
@@ -135,6 +151,9 @@ public class OrganizationController {
   }
 
   @PostMapping(value = "{id}/logo", consumes = "multipart/form-data")
+  @Operation(security = {
+      @SecurityRequirement(name = "oidc")
+  })
   public ResponseEntity<Void> postAvatar(
       @PathVariable("id") UUID id,
       @RequestParam("image") MultipartFile multipartFile
@@ -151,6 +170,9 @@ public class OrganizationController {
   }
 
   @PostMapping("{id}/tags")
+  @Operation(security = {
+      @SecurityRequirement(name = "oidc")
+  })
   public ResponseEntity<SetOrganizationTagsResponseDto> setTags(
       @PathVariable("id") UUID id,
       @RequestBody SetOrganizationTagsRequestDto tagsDto) {

@@ -12,7 +12,6 @@ import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.SetLec
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.UpdateLecturerDto;
 import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
-
 import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import java.io.IOException;
@@ -131,6 +130,22 @@ class LecturerControllerIntegrationTest extends AbstractIntegrationTest {
         .then()
         .status(HttpStatus.OK)
         .body("id", equalTo(lecturer.getId().toString()));
+  }
+
+  @Test
+  void shouldFilter() {
+    var lecturer = createDummyLecturer();
+    lecturerRepository.save(lecturer);
+
+    given()
+        .contentType(ContentType.JSON)
+        .accept(ContentType.JSON)
+        .param("q", lecturer.getName())
+        .when()
+        .get("lecturers/search/filter")
+        .then()
+        .status(HttpStatus.OK)
+        .body(".", hasSize(1));
   }
 
   @Test

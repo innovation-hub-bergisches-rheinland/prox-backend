@@ -1,6 +1,7 @@
 package de.innovationhub.prox.modules.profile.application.lecturer.web;
 
 import de.innovationhub.prox.modules.profile.application.lecturer.usecase.CreateLecturerHandler;
+import de.innovationhub.prox.modules.profile.application.lecturer.usecase.FilterLecturerHandler;
 import de.innovationhub.prox.modules.profile.application.lecturer.usecase.FindAllLecturersHandler;
 import de.innovationhub.prox.modules.profile.application.lecturer.usecase.FindLecturerHandler;
 import de.innovationhub.prox.modules.profile.application.lecturer.usecase.SetLecturerAvatarHandler;
@@ -38,6 +39,7 @@ public class LecturerController {
   private final UpdateLecturerProfileHandler update;
   private final SetLecturerAvatarHandler setAvatar;
   private final SetLecturerTagsHandler setTags;
+  private final FilterLecturerHandler filter;
   private final LecturerDtoAssembler dtoAssembler;
 
   @GetMapping
@@ -100,5 +102,14 @@ public class LecturerController {
       @RequestBody SetLecturerTagsRequestDto tagsDto) {
     var result = setTags.handle(id, tagsDto.tags());
     return ResponseEntity.ok(new SetLecturerTagsResponseDto(result));
+  }
+
+  @GetMapping("search/filter")
+  public ResponseEntity<List<ReadLecturerDto>> getById(@RequestParam("q") String query) {
+    var dto = filter.handle(query).stream()
+        .map(dtoAssembler::toDto)
+        .toList();
+
+    return ResponseEntity.ok(dto);
   }
 }

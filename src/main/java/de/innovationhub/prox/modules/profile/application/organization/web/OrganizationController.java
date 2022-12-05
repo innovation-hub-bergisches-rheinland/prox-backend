@@ -1,15 +1,15 @@
 package de.innovationhub.prox.modules.profile.application.organization.web;
 
-import de.innovationhub.prox.modules.profile.application.organization.usecase.AddOrganizationMemberHandler;
-import de.innovationhub.prox.modules.profile.application.organization.usecase.CreateOrganizationHandler;
-import de.innovationhub.prox.modules.profile.application.organization.usecase.FindAllOrganizationsHandler;
-import de.innovationhub.prox.modules.profile.application.organization.usecase.FindOrganizationHandler;
-import de.innovationhub.prox.modules.profile.application.organization.usecase.FindOrganizationMembershipsHandler;
-import de.innovationhub.prox.modules.profile.application.organization.usecase.RemoveOrganizationMemberHandler;
-import de.innovationhub.prox.modules.profile.application.organization.usecase.SetOrganizationLogoHandler;
-import de.innovationhub.prox.modules.profile.application.organization.usecase.SetOrganizationTagsHandler;
-import de.innovationhub.prox.modules.profile.application.organization.usecase.UpdateOrganizationHandler;
-import de.innovationhub.prox.modules.profile.application.organization.usecase.UpdateOrganizationMemberHandler;
+import de.innovationhub.prox.modules.profile.application.organization.usecase.commands.AddOrganizationMemberHandler;
+import de.innovationhub.prox.modules.profile.application.organization.usecase.commands.CreateOrganizationHandler;
+import de.innovationhub.prox.modules.profile.application.organization.usecase.queries.FindAllOrganizationsHandler;
+import de.innovationhub.prox.modules.profile.application.organization.usecase.queries.FindOrganizationHandler;
+import de.innovationhub.prox.modules.profile.application.organization.usecase.queries.FindOrganizationMembershipsHandler;
+import de.innovationhub.prox.modules.profile.application.organization.usecase.commands.RemoveOrganizationMemberHandler;
+import de.innovationhub.prox.modules.profile.application.organization.usecase.commands.SetOrganizationLogoHandler;
+import de.innovationhub.prox.modules.profile.application.organization.usecase.commands.SetOrganizationTagsHandler;
+import de.innovationhub.prox.modules.profile.application.organization.usecase.commands.UpdateOrganizationHandler;
+import de.innovationhub.prox.modules.profile.application.organization.usecase.commands.UpdateOrganizationMemberHandler;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.AddOrganizationMembershipDto;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.CreateOrganizationDto;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.OrganizationDtoAssembler;

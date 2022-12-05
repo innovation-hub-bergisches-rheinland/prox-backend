@@ -1,9 +1,9 @@
 package de.innovationhub.prox.modules.tag.application.tag.web;
 
-import de.innovationhub.prox.modules.tag.application.tag.usecase.FindCommonTagsHandler;
-import de.innovationhub.prox.modules.tag.application.tag.usecase.FindMatchingTagsHandler;
-import de.innovationhub.prox.modules.tag.application.tag.usecase.FindPopularTagsHandler;
-import de.innovationhub.prox.modules.tag.application.tag.usecase.SynchronizeTagsHandler;
+import de.innovationhub.prox.modules.tag.application.tag.usecase.queries.FindCommonTagsHandler;
+import de.innovationhub.prox.modules.tag.application.tag.usecase.queries.FindMatchingTagsHandler;
+import de.innovationhub.prox.modules.tag.application.tag.usecase.queries.FindPopularTagsHandler;
+import de.innovationhub.prox.modules.tag.application.tag.usecase.commands.SynchronizeTagsHandler;
 import de.innovationhub.prox.modules.tag.application.tag.web.dto.SynchronizeTagsRequest;
 import de.innovationhub.prox.modules.tag.application.tag.web.dto.SynchronizeTagsResponse;
 import de.innovationhub.prox.modules.tag.application.tag.web.dto.TagDto;

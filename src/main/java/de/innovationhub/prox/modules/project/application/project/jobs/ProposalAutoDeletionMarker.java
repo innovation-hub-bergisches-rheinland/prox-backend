@@ -2,7 +2,7 @@ package de.innovationhub.prox.modules.project.application.project.jobs;
 
 
 import de.innovationhub.prox.modules.project.application.config.ProjectConfig;
-import de.innovationhub.prox.modules.project.application.project.usecase.MarkProposalsAsStaleHandler;
+import de.innovationhub.prox.modules.project.application.project.usecase.commands.MarkProposalsAsStaleHandler;
 import java.time.Duration;
 import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;

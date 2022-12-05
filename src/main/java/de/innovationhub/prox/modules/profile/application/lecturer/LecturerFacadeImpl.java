@@ -2,7 +2,7 @@ package de.innovationhub.prox.modules.profile.application.lecturer;
 
 import de.innovationhub.prox.config.CacheConfig;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
-import de.innovationhub.prox.modules.profile.application.lecturer.usecase.FindLecturerHandler;
+import de.innovationhub.prox.modules.profile.application.lecturer.usecase.queries.FindLecturerHandler;
 import de.innovationhub.prox.modules.profile.contract.LecturerFacade;
 import de.innovationhub.prox.modules.profile.contract.LecturerView;
 import de.innovationhub.prox.modules.profile.contract.LecturerViewMapper;

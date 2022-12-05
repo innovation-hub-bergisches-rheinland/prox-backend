@@ -2,7 +2,7 @@ package de.innovationhub.prox.modules.project.application.project.jobs;
 
 
 import de.innovationhub.prox.modules.project.application.config.ProjectConfig;
-import de.innovationhub.prox.modules.project.application.project.usecase.ArchiveInactiveProposalsHandler;
+import de.innovationhub.prox.modules.project.application.project.usecase.commands.ArchiveInactiveProposalsHandler;
 import java.time.Duration;
 import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;

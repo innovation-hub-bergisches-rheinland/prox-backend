@@ -1,7 +1,7 @@
 package de.innovationhub.prox.modules.project.application.project.jobs;
 
 
-import de.innovationhub.prox.modules.project.application.project.usecase.DeleteStaleProposalsHandler;
+import de.innovationhub.prox.modules.project.application.project.usecase.commands.DeleteStaleProposalsHandler;
 import java.time.Duration;
 import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;

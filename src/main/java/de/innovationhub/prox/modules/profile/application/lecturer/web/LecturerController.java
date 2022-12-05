@@ -1,12 +1,12 @@
 package de.innovationhub.prox.modules.profile.application.lecturer.web;
 
-import de.innovationhub.prox.modules.profile.application.lecturer.usecase.CreateLecturerHandler;
-import de.innovationhub.prox.modules.profile.application.lecturer.usecase.FilterLecturerHandler;
-import de.innovationhub.prox.modules.profile.application.lecturer.usecase.FindAllLecturersHandler;
-import de.innovationhub.prox.modules.profile.application.lecturer.usecase.FindLecturerHandler;
-import de.innovationhub.prox.modules.profile.application.lecturer.usecase.SetLecturerAvatarHandler;
-import de.innovationhub.prox.modules.profile.application.lecturer.usecase.SetLecturerTagsHandler;
-import de.innovationhub.prox.modules.profile.application.lecturer.usecase.UpdateLecturerProfileHandler;
+import de.innovationhub.prox.modules.profile.application.lecturer.usecase.commands.CreateLecturerHandler;
+import de.innovationhub.prox.modules.profile.application.lecturer.usecase.queries.FilterLecturerHandler;
+import de.innovationhub.prox.modules.profile.application.lecturer.usecase.queries.FindAllLecturersHandler;
+import de.innovationhub.prox.modules.profile.application.lecturer.usecase.queries.FindLecturerHandler;
+import de.innovationhub.prox.modules.profile.application.lecturer.usecase.commands.SetLecturerAvatarHandler;
+import de.innovationhub.prox.modules.profile.application.lecturer.usecase.commands.SetLecturerTagsHandler;
+import de.innovationhub.prox.modules.profile.application.lecturer.usecase.commands.UpdateLecturerProfileHandler;
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerDto;
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.LecturerDtoAssembler;
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.ReadLecturerDto;

@@ -6,6 +6,10 @@ import de.innovationhub.prox.modules.project.application.module.web.dto.ModuleTy
 import de.innovationhub.prox.modules.project.application.module.web.dto.ReadModuleTypeDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import org.springdoc.api.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,20 +33,23 @@ public class ModuleController {
   }
 
   @GetMapping
-  public ResponseEntity<List<ReadModuleTypeDto>> getAll() {
+  public ResponseEntity<Page<ReadModuleTypeDto>> getAll(
+      @ParameterObject @PageableDefault(size = 100) Pageable pageable
+  ) {
     return ResponseEntity.ok(
-        moduleTypeMapper.toDtoList(
-            findAllModulesHandler.handle()
+        moduleTypeMapper.toDtoPage(
+            findAllModulesHandler.handle(pageable)
         )
     );
   }
 
   @GetMapping("search/findByDisciplines")
-  public ResponseEntity<List<ReadModuleTypeDto>> findByDisciplines(
-      @RequestParam("keys") List<String> disciplineKeys) {
+  public ResponseEntity<Page<ReadModuleTypeDto>> findByDisciplines(
+      @RequestParam("keys") List<String> disciplineKeys,
+      @ParameterObject @PageableDefault(size = 100) Pageable pageable) {
     return ResponseEntity.ok(
-        moduleTypeMapper.toDtoList(
-            findModulesByDisciplines.handle(disciplineKeys)
+        moduleTypeMapper.toDtoPage(
+            findModulesByDisciplines.handle(disciplineKeys, pageable)
         )
     );
   }

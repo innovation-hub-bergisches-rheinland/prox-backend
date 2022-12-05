@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
 
 @SpringBootTest
 @Transactional
@@ -20,7 +21,7 @@ class LecturerRepositoryIntegrationTest extends AbstractIntegrationTest {
     var lecturer = Lecturer.create(UUID.randomUUID(), "Max Mustermann");
     lecturerRepository.save(lecturer);
 
-    var result = lecturerRepository.filter("Max");
+    var result = lecturerRepository.filter("Max", Pageable.unpaged());
 
     assertThat(result).contains(lecturer);
   }
@@ -30,7 +31,7 @@ class LecturerRepositoryIntegrationTest extends AbstractIntegrationTest {
     var lecturer = Lecturer.create(UUID.randomUUID(), "Max Mustermann");
     lecturerRepository.save(lecturer);
 
-    var result = lecturerRepository.filter("max mustermann");
+    var result = lecturerRepository.filter("max mustermann", Pageable.unpaged());
 
     assertThat(result).contains(lecturer);
   }

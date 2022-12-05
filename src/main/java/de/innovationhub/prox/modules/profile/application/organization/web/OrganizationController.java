@@ -24,9 +24,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
-import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.api.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -60,11 +63,11 @@ public class OrganizationController {
   private final OrganizationDtoAssembler dtoAssembler;
 
   @GetMapping
-  public ResponseEntity<List<ReadOrganizationDto>> getAll() {
-    var dtoList = findAll.handle()
-        .stream().map(dtoAssembler::toDto)
-        .toList();
-    return ResponseEntity.ok(dtoList);
+  public ResponseEntity<Page<ReadOrganizationDto>> getAll(
+      @ParameterObject @PageableDefault(size = 20) Pageable pageable
+  ) {
+    var dto = dtoAssembler.toDto(findAll.handle(pageable));
+    return ResponseEntity.ok(dto);
   }
 
   @PostMapping

@@ -8,7 +8,6 @@ import de.innovationhub.prox.modules.tag.contract.TagFacade;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
@@ -39,9 +38,5 @@ public class LecturerDtoAssembler {
     );
 
     return lecturerDtoMapper.toDto(lecturer, tags, avatarUrl, permissions);
-  }
-
-  public Page<ReadLecturerDto> toDto(Page<Lecturer> lecturers) {
-    return lecturers.map(this::toDto);
   }
 }

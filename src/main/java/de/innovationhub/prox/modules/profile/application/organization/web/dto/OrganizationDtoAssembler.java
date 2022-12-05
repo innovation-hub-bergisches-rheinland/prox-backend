@@ -12,7 +12,6 @@ import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
@@ -61,9 +60,5 @@ public class OrganizationDtoAssembler {
 
   public List<ReadOrganizationMembershipDto> toDto(List<Membership> memberships) {
     return memberships.stream().map(this::toDto).toList();
-  }
-
-  public Page<ReadOrganizationDto> toDto(Page<Organization> organizations) {
-    return organizations.map(this::toDto);
   }
 }

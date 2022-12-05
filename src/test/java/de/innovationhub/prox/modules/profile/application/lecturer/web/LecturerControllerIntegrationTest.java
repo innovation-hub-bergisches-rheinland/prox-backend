@@ -103,7 +103,7 @@ class LecturerControllerIntegrationTest extends AbstractIntegrationTest {
         .get("lecturers")
         .then()
         .status(HttpStatus.OK)
-        .body("content", hasSize(1));
+        .body(".", hasSize(1));
   }
 
   @Test
@@ -145,7 +145,7 @@ class LecturerControllerIntegrationTest extends AbstractIntegrationTest {
         .get("lecturers/search/filter")
         .then()
         .status(HttpStatus.OK)
-        .body("content", hasSize(1));
+        .body(".", hasSize(1));
   }
 
   @Test

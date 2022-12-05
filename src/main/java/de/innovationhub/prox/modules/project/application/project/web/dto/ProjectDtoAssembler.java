@@ -11,7 +11,6 @@ import de.innovationhub.prox.modules.tag.contract.TagFacade;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
@@ -51,7 +50,9 @@ public class ProjectDtoAssembler {
     return projectMapper.toDto(project, supervisors, partnerOrg, tags, permissions);
   }
 
-  public Page<ReadProjectDto> toDtoPage(Page<Project> projects) {
-    return projects.map(this::toDto);
+  public ReadProjectListDto toDto(List<Project> projects) {
+    return new ReadProjectListDto(projects.stream()
+        .map(this::toDto)
+        .toList());
   }
 }

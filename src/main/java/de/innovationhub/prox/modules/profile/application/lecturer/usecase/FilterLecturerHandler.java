@@ -6,8 +6,6 @@ import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 @ApplicationComponent
 @RequiredArgsConstructor
@@ -15,9 +13,9 @@ public class FilterLecturerHandler {
 
   private final LecturerRepository lecturerRepository;
 
-  public Page<Lecturer> handle(String query, Pageable pageable) {
+  public List<Lecturer> handle(String query) {
     Objects.requireNonNull(query);
 
-    return lecturerRepository.filter(query, pageable);
+    return lecturerRepository.filter(query);
   }
 }

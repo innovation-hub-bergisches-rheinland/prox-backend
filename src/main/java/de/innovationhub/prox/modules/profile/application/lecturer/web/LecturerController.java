@@ -17,12 +17,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.springdoc.api.annotations.ParameterObject;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,11 +47,11 @@ public class LecturerController {
   private final LecturerDtoAssembler dtoAssembler;
 
   @GetMapping
-  public ResponseEntity<Page<ReadLecturerDto>> getAll(
-      @ParameterObject @PageableDefault(size = 20) Pageable pageable
-  ) {
-    var dto = dtoAssembler.toDto(findAll.handle(pageable));
-    return ResponseEntity.ok(dto);
+  public ResponseEntity<List<ReadLecturerDto>> getAll() {
+    var dtoList = findAll.handle().stream()
+        .map(dtoAssembler::toDto)
+        .toList();
+    return ResponseEntity.ok(dtoList);
   }
 
   @GetMapping("{id}")
@@ -124,11 +121,11 @@ public class LecturerController {
   }
 
   @GetMapping("search/filter")
-  public ResponseEntity<Page<ReadLecturerDto>> getById(
-      @RequestParam("q") String query,
-      @ParameterObject @PageableDefault(size = 20) Pageable pageable
-  ) {
-    var dto = dtoAssembler.toDto(filter.handle(query, pageable));
+  public ResponseEntity<List<ReadLecturerDto>> getById(@RequestParam("q") String query) {
+    var dto = filter.handle(query).stream()
+        .map(dtoAssembler::toDto)
+        .toList();
+
     return ResponseEntity.ok(dto);
   }
 }

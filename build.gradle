@@ -52,7 +52,6 @@ dependencies {
     implementation "org.springdoc:springdoc-openapi-ui:${springdocVersion}"
     implementation "org.springdoc:springdoc-openapi-webmvc-core:${springdocVersion}"
     implementation "org.springdoc:springdoc-openapi-security:${springdocVersion}"
-    implementation "org.springdoc:springdoc-openapi-data-rest:${springdocVersion}" // For Pageable support
 
     runtimeOnly 'org.postgresql:postgresql'
 

@@ -15,6 +15,7 @@ import de.innovationhub.prox.modules.project.application.project.usecase.UpdateP
 import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.ProjectDtoAssembler;
 import de.innovationhub.prox.modules.project.application.project.web.dto.ReadProjectDto;
+import de.innovationhub.prox.modules.project.application.project.web.dto.ReadProjectListDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.SetPartnerRequestDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectStateRequestDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectTagsRequestDto;
@@ -28,10 +29,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.springdoc.api.annotations.ParameterObject;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -66,12 +63,10 @@ public class ProjectController {
   private final ProjectDtoAssembler dtoAssembler;
 
   @GetMapping
-  public ResponseEntity<Page<ReadProjectDto>> getAll(
-      @ParameterObject @PageableDefault Pageable pageable
-  ) {
-    var list = findAll.handle(pageable);
-    var page = dtoAssembler.toDtoPage(list);
-    return ResponseEntity.ok(page);
+  public ResponseEntity<ReadProjectListDto> getAll() {
+    var list = findAll.handle();
+    var dtoList = dtoAssembler.toDto(list);
+    return ResponseEntity.ok(dtoList);
   }
 
   @PostMapping(consumes = "application/json", produces = "application/json")
@@ -149,33 +144,30 @@ public class ProjectController {
   }
 
   @GetMapping("search/filter")
-  public ResponseEntity<Page<ReadProjectDto>> filter(
+  public ResponseEntity<ReadProjectListDto> filter(
       @RequestParam(name = "status", required = false) ProjectState status,
       @RequestParam(name = "disciplineKeys", required = false, defaultValue = "") Collection<String> specializationKeys,
       @RequestParam(name = "moduleTypeKeys", required = false, defaultValue = "") Collection<String> moduleTypeKeys,
-      @RequestParam(name = "text", required = false, defaultValue = "") String text,
-      @ParameterObject @PageableDefault Pageable pageable) {
-    var result = search.handle(status, specializationKeys, moduleTypeKeys, text, pageable);
-    var page = dtoAssembler.toDtoPage(result);
-    return ResponseEntity.ok(page);
+      @RequestParam(name = "text", required = false, defaultValue = "") String text) {
+    var result = search.handle(status, specializationKeys, moduleTypeKeys, text);
+    var dtoList = dtoAssembler.toDto(result);
+    return ResponseEntity.ok(dtoList);
   }
 
   @GetMapping("search/findBySupervisor")
-  public ResponseEntity<Page<ReadProjectDto>> findBySupervisor(
-      @RequestParam(name = "supervisor") UUID supervisorId,
-      @ParameterObject @PageableDefault Pageable pageable) {
-    var result = findBySupervisor.handle(supervisorId, pageable);
-    var page = dtoAssembler.toDtoPage(result);
-    return ResponseEntity.ok(page);
+  public ResponseEntity<ReadProjectListDto> findBySupervisor(
+      @RequestParam(name = "supervisor") UUID supervisorId) {
+    var result = findBySupervisor.handle(supervisorId);
+    var dtoList = dtoAssembler.toDto(result);
+    return ResponseEntity.ok(dtoList);
   }
 
   @GetMapping("search/findByPartner")
-  public ResponseEntity<Page<ReadProjectDto>> findByPartner(
-      @RequestParam(name = "partner") UUID partner,
-      @ParameterObject @PageableDefault Pageable pageable) {
-    var result = findByPartner.handle(partner, pageable);
-    var page = dtoAssembler.toDtoPage(result);
-    return ResponseEntity.ok(page);
+  public ResponseEntity<ReadProjectListDto> findByPartner(
+      @RequestParam(name = "partner") UUID partner) {
+    var result = findByPartner.handle(partner);
+    var dtoList = dtoAssembler.toDto(result);
+    return ResponseEntity.ok(dtoList);
   }
 
   @PostMapping(value = "{id}/tags", consumes = "application/json", produces = "application/json")

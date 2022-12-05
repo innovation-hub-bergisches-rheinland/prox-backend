@@ -96,7 +96,7 @@ class OrganizationControllerIntegrationTest extends AbstractIntegrationTest {
         .get("organizations")
         .then()
         .status(HttpStatus.OK)
-        .body("content", hasSize(OrganizationFixtures.ALL.size()));
+        .body(".", hasSize(OrganizationFixtures.ALL.size()));
   }
 
   @Test

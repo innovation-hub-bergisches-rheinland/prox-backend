@@ -23,4 +23,18 @@ class SearchProjectHandlerTest {
 
     verify(projectRepository).filterProjects(status, keys, modules, text);
   }
+
+  @Test
+  void shouldFallbackToFindAllOnNulls() {
+    searchProjectHandler.handle(null, null, null, null);
+
+    verify(projectRepository).findAll();
+  }
+
+  @Test
+  void shouldFallbackToFindAllOnEmptyLists() {
+    searchProjectHandler.handle(null, List.of(), List.of(), null);
+
+    verify(projectRepository).findAll();
+  }
 }

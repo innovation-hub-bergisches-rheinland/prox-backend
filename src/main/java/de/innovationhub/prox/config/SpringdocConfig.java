@@ -6,6 +6,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.security.SecurityScheme.Type;
+import org.springdoc.core.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +24,46 @@ public class SpringdocConfig {
   ) {
     this.buildProperties = buildProperties;
     this.resourceServerUrl = resourceServerUrl;
+  }
+
+  @Bean
+  public GroupedOpenApi usersApi() {
+    return GroupedOpenApi.builder()
+        .group("users")
+        .pathsToMatch("/users/**")
+        .build();
+  }
+
+  @Bean
+  public GroupedOpenApi projects() {
+    return GroupedOpenApi.builder()
+        .group("projects")
+        .pathsToMatch("/projects/**", "/moduleTypes/**", "/disciplines/**")
+        .build();
+  }
+
+  @Bean
+  public GroupedOpenApi tagsApi() {
+    return GroupedOpenApi.builder()
+        .group("tags")
+        .pathsToMatch("/tags/**")
+        .build();
+  }
+
+  @Bean
+  public GroupedOpenApi lecturersApi() {
+    return GroupedOpenApi.builder()
+        .group("lecturers")
+        .pathsToMatch("/lecturers/**")
+        .build();
+  }
+
+  @Bean
+  public GroupedOpenApi organizationsApi() {
+    return GroupedOpenApi.builder()
+        .group("organizations")
+        .pathsToMatch("/organizations/**")
+        .build();
   }
 
   @Bean

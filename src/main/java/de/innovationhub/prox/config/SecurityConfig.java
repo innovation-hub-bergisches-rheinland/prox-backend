@@ -42,7 +42,7 @@ class SecurityConfig {
                     .mvcMatchers(HttpMethod.GET,
                         "/swagger-ui.html",
                         "/swagger-ui/**",
-                        "/v3/api-docs",
+                        "/v3/api-docs/**",
                         "/v3/api-docs.yaml",
                         "/v3/api-docs/swagger-config"
                         )

@@ -24,6 +24,7 @@ public class KeycloakGrantedAuthoritiesConverter
       realmAccess = Map.of();
     }
 
+    @SuppressWarnings("unchecked")
     var roles = (List<String>) realmAccess.get("roles");
     Stream<GrantedAuthority> roleAuthorities = Stream.empty();
     if (roles != null) {

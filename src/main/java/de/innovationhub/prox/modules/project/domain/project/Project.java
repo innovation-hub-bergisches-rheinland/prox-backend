@@ -50,6 +50,7 @@ import org.springframework.lang.Nullable;
 public class Project extends AbstractAggregateRoot {
 
   @Id
+  @Builder.Default
   private UUID id = UUID.randomUUID();
 
   @NotNull
@@ -82,7 +83,6 @@ public class Project extends AbstractAggregateRoot {
   @Embedded
   private ProjectStatus status;
 
-  @Setter(AccessLevel.PROTECTED)
   @Builder.Default
   @Embedded
   private TimeBox timeBox = null;
@@ -93,6 +93,7 @@ public class Project extends AbstractAggregateRoot {
   private List<Supervisor> supervisors = new ArrayList<>();
 
   @ElementCollection
+  @Builder.Default
   private Set<UUID> tags = new HashSet<>();
 
   public static Project create(

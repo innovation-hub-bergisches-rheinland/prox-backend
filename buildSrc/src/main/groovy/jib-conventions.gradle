@@ -2,10 +2,6 @@ plugins {
     id "com.google.cloud.tools.jib"
 }
 
-dependencies {
-    implementation("com.google.cloud.tools:jib-spring-boot-extension-gradle:0.1.0")
-}
-
 jib {
   from {
     image = "eclipse-temurin:17-jdk-alpine"
@@ -16,10 +12,5 @@ jib {
   }
   container {
     format = "OCI"
-  }
-  pluginExtensions {
-    pluginExtension {
-      implementation = 'com.google.cloud.tools.jib.gradle.extension.springboot.JibSpringBootExtension'
-    }
   }
 }

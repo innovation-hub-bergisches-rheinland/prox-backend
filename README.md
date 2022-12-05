@@ -6,11 +6,12 @@ Backend service of the web-application [PROX](https://prox.aws.innovation-hub.de
 
 ## Architectural Decisions
 
-- References between Bounded Contexts do **always** use the ID
-  - References within a BC **should** use direct references
-- Communication between BCs is **always** done using Events
+- References between modules do **always** use the ID
+  - References within a module **should** use direct references
+- Communication between modules **should** be done using Events. This is especially true for modifying actions.
+  - It is okay to rely on a synchronous message call for read-only actions. Use a Facade inside a contract module for that.
 - We accept coupling declarative persistence logic using **JPA in our domain model**
-- We make use of **use cases over god services**
+- We make use of **use cases** to **prevent god services**
 
 ## Release
 

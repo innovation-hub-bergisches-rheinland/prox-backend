@@ -28,7 +28,7 @@ public interface ProjectRepository extends CrudRepository<Project, UUID> {
             AND (:query <> '' IS NOT TRUE OR
                   document @@ query
               )
-        ORDER BY rank DESC;
+        ORDER BY rank DESC, modified_at DESC
       """)
   List<Project> filterProjects(
       @Nullable @Param("state") ProjectState state,

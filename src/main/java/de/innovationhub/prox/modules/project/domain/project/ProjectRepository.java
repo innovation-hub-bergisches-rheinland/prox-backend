@@ -22,7 +22,7 @@ public interface ProjectRepository extends CrudRepository<Project, UUID> {
                  LEFT JOIN module_type m on m.key = cm.module_types_key,
               to_tsvector('simple', concat_ws(' ', p.title, p.summary, p.description, p.requirement)) document,
               to_tsquery('simple', REGEXP_REPLACE(lower(:query), '\\s+', ':* & ', 'g')) query
-        WHERE (:state IS NULL OR p.state = :#{#state.name()})
+        WHERE (:state IS NULL OR p.state = :#{#state != null ? #state.name() : ''})
             AND (:disciplineKeys IS NULL OR d.key IN (:disciplineKeys))
             AND (:moduleTypeKeys IS NULL OR m.key IN (:moduleTypeKeys))
             AND (:query <> '' IS NOT TRUE OR

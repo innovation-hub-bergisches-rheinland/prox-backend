@@ -6,10 +6,9 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
-import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerDto;
-import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerDto.CreateLecturerProfileDto;
+import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerRequestDto;
+import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerRequestDto.CreateLecturerProfileDto;
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.SetLecturerTagsRequestDto;
-import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.UpdateLecturerDto;
 import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
 import io.restassured.http.ContentType;
@@ -58,7 +57,7 @@ class LecturerControllerIntegrationTest extends AbstractIntegrationTest {
   @Test
   @WithMockUser(value = USER_ID)
   void shouldCreateLecturer() {
-    var createLecturerRequest = new CreateLecturerDto(
+    var createLecturerRequest = new CreateLecturerRequestDto(
         "Max Mustermann",
         new CreateLecturerProfileDto(
             "2022-11-07",
@@ -154,9 +153,9 @@ class LecturerControllerIntegrationTest extends AbstractIntegrationTest {
     var lecturer = createDummyLecturer();
     lecturerRepository.save(lecturer);
 
-    var updateLecturerDto = new UpdateLecturerDto(
+    var updateLecturerDto = new CreateLecturerRequestDto(
         "Max Mustermann",
-        new UpdateLecturerDto.CreateLecturerProfileDto(
+        new CreateLecturerProfileDto(
             "2022-11-07",
             "200",
             "Lorem Ipsum",

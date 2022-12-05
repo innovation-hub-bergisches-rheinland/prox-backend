@@ -10,13 +10,12 @@ import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.modules.project.DisciplineFixtures;
 import de.innovationhub.prox.modules.project.ModuleTypeFixtures;
 import de.innovationhub.prox.modules.project.ProjectFixtures;
-import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectDto;
-import de.innovationhub.prox.modules.project.application.project.web.dto.CurriculumContextDto;
+import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectRequest;
+import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectRequest.TimeBoxDto;
+import de.innovationhub.prox.modules.project.application.project.web.dto.CurriculumContextRequest;
 import de.innovationhub.prox.modules.project.application.project.web.dto.SetPartnerRequestDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectStateRequestDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectTagsRequestDto;
-import de.innovationhub.prox.modules.project.application.project.web.dto.TimeBoxDto;
-import de.innovationhub.prox.modules.project.application.project.web.dto.UpdateProjectDto;
 import de.innovationhub.prox.modules.project.domain.discipline.DisciplineRepository;
 import de.innovationhub.prox.modules.project.domain.module.ModuleTypeRepository;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
@@ -96,12 +95,12 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
   @Test
   @WithMockUser(value = "00000000-0000-0000-0000-000000000001")
   void shouldCreateProposal() {
-    var request = new CreateProjectDto(
+    var request = new CreateProjectRequest(
         "A Project",
         "A Description",
         "A Summary",
         "A Requirement",
-        new CurriculumContextDto(
+        new CurriculumContextRequest(
             List.of("BA"),
             List.of("INF")
         ),
@@ -131,12 +130,12 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
   @Test
   @WithMockUser(value = "00000000-0000-0000-0000-000000000001")
   void shouldCreateProject() {
-    var request = new CreateProjectDto(
+    var request = new CreateProjectRequest(
         "A Project",
         "A Description",
         "A Summary",
         "A Requirement",
-        new CurriculumContextDto(
+        new CurriculumContextRequest(
             List.of("BA"),
             List.of("INF")
         ),
@@ -169,12 +168,12 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
     var aProject = ProjectFixtures.build_a_project();
     projectRepository.save(aProject);
 
-    var request = new UpdateProjectDto(
+    var request = new CreateProjectRequest(
         "A Changed Project",
         "A Description",
         "A Summary",
         "A Requirement",
-        new CurriculumContextDto(
+        new CurriculumContextRequest(
             List.of("BA"),
             List.of("INF")
         ),

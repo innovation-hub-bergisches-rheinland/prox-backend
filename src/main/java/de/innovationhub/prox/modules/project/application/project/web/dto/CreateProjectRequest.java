@@ -1,11 +1,19 @@
 package de.innovationhub.prox.modules.project.application.project.web.dto;
 
 
-public record CreateProjectDto(
+import java.time.LocalDate;
+
+public record CreateProjectRequest(
     String title,
     String description,
     String summary,
     String requirement,
-    CurriculumContextDto context,
+    CurriculumContextRequest context,
     TimeBoxDto timeBox) {
+  public record TimeBoxDto(
+      LocalDate start,
+      LocalDate end
+  ) {
+
+  }
 }

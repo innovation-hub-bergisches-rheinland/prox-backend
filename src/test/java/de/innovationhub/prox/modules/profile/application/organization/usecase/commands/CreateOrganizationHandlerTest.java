@@ -6,9 +6,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
-import de.innovationhub.prox.modules.profile.application.organization.usecase.commands.CreateOrganizationHandler;
-import de.innovationhub.prox.modules.profile.application.organization.web.dto.CreateOrganizationDto;
-import de.innovationhub.prox.modules.profile.application.organization.web.dto.CreateOrganizationDto.CreateOrganizationProfileDto;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.CreateOrganizationRequestDto;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.CreateOrganizationRequestDto.CreateOrganizationProfileDto;
 import de.innovationhub.prox.modules.profile.domain.organization.Organization;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRepository;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRole;
@@ -30,7 +29,7 @@ class CreateOrganizationHandlerTest {
     var userId = UUID.randomUUID();
     when(authenticationFacade.currentAuthenticatedId()).thenReturn(userId);
 
-    var request = new CreateOrganizationDto("ACME Ltd.",
+    var request = new CreateOrganizationRequestDto("ACME Ltd.",
         new CreateOrganizationProfileDto(
             "2022-11-07",
             "200",

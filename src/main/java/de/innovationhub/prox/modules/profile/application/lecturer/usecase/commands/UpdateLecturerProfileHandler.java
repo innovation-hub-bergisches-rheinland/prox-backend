@@ -3,7 +3,7 @@ package de.innovationhub.prox.modules.profile.application.lecturer.usecase.comma
 import de.innovationhub.prox.modules.auth.application.exception.UnauthorizedAccessException;
 import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
-import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.UpdateLecturerDto;
+import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerRequestDto;
 import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerProfile;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
@@ -21,7 +21,7 @@ public class UpdateLecturerProfileHandler {
 
   @Transactional
   @PreAuthorize("@lecturerPermissionEvaluator.hasPermission(#lecturerId, authentication)")
-  public Lecturer handle(UUID lecturerId, UpdateLecturerDto dto) {
+  public Lecturer handle(UUID lecturerId, CreateLecturerRequestDto dto) {
     var lecturer = this.lecturerRepository.findById(lecturerId)
         .orElseThrow(() -> new RuntimeException("Lecturer could not be found"));
     if (!authentication.currentAuthenticatedId().equals(lecturer.getUserId())) {

@@ -1,12 +1,15 @@
 package de.innovationhub.prox.modules.profile.application.organization.web.dto;
 
 import de.innovationhub.prox.modules.profile.domain.organization.SocialMedia;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Map;
 
-public record CreateOrganizationDto(
+@Schema(name = "CreateOrganizationRequest")
+public record CreateOrganizationRequestDto(
     String name,
     CreateOrganizationProfileDto profile
 ) {
+  @Schema(name = "CreateOrganizationProfileRequest")
 
   public record CreateOrganizationProfileDto(
       String foundingDate,

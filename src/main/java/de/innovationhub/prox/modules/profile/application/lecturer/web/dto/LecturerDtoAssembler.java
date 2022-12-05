@@ -21,7 +21,7 @@ public class LecturerDtoAssembler {
   private final LecturerPermissionEvaluator lecturerPermissionEvaluator;
   private final AuthenticationFacade authenticationFacade;
 
-  public ReadLecturerDto toDto(Lecturer lecturer) {
+  public LecturerDto toDto(Lecturer lecturer) {
     String avatarUrl = null;
 
     if(lecturer.getAvatarKey() != null) {

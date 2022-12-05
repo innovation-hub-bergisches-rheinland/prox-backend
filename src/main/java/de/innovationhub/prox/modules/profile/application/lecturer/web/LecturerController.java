@@ -7,12 +7,11 @@ import de.innovationhub.prox.modules.profile.application.lecturer.usecase.querie
 import de.innovationhub.prox.modules.profile.application.lecturer.usecase.commands.SetLecturerAvatarHandler;
 import de.innovationhub.prox.modules.profile.application.lecturer.usecase.commands.SetLecturerTagsHandler;
 import de.innovationhub.prox.modules.profile.application.lecturer.usecase.commands.UpdateLecturerProfileHandler;
-import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerDto;
+import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerRequestDto;
+import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.LecturerDto;
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.LecturerDtoAssembler;
-import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.ReadLecturerDto;
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.SetLecturerTagsRequestDto;
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.SetLecturerTagsResponseDto;
-import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.UpdateLecturerDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -47,7 +46,7 @@ public class LecturerController {
   private final LecturerDtoAssembler dtoAssembler;
 
   @GetMapping
-  public ResponseEntity<List<ReadLecturerDto>> getAll() {
+  public ResponseEntity<List<LecturerDto>> getAll() {
     var dtoList = findAll.handle().stream()
         .map(dtoAssembler::toDto)
         .toList();
@@ -55,7 +54,7 @@ public class LecturerController {
   }
 
   @GetMapping("{id}")
-  public ResponseEntity<ReadLecturerDto> getById(@PathVariable("id") UUID id) {
+  public ResponseEntity<LecturerDto> getById(@PathVariable("id") UUID id) {
     var dto = find.handle(id)
         .map(dtoAssembler::toDto);
     if(dto.isEmpty()) {
@@ -69,10 +68,10 @@ public class LecturerController {
   @Operation(security = {
       @SecurityRequirement(name = "oidc")
   })
-  public ResponseEntity<ReadLecturerDto> create(
-      @RequestBody CreateLecturerDto createLecturerDto
+  public ResponseEntity<LecturerDto> create(
+      @RequestBody CreateLecturerRequestDto createLecturerRequestDto
   ) {
-    var lecturer = create.handle(createLecturerDto);
+    var lecturer = create.handle(createLecturerRequestDto);
     var dto = dtoAssembler.toDto(lecturer);
     return ResponseEntity.status(HttpStatus.CREATED).body(dto);
   }
@@ -81,9 +80,9 @@ public class LecturerController {
   @Operation(security = {
       @SecurityRequirement(name = "oidc")
   })
-  public ResponseEntity<ReadLecturerDto> update(
+  public ResponseEntity<LecturerDto> update(
       @PathVariable("id") UUID id,
-      @RequestBody UpdateLecturerDto updateLecturerDto
+      @RequestBody CreateLecturerRequestDto updateLecturerDto
   ) {
     var lecturer = update.handle(id, updateLecturerDto);
     var dto = dtoAssembler.toDto(lecturer);
@@ -121,7 +120,7 @@ public class LecturerController {
   }
 
   @GetMapping("search/filter")
-  public ResponseEntity<List<ReadLecturerDto>> getById(@RequestParam("q") String query) {
+  public ResponseEntity<List<LecturerDto>> getById(@RequestParam("q") String query) {
     var dto = filter.handle(query).stream()
         .map(dtoAssembler::toDto)
         .toList();

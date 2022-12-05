@@ -10,16 +10,15 @@ import de.innovationhub.prox.modules.profile.application.organization.usecase.co
 import de.innovationhub.prox.modules.profile.application.organization.usecase.commands.SetOrganizationTagsHandler;
 import de.innovationhub.prox.modules.profile.application.organization.usecase.commands.UpdateOrganizationHandler;
 import de.innovationhub.prox.modules.profile.application.organization.usecase.commands.UpdateOrganizationMemberHandler;
-import de.innovationhub.prox.modules.profile.application.organization.web.dto.AddOrganizationMembershipDto;
-import de.innovationhub.prox.modules.profile.application.organization.web.dto.CreateOrganizationDto;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.AddMembershipRequestDto;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.CreateOrganizationRequestDto;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.MembershipDto;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.OrganizationDto;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.OrganizationDtoAssembler;
-import de.innovationhub.prox.modules.profile.application.organization.web.dto.ReadOrganizationDto;
-import de.innovationhub.prox.modules.profile.application.organization.web.dto.ReadOrganizationMembershipDto;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.SetOrganizationTagsRequestDto;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.SetOrganizationTagsResponseDto;
-import de.innovationhub.prox.modules.profile.application.organization.web.dto.UpdateOrganizationDto;
-import de.innovationhub.prox.modules.profile.application.organization.web.dto.UpdateOrganizationMembershipDto;
-import de.innovationhub.prox.modules.profile.application.organization.web.dto.ViewAllOrganizationMembershipsDto;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.UpdateMembershipRequestDto;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.MembershipsResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -60,7 +59,7 @@ public class OrganizationController {
   private final OrganizationDtoAssembler dtoAssembler;
 
   @GetMapping
-  public ResponseEntity<List<ReadOrganizationDto>> getAll() {
+  public ResponseEntity<List<OrganizationDto>> getAll() {
     var dtoList = findAll.handle()
         .stream().map(dtoAssembler::toDto)
         .toList();
@@ -68,16 +67,16 @@ public class OrganizationController {
   }
 
   @PostMapping
-  public ResponseEntity<ReadOrganizationDto> create(
-      @RequestBody CreateOrganizationDto createOrganizationDto
+  public ResponseEntity<OrganizationDto> create(
+      @RequestBody CreateOrganizationRequestDto createOrganizationRequestDto
   ) {
-    var org = create.handle(createOrganizationDto);
+    var org = create.handle(createOrganizationRequestDto);
     var dto = dtoAssembler.toDto(org);
     return ResponseEntity.status(HttpStatus.CREATED).body(dto);
   }
 
   @GetMapping("{id}")
-  public ResponseEntity<ReadOrganizationDto> get(
+  public ResponseEntity<OrganizationDto> get(
       @PathVariable("id") UUID id
   ) {
     var dto = find.handle(id)
@@ -93,9 +92,9 @@ public class OrganizationController {
   @Operation(security = {
       @SecurityRequirement(name = "oidc")
   })
-  public ResponseEntity<ReadOrganizationDto> update(
+  public ResponseEntity<OrganizationDto> update(
       @PathVariable("id") UUID id,
-      @RequestBody UpdateOrganizationDto updateOrganizationDto
+      @RequestBody CreateOrganizationRequestDto updateOrganizationDto
   ) {
     var org = update.handle(id, updateOrganizationDto);
     var dto = dtoAssembler.toDto(org);
@@ -103,21 +102,21 @@ public class OrganizationController {
   }
 
   @GetMapping("{id}/memberships")
-  public ResponseEntity<ViewAllOrganizationMembershipsDto> getAllMemberships(
+  public ResponseEntity<MembershipsResponseDto> getAllMemberships(
       @PathVariable("id") UUID id
   ) {
     var memberships = findMember.handle(id);
     var dto = dtoAssembler.toDto(memberships);
-    return ResponseEntity.ok(new ViewAllOrganizationMembershipsDto(dto));
+    return ResponseEntity.ok(new MembershipsResponseDto(dto));
   }
 
   @PostMapping("{id}/memberships")
   @Operation(security = {
       @SecurityRequirement(name = "oidc")
   })
-  public ResponseEntity<ReadOrganizationMembershipDto> addMembership(
+  public ResponseEntity<MembershipDto> addMembership(
       @PathVariable("id") UUID id,
-      @RequestBody AddOrganizationMembershipDto addMemberDto
+      @RequestBody AddMembershipRequestDto addMemberDto
   ) {
     var membership = addMember.handle(id, addMemberDto);
     var dto = dtoAssembler.toDto(membership);
@@ -128,10 +127,10 @@ public class OrganizationController {
   @Operation(security = {
       @SecurityRequirement(name = "oidc")
   })
-  public ResponseEntity<ReadOrganizationMembershipDto> updateMembership(
+  public ResponseEntity<MembershipDto> updateMembership(
       @PathVariable("id") UUID id,
       @PathVariable("memberId") UUID memberId,
-      @RequestBody UpdateOrganizationMembershipDto updateDto
+      @RequestBody UpdateMembershipRequestDto updateDto
   ) {
     var membership = updateMember.handle(id, memberId, updateDto);
     var dto = dtoAssembler.toDto(membership);

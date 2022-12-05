@@ -1,7 +1,9 @@
 package de.innovationhub.prox.modules.profile.application.lecturer.web.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
+@Schema(name = "LecturerProfile")
 public record LecturerProfileDto(
     String affiliation,
     String subject,

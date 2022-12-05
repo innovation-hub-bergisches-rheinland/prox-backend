@@ -9,10 +9,9 @@ import static org.mockito.Mockito.when;
 import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.project.DisciplineFixtures;
 import de.innovationhub.prox.modules.project.ModuleTypeFixtures;
-import de.innovationhub.prox.modules.project.application.project.usecase.commands.CreateProjectHandler;
-import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectDto;
-import de.innovationhub.prox.modules.project.application.project.web.dto.CurriculumContextDto;
-import de.innovationhub.prox.modules.project.application.project.web.dto.TimeBoxDto;
+import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectRequest;
+import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectRequest.TimeBoxDto;
+import de.innovationhub.prox.modules.project.application.project.web.dto.CurriculumContextRequest;
 import de.innovationhub.prox.modules.project.domain.discipline.DisciplineRepository;
 import de.innovationhub.prox.modules.project.domain.module.ModuleTypeRepository;
 import de.innovationhub.prox.modules.project.domain.project.Project;
@@ -38,12 +37,12 @@ class CreateProjectHandlerTest {
     when(moduleTypeRepository.findByKeyIn(any())).thenReturn(ModuleTypeFixtures.ALL);
     when(disciplineRepository.findByKeyIn(any())).thenReturn(DisciplineFixtures.ALL);
 
-    var command = new CreateProjectDto(
+    var command = new CreateProjectRequest(
         "Test Project",
         "Test",
         "Test",
         "Test",
-        new CurriculumContextDto(
+        new CurriculumContextRequest(
             List.of("BA"),
             List.of("ING", "INF")
         ),

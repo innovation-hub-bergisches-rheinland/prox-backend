@@ -27,7 +27,7 @@ public class OrganizationDtoAssembler {
   private final OrganizationPermissionEvaluator organizationPermissionEvaluator;
   private final AuthenticationFacade authenticationFacade;
 
-  public ReadOrganizationDto toDto(Organization organization) {
+  public OrganizationDto toDto(Organization organization) {
     String logoUrl = null;
 
     if(organization.getLogoKey() != null) {
@@ -46,7 +46,7 @@ public class OrganizationDtoAssembler {
     return organizationDtoMapper.toDto(organization, tags, logoUrl, permissions);
   }
 
-  public ReadOrganizationMembershipDto toDto(Membership membership) {
+  public MembershipDto toDto(Membership membership) {
     String name = null;
     try {
       var userView = userFacade.findById(membership.getMemberId());
@@ -58,7 +58,7 @@ public class OrganizationDtoAssembler {
     return organizationDtoMapper.toDto(membership, name);
   }
 
-  public List<ReadOrganizationMembershipDto> toDto(List<Membership> memberships) {
+  public List<MembershipDto> toDto(List<Membership> memberships) {
     return memberships.stream().map(this::toDto).toList();
   }
 }

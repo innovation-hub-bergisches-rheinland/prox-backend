@@ -2,7 +2,7 @@ package de.innovationhub.prox.modules.profile.application.lecturer.usecase.comma
 
 import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
-import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerDto;
+import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerRequestDto;
 import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerProfile;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
@@ -18,7 +18,7 @@ public class CreateLecturerHandler {
   private final AuthenticationFacade authenticationFacade;
 
   @Transactional
-  public Lecturer handle(CreateLecturerDto dto) {
+  public Lecturer handle(CreateLecturerRequestDto dto) {
     Objects.requireNonNull(dto);
 
     var user = authenticationFacade.currentAuthenticatedId();

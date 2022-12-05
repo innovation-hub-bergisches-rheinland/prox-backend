@@ -26,7 +26,7 @@ public class ProjectDtoAssembler {
   private final ProjectPermissionEvaluator projectPermissionEvaluator;
   private final AuthenticationFacade authenticationFacade;
 
-  public ReadProjectDto toDto(Project project) {
+  public ProjectDto toDto(Project project) {
     OrganizationView partnerOrg = null;
 
     if (project.getPartner() != null) {

@@ -1,11 +1,13 @@
 package de.innovationhub.prox.modules.profile.application.lecturer.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
-public record ReadLecturerDto(
+@Schema(name = "Lecturer")
+public record LecturerDto(
     UUID id,
     UUID userId,
     String name,

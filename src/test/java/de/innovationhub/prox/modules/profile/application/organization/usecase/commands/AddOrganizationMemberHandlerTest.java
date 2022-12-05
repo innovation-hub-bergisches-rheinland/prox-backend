@@ -9,8 +9,7 @@ import static org.mockito.Mockito.when;
 
 import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.profile.OrganizationFixtures;
-import de.innovationhub.prox.modules.profile.application.organization.usecase.commands.AddOrganizationMemberHandler;
-import de.innovationhub.prox.modules.profile.application.organization.web.dto.AddOrganizationMembershipDto;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.AddMembershipRequestDto;
 import de.innovationhub.prox.modules.profile.domain.organization.Organization;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRepository;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRole;
@@ -49,7 +48,7 @@ class AddOrganizationMemberHandlerTest {
     when(authenticationFacade.currentAuthenticatedId()).thenReturn(OrganizationFixtures.ACME_ADMIN);
 
     var userId = UUID.randomUUID();
-    var request = new AddOrganizationMembershipDto(userId, OrganizationRole.MEMBER);
+    var request = new AddMembershipRequestDto(userId, OrganizationRole.MEMBER);
 
     var membership = handler.handle(org.getId(), request);
     assertThat(membership.getMemberId()).isEqualTo(userId);

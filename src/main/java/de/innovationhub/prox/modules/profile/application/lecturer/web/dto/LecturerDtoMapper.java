@@ -14,5 +14,5 @@ interface LecturerDtoMapper {
   @Mapping(target = "userId", source = "lecturer.userId")
   @Mapping(target = "tags", source = "tags")
   @Mapping(target = "avatarUrl", source = "avatarUrl")
-  ReadLecturerDto toDto(Lecturer lecturer, List<String> tags, String avatarUrl, LecturerPermissions permissions);
+  LecturerDto toDto(Lecturer lecturer, List<String> tags, String avatarUrl, LecturerPermissions permissions);
 }

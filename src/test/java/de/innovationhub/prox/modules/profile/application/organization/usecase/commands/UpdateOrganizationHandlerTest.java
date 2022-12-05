@@ -9,9 +9,8 @@ import static org.mockito.Mockito.when;
 
 import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.profile.OrganizationFixtures;
-import de.innovationhub.prox.modules.profile.application.organization.usecase.commands.UpdateOrganizationHandler;
-import de.innovationhub.prox.modules.profile.application.organization.web.dto.UpdateOrganizationDto;
-import de.innovationhub.prox.modules.profile.application.organization.web.dto.UpdateOrganizationDto.UpdateOrganizationProfileDto;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.CreateOrganizationRequestDto;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.CreateOrganizationRequestDto.CreateOrganizationProfileDto;
 import de.innovationhub.prox.modules.profile.domain.organization.Organization;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRepository;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRole;
@@ -53,8 +52,8 @@ class UpdateOrganizationHandlerTest {
     when(authenticationFacade.currentAuthenticatedId()).thenReturn(OrganizationFixtures.ACME_ADMIN);
     when(organizationRepository.findById(org.getId())).thenReturn(Optional.of(org));
 
-    var request = new UpdateOrganizationDto("ACME Ltd.",
-        new UpdateOrganizationProfileDto(
+    var request = new CreateOrganizationRequestDto("ACME Ltd.",
+        new CreateOrganizationProfileDto(
             "2022-11-07",
             "200",
             "example.org",

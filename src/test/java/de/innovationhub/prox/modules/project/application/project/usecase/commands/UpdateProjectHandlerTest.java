@@ -11,10 +11,9 @@ import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.project.DisciplineFixtures;
 import de.innovationhub.prox.modules.project.ModuleTypeFixtures;
 import de.innovationhub.prox.modules.project.ProjectFixtures;
-import de.innovationhub.prox.modules.project.application.project.usecase.commands.UpdateProjectHandler;
-import de.innovationhub.prox.modules.project.application.project.web.dto.CurriculumContextDto;
-import de.innovationhub.prox.modules.project.application.project.web.dto.TimeBoxDto;
-import de.innovationhub.prox.modules.project.application.project.web.dto.UpdateProjectDto;
+import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectRequest;
+import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectRequest.TimeBoxDto;
+import de.innovationhub.prox.modules.project.application.project.web.dto.CurriculumContextRequest;
 import de.innovationhub.prox.modules.project.domain.discipline.DisciplineRepository;
 import de.innovationhub.prox.modules.project.domain.module.ModuleTypeRepository;
 import de.innovationhub.prox.modules.project.domain.project.Project;
@@ -50,12 +49,12 @@ class UpdateProjectHandlerTest {
     when(moduleTypeRepository.findByKeyIn(any())).thenReturn(ModuleTypeFixtures.ALL);
     when(disciplineRepository.findByKeyIn(any())).thenReturn(DisciplineFixtures.ALL);
 
-    var command = new UpdateProjectDto(
+    var command = new CreateProjectRequest(
         "Test Project",
         "Test",
         "Test",
         "Test",
-        new CurriculumContextDto(
+        new CurriculumContextRequest(
             List.of("BA"),
             List.of("ING", "INF")
         ),
@@ -81,8 +80,8 @@ class UpdateProjectHandlerTest {
               .containsExactlyInAnyOrderElementsOf(ModuleTypeFixtures.ALL);
           assertThat(p.getCurriculumContext().getDisciplines())
               .containsExactlyInAnyOrderElementsOf(DisciplineFixtures.ALL);
-          assertThat(p.getTimeBox().getStartDate()).isEqualTo(command.timeboxDto().start());
-          assertThat(p.getTimeBox().getEndDate()).isEqualTo(command.timeboxDto().end());
+          assertThat(p.getTimeBox().getStartDate()).isEqualTo(command.timeBox().start());
+          assertThat(p.getTimeBox().getEndDate()).isEqualTo(command.timeBox().end());
         });
   }
 }

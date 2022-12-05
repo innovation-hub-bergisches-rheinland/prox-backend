@@ -4,7 +4,7 @@ import de.innovationhub.prox.modules.auth.application.exception.UnauthorizedAcce
 import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.profile.application.organization.exception.OrganizationNotFoundException;
-import de.innovationhub.prox.modules.profile.application.organization.web.dto.UpdateOrganizationDto;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.CreateOrganizationRequestDto;
 import de.innovationhub.prox.modules.profile.domain.organization.Organization;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationProfile;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRepository;
@@ -20,7 +20,7 @@ public class UpdateOrganizationHandler {
   private final AuthenticationFacade authenticationFacade;
 
   @PreAuthorize("@organizationPermissionEvaluator.hasPermission(#id, authentication)")
-  public Organization handle(UUID id, UpdateOrganizationDto useCase) {
+  public Organization handle(UUID id, CreateOrganizationRequestDto useCase) {
     var authenticatedUser = authenticationFacade.currentAuthenticatedId();
     var org = organizationRepository.findById(id)
         .orElseThrow(OrganizationNotFoundException::new);

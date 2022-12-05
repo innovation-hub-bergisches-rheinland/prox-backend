@@ -7,9 +7,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
-import de.innovationhub.prox.modules.profile.application.lecturer.usecase.commands.CreateLecturerHandler;
-import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerDto;
-import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerDto.CreateLecturerProfileDto;
+import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerRequestDto;
+import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerRequestDto.CreateLecturerProfileDto;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
 import java.util.List;
 import java.util.UUID;
@@ -35,7 +34,7 @@ class CreateLecturerHandlerTest {
 
   @Test
   void shouldCreateLecturer() {
-    var request = new CreateLecturerDto(
+    var request = new CreateLecturerRequestDto(
         "Max Mustermann",
         new CreateLecturerProfileDto(
             "affiliation",

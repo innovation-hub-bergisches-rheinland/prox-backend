@@ -5,7 +5,7 @@ import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.commons.core.ImpossibleException;
 import de.innovationhub.prox.modules.profile.application.organization.exception.OrganizationNotFoundException;
-import de.innovationhub.prox.modules.profile.application.organization.web.dto.UpdateOrganizationMembershipDto;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.UpdateMembershipRequestDto;
 import de.innovationhub.prox.modules.profile.domain.organization.Membership;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRepository;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRole;
@@ -20,7 +20,7 @@ public class UpdateOrganizationMemberHandler {
   private final AuthenticationFacade authenticationFacade;
 
   @PreAuthorize("@organizationPermissionEvaluator.hasPermission(#organizationId, authentication)")
-  public Membership handle(UUID organizationId, UUID memberId, UpdateOrganizationMembershipDto dto) {
+  public Membership handle(UUID organizationId, UUID memberId, UpdateMembershipRequestDto dto) {
     var authenticatedUser = authenticationFacade.currentAuthenticatedId();
 
     var org = organizationRepository.findById(organizationId)

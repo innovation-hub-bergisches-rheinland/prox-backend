@@ -1,8 +1,10 @@
 package de.innovationhub.prox.modules.profile.application.lecturer.web.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
-public record UpdateLecturerDto(
+@Schema(name = "CreateLecturerRequest")
+public record CreateLecturerRequestDto(
     String name,
     CreateLecturerProfileDto profile
 ) {

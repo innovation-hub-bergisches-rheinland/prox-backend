@@ -7,13 +7,11 @@ import static org.hamcrest.Matchers.hasSize;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.modules.profile.OrganizationFixtures;
-import de.innovationhub.prox.modules.profile.application.organization.web.dto.AddOrganizationMembershipDto;
-import de.innovationhub.prox.modules.profile.application.organization.web.dto.CreateOrganizationDto;
-import de.innovationhub.prox.modules.profile.application.organization.web.dto.CreateOrganizationDto.CreateOrganizationProfileDto;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.AddMembershipRequestDto;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.CreateOrganizationRequestDto;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.CreateOrganizationRequestDto.CreateOrganizationProfileDto;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.SetOrganizationTagsRequestDto;
-import de.innovationhub.prox.modules.profile.application.organization.web.dto.UpdateOrganizationDto;
-import de.innovationhub.prox.modules.profile.application.organization.web.dto.UpdateOrganizationDto.UpdateOrganizationProfileDto;
-import de.innovationhub.prox.modules.profile.application.organization.web.dto.UpdateOrganizationMembershipDto;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.UpdateMembershipRequestDto;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRepository;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRole;
 import de.innovationhub.prox.modules.profile.domain.organization.SocialMedia;
@@ -57,7 +55,7 @@ class OrganizationControllerIntegrationTest extends AbstractIntegrationTest {
 
   @Test
   void shouldCreateOrganization() {
-    var createOrgRequest = new CreateOrganizationDto(
+    var createOrgRequest = new CreateOrganizationRequestDto(
         "ACME Ltd.",
         new CreateOrganizationProfileDto(
             "2022-11-07",
@@ -133,9 +131,9 @@ class OrganizationControllerIntegrationTest extends AbstractIntegrationTest {
     var org = OrganizationFixtures.ACME_LTD;
     organizationRepository.save(org);
 
-    var updateOrgRequest = new UpdateOrganizationDto(
+    var updateOrgRequest = new CreateOrganizationRequestDto(
         "ACME Ltd.",
-        new UpdateOrganizationProfileDto(
+        new CreateOrganizationProfileDto(
             "2022-11-07",
             "200",
             "example.org",
@@ -164,7 +162,7 @@ class OrganizationControllerIntegrationTest extends AbstractIntegrationTest {
     organizationRepository.save(org);
     var userId = UUID.randomUUID();
 
-    var addOrganizationMembershipDto = new AddOrganizationMembershipDto(
+    var addOrganizationMembershipDto = new AddMembershipRequestDto(
         userId,
         OrganizationRole.MEMBER
     );
@@ -190,7 +188,7 @@ class OrganizationControllerIntegrationTest extends AbstractIntegrationTest {
     org.addMember(userId, OrganizationRole.MEMBER);
     organizationRepository.save(org);
 
-    var updateMembershipDto = new UpdateOrganizationMembershipDto(
+    var updateMembershipDto = new UpdateMembershipRequestDto(
         OrganizationRole.ADMIN
     );
 

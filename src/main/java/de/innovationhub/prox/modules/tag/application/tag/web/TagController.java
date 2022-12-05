@@ -1,9 +1,9 @@
 package de.innovationhub.prox.modules.tag.application.tag.web;
 
+import de.innovationhub.prox.modules.tag.application.tag.usecase.commands.SynchronizeTagsHandler;
 import de.innovationhub.prox.modules.tag.application.tag.usecase.queries.FindCommonTagsHandler;
 import de.innovationhub.prox.modules.tag.application.tag.usecase.queries.FindMatchingTagsHandler;
 import de.innovationhub.prox.modules.tag.application.tag.usecase.queries.FindPopularTagsHandler;
-import de.innovationhub.prox.modules.tag.application.tag.usecase.commands.SynchronizeTagsHandler;
 import de.innovationhub.prox.modules.tag.application.tag.web.dto.SynchronizeTagsRequest;
 import de.innovationhub.prox.modules.tag.application.tag.web.dto.SynchronizeTagsResponse;
 import de.innovationhub.prox.modules.tag.application.tag.web.dto.TagDto;
@@ -35,6 +35,7 @@ public class TagController {
   private final TagDtoMapper dtoMapper;
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+  @Operation(description = "Find tags that match a given input")
   public ResponseEntity<List<TagDto>> findMatchingTags(@RequestParam("q") String partialTag) {
     var result = findMatching.handle(partialTag);
     var dto = dtoMapper.toDtoList(result);
@@ -43,6 +44,7 @@ public class TagController {
   }
 
   @GetMapping(path = "recommendations", produces = MediaType.APPLICATION_JSON_VALUE)
+  @Operation(description = "Retrieve recommendation for provided Tags")
   public ResponseEntity<List<TagDto>> findRecommendations(
       @RequestParam("tags") List<String> inputTags,
       @RequestParam(value = "limit", defaultValue = "10") int limit) {
@@ -53,6 +55,7 @@ public class TagController {
   }
 
   @GetMapping(path = "popular", produces = MediaType.APPLICATION_JSON_VALUE)
+  @Operation(description = "Get the most popular tags")
   public ResponseEntity<List<TagDto>> findPopular(
       @RequestParam(value = "limit", defaultValue = "10") int limit) {
     var result = findPopular.handle(limit);
@@ -62,9 +65,11 @@ public class TagController {
   }
 
   @PostMapping(path = "synchronization", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-  @Operation(security = {
-      @SecurityRequirement(name = "oidc")
-  })
+  @Operation(
+      description = "Synchronizes provided tag names with tag entities from remote.",
+      security = {
+          @SecurityRequirement(name = "oidc")
+      })
   public ResponseEntity<SynchronizeTagsResponse> synchronizeTags(
       @RequestBody SynchronizeTagsRequest request) {
     var result = synchronize.handle(request.tags());

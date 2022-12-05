@@ -8,12 +8,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
-import de.innovationhub.prox.modules.profile.application.lecturer.usecase.commands.UpdateLecturerProfileHandler;
-import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.UpdateLecturerDto;
-import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.UpdateLecturerDto.CreateLecturerProfileDto;
+import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerRequestDto;
+import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerRequestDto.CreateLecturerProfileDto;
 import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,8 +29,8 @@ class UpdateLecturerProfileHandlerTest {
     return Lecturer.create(UUID.randomUUID(), "Max Mustermann");
   }
 
-  private UpdateLecturerDto createDummyDto() {
-    return new UpdateLecturerDto("Max Mustermann", new CreateLecturerProfileDto(
+  private CreateLecturerRequestDto createDummyDto() {
+    return new CreateLecturerRequestDto("Max Mustermann", new CreateLecturerProfileDto(
         "affiliation",
         "subject",
         "vita",

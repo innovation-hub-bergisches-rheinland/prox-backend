@@ -2,7 +2,7 @@ package de.innovationhub.prox.modules.profile.application.organization.usecase.c
 
 import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
-import de.innovationhub.prox.modules.profile.application.organization.web.dto.CreateOrganizationDto;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.CreateOrganizationRequestDto;
 import de.innovationhub.prox.modules.profile.domain.organization.Organization;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationProfile;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRepository;
@@ -15,7 +15,7 @@ public class CreateOrganizationHandler {
   private final OrganizationRepository organizationRepository;
   private final AuthenticationFacade authenticationFacade;
 
-  public Organization handle(CreateOrganizationDto useCase) {
+  public Organization handle(CreateOrganizationRequestDto useCase) {
     var founder = authenticationFacade.currentAuthenticatedId();
     var org = Organization.create(useCase.name(), founder);
     var profile = new OrganizationProfile();

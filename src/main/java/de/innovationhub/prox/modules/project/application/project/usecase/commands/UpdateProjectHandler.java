@@ -3,9 +3,9 @@ package de.innovationhub.prox.modules.project.application.project.usecase.comman
 import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.project.application.project.exception.ProjectNotFoundException;
-import de.innovationhub.prox.modules.project.application.project.web.dto.CurriculumContextDto;
-import de.innovationhub.prox.modules.project.application.project.web.dto.TimeBoxDto;
-import de.innovationhub.prox.modules.project.application.project.web.dto.UpdateProjectDto;
+import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectRequest;
+import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectRequest.TimeBoxDto;
+import de.innovationhub.prox.modules.project.application.project.web.dto.CurriculumContextRequest;
 import de.innovationhub.prox.modules.project.domain.discipline.Discipline;
 import de.innovationhub.prox.modules.project.domain.discipline.DisciplineRepository;
 import de.innovationhub.prox.modules.project.domain.module.ModuleType;
@@ -28,12 +28,12 @@ public class UpdateProjectHandler {
   private final AuthenticationFacade authenticationFacade;
 
   @PreAuthorize("@projectPermissionEvaluator.hasPermission(#projectId, authentication)")
-  public Project handle(UUID projectId, UpdateProjectDto projectDto) {
+  public Project handle(UUID projectId, CreateProjectRequest projectDto) {
     var project = projectRepository.findById(projectId)
         .orElseThrow(ProjectNotFoundException::new);
 
     var context = buildContext(projectDto.context());
-    var timeBox = buildTimeBox(projectDto.timeboxDto());
+    var timeBox = buildTimeBox(projectDto.timeBox());
 
     project.setCurriculumContext(context);
     project.setTimeBox(timeBox);
@@ -53,7 +53,7 @@ public class UpdateProjectHandler {
     return new TimeBox(dto.start(), dto.end());
   }
 
-  private CurriculumContext buildContext(CurriculumContextDto dtoContext) {
+  private CurriculumContext buildContext(CurriculumContextRequest dtoContext) {
     List<ModuleType> moduleTypes = List.of();
     List<Discipline> disciplines = List.of();
     if (dtoContext != null) {

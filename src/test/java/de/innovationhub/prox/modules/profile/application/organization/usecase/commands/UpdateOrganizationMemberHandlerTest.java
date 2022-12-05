@@ -9,8 +9,7 @@ import static org.mockito.Mockito.when;
 
 import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.profile.OrganizationFixtures;
-import de.innovationhub.prox.modules.profile.application.organization.usecase.commands.UpdateOrganizationMemberHandler;
-import de.innovationhub.prox.modules.profile.application.organization.web.dto.UpdateOrganizationMembershipDto;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.UpdateMembershipRequestDto;
 import de.innovationhub.prox.modules.profile.domain.organization.Organization;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRepository;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRole;
@@ -52,7 +51,7 @@ class UpdateOrganizationMemberHandlerTest {
     when(organizationRepository.findById(org.getId())).thenReturn(Optional.of(org));
     when(authenticationFacade.currentAuthenticatedId()).thenReturn(OrganizationFixtures.ACME_ADMIN);
 
-    handler.handle(org.getId(), userId, new UpdateOrganizationMembershipDto(OrganizationRole.ADMIN));
+    handler.handle(org.getId(), userId, new UpdateMembershipRequestDto(OrganizationRole.ADMIN));
 
     var captor = ArgumentCaptor.forClass(Organization.class);
     verify(organizationRepository).save(captor.capture());

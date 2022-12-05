@@ -22,6 +22,6 @@ interface ProjectMapper {
   @Mapping(target = "tags", source = "tags")
   @Mapping(target = "partner", source = "organizationView")
   @Mapping(target = "supervisors", source = "lecturerView")
-  ReadProjectDto toDto(Project project, List<LecturerView> lecturerView,
+  ProjectDto toDto(Project project, List<LecturerView> lecturerView,
       OrganizationView organizationView, List<String> tags, ProjectPermissions permissions);
 }

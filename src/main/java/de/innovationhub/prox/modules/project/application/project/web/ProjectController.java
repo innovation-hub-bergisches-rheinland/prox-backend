@@ -2,25 +2,23 @@ package de.innovationhub.prox.modules.project.application.project.web;
 
 import de.innovationhub.prox.modules.project.application.project.usecase.commands.CreateProjectHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.commands.DeleteProjectByIdHandler;
-import de.innovationhub.prox.modules.project.application.project.usecase.queries.FindAllProjectsHandler;
-import de.innovationhub.prox.modules.project.application.project.usecase.queries.FindProjectByIdHandler;
-import de.innovationhub.prox.modules.project.application.project.usecase.queries.FindProjectsOfPartnerHandler;
-import de.innovationhub.prox.modules.project.application.project.usecase.queries.FindProjectsOfSupervisorHandler;
-import de.innovationhub.prox.modules.project.application.project.usecase.queries.SearchProjectHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.commands.SetProjectPartnerHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.commands.SetProjectTagsHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.commands.SetStateHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.commands.SetSupervisorsHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.commands.UpdateProjectHandler;
-import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectDto;
+import de.innovationhub.prox.modules.project.application.project.usecase.queries.FindAllProjectsHandler;
+import de.innovationhub.prox.modules.project.application.project.usecase.queries.FindProjectByIdHandler;
+import de.innovationhub.prox.modules.project.application.project.usecase.queries.FindProjectsOfPartnerHandler;
+import de.innovationhub.prox.modules.project.application.project.usecase.queries.FindProjectsOfSupervisorHandler;
+import de.innovationhub.prox.modules.project.application.project.usecase.queries.SearchProjectHandler;
+import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectRequest;
+import de.innovationhub.prox.modules.project.application.project.web.dto.ProjectDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.ProjectDtoAssembler;
-import de.innovationhub.prox.modules.project.application.project.web.dto.ReadProjectDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.ReadProjectListDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.SetPartnerRequestDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectStateRequestDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectTagsRequestDto;
-import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectTagsResponseDto;
-import de.innovationhub.prox.modules.project.application.project.web.dto.UpdateProjectDto;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -73,8 +71,8 @@ public class ProjectController {
   @Operation(security = {
       @SecurityRequirement(name = "oidc")
   })
-  public ResponseEntity<ReadProjectDto> create(
-      @RequestBody CreateProjectDto createDto
+  public ResponseEntity<ProjectDto> create(
+      @RequestBody CreateProjectRequest createDto
   ) {
     var project = create.handle(createDto);
     var dto = dtoAssembler.toDto(project);
@@ -82,7 +80,7 @@ public class ProjectController {
   }
 
   @GetMapping("{id}")
-  public ResponseEntity<ReadProjectDto> getById(@PathVariable("id") UUID id) {
+  public ResponseEntity<ProjectDto> getById(@PathVariable("id") UUID id) {
     var projectDto = findById.handle(id)
         .map(dtoAssembler::toDto);
     if (projectDto.isEmpty()) {
@@ -95,8 +93,8 @@ public class ProjectController {
   @Operation(security = {
       @SecurityRequirement(name = "oidc")
   })
-  public ResponseEntity<ReadProjectDto> update(@PathVariable("id") UUID id, @RequestBody
-  UpdateProjectDto updateProjectDto) {
+  public ResponseEntity<ProjectDto> update(@PathVariable("id") UUID id, @RequestBody
+  CreateProjectRequest updateProjectDto) {
     var updatedProject = update.handle(id, updateProjectDto);
     var dto = dtoAssembler.toDto(updatedProject);
     return ResponseEntity.ok(dto);
@@ -106,7 +104,7 @@ public class ProjectController {
   @Operation(security = {
       @SecurityRequirement(name = "oidc")
   })
-  public ResponseEntity<ReadProjectDto> setState(@PathVariable("id") UUID id, @RequestBody
+  public ResponseEntity<ProjectDto> setState(@PathVariable("id") UUID id, @RequestBody
   SetProjectStateRequestDto requestDto) {
     var updatedProject = setState.handle(id, requestDto.state());
     var dto = dtoAssembler.toDto(updatedProject);
@@ -117,7 +115,7 @@ public class ProjectController {
   @Operation(security = {
       @SecurityRequirement(name = "oidc")
   })
-  public ResponseEntity<ReadProjectDto> setPartner(@PathVariable("id") UUID id, @RequestBody
+  public ResponseEntity<ProjectDto> setPartner(@PathVariable("id") UUID id, @RequestBody
   SetPartnerRequestDto requestDto) {
     var updatedProject = setPartner.handle(id, requestDto.organizationId());
     var dto = dtoAssembler.toDto(updatedProject);
@@ -128,7 +126,7 @@ public class ProjectController {
   @Operation(security = {
       @SecurityRequirement(name = "oidc")
   })
-  public ResponseEntity<ReadProjectDto> commitment(@PathVariable("id") UUID id, @RequestBody List<UUID> supervisorIds) {
+  public ResponseEntity<ProjectDto> commitment(@PathVariable("id") UUID id, @RequestBody List<UUID> supervisorIds) {
     var updatedProject = setSupervisors.handle(id, supervisorIds);
     var dto = dtoAssembler.toDto(updatedProject);
     return ResponseEntity.ok(dto);
@@ -174,10 +172,11 @@ public class ProjectController {
   @Operation(security = {
       @SecurityRequirement(name = "oidc")
   })
-  public ResponseEntity<SetProjectTagsResponseDto> setTags(
+  public ResponseEntity<ProjectDto> setTags(
       @PathVariable("id") UUID id,
       @RequestBody SetProjectTagsRequestDto tagsDto) {
     var result = setTags.handle(id, tagsDto.tags());
-    return ResponseEntity.ok(new SetProjectTagsResponseDto(result));
+    var dto = dtoAssembler.toDto(result);
+    return ResponseEntity.ok(dto);
   }
 }

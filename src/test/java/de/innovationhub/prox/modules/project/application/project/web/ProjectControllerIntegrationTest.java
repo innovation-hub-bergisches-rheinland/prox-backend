@@ -13,6 +13,7 @@ import de.innovationhub.prox.modules.project.ProjectFixtures;
 import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.CurriculumContextDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.SetPartnerRequestDto;
+import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectStateRequestDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectTagsRequestDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.TimeBoxDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.UpdateProjectDto;
@@ -240,6 +241,28 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
           .hasSize(1)
           .extracting(Supervisor::getLecturerId)
           .containsExactly(UUID.fromString("00000000-0000-0000-0000-000000000001"));
+    });
+  }
+
+  @Test
+  @WithMockUser(value = "00000000-0000-0000-0000-000000000001", roles = { "professor" })
+  void shouldSetState() {
+    var aProject = ProjectFixtures.build_a_project();
+    aProject.offer(new Supervisor(UUID.fromString("00000000-0000-0000-0000-000000000001")));
+    projectRepository.save(aProject);
+
+    given()
+        .contentType("application/json")
+        .accept("application/json")
+        .body(new SetProjectStateRequestDto(ProjectState.RUNNING))
+        .when()
+        .post("/projects/{id}/status" , aProject.getId())
+        .then()
+        .statusCode(200)
+        .body("status.state", is("RUNNING"));
+
+    projectRepository.findById(aProject.getId()).ifPresent(project -> {
+      assertThat(project.getStatus().getState()).isEqualTo(ProjectState.RUNNING);
     });
   }
 

@@ -1,11 +1,8 @@
 package de.innovationhub.prox.modules.project.domain.project;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import de.innovationhub.prox.modules.project.domain.project.exception.InvalidProjectStateTransitionException;
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,22 +12,18 @@ import org.junit.jupiter.params.provider.MethodSource;
 class ProjectStatusTest {
 
   private static Stream<Arguments> validStatusTransitions() {
-    return ProjectState.TRANSITIONS.entrySet()
-        .stream()
-        .flatMap(
-            t -> t.getValue().stream()
-                .map(s -> Arguments.of(t.getKey(), s)));
-  }
-
-  private static Stream<Arguments> invalidStatusTransitions() {
-    // We're going to build invalid state transitions from the valid ones
-    return validStatusTransitions()
-        .flatMap(
-            arguments ->
-                Arrays.stream(ProjectState.values())
-                    .filter(s -> s != arguments.get()[0])
-                    .filter(s -> s != arguments.get()[1])
-                    .map(s -> Arguments.of(s, arguments.get()[1])));
+    return Stream.of(
+        Arguments.of(ProjectState.PROPOSED, ProjectState.ARCHIVED),
+        Arguments.of(ProjectState.PROPOSED, ProjectState.OFFERED),
+        Arguments.of(ProjectState.ARCHIVED, ProjectState.PROPOSED),
+        Arguments.of(ProjectState.ARCHIVED, ProjectState.STALE),
+        Arguments.of(ProjectState.OFFERED, ProjectState.RUNNING),
+        Arguments.of(ProjectState.OFFERED, ProjectState.COMPLETED),
+        Arguments.of(ProjectState.RUNNING, ProjectState.OFFERED),
+        Arguments.of(ProjectState.RUNNING, ProjectState.COMPLETED),
+        Arguments.of(ProjectState.COMPLETED, ProjectState.OFFERED),
+        Arguments.of(ProjectState.COMPLETED, ProjectState.RUNNING)
+        );
   }
 
   @ParameterizedTest(name = "should update state from {0} to {1}")
@@ -41,17 +34,6 @@ class ProjectStatusTest {
     status.updateState(expectedState);
 
     assertThat(status.getState()).isEqualTo(expectedState);
-  }
-
-  @ParameterizedTest(name = "should not update state from {0} to {1}")
-  @MethodSource("invalidStatusTransitions")
-  void shouldThrowOnInvalidStateTransition(
-      ProjectState givenState, ProjectState invalidState) {
-    var status = new ProjectStatus(givenState, Instant.now());
-
-    assertThrows(
-        InvalidProjectStateTransitionException.class, () -> status.updateState(invalidState));
-    assertThat(status.getState()).isEqualTo(givenState);
   }
 
   @Test

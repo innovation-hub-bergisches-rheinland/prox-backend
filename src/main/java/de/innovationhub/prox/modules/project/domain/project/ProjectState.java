@@ -15,9 +15,14 @@ public enum ProjectState {
       PROPOSED, List.of(ARCHIVED, OFFERED),
       ARCHIVED, List.of(PROPOSED, STALE),
       STALE, List.of(),
-      OFFERED, List.of(RUNNING),
-      RUNNING, List.of(COMPLETED),
-      COMPLETED, List.of()
+
+      // At the moment we permit every transition combination of Offered, Running and Completed.
+      // This is because we don't have a clear definition of the states yet and want to allow the
+      // lecturers to change the status by themselves.
+      // Later, we want to perform status transitions automatically based on the project's progress.
+      OFFERED, List.of(RUNNING, COMPLETED),
+      RUNNING, List.of(OFFERED, COMPLETED),
+      COMPLETED, List.of(OFFERED, RUNNING)
   );
 
 }

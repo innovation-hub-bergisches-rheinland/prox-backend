@@ -1,7 +1,7 @@
 version: "3.7"
 
 services:
-  prox-db:
+  db:
     image: postgres:13.2-alpine
     ports:
       - "5432:5432"

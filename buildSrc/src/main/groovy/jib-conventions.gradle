@@ -12,5 +12,6 @@ jib {
   }
   container {
     format = "OCI"
+    creationTime = "USE_CURRENT_TIMESTAMP"
   }
 }

@@ -10,7 +10,6 @@ on:
 
 env:
   JAVA_VERSION: 17
-  PUSH_IMAGE: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
 
 # Will build the binaries, run tests and checks on them and if everything succeeds AND it is a push
 # to the main branch will build and deploy a snapshot release of the binaries
@@ -90,7 +89,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ assemble, test ]
 
-    if: ${{ env.PUSH_IMAGE }}
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
 
     steps:
       - name: Check out repo

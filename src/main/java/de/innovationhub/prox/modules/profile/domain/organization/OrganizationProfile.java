@@ -3,9 +3,11 @@ package de.innovationhub.prox.modules.profile.domain.organization;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,6 +45,7 @@ public class OrganizationProfile {
   // @Email
   private String contactEmail;
 
+  @Column(columnDefinition = "TEXT")
   private String vita;
 
   private String headquarter;

@@ -2,12 +2,9 @@ package de.innovationhub.prox.modules.profile.domain.lecturer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,6 +20,8 @@ import lombok.Setter;
 public class LecturerProfile {
   private String affiliation;
   private String subject;
+
+  @Column(columnDefinition = "TEXT")
   private String vita;
 
   @Builder.Default

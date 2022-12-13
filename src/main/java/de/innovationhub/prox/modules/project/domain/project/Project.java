@@ -19,6 +19,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -65,13 +66,13 @@ public class Project extends AbstractAggregateRoot {
   private String title;
 
   @NotBlank
-  @Size(max = 10_000)
+  @Column(length = 10_000)
   private String summary;
 
-  @Size(max = 10_000)
+  @Column(columnDefinition = "TEXT")
   private String description;
 
-  @Size(max = 10_000)
+  @Column(columnDefinition = "TEXT")
   private String requirement;
 
   @NotNull

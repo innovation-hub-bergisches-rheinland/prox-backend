@@ -48,7 +48,7 @@ class SecurityConfig {
                         )
                     .permitAll()
                     .mvcMatchers(HttpMethod.GET, "/projects/**", "/tags/**", "/organizations/**",
-                        "/lecturers/**", "/disciplines/**", "/modules/**")
+                        "/lecturers/**", "/disciplines/**", "/moduleTypes/**")
                     .permitAll()
                     .mvcMatchers(HttpMethod.GET, "/users/search")
                     .authenticated()

@@ -208,7 +208,7 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
         .accept("application/json")
         .body(request)
         .when()
-        .put("/projects/{id}/partner" , aProject.getId())
+        .post("/projects/{id}/partner" , aProject.getId())
         .then()
         .statusCode(200)
         .body("partner.id", equalTo(orgId.toString()));

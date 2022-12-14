@@ -14,33 +14,34 @@ import org.springframework.stereotype.Component;
 
 @Component
 @ConditionalOnProperty(
-    prefix = "project.jobs.auto-archive",
+    prefix = "project.jobs.auto-mark-for-delete",
     value = "enable",
     havingValue = "true",
     matchIfMissing = true)
 @Slf4j
-public class ProposalAutoArchiver {
-  private final ProjectRepository projectRepository;
-  private final Duration archiveAfter;
+public class ProposalAutoStaleMarker {
 
-  public ProposalAutoArchiver(
+  private final ProjectRepository projectRepository;
+  private final Duration markForDeletionAfter;
+
+  public ProposalAutoStaleMarker(
       ProjectRepository projectRepository,
-      @Value("${project.jobs.auto-archive.after:P90D}")
-      Duration archiveAfter
+      @Value("${project.jobs.auto-mark-for-delete:P90D}")
+      Duration markForDeletionAfter
   ) {
     this.projectRepository = projectRepository;
-    this.archiveAfter = archiveAfter;
+    this.markForDeletionAfter = markForDeletionAfter;
   }
 
-  @Scheduled(cron = "${project.jobs.auto-archive.cron:0 0 0 * * *}")
+  @Scheduled(cron = "${project.jobs.auto-mark-for-delete.cron:0 0 0 * * *}")
   void run() {
-    var qualifyingTimestamp = Instant.now().minus(archiveAfter);
-    var proposalsToArchive =
+    var qualifyingTimestamp = Instant.now().minus(markForDeletionAfter);
+    var proposalsToMark =
         this.projectRepository.findWithStatusModifiedBefore(
-            ProjectState.PROPOSED, qualifyingTimestamp);
-    if (!proposalsToArchive.isEmpty()) {
-      proposalsToArchive.forEach(Project::archive);
-      this.projectRepository.saveAll(proposalsToArchive);
+            ProjectState.ARCHIVED, qualifyingTimestamp);
+    if (!proposalsToMark.isEmpty()) {
+      proposalsToMark.forEach(Project::stale);
+      this.projectRepository.saveAll(proposalsToMark);
     }
   }
 }

@@ -1,8 +1,9 @@
 package de.innovationhub.prox.modules.project.application.project.jobs;
 
 
-import de.innovationhub.prox.modules.project.application.project.usecase.commands.DeleteStaleProposalsHandler;
-import java.time.Duration;
+import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
+import de.innovationhub.prox.modules.project.domain.project.ProjectState;
+import java.time.Instant;
 import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -17,10 +18,10 @@ import org.springframework.stereotype.Component;
     matchIfMissing = true)
 @Slf4j
 public class ProposalAutoDelete {
-  private final DeleteStaleProposalsHandler handler;
+  private final ProjectRepository projectRepository;
 
-  public ProposalAutoDelete(DeleteStaleProposalsHandler handler) {
-    this.handler = handler;
+  public ProposalAutoDelete(ProjectRepository projectRepository) {
+    this.projectRepository = projectRepository;
   }
 
   @PostConstruct
@@ -29,8 +30,13 @@ public class ProposalAutoDelete {
   }
 
   @Scheduled(cron = "${project.jobs.auto-delete.cron:0 0 0 * * *}")
-  void autoDelete() {
-    // Delete immediately
-    handler.handle(Duration.ZERO);
+  void run() {
+    var qualifyingTimestamp = Instant.now();
+    var proposalsToDelete =
+        this.projectRepository.findWithStatusModifiedBefore(
+            ProjectState.STALE, qualifyingTimestamp);
+    if (!proposalsToDelete.isEmpty()) {
+      this.projectRepository.deleteAll(proposalsToDelete);
+    }
   }
 }

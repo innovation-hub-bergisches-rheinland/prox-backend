@@ -28,6 +28,7 @@ public class UpdateLecturerProfileHandler {
       throw new UnauthorizedAccessException();
     }
 
+    lecturer.setVisible(dto.visible());
     lecturer.setName(dto.name());
 
     var profile = lecturer.getProfile();

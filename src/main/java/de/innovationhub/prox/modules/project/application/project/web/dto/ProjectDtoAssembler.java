@@ -7,6 +7,7 @@ import de.innovationhub.prox.modules.profile.contract.OrganizationFacade;
 import de.innovationhub.prox.modules.profile.contract.OrganizationView;
 import de.innovationhub.prox.modules.project.application.ProjectPermissionEvaluator;
 import de.innovationhub.prox.modules.project.domain.project.Project;
+import de.innovationhub.prox.modules.project.domain.project.Supervisor;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
 import java.util.Collections;
 import java.util.List;
@@ -40,10 +41,12 @@ public class ProjectDtoAssembler {
       tags = tagFacade.getTags(project.getTags());
     }
 
-    var supervisors = project.getSupervisors()
-        .stream()
-        .map(s -> lecturerFacade.get(s.getLecturerId()).orElse(new LecturerView(s.getLecturerId(), null)))
-        .toList();
+    var supervisors = lecturerFacade.findByIds(
+        project.getSupervisors()
+            .stream()
+            .map(Supervisor::getLecturerId)
+            .toList()
+    );
 
     var permissions = new ProjectPermissions(projectPermissionEvaluator.hasPermission(project, authenticationFacade.getAuthentication()));
 

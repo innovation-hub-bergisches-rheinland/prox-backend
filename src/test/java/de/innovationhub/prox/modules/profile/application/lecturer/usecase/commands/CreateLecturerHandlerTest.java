@@ -36,6 +36,7 @@ class CreateLecturerHandlerTest {
   void shouldCreateLecturer() {
     var request = new CreateLecturerRequestDto(
         "Max Mustermann",
+        true,
         new CreateLecturerProfileDto(
             "affiliation",
             "subject",

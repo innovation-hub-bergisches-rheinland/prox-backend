@@ -232,8 +232,7 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
         .when()
         .post("/projects/{id}/supervisors" , aProject.getId())
         .then()
-        .statusCode(200)
-        .body("supervisors[0].id", is("00000000-0000-0000-0000-000000000001"));
+        .statusCode(200);
 
     projectRepository.findById(aProject.getId()).ifPresent(project -> {
       assertThat(project.getSupervisors())

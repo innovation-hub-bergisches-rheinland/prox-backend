@@ -30,7 +30,7 @@ class UpdateLecturerProfileHandlerTest {
   }
 
   private CreateLecturerRequestDto createDummyDto() {
-    return new CreateLecturerRequestDto("Max Mustermann", new CreateLecturerProfileDto(
+    return new CreateLecturerRequestDto("Max Mustermann", true, new CreateLecturerProfileDto(
         "affiliation",
         "subject",
         "vita",

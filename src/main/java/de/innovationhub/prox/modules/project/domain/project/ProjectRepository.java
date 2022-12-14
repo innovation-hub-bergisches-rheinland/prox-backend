@@ -39,6 +39,12 @@ public interface ProjectRepository extends CrudRepository<Project, UUID> {
   @Query("select p from Project p where p.status.state = ?1 and p.status.updatedAt <= ?2")
   List<Project> findWithStatusModifiedBefore(ProjectState status, Instant timestamp);
 
+  @Query("select p from Project p where p.status.state = 'OFFERED' and p.timeBox.startDate < current_date")
+  List<Project> findStartedOfferedProjects();
+
+  @Query("select p from Project p where p.status.state = 'RUNNING' and p.timeBox.endDate < current_date")
+  List<Project> findFinishedRunningProjects();
+
   @Query("select p from Project p where p.partner.organizationId = ?1")
   List<Project> findByPartner(UUID partnerId);
 

@@ -61,7 +61,6 @@ class LecturerControllerIntegrationTest extends AbstractIntegrationTest {
   void shouldCreateLecturer() {
     var createLecturerRequest = new CreateLecturerRequestDto(
         "Max Mustermann",
-        true,
         new CreateLecturerProfileDto(
             "2022-11-07",
             "200",
@@ -158,7 +157,6 @@ class LecturerControllerIntegrationTest extends AbstractIntegrationTest {
 
     var updateLecturerDto = new CreateLecturerRequestDto(
         "Max Mustermann",
-        true,
         new CreateLecturerProfileDto(
             "2022-11-07",
             "200",

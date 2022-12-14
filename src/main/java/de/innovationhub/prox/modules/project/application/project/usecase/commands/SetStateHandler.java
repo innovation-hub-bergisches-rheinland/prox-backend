@@ -7,14 +7,12 @@ import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 
 @ApplicationComponent
 @RequiredArgsConstructor
 public class SetStateHandler {
   private final ProjectRepository projectRepository;
 
-  @PreAuthorize("@projectPermissionEvaluator.hasPermission(#projectId, authentication)")
   public Project handle(UUID projectId, ProjectState state) {
     var project = projectRepository.findById(projectId)
         .orElseThrow(ProjectNotFoundException::new);

@@ -24,7 +24,6 @@ public class CreateLecturerHandler {
     var user = authenticationFacade.currentAuthenticatedId();
 
     var lecturer = Lecturer.create(user, dto.name());
-    lecturer.setVisible(dto.visible());
     var profile = new LecturerProfile();
     var dtoProfile = dto.profile();
     if (dtoProfile != null) {

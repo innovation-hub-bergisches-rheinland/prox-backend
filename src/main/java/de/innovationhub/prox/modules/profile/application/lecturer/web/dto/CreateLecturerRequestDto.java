@@ -6,7 +6,6 @@ import java.util.List;
 @Schema(name = "CreateLecturerRequest")
 public record CreateLecturerRequestDto(
     String name,
-    Boolean visible,
     CreateLecturerProfileDto profile
 ) {
   public record CreateLecturerProfileDto(

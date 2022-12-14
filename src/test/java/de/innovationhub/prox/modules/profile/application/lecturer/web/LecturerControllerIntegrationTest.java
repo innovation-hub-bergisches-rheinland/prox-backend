@@ -51,7 +51,9 @@ class LecturerControllerIntegrationTest extends AbstractIntegrationTest {
   }
 
   private Lecturer createDummyLecturer() {
-    return Lecturer.create(UUID.fromString(USER_ID), "Max Mustermann");
+    var lecturer = Lecturer.create(UUID.fromString(USER_ID), "Max Mustermann");
+    lecturer.setVisible(true);
+    return lecturer;
   }
 
   @Test

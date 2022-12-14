@@ -16,8 +16,31 @@ class LecturerRepositoryIntegrationTest extends AbstractIntegrationTest {
   LecturerRepository lecturerRepository;
 
   @Test
+  void shouldNotIncludeInvisibleProfilesInFindAll() {
+    var lecturer = Lecturer.create(UUID.randomUUID(), "Max Mustermann");
+    lecturer.setVisible(false);
+    lecturerRepository.save(lecturer);
+
+    var result = lecturerRepository.findAll();
+
+    assertThat(result).isEmpty();
+  }
+
+  @Test
+  void shouldNotIncludeInvisibleProfilesInFilter() {
+    var lecturer = Lecturer.create(UUID.randomUUID(), "Max Mustermann");
+    lecturer.setVisible(false);
+    lecturerRepository.save(lecturer);
+
+    var result = lecturerRepository.filter("Max Mustermann");
+
+    assertThat(result).isEmpty();
+  }
+
+  @Test
   void shouldFilterPartial() {
     var lecturer = Lecturer.create(UUID.randomUUID(), "Max Mustermann");
+    lecturer.setVisible(true);
     lecturerRepository.save(lecturer);
 
     var result = lecturerRepository.filter("Max");
@@ -28,6 +51,7 @@ class LecturerRepositoryIntegrationTest extends AbstractIntegrationTest {
   @Test
   void shouldFilterCaseInsensitive() {
     var lecturer = Lecturer.create(UUID.randomUUID(), "Max Mustermann");
+    lecturer.setVisible(true);
     lecturerRepository.save(lecturer);
 
     var result = lecturerRepository.filter("max mustermann");

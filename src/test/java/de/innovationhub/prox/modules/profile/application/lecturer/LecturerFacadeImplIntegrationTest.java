@@ -18,7 +18,9 @@ class LecturerFacadeImplIntegrationTest extends AbstractIntegrationTest {
   LecturerRepository lecturerRepository;
 
   private Lecturer createDummyLecturer() {
-    return Lecturer.create(UUID.randomUUID(), "Max Mustermann");
+    var lecturer = Lecturer.create(UUID.randomUUID(), "Max Mustermann");
+    lecturer.setVisible(true);
+    return lecturer;
   }
 
   @Test

@@ -7,6 +7,7 @@ import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerCrea
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerProfileUpdated;
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerRenamed;
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerTagged;
+import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerVisibilityChanged;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,6 +22,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.Where;
 
 /**
  * Lecturers are authorized to teach courses. In PROX we don't really care about a differentiation
@@ -31,10 +33,13 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = false)
 @Entity
+@Where(clause = "visible = 'true'")
 public class Lecturer extends AbstractAggregateRoot {
 
   @Id
   private UUID id;
+
+  private Boolean visible = false;
 
   @NotNull
   private UUID userId;
@@ -91,5 +96,10 @@ public class Lecturer extends AbstractAggregateRoot {
   public void setAvatarKey(String avatarKey) {
     this.avatarKey = avatarKey;
     this.registerEvent(new LecturerAvatarSet(this.id, this.avatarKey));
+  }
+
+  public void setVisible(boolean visible) {
+    this.visible = visible;
+    this.registerEvent(new LecturerVisibilityChanged(this.id, this.visible));
   }
 }

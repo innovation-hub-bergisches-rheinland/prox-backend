@@ -12,18 +12,15 @@ import org.springframework.security.access.prepost.PreAuthorize;
 
 @ApplicationComponent
 @RequiredArgsConstructor
-public class SetSupervisorsHandler {
+public class ApplyCommitmentHandler {
   private final ProjectRepository projectRepository;
 
   @PreAuthorize("hasRole('professor')")
-  public Project handle(UUID projectId, List<UUID> supervisors) {
+  public Project handle(UUID projectId, UUID supervisor) {
     var project = projectRepository.findById(projectId)
         .orElseThrow(ProjectNotFoundException::new);
 
-    var supervisorList = supervisors.stream()
-        .map(Supervisor::new)
-        .toList();
-    project.offer(supervisorList);
+    project.offer(new Supervisor(supervisor));
 
     return projectRepository.save(project);
   }

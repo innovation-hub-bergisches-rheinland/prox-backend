@@ -35,6 +35,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import net.bytebuddy.implementation.bind.annotation.Super;
 import org.springframework.lang.Nullable;
 
 /**

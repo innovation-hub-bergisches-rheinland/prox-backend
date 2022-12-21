@@ -10,6 +10,7 @@ import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.modules.project.DisciplineFixtures;
 import de.innovationhub.prox.modules.project.ModuleTypeFixtures;
 import de.innovationhub.prox.modules.project.ProjectFixtures;
+import de.innovationhub.prox.modules.project.application.project.web.dto.ApplyCommitmentDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectRequest;
 import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectRequest.TimeBoxDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.CurriculumContextRequest;
@@ -224,13 +225,14 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
     var aProject = ProjectFixtures.build_a_project();
     projectRepository.save(aProject);
     var supervisorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+    var dto = new ApplyCommitmentDto(supervisorId);
 
     given()
         .contentType("application/json")
         .accept("application/json")
-        .body(List.of(supervisorId))
+        .body(dto)
         .when()
-        .post("/projects/{id}/supervisors" , aProject.getId())
+        .post("/projects/{id}/commitment" , aProject.getId())
         .then()
         .statusCode(200);
 

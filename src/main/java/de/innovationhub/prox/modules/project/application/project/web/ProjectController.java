@@ -5,13 +5,14 @@ import de.innovationhub.prox.modules.project.application.project.usecase.command
 import de.innovationhub.prox.modules.project.application.project.usecase.commands.SetProjectPartnerHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.commands.SetProjectTagsHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.commands.SetStateHandler;
-import de.innovationhub.prox.modules.project.application.project.usecase.commands.SetSupervisorsHandler;
+import de.innovationhub.prox.modules.project.application.project.usecase.commands.ApplyCommitmentHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.commands.UpdateProjectHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.queries.FindAllProjectsHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.queries.FindProjectByIdHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.queries.FindProjectsOfPartnerHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.queries.FindProjectsOfSupervisorHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.queries.SearchProjectHandler;
+import de.innovationhub.prox.modules.project.application.project.web.dto.ApplyCommitmentDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectRequest;
 import de.innovationhub.prox.modules.project.application.project.web.dto.ProjectDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.ProjectDtoAssembler;
@@ -53,7 +54,7 @@ public class ProjectController {
   private final SearchProjectHandler search;
   private final DeleteProjectByIdHandler deleteById;
   private final SetProjectTagsHandler setTags;
-  private final SetSupervisorsHandler setSupervisors;
+  private final ApplyCommitmentHandler setSupervisors;
   private final SetProjectPartnerHandler setPartner;
   private final FindProjectsOfPartnerHandler findByPartner;
   private final FindProjectsOfSupervisorHandler findBySupervisor;
@@ -123,13 +124,13 @@ public class ProjectController {
     return ResponseEntity.ok(dto);
   }
 
-  @PostMapping(value = "{id}/supervisors", consumes = "application/json", produces = "application/json")
+  @PostMapping(value = "{id}/commitment", consumes = "application/json", produces = "application/json")
   @Operation(security = {
       @SecurityRequirement(name = "oidc")
   })
   @PreAuthorize("@projectPermissionEvaluator.hasPermission(#id, authentication)")
-  public ResponseEntity<ProjectDto> commitment(@PathVariable("id") UUID id, @RequestBody List<UUID> supervisorIds) {
-    var updatedProject = setSupervisors.handle(id, supervisorIds);
+  public ResponseEntity<ProjectDto> commitment(@PathVariable("id") UUID id, @RequestBody ApplyCommitmentDto applyCommitmentDto) {
+    var updatedProject = setSupervisors.handle(id, applyCommitmentDto.supervisorId());
     var dto = dtoAssembler.toDto(updatedProject);
     return ResponseEntity.ok(dto);
   }

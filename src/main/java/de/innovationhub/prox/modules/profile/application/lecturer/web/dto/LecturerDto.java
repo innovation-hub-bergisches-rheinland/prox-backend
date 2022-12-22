@@ -11,6 +11,7 @@ public record LecturerDto(
     UUID id,
     UUID userId,
     String name,
+    boolean visibleInPublicSearch,
     LecturerProfileDto profile,
     List<String> tags,
     String avatarUrl,

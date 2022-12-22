@@ -22,7 +22,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.annotations.Where;
 
 /**
  * Lecturers are authorized to teach courses. In PROX we don't really care about a differentiation
@@ -33,7 +32,6 @@ import org.hibernate.annotations.Where;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@Where(clause = "visible_in_public_search = 'true'")
 public class Lecturer extends AbstractAggregateRoot {
 
   @Id

@@ -116,6 +116,14 @@ public class Project extends AbstractAggregateRoot {
   }
 
   public void applyCommitment(UUID supervisorId) {
+    if(this.status.getState() != ProjectState.PROPOSED) {
+      throw new IllegalStateException("Project is not in state PROPOSED");
+    }
+
+    if(!this.supervisors.isEmpty()) {
+      throw new IllegalStateException("Project already has a supervisor");
+    }
+
     this.supervisors = new ArrayList<>();
     this.supervisors.add(new Supervisor(supervisorId));
     this.status.updateState(ProjectState.OFFERED);

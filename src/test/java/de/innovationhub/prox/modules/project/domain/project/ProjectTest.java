@@ -1,6 +1,7 @@
 package de.innovationhub.prox.modules.project.domain.project;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectCreated;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectOffered;
@@ -45,6 +46,25 @@ class ProjectTest {
           assertThat(event.projectId()).isEqualTo(project.getId());
           assertThat(event.state()).isEqualTo(ProjectState.OFFERED);
         });
+  }
+
+  @Test
+  void shouldThrowWhenProjectNotProposed() {
+    var project = createTestProject(ProjectState.OFFERED);
+    var supervisor = UUID.randomUUID();
+
+    assertThatThrownBy(() -> project.applyCommitment(supervisor))
+        .isInstanceOf(IllegalStateException.class);
+  }
+
+  @Test
+  void shouldThrowWhenProjectHasSupervisors() {
+    var project = createTestProject(ProjectState.OFFERED);
+    project.setSupervisors(List.of(new Supervisor(UUID.randomUUID())));
+    var supervisor = UUID.randomUUID();
+
+    assertThatThrownBy(() -> project.applyCommitment(supervisor))
+        .isInstanceOf(IllegalStateException.class);
   }
 
   @Test

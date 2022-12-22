@@ -65,7 +65,7 @@ class ProjectAutoStatusUpdaterIntegrationTest extends AbstractIntegrationTest {
     var start = LocalDate.now().minus(2, DAYS);
     var end = LocalDate.now().minus(1, DAYS);
     var project = createProjectWithTimeBox(start, end);
-    project.start();
+    project.updateState(ProjectState.RUNNING);
     projectRepository.save(project);
 
     projectAutoStatusUpdater.run();

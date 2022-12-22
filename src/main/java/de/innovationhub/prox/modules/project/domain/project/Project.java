@@ -1,15 +1,11 @@
 package de.innovationhub.prox.modules.project.domain.project;
 
 import de.innovationhub.prox.modules.commons.domain.AbstractAggregateRoot;
-import de.innovationhub.prox.modules.project.domain.project.events.ProjectArchived;
-import de.innovationhub.prox.modules.project.domain.project.events.ProjectCompleted;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectCreated;
-import de.innovationhub.prox.modules.project.domain.project.events.ProjectMarkedAsStale;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectOffered;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectPartnered;
-import de.innovationhub.prox.modules.project.domain.project.events.ProjectStarted;
+import de.innovationhub.prox.modules.project.domain.project.events.ProjectStateUpdated;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectTagged;
-import de.innovationhub.prox.modules.project.domain.project.events.ProjectUnarchived;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -115,19 +111,9 @@ public class Project extends AbstractAggregateRoot {
     return project;
   }
 
-  public void archive() {
-    this.status.updateState(ProjectState.ARCHIVED);
-    this.registerEvent(new ProjectArchived(this.id));
-  }
-
-  public void unarchive() {
-    this.status.updateState(ProjectState.PROPOSED);
-    this.registerEvent(new ProjectUnarchived(this.id));
-  }
-
-  public void stale() {
-    this.status.updateState(ProjectState.STALE);
-    this.registerEvent(new ProjectMarkedAsStale(this.id));
+  public void updateState(ProjectState state) {
+    this.status.updateState(state);
+    this.registerEvent(new ProjectStateUpdated(this.getId(), state));
   }
 
   public void offer(Supervisor supervisor) {
@@ -145,16 +131,6 @@ public class Project extends AbstractAggregateRoot {
     this.status.updateState(ProjectState.OFFERED);
     this.supervisors = new ArrayList<>(supervisors);
     this.registerEvent(new ProjectOffered(this.id, supervisors));
-  }
-
-  public void start() {
-    this.status.updateState(ProjectState.RUNNING);
-    this.registerEvent(new ProjectStarted(this.id));
-  }
-
-  public void complete() {
-    this.status.updateState(ProjectState.COMPLETED);
-    this.registerEvent(new ProjectCompleted(this.id));
   }
 
   public void addSupervisor(Supervisor supervisor) {

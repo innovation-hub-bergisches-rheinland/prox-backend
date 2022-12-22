@@ -1,7 +1,6 @@
 package de.innovationhub.prox.modules.project.application.project.jobs;
 
 
-import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
 import java.time.Duration;
@@ -40,7 +39,7 @@ public class ProposalAutoStaleMarker {
         this.projectRepository.findWithStatusModifiedBefore(
             ProjectState.ARCHIVED, qualifyingTimestamp);
     if (!proposalsToMark.isEmpty()) {
-      proposalsToMark.forEach(Project::stale);
+      proposalsToMark.forEach(p -> p.updateState(ProjectState.STALE));
       this.projectRepository.saveAll(proposalsToMark);
     }
   }

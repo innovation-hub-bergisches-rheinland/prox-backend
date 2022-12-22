@@ -17,14 +17,9 @@ public class SetStateHandler {
     var project = projectRepository.findById(projectId)
         .orElseThrow(ProjectNotFoundException::new);
 
-    switch (state) {
-      case RUNNING -> project.start();
-      case COMPLETED -> project.complete();
-      case OFFERED -> project.offer(project.getSupervisors());
-      default -> throw new IllegalArgumentException("Invalid state: " + state);
-    }
-
+    project.updateState(state);
     projectRepository.save(project);
+
     return project;
   }
 }

@@ -1,7 +1,6 @@
 package de.innovationhub.prox.modules.project.application.project.jobs;
 
 
-import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
 import java.time.Duration;
@@ -39,7 +38,7 @@ public class ProposalAutoArchiver {
         this.projectRepository.findWithStatusModifiedBefore(
             ProjectState.PROPOSED, qualifyingTimestamp);
     if (!proposalsToArchive.isEmpty()) {
-      proposalsToArchive.forEach(Project::archive);
+      proposalsToArchive.forEach(p -> p.updateState(ProjectState.ARCHIVED));
       this.projectRepository.saveAll(proposalsToArchive);
     }
   }

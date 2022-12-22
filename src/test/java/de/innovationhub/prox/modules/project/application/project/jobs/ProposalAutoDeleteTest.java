@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 import de.innovationhub.prox.modules.project.ProjectFixtures;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
+import de.innovationhub.prox.modules.project.domain.project.ProjectState;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -20,8 +21,8 @@ class ProposalAutoDeleteTest {
   @Test
   void shouldArchiveInactiveProposals() {
     var project = ProjectFixtures.build_a_project();
-    project.archive();
-    project.stale();
+    project.updateState(ProjectState.ARCHIVED);
+    project.updateState(ProjectState.STALE);
     when(projectRepository.findWithStatusModifiedBefore(any(), any()))
         .thenReturn(List.of(project));
 

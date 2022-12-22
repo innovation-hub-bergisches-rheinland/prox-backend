@@ -25,7 +25,7 @@ class ProposalAutoStaleMarkerTest {
   @Test
   void shouldArchiveInactiveProposals() {
     var project = ProjectFixtures.build_a_project();
-    project.archive();
+    project.updateState(ProjectState.ARCHIVED);
     when(projectRepository.findWithStatusModifiedBefore(any(), any()))
         .thenReturn(List.of(project));
 

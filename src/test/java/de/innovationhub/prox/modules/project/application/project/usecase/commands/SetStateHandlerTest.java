@@ -7,11 +7,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import de.innovationhub.prox.modules.project.ProjectFixtures;
-import de.innovationhub.prox.modules.project.application.project.usecase.commands.SetStateHandler;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
 import de.innovationhub.prox.modules.project.domain.project.Supervisor;
+import de.innovationhub.prox.modules.project.domain.project.exception.InvalidProjectStateTransitionException;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -50,6 +50,6 @@ class SetStateHandlerTest {
     when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
 
     assertThatThrownBy(() -> setStateHandler.handle(project.getId(), ProjectState.STALE))
-        .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(InvalidProjectStateTransitionException.class);
   }
 }

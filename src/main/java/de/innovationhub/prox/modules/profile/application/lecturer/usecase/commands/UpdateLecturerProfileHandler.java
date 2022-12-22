@@ -49,6 +49,7 @@ public class UpdateLecturerProfileHandler {
       profile.setConsultationHour(dtoProfile.consultationHour());
     }
     lecturer.setProfile(profile);
+    lecturer.setVisibleInPublicSearch(dto.visibleInPublicSearch());
 
     return lecturerRepository.save(lecturer);
   }

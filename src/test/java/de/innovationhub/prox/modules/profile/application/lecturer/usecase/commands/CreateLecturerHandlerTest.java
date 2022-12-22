@@ -47,7 +47,7 @@ class CreateLecturerHandlerTest {
             "telephone",
             "homepage",
             "collegePage"
-        )
+        ), true
     );
 
     when(lecturerRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));

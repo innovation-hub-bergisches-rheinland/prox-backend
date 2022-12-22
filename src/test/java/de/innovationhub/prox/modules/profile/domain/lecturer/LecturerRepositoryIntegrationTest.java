@@ -19,7 +19,7 @@ class LecturerRepositoryIntegrationTest extends AbstractIntegrationTest {
   @SuppressWarnings("java:S5841")
   void shouldNotIncludeInvisibleProfilesInFindAll() {
     var lecturer = Lecturer.create(UUID.randomUUID(), "Max Mustermann");
-    lecturer.setVisible(false);
+    lecturer.setVisibleInPublicSearch(false);
     lecturerRepository.save(lecturer);
 
     var result = lecturerRepository.findAll();
@@ -33,7 +33,7 @@ class LecturerRepositoryIntegrationTest extends AbstractIntegrationTest {
   @SuppressWarnings("java:S5841")
   void shouldNotIncludeInvisibleProfilesInFilter() {
     var lecturer = Lecturer.create(UUID.randomUUID(), "Max Mustermann");
-    lecturer.setVisible(false);
+    lecturer.setVisibleInPublicSearch(false);
     lecturerRepository.save(lecturer);
 
     var result = lecturerRepository.filter("Max Mustermann");
@@ -43,9 +43,24 @@ class LecturerRepositoryIntegrationTest extends AbstractIntegrationTest {
   }
 
   @Test
+  @SuppressWarnings("java:S5841")
+  void shouldIncludeInvisibleProfilesInFindById() {
+    var lecturer = Lecturer.create(UUID.randomUUID(), "Max Mustermann");
+    lecturer.setVisibleInPublicSearch(false);
+    lecturerRepository.save(lecturer);
+
+    var result = lecturerRepository.findById(lecturer.getId());
+
+    assertThat(result)
+        .isPresent()
+        .get()
+        .isEqualTo(lecturer);
+  }
+
+  @Test
   void shouldFilterPartial() {
     var lecturer = Lecturer.create(UUID.randomUUID(), "Max Mustermann");
-    lecturer.setVisible(true);
+    lecturer.setVisibleInPublicSearch(true);
     lecturerRepository.save(lecturer);
 
     var result = lecturerRepository.filter("Max");
@@ -56,7 +71,7 @@ class LecturerRepositoryIntegrationTest extends AbstractIntegrationTest {
   @Test
   void shouldFilterCaseInsensitive() {
     var lecturer = Lecturer.create(UUID.randomUUID(), "Max Mustermann");
-    lecturer.setVisible(true);
+    lecturer.setVisibleInPublicSearch(true);
     lecturerRepository.save(lecturer);
 
     var result = lecturerRepository.filter("max mustermann");

@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
-
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -20,7 +19,7 @@ class LecturerFacadeImplIntegrationTest extends AbstractIntegrationTest {
 
   private Lecturer createDummyLecturer() {
     var lecturer = Lecturer.create(UUID.randomUUID(), "Max Mustermann");
-    lecturer.setVisible(true);
+    lecturer.setVisibleInPublicSearch(true);
     return lecturer;
   }
 

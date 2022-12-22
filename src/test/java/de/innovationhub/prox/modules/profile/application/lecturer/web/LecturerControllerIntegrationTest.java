@@ -52,7 +52,7 @@ class LecturerControllerIntegrationTest extends AbstractIntegrationTest {
 
   private Lecturer createDummyLecturer() {
     var lecturer = Lecturer.create(UUID.fromString(USER_ID), "Max Mustermann");
-    lecturer.setVisible(true);
+    lecturer.setVisibleInPublicSearch(true);
     return lecturer;
   }
 
@@ -72,7 +72,7 @@ class LecturerControllerIntegrationTest extends AbstractIntegrationTest {
             "555-1234-567",
             "example.org",
             "example"
-        )
+        ), true
     );
 
     var id = given()
@@ -168,7 +168,7 @@ class LecturerControllerIntegrationTest extends AbstractIntegrationTest {
             "555-1234-567",
             "example.org",
             "example"
-        )
+        ), false
     );
 
     given()
@@ -183,6 +183,7 @@ class LecturerControllerIntegrationTest extends AbstractIntegrationTest {
     var updatedLecturer = lecturerRepository.findById(lecturer.getId()).orElseThrow();
     assertThat(updatedLecturer.getName()).isEqualTo("Max Mustermann");
     assertThat(updatedLecturer.getProfile().getAffiliation()).isEqualTo("2022-11-07");
+    assertThat(updatedLecturer.getVisibleInPublicSearch()).isFalse();
   }
 
   @Test

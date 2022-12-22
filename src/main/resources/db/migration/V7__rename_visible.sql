@@ -1,0 +1,1 @@
+alter table lecturer rename column visible to visible_in_public_search;

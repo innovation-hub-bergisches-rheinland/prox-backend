@@ -41,7 +41,7 @@ class UpdateLecturerProfileHandlerTest {
         "telephone",
         "homepage",
         "collegePage"
-    ));
+    ), true);
   }
 
   @Test

@@ -6,7 +6,8 @@ import java.util.List;
 @Schema(name = "CreateLecturerRequest")
 public record CreateLecturerRequestDto(
     String name,
-    CreateLecturerProfileDto profile
+    CreateLecturerProfileDto profile,
+    boolean visibleInPublicSearch
 ) {
   public record CreateLecturerProfileDto(
       String affiliation,

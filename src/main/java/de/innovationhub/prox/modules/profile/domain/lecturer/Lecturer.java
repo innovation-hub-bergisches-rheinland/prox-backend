@@ -33,13 +33,13 @@ import org.hibernate.annotations.Where;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@Where(clause = "visible = 'true'")
+@Where(clause = "visible_in_public_search = 'true'")
 public class Lecturer extends AbstractAggregateRoot {
 
   @Id
   private UUID id;
 
-  private Boolean visible = false;
+  private Boolean visibleInPublicSearch = false;
 
   @NotNull
   private UUID userId;
@@ -98,8 +98,8 @@ public class Lecturer extends AbstractAggregateRoot {
     this.registerEvent(new LecturerAvatarSet(this.id, this.avatarKey));
   }
 
-  public void setVisible(boolean visible) {
-    this.visible = visible;
-    this.registerEvent(new LecturerVisibilityChanged(this.id, this.visible));
+  public void setVisibleInPublicSearch(boolean visible) {
+    this.visibleInPublicSearch = visible;
+    this.registerEvent(new LecturerVisibilityChanged(this.id, this.visibleInPublicSearch));
   }
 }

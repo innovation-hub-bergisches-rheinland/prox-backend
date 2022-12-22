@@ -10,7 +10,6 @@ import de.innovationhub.prox.modules.project.ProjectFixtures;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
-import de.innovationhub.prox.modules.project.domain.project.Supervisor;
 import de.innovationhub.prox.modules.project.domain.project.exception.InvalidProjectStateTransitionException;
 import java.util.Optional;
 import java.util.UUID;
@@ -33,7 +32,7 @@ class SetStateHandlerTest {
   @Test
   void shouldUpdateState() {
     var project = ProjectFixtures.build_a_project();
-    project.offer(new Supervisor(UUID.randomUUID()));
+    project.applyCommitment(UUID.randomUUID());
     when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
 
     setStateHandler.handle(project.getId(), ProjectState.RUNNING);

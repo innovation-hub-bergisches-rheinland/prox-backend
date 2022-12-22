@@ -114,11 +114,13 @@ public class Project extends AbstractAggregateRoot {
     this.status.updateState(state);
     this.registerEvent(new ProjectStateUpdated(this.getId(), state));
   }
-  
-  public void offer(Supervisor supervisor) {
-    Objects.requireNonNull(supervisor);
 
-    offer(List.of(supervisor));
+  public void applyCommitment(UUID supervisorId) {
+    this.supervisors = new ArrayList<>();
+    this.supervisors.add(new Supervisor(supervisorId));
+    this.status.updateState(ProjectState.OFFERED);
+
+    this.registerEvent(new ProjectOffered(this.id, supervisors));
   }
 
   public void offer(List<Supervisor> supervisors) {

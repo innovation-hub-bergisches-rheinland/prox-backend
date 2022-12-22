@@ -230,7 +230,7 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
   @WithMockUser(value = "00000000-0000-0000-0000-000000000001", roles = { "professor" })
   void shouldSetState() {
     var aProject = ProjectFixtures.build_a_project();
-    aProject.offer(new Supervisor(UUID.fromString("00000000-0000-0000-0000-000000000001")));
+    aProject.applyCommitment(UUID.fromString("00000000-0000-0000-0000-000000000001"));
     projectRepository.save(aProject);
 
     given()
@@ -298,7 +298,7 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
   void shouldFindBySupervisor() {
     var aProject = ProjectFixtures.build_a_project();
     var supervisorId = UUID.randomUUID();
-    aProject.offer(new Supervisor(supervisorId));
+    aProject.applyCommitment(supervisorId);
     projectRepository.save(aProject);
 
     given()

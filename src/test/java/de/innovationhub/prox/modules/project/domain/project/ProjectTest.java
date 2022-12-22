@@ -50,18 +50,22 @@ class ProjectTest {
   @Test
   void shouldAddSupervisorOnOffer() {
     var project = createTestProject(ProjectState.PROPOSED);
-    var supervisor = new Supervisor(UUID.randomUUID());
+    var supervisor = UUID.randomUUID();
 
-    project.offer(supervisor);
+    project.applyCommitment(supervisor);
 
-    assertThat(project.getSupervisors()).containsExactly(supervisor);
+    assertThat(project.getSupervisors())
+        .extracting(Supervisor::getLecturerId)
+        .containsExactly(supervisor);
     assertThat(project.getDomainEvents())
         .filteredOn(event -> event instanceof ProjectOffered)
         .hasSize(1)
         .first()
         .isInstanceOfSatisfying(ProjectOffered.class, event -> {
           assertThat(event.projectId()).isEqualTo(project.getId());
-          assertThat(event.supervisor()).containsExactlyInAnyOrder(supervisor);
+          assertThat(event.supervisor())
+              .extracting(Supervisor::getLecturerId)
+              .containsExactlyInAnyOrder(supervisor);
         });
   }
 

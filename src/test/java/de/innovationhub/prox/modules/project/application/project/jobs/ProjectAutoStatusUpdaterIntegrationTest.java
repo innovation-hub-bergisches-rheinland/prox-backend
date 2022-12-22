@@ -10,7 +10,6 @@ import de.innovationhub.prox.modules.project.domain.project.CurriculumContext;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
-import de.innovationhub.prox.modules.project.domain.project.Supervisor;
 import de.innovationhub.prox.modules.project.domain.project.TimeBox;
 import java.time.LocalDate;
 import java.util.List;
@@ -103,7 +102,7 @@ class ProjectAutoStatusUpdaterIntegrationTest extends AbstractIntegrationTest {
         new TimeBox(start, end),
         UUID.randomUUID()
     );
-    project.offer(new Supervisor(UUID.randomUUID()));
+    project.applyCommitment(UUID.randomUUID());
     return projectRepository.save(project);
   }
 }

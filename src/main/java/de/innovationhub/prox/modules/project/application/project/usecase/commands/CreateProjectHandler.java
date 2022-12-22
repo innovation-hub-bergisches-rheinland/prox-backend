@@ -13,7 +13,6 @@ import de.innovationhub.prox.modules.project.domain.project.Author;
 import de.innovationhub.prox.modules.project.domain.project.CurriculumContext;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
-import de.innovationhub.prox.modules.project.domain.project.Supervisor;
 import de.innovationhub.prox.modules.project.domain.project.TimeBox;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -43,9 +42,7 @@ public class CreateProjectHandler {
     );
 
     if(projectDto.supervisors() != null && !projectDto.supervisors().isEmpty()) {
-      var supervisorList = projectDto.supervisors()
-          .stream().map(Supervisor::new).toList();
-      project.offer(supervisorList);
+      project.offer(projectDto.supervisors());
     }
 
     return this.projectRepository.save(project);

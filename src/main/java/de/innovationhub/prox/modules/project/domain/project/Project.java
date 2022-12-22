@@ -131,15 +131,17 @@ public class Project extends AbstractAggregateRoot {
     this.registerEvent(new ProjectOffered(this.id, supervisors));
   }
 
-  public void offer(List<Supervisor> supervisors) {
+  public void offer(Collection<UUID> supervisors) {
     Objects.requireNonNull(supervisors);
     if (supervisors.isEmpty()) {
       throw new RuntimeException("Cannot offer without any supervisor");
     }
 
+    var supervisorList = supervisors.stream().map(Supervisor::new).toList();
+
     this.status.updateState(ProjectState.OFFERED);
-    this.supervisors = new ArrayList<>(supervisors);
-    this.registerEvent(new ProjectOffered(this.id, supervisors));
+    this.supervisors = new ArrayList<>(supervisorList);
+    this.registerEvent(new ProjectOffered(this.id, supervisorList));
   }
 
   public void setTags(Collection<UUID> tags) {

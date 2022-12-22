@@ -38,12 +38,9 @@ public class CreateProjectHandler {
         projectDto.requirement(),
         context,
         timeBox,
-        projectDto.partnerId()
+        projectDto.partnerId(),
+        projectDto.supervisors() == null ? List.of() : projectDto.supervisors()
     );
-
-    if(projectDto.supervisors() != null && !projectDto.supervisors().isEmpty()) {
-      project.offer(projectDto.supervisors());
-    }
 
     return this.projectRepository.save(project);
   }

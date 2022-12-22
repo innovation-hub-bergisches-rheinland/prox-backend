@@ -100,7 +100,8 @@ class ProjectAutoStatusUpdaterIntegrationTest extends AbstractIntegrationTest {
         "Test",
         new CurriculumContext(List.of(), List.of()),
         new TimeBox(start, end),
-        UUID.randomUUID()
+        UUID.randomUUID(),
+        List.of()
     );
     project.applyCommitment(UUID.randomUUID());
     return projectRepository.save(project);

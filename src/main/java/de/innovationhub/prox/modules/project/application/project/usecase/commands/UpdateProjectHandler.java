@@ -1,6 +1,5 @@
 package de.innovationhub.prox.modules.project.application.project.usecase.commands;
 
-import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.project.application.project.exception.ProjectNotFoundException;
 import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectRequest;
@@ -11,7 +10,6 @@ import de.innovationhub.prox.modules.project.domain.discipline.DisciplineReposit
 import de.innovationhub.prox.modules.project.domain.module.ModuleType;
 import de.innovationhub.prox.modules.project.domain.module.ModuleTypeRepository;
 import de.innovationhub.prox.modules.project.domain.project.CurriculumContext;
-import de.innovationhub.prox.modules.project.domain.project.Partner;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
 import de.innovationhub.prox.modules.project.domain.project.TimeBox;
@@ -26,7 +24,6 @@ public class UpdateProjectHandler {
   private final ProjectRepository projectRepository;
   private final ModuleTypeRepository moduleTypeRepository;
   private final DisciplineRepository disciplineRepository;
-  private final AuthenticationFacade authenticationFacade;
 
   @PreAuthorize("@projectPermissionEvaluator.hasPermission(#projectId, authentication)")
   public Project handle(UUID projectId, CreateProjectRequest projectDto) {
@@ -36,18 +33,15 @@ public class UpdateProjectHandler {
     var context = buildContext(projectDto.context());
     var timeBox = buildTimeBox(projectDto.timeBox());
 
-    project.setCurriculumContext(context);
-    project.setTimeBox(timeBox);
-
-    project.setTitle(projectDto.title());
-    project.setDescription(projectDto.description());
-    project.setSummary(projectDto.summary());
-    project.setRequirement(projectDto.requirement());
-    project.setPartner(projectDto.partnerId() != null ? new Partner(projectDto.partnerId()) : null);
-
-    if(projectDto.supervisors() != null && !projectDto.supervisors().isEmpty()) {
-      project.offer(projectDto.supervisors());
-    }
+    project.update(projectDto.title(),
+        projectDto.summary(),
+        projectDto.description(),
+        projectDto.requirement(),
+        context,
+        timeBox,
+        projectDto.partnerId(),
+        projectDto.supervisors() == null ? List.of() : projectDto.supervisors()
+    );
 
     return this.projectRepository.save(project);
   }

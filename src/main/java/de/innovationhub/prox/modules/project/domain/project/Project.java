@@ -5,6 +5,7 @@ import de.innovationhub.prox.modules.project.domain.project.events.ProjectCreate
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectOffered;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectStateUpdated;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectTagged;
+import de.innovationhub.prox.modules.project.domain.project.events.ProjectUpdated;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -100,14 +101,43 @@ public class Project extends AbstractAggregateRoot {
       String requirement,
       CurriculumContext context,
       @Nullable TimeBox timeBox,
-      @Nullable UUID partner
+      @Nullable UUID partner,
+      Collection<UUID> supervisors
   ) {
+    ProjectState state = supervisors.isEmpty() ? ProjectState.PROPOSED : ProjectState.OFFERED;
+    var supervisorsList = supervisors
+        .stream()
+        .map(Supervisor::new)
+        .toList();
+
     var project = new Project(UUID.randomUUID(),
         author, partner != null ? new Partner(partner) : null, title, summary, description, requirement, context,
-        new ProjectStatus(ProjectState.PROPOSED, Instant.now()), timeBox,
-        new ArrayList<>(), null);
+        new ProjectStatus(state, Instant.now()), timeBox,
+        supervisorsList, null);
     project.registerEvent(new ProjectCreated(project.getId()));
     return project;
+  }
+
+  public void update(
+      String title,
+      String summary,
+      String description,
+      String requirement,
+      CurriculumContext context,
+      @Nullable TimeBox timeBox,
+      @Nullable UUID partner,
+      Collection<UUID> supervisors
+  ) {
+    this.setTitle(title);
+    this.setDescription(description);
+    this.setSummary(summary);
+    this.setRequirement(requirement);
+    this.setCurriculumContext(context);
+    this.setTimeBox(timeBox);
+    this.setPartner(partner != null ? new Partner(partner) : null);
+    this.setSupervisors(supervisors);
+
+    this.registerEvent(new ProjectUpdated(this.getId()));
   }
 
   public void updateState(ProjectState state) {
@@ -131,17 +161,11 @@ public class Project extends AbstractAggregateRoot {
     this.registerEvent(new ProjectOffered(this.id, supervisors));
   }
 
-  public void offer(Collection<UUID> supervisors) {
+  public void setSupervisors(Collection<UUID> supervisors) {
     Objects.requireNonNull(supervisors);
-    if (supervisors.isEmpty()) {
-      throw new RuntimeException("Cannot offer without any supervisor");
-    }
 
     var supervisorList = supervisors.stream().map(Supervisor::new).toList();
-
-    this.status.updateState(ProjectState.OFFERED);
     this.supervisors = new ArrayList<>(supervisorList);
-    this.registerEvent(new ProjectOffered(this.id, supervisorList));
   }
 
   public void setTags(Collection<UUID> tags) {

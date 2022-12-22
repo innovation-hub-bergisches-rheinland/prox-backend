@@ -20,7 +20,7 @@ class ProjectTest {
   @Test
   void shouldRegisterCreateEvent() {
     var project = Project.create(new Author(UUID.randomUUID()), "Test Project", "Test",
-        "Test", "Test", new CurriculumContext(), null, null);
+        "Test", "Test", new CurriculumContext(), null, null, List.of());
     assertThat(project.getDomainEvents())
         .filteredOn(event -> event instanceof ProjectCreated)
         .hasSize(1)
@@ -60,7 +60,7 @@ class ProjectTest {
   @Test
   void shouldThrowWhenProjectHasSupervisors() {
     var project = createTestProject(ProjectState.OFFERED);
-    project.setSupervisors(List.of(new Supervisor(UUID.randomUUID())));
+    project.setSupervisors(List.of(UUID.randomUUID()));
     var supervisor = UUID.randomUUID();
 
     assertThatThrownBy(() -> project.applyCommitment(supervisor))

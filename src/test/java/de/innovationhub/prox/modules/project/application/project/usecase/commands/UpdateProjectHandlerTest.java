@@ -7,7 +7,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.project.DisciplineFixtures;
 import de.innovationhub.prox.modules.project.ModuleTypeFixtures;
 import de.innovationhub.prox.modules.project.ProjectFixtures;
@@ -31,9 +30,8 @@ class UpdateProjectHandlerTest {
   ProjectRepository projectRepository = mock(ProjectRepository.class);
   ModuleTypeRepository moduleTypeRepository = mock(ModuleTypeRepository.class);
   DisciplineRepository disciplineRepository = mock(DisciplineRepository.class);
-  AuthenticationFacade authenticationFacade = mock(AuthenticationFacade.class);
 
-  UpdateProjectHandler createProjectHandler = new UpdateProjectHandler(projectRepository, moduleTypeRepository, disciplineRepository, authenticationFacade);
+  UpdateProjectHandler createProjectHandler = new UpdateProjectHandler(projectRepository, moduleTypeRepository, disciplineRepository);
 
   @Test
   void shouldThrowOnNotFound() {
@@ -47,7 +45,6 @@ class UpdateProjectHandlerTest {
   void shouldUpdate() {
     var project = ProjectFixtures.build_a_project();
     when(projectRepository.findById(any())).thenReturn(Optional.of(project));
-    when(authenticationFacade.currentAuthenticatedId()).thenReturn(ProjectFixtures.A_PROJECT_CREATOR_ID);
     when(moduleTypeRepository.findByKeyIn(any())).thenReturn(ModuleTypeFixtures.ALL);
     when(disciplineRepository.findByKeyIn(any())).thenReturn(DisciplineFixtures.ALL);
 

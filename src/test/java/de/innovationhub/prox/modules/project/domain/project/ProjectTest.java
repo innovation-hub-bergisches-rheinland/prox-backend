@@ -1,11 +1,9 @@
 package de.innovationhub.prox.modules.project.domain.project;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectCreated;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectOffered;
-import de.innovationhub.prox.modules.project.domain.project.events.ProjectPartnered;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectStateUpdated;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectTagged;
 import java.time.Instant;
@@ -28,25 +26,6 @@ class ProjectTest {
         .first()
         .isInstanceOfSatisfying(ProjectCreated.class, event -> {
           assertThat(event.projectId()).isEqualTo(project.getId());
-        });
-  }
-
-  @Test
-  void shouldPartner() {
-    var project = createTestProject(ProjectState.PROPOSED);
-    var organizationId = UUID.randomUUID();
-
-    project.setPartner(new Partner(organizationId));
-
-    assertThat(project.getPartner().getOrganizationId())
-        .isEqualTo(organizationId);
-    assertThat(project.getDomainEvents())
-        .filteredOn(event -> event instanceof ProjectPartnered)
-        .hasSize(1)
-        .first()
-        .isInstanceOfSatisfying(ProjectPartnered.class, event -> {
-          assertThat(event.projectId()).isEqualTo(project.getId());
-          assertThat(event.organizationId()).isEqualTo(organizationId);
         });
   }
 
@@ -84,36 +63,6 @@ class ProjectTest {
           assertThat(event.projectId()).isEqualTo(project.getId());
           assertThat(event.supervisor()).containsExactlyInAnyOrder(supervisor);
         });
-  }
-
-  @Test
-  void shouldNotRemoveLastSupervisor() {
-    var supervisor = new Supervisor(UUID.randomUUID());
-    var project = createProjectWithSupervisors(List.of(supervisor));
-
-    assertThrows(RuntimeException.class, () -> project.removeSupervisor(supervisor));
-  }
-
-  @Test
-  void shouldRemoveSupervisor() {
-    var supervisorXavier = new Supervisor(UUID.randomUUID());
-    var supervisorHomer = new Supervisor(UUID.randomUUID());
-    var project = createProjectWithSupervisors(List.of(supervisorHomer, supervisorXavier));
-
-    project.removeSupervisor(supervisorHomer);
-
-    assertThat(project.getSupervisors()).doesNotContain(supervisorHomer);
-  }
-
-  @Test
-  void shouldAddSupervisor() {
-    var supervisorXavier = new Supervisor(UUID.randomUUID());
-    var supervisorHomer = new Supervisor(UUID.randomUUID());
-    var project = createProjectWithSupervisors(List.of(supervisorXavier));
-
-    project.addSupervisor(supervisorHomer);
-
-    assertThat(project.getSupervisors()).contains(supervisorHomer);
   }
 
   @Test

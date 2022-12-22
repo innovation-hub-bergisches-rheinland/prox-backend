@@ -3,7 +3,6 @@ package de.innovationhub.prox.modules.project.domain.project;
 import de.innovationhub.prox.modules.commons.domain.AbstractAggregateRoot;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectCreated;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectOffered;
-import de.innovationhub.prox.modules.project.domain.project.events.ProjectPartnered;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectStateUpdated;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectTagged;
 import java.time.Instant;
@@ -115,7 +114,7 @@ public class Project extends AbstractAggregateRoot {
     this.status.updateState(state);
     this.registerEvent(new ProjectStateUpdated(this.getId(), state));
   }
-
+  
   public void offer(Supervisor supervisor) {
     Objects.requireNonNull(supervisor);
 
@@ -133,33 +132,8 @@ public class Project extends AbstractAggregateRoot {
     this.registerEvent(new ProjectOffered(this.id, supervisors));
   }
 
-  public void addSupervisor(Supervisor supervisor) {
-    this.supervisors.add(supervisor);
-  }
-
-  public void removeSupervisor(Supervisor supervisor) {
-    if (!this.supervisors.contains(supervisor)) {
-      return;
-    }
-
-    if (this.supervisors.size() == 1) {
-      throw new RuntimeException("There must be at least one supervisor");
-    }
-
-    this.supervisors.remove(supervisor);
-  }
-
   public void setTags(Collection<UUID> tags) {
     this.tags = new HashSet<>(tags);
     this.registerEvent(new ProjectTagged(this.id, tags));
-  }
-
-  public void setTimeBox(TimeBox timeBox) {
-    this.timeBox = timeBox;
-  }
-
-  public void setPartner(Partner partner) {
-    this.partner = partner;
-    this.registerEvent(new ProjectPartnered(this.id, partner.getOrganizationId()));
   }
 }

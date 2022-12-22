@@ -3,8 +3,8 @@ package de.innovationhub.prox.modules.project.application.project.jobs;
 
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
+import jakarta.annotation.PostConstruct;
 import java.time.Instant;
-import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;

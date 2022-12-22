@@ -5,9 +5,9 @@ import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.profile.application.lecturer.exception.LecturerNotFoundException;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
-import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 

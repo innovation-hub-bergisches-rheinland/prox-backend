@@ -11,24 +11,32 @@ import org.springframework.data.repository.CrudRepository;
 public interface TagCollectionRepository extends CrudRepository<TagCollection, UUID> {
 
   @Query("""
-        select t from TagCollection tc
-        join tc.tags t
-        group by t
-        order by count(t) desc
+        select t from Tag t
+        where t.id in (
+          select t1.id from TagCollection tc
+          join tc.tags t1
+        )
+        group by t.id
+        having count(t.id) > 0
+        order by count(t.id) desc
       """)
   List<Tag> findPopularTags(Pageable pageable);
 
   @Query("""
-          select t from TagCollection tc
-          join tc.tags t
-          where tc.id IN (
-            select tc2.id from TagCollection tc2
-            join tc2.tags t2
-            where t2.tagName IN ?1
+        select t from Tag t
+        where t.id in (
+          select t1.id from TagCollection tc1
+          join tc1.tags t1
+          where tc1.id in (
+            select tc.id from TagCollection tc
+            join tc.tags t
+            where t.tagName in ?1
           )
-          and t.tagName NOT IN ?1
-          group by t.id
-          order by count(t.id) desc
+          and t1.tagName not in ?1
+        )
+        group by t.id
+        having count(t.id) > 0
+        order by count(t.id) desc
       """)
   List<Tag> findCommonUsedTagsWith(Collection<String> givenTags, Pageable pageable);
 }

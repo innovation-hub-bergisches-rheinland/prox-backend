@@ -1,14 +1,11 @@
 package de.innovationhub.prox.modules.profile.domain.organization;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Embeddable;
+import jakarta.validation.constraints.Size;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Embeddable;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,10 +17,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @Embeddable
 public class OrganizationProfile {
-
-  @Id
-  @Builder.Default
-  private UUID id = UUID.randomUUID();
 
   @Size(max = 255)
   private String foundingDate;

@@ -12,7 +12,7 @@ import org.testcontainers.utility.DockerImageName;
 @SpringBootTest
 @ActiveProfiles("test")
 public class AbstractIntegrationTest {
-  static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:13.2")
+  static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15.1-alpine")
       .withDatabaseName("prox")
       .withUsername("prox")
       .withPassword("prox");

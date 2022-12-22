@@ -1,12 +1,12 @@
 package de.innovationhub.prox.modules.project.domain.project;
 
 import de.innovationhub.prox.modules.project.domain.project.exception.InvalidProjectStateTransitionException;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
-import javax.persistence.Embeddable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

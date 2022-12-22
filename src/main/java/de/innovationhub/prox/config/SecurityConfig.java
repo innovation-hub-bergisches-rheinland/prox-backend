@@ -39,7 +39,7 @@ class SecurityConfig {
         .authorizeHttpRequests(
             registry ->
                 registry
-                    .mvcMatchers(HttpMethod.GET,
+                    .requestMatchers(HttpMethod.GET,
                         "/swagger-ui.html",
                         "/swagger-ui/**",
                         "/v3/api-docs/**",
@@ -47,16 +47,16 @@ class SecurityConfig {
                         "/v3/api-docs/swagger-config"
                         )
                     .permitAll()
-                    .mvcMatchers(HttpMethod.GET, "/projects/**", "/tags/**", "/organizations/**",
+                    .requestMatchers(HttpMethod.GET, "/projects/**", "/tags/**", "/organizations/**",
                         "/lecturers/**", "/disciplines/**", "/moduleTypes/**")
                     .permitAll()
-                    .mvcMatchers(HttpMethod.GET, "/users/search")
+                    .requestMatchers(HttpMethod.GET, "/users/search")
                     .authenticated()
-                    .mvcMatchers(HttpMethod.GET, "/actuator/health/**")
+                    .requestMatchers(HttpMethod.GET, "/actuator/health/**")
                     .permitAll()
-                    .mvcMatchers("/projects/**", "/tags/**", "/organizations/**", "/lecturers/**")
+                    .requestMatchers("/projects/**", "/tags/**", "/organizations/**", "/lecturers/**")
                     .authenticated()
-                    .mvcMatchers(HttpMethod.OPTIONS)
+                    .requestMatchers(HttpMethod.OPTIONS)
                     .permitAll()
                     .anyRequest()
                     .denyAll()

@@ -1,10 +1,10 @@
 package de.innovationhub.prox.modules.project.application.project.web.dto;
 
 
+import jakarta.annotation.Nullable;
 import java.time.LocalDate;
 import java.util.Set;
 import java.util.UUID;
-import javax.annotation.Nullable;
 
 public record CreateProjectRequest(
     String title,

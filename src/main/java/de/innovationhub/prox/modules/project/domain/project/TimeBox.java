@@ -1,7 +1,7 @@
 package de.innovationhub.prox.modules.project.domain.project;
 
+import jakarta.persistence.Embeddable;
 import java.time.LocalDate;
-import javax.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

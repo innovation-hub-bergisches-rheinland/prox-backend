@@ -1,12 +1,13 @@
 package de.innovationhub.prox.modules.commons.domain;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Transient;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import javax.persistence.EntityListeners;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.domain.AfterDomainEventPublication;
@@ -20,9 +21,11 @@ public abstract class AbstractAggregateRoot {
   private final transient @Transient List<DomainEvent> domainDomainEvents = new ArrayList<>();
 
   @CreatedDate
+  @Column(nullable = false, updatable = false)
   private Instant createdAt;
 
   @LastModifiedDate
+  @Column(nullable = false)
   private Instant modifiedAt;
 
   @DomainEvents

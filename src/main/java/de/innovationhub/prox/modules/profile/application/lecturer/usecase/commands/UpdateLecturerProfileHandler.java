@@ -6,8 +6,8 @@ import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.Create
 import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerProfile;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
+import jakarta.transaction.Transactional;
 import java.util.UUID;
-import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 

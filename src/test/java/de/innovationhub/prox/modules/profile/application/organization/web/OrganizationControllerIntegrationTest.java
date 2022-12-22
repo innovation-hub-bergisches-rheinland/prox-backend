@@ -17,11 +17,11 @@ import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRol
 import de.innovationhub.prox.modules.profile.domain.organization.SocialMedia;
 import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import jakarta.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import javax.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -239,7 +239,7 @@ class OrganizationControllerIntegrationTest extends AbstractIntegrationTest {
         .contentType(ContentType.MULTIPART)
         .multiPart("image", resource, "image/png")
         .when()
-        .post("organizations/{id}/logo", org.getId())
+        .post("organizations/" + org.getId() + "/logo")
         .then()
         .status(HttpStatus.NO_CONTENT);
 

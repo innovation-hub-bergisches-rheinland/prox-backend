@@ -13,10 +13,10 @@ import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
 import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import jakarta.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
-import javax.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -198,7 +198,7 @@ class LecturerControllerIntegrationTest extends AbstractIntegrationTest {
         .contentType(ContentType.MULTIPART)
         .multiPart("image", resource, "image/png")
         .when()
-        .post("lecturers/{id}/avatar", lecturer.getId())
+        .post("lecturers/" + lecturer.getId() + "/avatar")
         .then()
         .status(HttpStatus.NO_CONTENT);
 

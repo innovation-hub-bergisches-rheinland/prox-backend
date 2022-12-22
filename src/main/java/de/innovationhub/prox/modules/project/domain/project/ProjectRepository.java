@@ -12,8 +12,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProjectRepository extends CrudRepository<Project, UUID> {
+
   @Query(nativeQuery = true, value = """
-      SELECT DISTINCT p.*, ts_rank(document, query) AS rank
+      SELECT p.*, ts_rank(document, q) AS rank
         FROM project p
                  LEFT JOIN curriculum_context cc on p.curriculum_context_id = cc.id
                  LEFT JOIN curriculum_context_disciplines cd on cd.curriculum_context_id = cc.id
@@ -21,20 +22,21 @@ public interface ProjectRepository extends CrudRepository<Project, UUID> {
                  LEFT JOIN curriculum_context_module_types cm on cm.curriculum_context_id = cc.id
                  LEFT JOIN module_type m on m.key = cm.module_types_key,
               to_tsvector('simple', concat_ws(' ', p.title, p.summary, p.description, p.requirement)) document,
-              to_tsquery('simple', REGEXP_REPLACE(lower(:query), '\\s+', ':* & ', 'g')) query
-        WHERE (:state IS NULL OR p.state = :#{#state != null ? #state.name() : ''})
+              to_tsquery('simple', REGEXP_REPLACE(lower(:query), '\\s+', ':* & ', 'g')) q
+        WHERE (p.state = :#{#state != null ? #state.name() : ''})
             AND (:disciplineKeys IS NULL OR d.key IN (:disciplineKeys))
             AND (:moduleTypeKeys IS NULL OR m.key IN (:moduleTypeKeys))
             AND (:query <> '' IS NOT TRUE OR
-                  document @@ query
+                  document @@ q
               )
         ORDER BY rank DESC, modified_at DESC
       """)
   List<Project> filterProjects(
-      @Nullable @Param("state") ProjectState state,
+      @Nullable ProjectState state,
       @Nullable @Param("disciplineKeys") Collection<String> disciplineKeys,
       @Nullable @Param("moduleTypeKeys") Collection<String> moduleTypeKeys,
       @Nullable @Param("query") String query);
+
 
   @Query("select p from Project p where p.status.state = ?1 and p.status.updatedAt <= ?2")
   List<Project> findWithStatusModifiedBefore(ProjectState status, Instant timestamp);

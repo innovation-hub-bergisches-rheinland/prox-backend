@@ -2,12 +2,12 @@ package de.innovationhub.prox.modules.project.domain.project;
 
 import de.innovationhub.prox.modules.project.domain.discipline.Discipline;
 import de.innovationhub.prox.modules.project.domain.module.ModuleType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

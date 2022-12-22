@@ -1,16 +1,15 @@
 package de.innovationhub.prox.modules.tag.application.tagcollection.usecase.commands;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.modules.tag.application.tagcollection.usecase.SetTagCollectionHandler;
 import de.innovationhub.prox.modules.tag.domain.tag.Tag;
 import de.innovationhub.prox.modules.tag.domain.tag.TagRepository;
 import de.innovationhub.prox.modules.tag.domain.tagcollection.TagCollectionRepository;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
-import javax.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

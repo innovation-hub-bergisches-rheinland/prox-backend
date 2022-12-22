@@ -43,7 +43,7 @@ dependencies {
 
     implementation "org.flywaydb:flyway-core"
 
-    implementation "org.keycloak:keycloak-admin-client:20.0.1"
+    implementation "org.keycloak:keycloak-admin-client:20.0.2"
     // AWS
     implementation "com.amazonaws:aws-java-sdk-s3:1.12.362"
 

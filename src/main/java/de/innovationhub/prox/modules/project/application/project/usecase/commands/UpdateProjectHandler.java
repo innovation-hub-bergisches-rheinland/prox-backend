@@ -11,8 +11,10 @@ import de.innovationhub.prox.modules.project.domain.discipline.DisciplineReposit
 import de.innovationhub.prox.modules.project.domain.module.ModuleType;
 import de.innovationhub.prox.modules.project.domain.module.ModuleTypeRepository;
 import de.innovationhub.prox.modules.project.domain.project.CurriculumContext;
+import de.innovationhub.prox.modules.project.domain.project.Partner;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
+import de.innovationhub.prox.modules.project.domain.project.Supervisor;
 import de.innovationhub.prox.modules.project.domain.project.TimeBox;
 import java.util.List;
 import java.util.UUID;
@@ -42,6 +44,13 @@ public class UpdateProjectHandler {
     project.setDescription(projectDto.description());
     project.setSummary(projectDto.summary());
     project.setRequirement(projectDto.requirement());
+    project.setPartner(projectDto.partnerId() != null ? new Partner(projectDto.partnerId()) : null);
+
+    if(projectDto.supervisors() != null) {
+      var supervisorList = projectDto.supervisors()
+          .stream().map(Supervisor::new).toList();
+      project.offer(supervisorList);
+    }
 
     return this.projectRepository.save(project);
   }

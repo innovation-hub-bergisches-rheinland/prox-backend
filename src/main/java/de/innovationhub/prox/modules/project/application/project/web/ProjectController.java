@@ -1,11 +1,10 @@
 package de.innovationhub.prox.modules.project.application.project.web;
 
+import de.innovationhub.prox.modules.project.application.project.usecase.commands.ApplyCommitmentHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.commands.CreateProjectHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.commands.DeleteProjectByIdHandler;
-import de.innovationhub.prox.modules.project.application.project.usecase.commands.SetProjectPartnerHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.commands.SetProjectTagsHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.commands.SetStateHandler;
-import de.innovationhub.prox.modules.project.application.project.usecase.commands.ApplyCommitmentHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.commands.UpdateProjectHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.queries.FindAllProjectsHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.queries.FindProjectByIdHandler;
@@ -17,7 +16,6 @@ import de.innovationhub.prox.modules.project.application.project.web.dto.CreateP
 import de.innovationhub.prox.modules.project.application.project.web.dto.ProjectDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.ProjectDtoAssembler;
 import de.innovationhub.prox.modules.project.application.project.web.dto.ReadProjectListDto;
-import de.innovationhub.prox.modules.project.application.project.web.dto.SetPartnerRequestDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectStateRequestDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectTagsRequestDto;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
@@ -25,7 +23,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -55,7 +52,6 @@ public class ProjectController {
   private final DeleteProjectByIdHandler deleteById;
   private final SetProjectTagsHandler setTags;
   private final ApplyCommitmentHandler setSupervisors;
-  private final SetProjectPartnerHandler setPartner;
   private final FindProjectsOfPartnerHandler findByPartner;
   private final FindProjectsOfSupervisorHandler findBySupervisor;
   private final SetStateHandler setState;
@@ -109,17 +105,6 @@ public class ProjectController {
   public ResponseEntity<ProjectDto> setState(@PathVariable("id") UUID id, @RequestBody
   SetProjectStateRequestDto requestDto) {
     var updatedProject = setState.handle(id, requestDto.state());
-    var dto = dtoAssembler.toDto(updatedProject);
-    return ResponseEntity.ok(dto);
-  }
-
-  @PostMapping(value = "{id}/partner", consumes = "application/json", produces = "application/json")
-  @Operation(security = {
-      @SecurityRequirement(name = "oidc")
-  })
-  public ResponseEntity<ProjectDto> setPartner(@PathVariable("id") UUID id, @RequestBody
-  SetPartnerRequestDto requestDto) {
-    var updatedProject = setPartner.handle(id, requestDto.organizationId());
     var dto = dtoAssembler.toDto(updatedProject);
     return ResponseEntity.ok(dto);
   }

@@ -16,8 +16,10 @@ import de.innovationhub.prox.modules.project.domain.discipline.DisciplineReposit
 import de.innovationhub.prox.modules.project.domain.module.ModuleTypeRepository;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
+import de.innovationhub.prox.modules.project.domain.project.Supervisor;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -49,7 +51,9 @@ class CreateProjectHandlerTest {
         new TimeBoxDto(
             LocalDate.now(),
             LocalDate.now()
-        )
+        ),
+        UUID.randomUUID(),
+        Set.of(UUID.randomUUID())
     );
 
     createProjectHandler.handle(command);
@@ -69,6 +73,9 @@ class CreateProjectHandlerTest {
               .containsExactlyInAnyOrderElementsOf(DisciplineFixtures.ALL);
           assertThat(p.getTimeBox().getStartDate()).isEqualTo(command.timeBox().start());
           assertThat(p.getTimeBox().getEndDate()).isEqualTo(command.timeBox().end());
+          assertThat(p.getPartner().getOrganizationId()).isEqualTo(command.partnerId());
+          assertThat(p.getSupervisors()).hasSize(1).extracting(Supervisor::getLecturerId)
+              .containsExactlyInAnyOrderElementsOf(command.supervisors());
         });
   }
 }

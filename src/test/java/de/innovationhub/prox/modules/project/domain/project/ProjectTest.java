@@ -25,7 +25,7 @@ class ProjectTest {
   @Test
   void shouldRegisterCreateEvent() {
     var project = Project.create(new Author(UUID.randomUUID()), "Test Project", "Test",
-        "Test", "Test", new CurriculumContext(), null);
+        "Test", "Test", new CurriculumContext(), null, null);
     assertThat(project.getDomainEvents())
         .filteredOn(event -> event instanceof ProjectCreated)
         .hasSize(1)

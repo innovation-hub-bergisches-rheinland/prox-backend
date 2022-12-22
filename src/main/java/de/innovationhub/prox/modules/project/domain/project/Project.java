@@ -35,7 +35,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import net.bytebuddy.implementation.bind.annotation.Super;
 import org.springframework.lang.Nullable;
 
 /**
@@ -105,10 +104,11 @@ public class Project extends AbstractAggregateRoot {
       String description,
       String requirement,
       CurriculumContext context,
-      @Nullable TimeBox timeBox
+      @Nullable TimeBox timeBox,
+      @Nullable UUID partner
   ) {
     var project = new Project(UUID.randomUUID(),
-        author, null, title, summary, description, requirement, context,
+        author, partner != null ? new Partner(partner) : null, title, summary, description, requirement, context,
         new ProjectStatus(ProjectState.PROPOSED, Instant.now()), timeBox,
         new ArrayList<>(), null);
     project.registerEvent(new ProjectCreated(project.getId()));

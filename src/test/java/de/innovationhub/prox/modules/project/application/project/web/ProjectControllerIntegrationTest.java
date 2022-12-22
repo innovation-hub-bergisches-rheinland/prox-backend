@@ -14,7 +14,6 @@ import de.innovationhub.prox.modules.project.application.project.web.dto.ApplyCo
 import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectRequest;
 import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectRequest.TimeBoxDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.CurriculumContextRequest;
-import de.innovationhub.prox.modules.project.application.project.web.dto.SetPartnerRequestDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectStateRequestDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectTagsRequestDto;
 import de.innovationhub.prox.modules.project.domain.discipline.DisciplineRepository;
@@ -26,6 +25,7 @@ import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import javax.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
@@ -108,7 +108,9 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
         new TimeBoxDto(
             LocalDate.EPOCH,
             LocalDate.EPOCH.plusDays(1)
-        )
+        ),
+        UUID.randomUUID(),
+        Set.of()
     );
 
     var id = given()
@@ -143,7 +145,9 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
         new TimeBoxDto(
             LocalDate.EPOCH,
             LocalDate.now()
-        )
+        ),
+        UUID.randomUUID(),
+        Set.of(UUID.fromString("00000000-0000-0000-0000-000000000001"))
     );
 
     var id = given()
@@ -159,7 +163,7 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
         .getUUID("id");
 
     var found = projectRepository.findById(id).get();
-    assertThat(found.getStatus().getState()).isEqualTo(ProjectState.PROPOSED);
+    assertThat(found.getStatus().getState()).isEqualTo(ProjectState.OFFERED);
     assertThat(found.getAuthor().getUserId()).isEqualTo(UUID.fromString("00000000-0000-0000-0000-000000000001"));
   }
 
@@ -181,7 +185,9 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
         new TimeBoxDto(
             LocalDate.EPOCH,
             LocalDate.now()
-        )
+        ),
+        UUID.randomUUID(),
+        Set.of(UUID.fromString("00000000-0000-0000-0000-000000000001"))
     );
 
     given()
@@ -196,32 +202,8 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
   }
 
   @Test
-  @WithMockUser(value = "00000000-0000-0000-0000-000000000001")
-  void shouldSetPartner() {
-    var aProject = ProjectFixtures.build_a_project();
-    projectRepository.save(aProject);
-
-    var orgId = UUID.randomUUID();
-    var request = new SetPartnerRequestDto(orgId);
-
-    given()
-        .contentType("application/json")
-        .accept("application/json")
-        .body(request)
-        .when()
-        .post("/projects/{id}/partner" , aProject.getId())
-        .then()
-        .statusCode(200)
-        .body("partner.id", equalTo(orgId.toString()));
-
-    projectRepository.findById(aProject.getId()).ifPresent(project -> {
-      assertThat(project.getPartner().getOrganizationId()).isEqualTo(orgId);
-    });
-  }
-
-  @Test
   @WithMockUser(value = "00000000-0000-0000-0000-000000000001", roles = { "professor" })
-  void shouldSetSupervisors() {
+  void shouldApplyCommitment() {
     var aProject = ProjectFixtures.build_a_project();
     projectRepository.save(aProject);
     var supervisorId = UUID.fromString("00000000-0000-0000-0000-000000000001");

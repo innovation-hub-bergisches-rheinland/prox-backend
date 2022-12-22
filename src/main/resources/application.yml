@@ -26,6 +26,9 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: validate
+  mvc:
+    problemdetails:
+      enabled: true
   security:
     oauth2:
       resourceserver:

@@ -16,11 +16,15 @@ public class AbstractIntegrationTest {
       .withDatabaseName("prox")
       .withUsername("prox")
       .withPassword("prox");
+
+  static RedisContainer redis = new RedisContainer("redis:7.0");
+
   static LocalStackContainer localStack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:1.3"))
       .withServices(LocalStackContainer.Service.S3);
 
   static {
     postgres.start();
+    redis.start();
     localStack.start();
   }
 
@@ -37,5 +41,11 @@ public class AbstractIntegrationTest {
     registry.add("spring.datasource.url", postgres::getJdbcUrl);
     registry.add("spring.datasource.username", postgres::getUsername);
     registry.add("spring.datasource.password", postgres::getPassword);
+  }
+
+  @DynamicPropertySource
+  static void setRedis(DynamicPropertyRegistry registry) {
+    registry.add("spring.data.redis.host", () -> "127.0.0.1");
+    registry.add("spring.data.redis.port", () -> redis.getPort());
   }
 }

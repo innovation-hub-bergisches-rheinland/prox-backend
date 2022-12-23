@@ -33,6 +33,6 @@ public class S3StorageProvider implements StorageProvider {
 
   @Override
   public String buildUrl(String fileId) {
-    return s3.getResourceUrl(bucket, fileId);
+    return s3.getUrl(bucket, fileId).toString();
   }
 }

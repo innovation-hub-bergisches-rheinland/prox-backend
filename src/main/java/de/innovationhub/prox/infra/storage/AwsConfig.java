@@ -27,6 +27,7 @@ public class AwsConfig {
         .standard()
         .withEndpointConfiguration(new EndpointConfiguration(config.s3().endpoint(), config.region()))
         .withCredentials(new AWSStaticCredentialsProvider(credentials))
+        .withPathStyleAccessEnabled(true)
         .build();
   }
 }

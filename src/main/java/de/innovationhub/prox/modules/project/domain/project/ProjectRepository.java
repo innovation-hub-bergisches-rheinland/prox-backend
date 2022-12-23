@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 public interface ProjectRepository extends CrudRepository<Project, UUID> {
 
   @Query(nativeQuery = true, value = """
-      SELECT p.*, ts_rank(document, q) AS rank
+      SELECT DISTINCT p.*, ts_rank(document, q) AS rank
         FROM project p
                  LEFT JOIN curriculum_context cc on p.curriculum_context_id = cc.id
                  LEFT JOIN curriculum_context_disciplines cd on cd.curriculum_context_id = cc.id

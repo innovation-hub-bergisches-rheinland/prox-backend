@@ -1,0 +1,1 @@
+alter table lecturer_publications alter column publications type varchar(1023);

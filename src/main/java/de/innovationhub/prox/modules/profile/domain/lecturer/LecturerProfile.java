@@ -26,6 +26,7 @@ public class LecturerProfile {
 
   @Builder.Default
   @ElementCollection
+  @Column(length = 1023)
   private List<String> publications = new ArrayList<>();
 
   private String room;

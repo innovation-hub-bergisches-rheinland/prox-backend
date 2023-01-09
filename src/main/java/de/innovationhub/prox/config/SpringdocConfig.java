@@ -6,7 +6,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.security.SecurityScheme.Type;
-import org.springdoc.core.GroupedOpenApi;
+import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.annotation.Bean;

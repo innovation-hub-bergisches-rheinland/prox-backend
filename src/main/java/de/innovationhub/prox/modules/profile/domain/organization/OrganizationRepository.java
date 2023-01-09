@@ -9,6 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 public interface OrganizationRepository extends JpaRepository<Organization, UUID> {
 
   @Override
-  @Query("select o from Organization o order by o.name desc")
+  @Query("select o from Organization o order by o.name asc")
   Page<Organization> findAll(Pageable pageable);
 }

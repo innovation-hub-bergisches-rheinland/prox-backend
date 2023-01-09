@@ -9,9 +9,9 @@ import org.springframework.data.jpa.repository.Query;
 public interface LecturerRepository extends JpaRepository<Lecturer, UUID> {
 
   @Override
-  @Query("select l from Lecturer l where l.visibleInPublicSearch = true order by l.name desc")
+  @Query("select l from Lecturer l where l.visibleInPublicSearch = true order by l.name asc")
   Page<Lecturer> findAll(Pageable pageable);
 
-  @Query("select l from Lecturer l where lower(l.name) like concat('%', lower(?1), '%') and l.visibleInPublicSearch = true order by l.name desc")
+  @Query("select l from Lecturer l where lower(l.name) like concat('%', lower(?1), '%') and l.visibleInPublicSearch = true order by l.name asc")
   Page<Lecturer> filter(String query, Pageable pageable);
 }

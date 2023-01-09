@@ -24,7 +24,7 @@ spring:
       port: ${REDIS_PORT:6379}
   datasource:
     password: ${DB_PASSWORD:prox-backend}
-    url: jdbc:postgresql://prox-db:5432/prox-db
+    url: jdbc:postgresql://prox-db:5432/postgres
     username: ${DB_USER:prox-backend}
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect

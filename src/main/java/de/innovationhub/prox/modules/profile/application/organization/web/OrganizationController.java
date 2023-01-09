@@ -2,30 +2,31 @@ package de.innovationhub.prox.modules.profile.application.organization.web;
 
 import de.innovationhub.prox.modules.profile.application.organization.usecase.commands.AddOrganizationMemberHandler;
 import de.innovationhub.prox.modules.profile.application.organization.usecase.commands.CreateOrganizationHandler;
-import de.innovationhub.prox.modules.profile.application.organization.usecase.queries.FindAllOrganizationsHandler;
-import de.innovationhub.prox.modules.profile.application.organization.usecase.queries.FindOrganizationHandler;
-import de.innovationhub.prox.modules.profile.application.organization.usecase.queries.FindOrganizationMembershipsHandler;
 import de.innovationhub.prox.modules.profile.application.organization.usecase.commands.RemoveOrganizationMemberHandler;
 import de.innovationhub.prox.modules.profile.application.organization.usecase.commands.SetOrganizationLogoHandler;
 import de.innovationhub.prox.modules.profile.application.organization.usecase.commands.SetOrganizationTagsHandler;
 import de.innovationhub.prox.modules.profile.application.organization.usecase.commands.UpdateOrganizationHandler;
 import de.innovationhub.prox.modules.profile.application.organization.usecase.commands.UpdateOrganizationMemberHandler;
+import de.innovationhub.prox.modules.profile.application.organization.usecase.queries.FindAllOrganizationsHandler;
+import de.innovationhub.prox.modules.profile.application.organization.usecase.queries.FindOrganizationHandler;
+import de.innovationhub.prox.modules.profile.application.organization.usecase.queries.FindOrganizationMembershipsHandler;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.AddMembershipRequestDto;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.CreateOrganizationRequestDto;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.MembershipDto;
+import de.innovationhub.prox.modules.profile.application.organization.web.dto.MembershipsResponseDto;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.OrganizationDto;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.OrganizationDtoAssembler;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.SetOrganizationTagsRequestDto;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.SetOrganizationTagsResponseDto;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.UpdateMembershipRequestDto;
-import de.innovationhub.prox.modules.profile.application.organization.web.dto.MembershipsResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
-import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -59,11 +60,10 @@ public class OrganizationController {
   private final OrganizationDtoAssembler dtoAssembler;
 
   @GetMapping
-  public ResponseEntity<List<OrganizationDto>> getAll() {
-    var dtoList = findAll.handle()
-        .stream().map(dtoAssembler::toDto)
-        .toList();
-    return ResponseEntity.ok(dtoList);
+  public ResponseEntity<Page<OrganizationDto>> getAll(Pageable pageable) {
+    var page = findAll.handle(pageable)
+        .map(dtoAssembler::toDto);
+    return ResponseEntity.ok(page);
   }
 
   @PostMapping

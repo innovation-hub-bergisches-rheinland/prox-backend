@@ -3,16 +3,16 @@ package de.innovationhub.prox.modules.profile.application.organization.usecase.q
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.profile.domain.organization.Organization;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRepository;
-import java.util.List;
-import java.util.stream.StreamSupport;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @RequiredArgsConstructor
 @ApplicationComponent
 public class FindAllOrganizationsHandler {
   private final OrganizationRepository organizationRepository;
 
-  public List<Organization> handle() {
-    return StreamSupport.stream(organizationRepository.findAll().spliterator(), false).toList();
+  public Page<Organization> handle(Pageable pageable) {
+    return organizationRepository.findAll(pageable);
   }
 }

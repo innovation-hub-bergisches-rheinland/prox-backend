@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
 
 @SpringBootTest
 @Transactional
@@ -22,7 +23,7 @@ class LecturerRepositoryIntegrationTest extends AbstractIntegrationTest {
     lecturer.setVisibleInPublicSearch(false);
     lecturerRepository.save(lecturer);
 
-    var result = lecturerRepository.findAll();
+    var result = lecturerRepository.findAll(Pageable.unpaged());
 
     //NOSONAR
     assertThat(result)
@@ -36,7 +37,7 @@ class LecturerRepositoryIntegrationTest extends AbstractIntegrationTest {
     lecturer.setVisibleInPublicSearch(false);
     lecturerRepository.save(lecturer);
 
-    var result = lecturerRepository.filter("Max Mustermann");
+    var result = lecturerRepository.filter("Max Mustermann", Pageable.unpaged());
 
     assertThat(result)
         .doesNotContain(lecturer);
@@ -63,7 +64,7 @@ class LecturerRepositoryIntegrationTest extends AbstractIntegrationTest {
     lecturer.setVisibleInPublicSearch(true);
     lecturerRepository.save(lecturer);
 
-    var result = lecturerRepository.filter("Max");
+    var result = lecturerRepository.filter("Max", Pageable.unpaged());
 
     assertThat(result).contains(lecturer);
   }
@@ -74,7 +75,7 @@ class LecturerRepositoryIntegrationTest extends AbstractIntegrationTest {
     lecturer.setVisibleInPublicSearch(true);
     lecturerRepository.save(lecturer);
 
-    var result = lecturerRepository.filter("max mustermann");
+    var result = lecturerRepository.filter("max mustermann", Pageable.unpaged());
 
     assertThat(result).contains(lecturer);
   }

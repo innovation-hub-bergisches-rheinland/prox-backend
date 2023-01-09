@@ -77,7 +77,7 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
         .get("/projects")
         .then()
         .statusCode(200)
-        .body("projects", hasSize(all.size()));
+        .body("content", hasSize(all.size()));
   }
 
   @Test
@@ -277,7 +277,7 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
         .get("/projects/search/filter")
         .then()
         .statusCode(200)
-        .body("projects", hasSize(1));
+        .body("content", hasSize(1));
   }
 
   @Test
@@ -291,7 +291,7 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
         .get("/projects/search/findByPartner")
         .then()
         .statusCode(200)
-        .body("projects", hasSize(1));
+        .body("content", hasSize(1));
   }
 
   @Test
@@ -307,7 +307,7 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
         .get("/projects/search/findBySupervisor")
         .then()
         .statusCode(200)
-        .body("projects", hasSize(1));
+        .body("content", hasSize(1));
   }
 
   @Test

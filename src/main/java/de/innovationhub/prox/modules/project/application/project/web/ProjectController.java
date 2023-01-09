@@ -15,7 +15,6 @@ import de.innovationhub.prox.modules.project.application.project.web.dto.ApplyCo
 import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectRequest;
 import de.innovationhub.prox.modules.project.application.project.web.dto.ProjectDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.ProjectDtoAssembler;
-import de.innovationhub.prox.modules.project.application.project.web.dto.ReadProjectListDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectStateRequestDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectTagsRequestDto;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
@@ -25,6 +24,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.Collection;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -59,8 +60,8 @@ public class ProjectController {
   private final ProjectDtoAssembler dtoAssembler;
 
   @GetMapping
-  public ResponseEntity<ReadProjectListDto> getAll() {
-    var list = findAll.handle();
+  public ResponseEntity<Page<ProjectDto>> getAll(Pageable pageable) {
+    var list = findAll.handle(pageable);
     var dtoList = dtoAssembler.toDto(list);
     return ResponseEntity.ok(dtoList);
   }
@@ -130,28 +131,33 @@ public class ProjectController {
   }
 
   @GetMapping("search/filter")
-  public ResponseEntity<ReadProjectListDto> filter(
+  public ResponseEntity<Page<ProjectDto>> filter(
       @RequestParam(name = "status", required = false) ProjectState status,
       @RequestParam(name = "disciplineKeys", required = false, defaultValue = "") Collection<String> specializationKeys,
       @RequestParam(name = "moduleTypeKeys", required = false, defaultValue = "") Collection<String> moduleTypeKeys,
-      @RequestParam(name = "text", required = false, defaultValue = "") String text) {
-    var result = search.handle(status, specializationKeys, moduleTypeKeys, text);
+      @RequestParam(name = "text", required = false, defaultValue = "") String text,
+      Pageable pageable) {
+    var result = search.handle(status, specializationKeys, moduleTypeKeys, text, pageable);
     var dtoList = dtoAssembler.toDto(result);
     return ResponseEntity.ok(dtoList);
   }
 
   @GetMapping("search/findBySupervisor")
-  public ResponseEntity<ReadProjectListDto> findBySupervisor(
-      @RequestParam(name = "supervisor") UUID supervisorId) {
-    var result = findBySupervisor.handle(supervisorId);
+  public ResponseEntity<Page<ProjectDto>> findBySupervisor(
+      @RequestParam(name = "supervisor") UUID supervisorId,
+      Pageable pageable
+  ) {
+    var result = findBySupervisor.handle(supervisorId, pageable);
     var dtoList = dtoAssembler.toDto(result);
     return ResponseEntity.ok(dtoList);
   }
 
   @GetMapping("search/findByPartner")
-  public ResponseEntity<ReadProjectListDto> findByPartner(
-      @RequestParam(name = "partner") UUID partner) {
-    var result = findByPartner.handle(partner);
+  public ResponseEntity<Page<ProjectDto>> findByPartner(
+      @RequestParam(name = "partner") UUID partner,
+      Pageable pageable
+  ) {
+    var result = findByPartner.handle(partner, pageable);
     var dtoList = dtoAssembler.toDto(result);
     return ResponseEntity.ok(dtoList);
   }

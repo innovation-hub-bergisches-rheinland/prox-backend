@@ -4,14 +4,16 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProjectRepository extends CrudRepository<Project, UUID> {
+public interface ProjectRepository extends JpaRepository<Project, UUID> {
 
   @Query(nativeQuery = true, value = """
       SELECT DISTINCT p.*, ts_rank(document, q) AS rank
@@ -31,11 +33,12 @@ public interface ProjectRepository extends CrudRepository<Project, UUID> {
               )
         ORDER BY rank DESC, modified_at DESC
       """)
-  List<Project> filterProjects(
+  Page<Project> filterProjects(
       @Nullable ProjectState state,
       @Nullable @Param("disciplineKeys") Collection<String> disciplineKeys,
       @Nullable @Param("moduleTypeKeys") Collection<String> moduleTypeKeys,
-      @Nullable @Param("query") String query);
+      @Nullable @Param("query") String query,
+      Pageable pageable);
 
 
   @Query("select p from Project p where p.status.state = ?1 and p.status.updatedAt <= ?2")
@@ -48,8 +51,8 @@ public interface ProjectRepository extends CrudRepository<Project, UUID> {
   List<Project> findFinishedRunningProjects();
 
   @Query("select p from Project p where p.partner.organizationId = ?1")
-  List<Project> findByPartner(UUID partnerId);
+  Page<Project> findByPartner(UUID partnerId, Pageable pageable);
 
   @Query("select p from Project p join p.supervisors s where s.lecturerId = ?1")
-  List<Project> findBySupervisor(UUID supervisorId);
+  Page<Project> findBySupervisor(UUID supervisorId, Pageable pageable);
 }

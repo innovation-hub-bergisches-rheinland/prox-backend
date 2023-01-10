@@ -1,11 +1,13 @@
 package de.innovationhub.prox.config;
 
+import com.github.benmanes.caffeine.cache.Caffeine;
 import java.util.List;
-import org.springframework.boot.autoconfigure.cache.CacheManagerCustomizer;
+import java.util.concurrent.TimeUnit;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
+import org.springframework.cache.caffeine.CaffeineCacheManager;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
 @Configuration
 @EnableCaching
@@ -15,13 +17,17 @@ public class CacheConfig {
     public static final String LECTURERS = "lecturers";
     public static final String USERS = "users";
 
-    // TODO: Use Redis instead of ConcurrentMapCacheManager
-    @Component
-    public static class SimpleCacheCustomizer implements CacheManagerCustomizer<ConcurrentMapCacheManager> {
+    // TODO: Revisit Cache Configs
+    @Bean
+    public Caffeine caffeineConfig() {
+        return Caffeine.newBuilder().expireAfterWrite(60, TimeUnit.MINUTES);
+    }
 
-      @Override
-      public void customize(ConcurrentMapCacheManager cacheManager) {
-        cacheManager.setCacheNames(List.of(TAGS, ORGANIZATIONS, LECTURERS, USERS));
-      }
+    @Bean
+    public CacheManager cacheManager(Caffeine caffeine) {
+      CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
+      caffeineCacheManager.setCaffeine(caffeine);
+      caffeineCacheManager.setCacheNames(List.of(TAGS, ORGANIZATIONS, LECTURERS, USERS));
+      return caffeineCacheManager;
     }
 }

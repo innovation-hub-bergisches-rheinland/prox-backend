@@ -28,6 +28,7 @@ public class LecturerFacadeImpl implements LecturerFacade {
   }
 
   @Override
+  @Cacheable(CacheConfig.LECTURERS)
   public List<LecturerView> findByIds(List<UUID> ids) {
     return lecturerViewMapper.toViewList(
         findAllLecturerByIdsHandler.handle(ids)

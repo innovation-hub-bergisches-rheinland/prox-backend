@@ -6,7 +6,9 @@ keycloak:
     secret: ${KEYCLOAK_SECRET:}
 server:
   port: 8080
-  forward-headers-strategy: native
+  compression:
+    enabled: true
+  forward-headers-strategy: framework
 cloud:
   aws:
     region: eu-central-1

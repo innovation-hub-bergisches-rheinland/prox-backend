@@ -3,12 +3,11 @@ package de.innovationhub.prox.modules.tag.application.tagcollection;
 import static org.mockito.Mockito.verify;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
-import de.innovationhub.prox.modules.organization.domain.events.OrganizationTagged;
-import de.innovationhub.prox.modules.project.domain.project.events.ProjectTagged;
+import de.innovationhub.prox.modules.profile.contract.LecturerTaggedIntegrationEvent;
+import de.innovationhub.prox.modules.profile.contract.OrganizationTaggedIntegrationEvent;
+import de.innovationhub.prox.modules.project.contract.ProjectTaggedIntegrationEvent;
 import de.innovationhub.prox.modules.tag.application.tagcollection.usecase.SetTagCollectionHandler;
-import de.innovationhub.prox.modules.user.domain.profile.events.LecturerProfileTagged;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ class TagEventListenerIntegrationTest extends AbstractIntegrationTest {
   //  as the events do not share a common interface
   @Test
   void shouldCreateNewTagCollectionOnProjectTaggedEvent() {
-    var event = new ProjectTagged(UUID.randomUUID(), List.of(UUID.randomUUID(), UUID.randomUUID()));
+    var event = new ProjectTaggedIntegrationEvent(UUID.randomUUID(), List.of(UUID.randomUUID(), UUID.randomUUID()));
 
     eventPublisher.publishEvent(event);
 
@@ -38,17 +37,16 @@ class TagEventListenerIntegrationTest extends AbstractIntegrationTest {
 
   @Test
   void shouldCreateNewTagCollectionOnLecturerTaggedEvent() {
-    var event = new LecturerProfileTagged(UUID.randomUUID(), UUID.randomUUID(),
-        Set.of(UUID.randomUUID(), UUID.randomUUID()));
+    var event = new LecturerTaggedIntegrationEvent(UUID.randomUUID(), List.of(UUID.randomUUID(), UUID.randomUUID()));
 
     eventPublisher.publishEvent(event);
 
-    verify(handler).handle(event.lecturerProfileId(), event.tags());
+    verify(handler).handle(event.lecturerId(), event.tags());
   }
 
   @Test
   void shouldCreateNewTagCollectionOnOrganizationTaggedEvent() {
-    var event = new OrganizationTagged(UUID.randomUUID(), List.of(UUID.randomUUID(), UUID.randomUUID()));
+    var event = new OrganizationTaggedIntegrationEvent(UUID.randomUUID(), List.of(UUID.randomUUID(), UUID.randomUUID()));
 
     eventPublisher.publishEvent(event);
 

@@ -2,10 +2,14 @@ package de.innovationhub.prox.modules.tag.application.tag.usecase.commands;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import de.innovationhub.prox.modules.tag.application.tag.usecase.commands.SynchronizeTagsHandler;
+import de.innovationhub.prox.modules.tag.domain.tag.Tag;
 import de.innovationhub.prox.modules.tag.domain.tag.TagRepository;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -27,11 +31,27 @@ class SynchronizeTagsHandlerTest {
   }
 
   @Test
-  void shouldCallRepository() {
-    var tags = List.of("tag1", "tag2");
+  void shouldCreateMissingTag() {
+    var tagInput = List.of("test1", "test2");
+    var returnedTags = handler.handle(tagInput);
 
-    handler.handle(tags);
+    assertThat(returnedTags)
+        .extracting(Tag::getTagName)
+        .containsExactlyElementsOf(tagInput);
+    verify(tagRepository).saveAll(returnedTags);
+  }
 
-    verify(tagRepository).fetchOrCreateTags(tags);
+  @Test
+  void shouldReturnTags() {
+    var givenTags = List.of(Tag.create("test3"), Tag.create("test4"));
+    when(tagRepository.findAllByTagNameIn(any())).thenReturn(givenTags);
+
+    var tagInput = List.of("test3", "test4");
+    var returnedTags = handler.handle(tagInput);
+
+    assertThat(returnedTags)
+        .extracting(Tag::getTagName)
+        .containsExactlyElementsOf(tagInput);
+    verify(tagRepository, times(0)).saveAll(any());
   }
 }

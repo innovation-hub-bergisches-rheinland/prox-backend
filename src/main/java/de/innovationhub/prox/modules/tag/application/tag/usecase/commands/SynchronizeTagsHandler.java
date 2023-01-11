@@ -3,9 +3,11 @@ package de.innovationhub.prox.modules.tag.application.tag.usecase.commands;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.tag.domain.tag.Tag;
 import de.innovationhub.prox.modules.tag.domain.tag.TagRepository;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 
 @ApplicationComponent
@@ -20,6 +22,19 @@ public class SynchronizeTagsHandler {
       return List.of();
     }
 
-    return tagRepository.fetchOrCreateTags(tags);
+    List<Tag> existingTags = this.tagRepository.findAllByTagNameIn(tags);
+    List<String> notExistingTags = tags.stream()
+        .filter(
+            strTag -> existingTags.stream().noneMatch(t -> t.getTagName().equalsIgnoreCase(strTag)))
+        .toList();
+    List<Tag> createdTags = new ArrayList<>();
+    for (var tag : notExistingTags) {
+      createdTags.add(Tag.create(tag));
+    }
+    if (!createdTags.isEmpty()) {
+      this.tagRepository.saveAll(createdTags);
+    }
+
+    return Stream.concat(existingTags.stream(), createdTags.stream()).toList();
   }
 }

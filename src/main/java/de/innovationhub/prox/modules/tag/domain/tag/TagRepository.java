@@ -14,23 +14,6 @@ public interface TagRepository extends CrudRepository<Tag, UUID> {
 
   List<Tag> getByIdIn(Collection<UUID> ids);
 
-  default List<Tag> fetchOrCreateTags(Collection<String> tags) {
-    List<Tag> existingTags = this.findAllByTagNameIn(tags);
-    List<String> notExistingTags = tags.stream()
-        .filter(
-            strTag -> existingTags.stream().noneMatch(t -> t.getTagName().equalsIgnoreCase(strTag)))
-        .toList();
-    List<Tag> createdTags = new ArrayList<>();
-    for (var tag : notExistingTags) {
-      createdTags.add(Tag.create(tag));
-    }
-    if (!createdTags.isEmpty()) {
-      this.saveAll(createdTags);
-    }
-
-    return Stream.concat(existingTags.stream(), createdTags.stream()).toList();
-  }
-
   boolean existsByTagName(String tag);
 
   List<Tag> findAllByTagNameIn(Collection<String> tags);

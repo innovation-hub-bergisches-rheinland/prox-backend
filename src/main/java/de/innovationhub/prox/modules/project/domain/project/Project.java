@@ -84,7 +84,6 @@ public class Project extends AbstractAggregateRoot {
   @Embedded
   private TimeBox timeBox = null;
 
-  @Setter(AccessLevel.PROTECTED)
   @Builder.Default
   @ElementCollection
   private List<Supervisor> supervisors = new ArrayList<>();

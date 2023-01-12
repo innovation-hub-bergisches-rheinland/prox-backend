@@ -45,12 +45,15 @@ class SecurityConfig {
                         "/v3/api-docs/**",
                         "/v3/api-docs.yaml",
                         "/v3/api-docs/swagger-config"
-                        )
+                    )
                     .permitAll()
-                    .requestMatchers(HttpMethod.GET, "/projects/**", "/tags/**", "/organizations/**",
+                    .requestMatchers(HttpMethod.GET, "/projects/**", "/tags/**",
+                        "/organizations/**",
                         "/lecturers/**", "/disciplines/**", "/moduleTypes/**")
                     .permitAll()
                     .requestMatchers(HttpMethod.GET, "/users/search")
+                    .authenticated()
+                    .requestMatchers("/user/**")
                     .authenticated()
                     .requestMatchers(HttpMethod.GET, "/actuator/health/**")
                     .permitAll()

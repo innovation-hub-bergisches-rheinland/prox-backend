@@ -37,12 +37,12 @@ public class ProxUser extends AbstractAggregateRoot {
     this.id = id;
   }
 
-  void starProject(UUID projectId) {
+  public void starProject(UUID projectId) {
     starredProjects.add(projectId);
     this.registerEvent(new ProxUserStarredProject(this.id, projectId));
   }
 
-  void unstarProject(UUID projectId) {
+  public void unstarProject(UUID projectId) {
     starredProjects.remove(projectId);
     this.registerEvent(new ProxUserUnstarredProject(this.id, projectId));
   }

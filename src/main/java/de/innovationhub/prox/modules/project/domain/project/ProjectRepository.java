@@ -22,12 +22,14 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
                  LEFT JOIN curriculum_context_disciplines cd on cd.curriculum_context_id = cc.id
                  LEFT JOIN discipline d on d.key = cd.disciplines_key
                  LEFT JOIN curriculum_context_module_types cm on cm.curriculum_context_id = cc.id
-                 LEFT JOIN module_type m on m.key = cm.module_types_key,
+                 LEFT JOIN module_type m on m.key = cm.module_types_key
+                 LEFT JOIN project_tags pt on pt.project_id = p.id,
               to_tsvector('simple', concat_ws(' ', p.title, p.summary, p.description, p.requirement)) document,
               to_tsquery('simple', REGEXP_REPLACE(lower(:query), '\\s+', ':* & ', 'g')) q
         WHERE (p.state = :#{#state != null ? #state.name() : ''})
             AND (:disciplineKeys IS NULL OR d.key IN (:disciplineKeys))
             AND (:moduleTypeKeys IS NULL OR m.key IN (:moduleTypeKeys))
+            AND (:tagIds IS NULL OR pt.tags IN (:tagIds))
             AND (:query <> '' IS NOT TRUE OR
                   document @@ q
               )
@@ -38,6 +40,7 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
       @Nullable @Param("disciplineKeys") Collection<String> disciplineKeys,
       @Nullable @Param("moduleTypeKeys") Collection<String> moduleTypeKeys,
       @Nullable @Param("query") String query,
+      @Nullable @Param("tagIds") Collection<UUID> tagIds,
       Pageable pageable);
 
 

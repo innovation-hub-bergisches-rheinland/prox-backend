@@ -136,8 +136,9 @@ public class ProjectController {
       @RequestParam(name = "disciplineKeys", required = false, defaultValue = "") Collection<String> specializationKeys,
       @RequestParam(name = "moduleTypeKeys", required = false, defaultValue = "") Collection<String> moduleTypeKeys,
       @RequestParam(name = "text", required = false, defaultValue = "") String text,
+      @RequestParam(name = "tags", required = false, defaultValue = "") Collection<String> tags,
       Pageable pageable) {
-    var result = search.handle(status, specializationKeys, moduleTypeKeys, text, pageable);
+    var result = search.handle(status, specializationKeys, moduleTypeKeys, text, tags, pageable);
     var dtoList = dtoAssembler.toDto(result);
     return ResponseEntity.ok(dtoList);
   }

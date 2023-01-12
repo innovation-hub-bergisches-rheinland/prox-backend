@@ -8,6 +8,7 @@ import de.innovationhub.prox.modules.project.domain.project.ProjectState;
 import de.innovationhub.prox.modules.project.domain.project.ProjectStatus;
 import java.time.Instant;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,6 +38,7 @@ public class ProjectFixtures {
         new ProjectStatus(ProjectState.PROPOSED, Instant.now()),
         null,
         Collections.emptyList(),
-        null);
+        null,
+        new HashSet<>());
   }
 }

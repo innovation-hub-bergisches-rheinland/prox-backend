@@ -2,10 +2,12 @@ package de.innovationhub.prox.modules.project.domain.project;
 
 import de.innovationhub.prox.modules.commons.domain.AbstractAggregateRoot;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectCreated;
+import de.innovationhub.prox.modules.project.domain.project.events.ProjectInterestStated;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectOffered;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectStateUpdated;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectTagged;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectUpdated;
+import de.innovationhub.prox.modules.project.domain.project.exception.ProjectStateException;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -92,6 +94,10 @@ public class Project extends AbstractAggregateRoot {
   @Builder.Default
   private Set<UUID> tags = new HashSet<>();
 
+  @ElementCollection
+  @Builder.Default
+  private Set<UUID> interestedUsers = new HashSet<>();
+
   public static Project create(
       Author author,
       String title,
@@ -112,7 +118,7 @@ public class Project extends AbstractAggregateRoot {
     var project = new Project(UUID.randomUUID(),
         author, partner != null ? new Partner(partner) : null, title, summary, description, requirement, context,
         new ProjectStatus(state, Instant.now()), timeBox,
-        supervisorsList, null);
+        supervisorsList, null, new HashSet<>());
     project.registerEvent(new ProjectCreated(project.getId()));
     return project;
   }
@@ -145,8 +151,8 @@ public class Project extends AbstractAggregateRoot {
   }
 
   public void applyCommitment(UUID supervisorId) {
-    if(this.status.getState() != ProjectState.PROPOSED) {
-      throw new IllegalStateException("Project is not in state PROPOSED");
+    if(!this.status.canAcceptCommitment()) {
+      throw new IllegalStateException("Project cannot accept commitment");
     }
 
     if(!this.supervisors.isEmpty()) {
@@ -170,5 +176,18 @@ public class Project extends AbstractAggregateRoot {
   public void setTags(Collection<UUID> tags) {
     this.tags = new HashSet<>(tags);
     this.registerEvent(new ProjectTagged(this.id, tags));
+  }
+
+  public void stateInterest(UUID userId) {
+    if (this.interestedUsers.contains(userId)) {
+      return;
+    }
+
+    if (!this.status.canAcceptInterest()) {
+      throw new ProjectStateException("Project cannot accept interest");
+    }
+
+    this.interestedUsers.add(userId);
+    this.registerEvent(new ProjectInterestStated(this.id, userId));
   }
 }

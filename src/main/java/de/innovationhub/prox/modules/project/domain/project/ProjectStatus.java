@@ -45,4 +45,12 @@ public class ProjectStatus {
           "Cannot transition from " + this.state + " to " + state);
     }
   }
+
+  boolean canAcceptCommitment() {
+    return this.state == ProjectState.PROPOSED;
+  }
+
+  boolean canAcceptInterest() {
+    return this.state == ProjectState.OFFERED || this.state == ProjectState.PROPOSED;
+  }
 }

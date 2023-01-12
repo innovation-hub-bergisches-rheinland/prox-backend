@@ -26,7 +26,7 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
                  LEFT JOIN project_tags pt on pt.project_id = p.id,
               to_tsvector('simple', concat_ws(' ', p.title, p.summary, p.description, p.requirement)) document,
               to_tsquery('simple', REGEXP_REPLACE(lower(:query), '\\s+', ':* & ', 'g')) q
-        WHERE (p.state = :#{#state != null ? #state.name() : ''})
+        WHERE (:#{#state == null} IS TRUE OR p.state = :#{#state != null ? #state.name() : ''})
             AND (:disciplineKeys IS NULL OR d.key IN (:disciplineKeys))
             AND (:moduleTypeKeys IS NULL OR m.key IN (:moduleTypeKeys))
             AND (:tagIds IS NULL OR pt.tags IN (:tagIds))

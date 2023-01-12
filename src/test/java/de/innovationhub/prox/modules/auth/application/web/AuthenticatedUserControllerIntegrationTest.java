@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.modules.auth.domain.ProxUser;
 import de.innovationhub.prox.modules.auth.domain.ProxUserRepository;
+import de.innovationhub.prox.modules.project.application.project.event.StarIntegrationEventListeners;
 import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import jakarta.transaction.Transactional;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,11 +23,18 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 @Transactional
 class AuthenticatedUserControllerIntegrationTest extends AbstractIntegrationTest {
+
   @Autowired
   ProxUserRepository userRepository;
 
   @Autowired
   MockMvc mockMvc;
+
+  // TODO: This is a workaround as event listeners are invoked synchronous and it will fail because
+  //  project is not existent.
+  //  Either create the project or use async events using rabbitmq
+  @MockBean
+  StarIntegrationEventListeners starIntegrationEventListeners;
 
   @BeforeEach
   void setUp() {

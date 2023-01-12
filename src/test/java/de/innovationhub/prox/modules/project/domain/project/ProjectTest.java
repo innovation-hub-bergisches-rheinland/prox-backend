@@ -9,7 +9,6 @@ import de.innovationhub.prox.modules.project.domain.project.events.ProjectIntere
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectOffered;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectStateUpdated;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectTagged;
-import de.innovationhub.prox.modules.project.domain.project.exception.ProjectStateException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -146,14 +145,6 @@ class ProjectTest {
           assertThat(event.projectId()).isEqualTo(project.getId());
           assertThat(event.user()).isEqualTo(user);
         });
-  }
-
-  @Test
-  void shouldThrowWhenProjectIsCompleted() {
-    var project = createTestProject(ProjectState.COMPLETED);
-
-    assertThatThrownBy(() -> project.stateInterest(new InterestedUser(UUID.randomUUID())))
-        .isInstanceOf(ProjectStateException.class);
   }
 
   private Project createProjectWithSupervisors(Collection<Supervisor> supervisors) {

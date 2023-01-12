@@ -8,7 +8,6 @@ import de.innovationhub.prox.modules.project.domain.project.events.ProjectOffere
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectStateUpdated;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectTagged;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectUpdated;
-import de.innovationhub.prox.modules.project.domain.project.exception.ProjectStateException;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -184,10 +183,6 @@ public class Project extends AbstractAggregateRoot {
       return;
     }
 
-    if (!this.status.acceptsInterest()) {
-      throw new ProjectStateException("Project cannot accept metrics");
-    }
-
     this.interestedUsers.add(interestedUser);
     this.registerEvent(new ProjectInterestStated(this.id, interestedUser));
   }
@@ -197,15 +192,7 @@ public class Project extends AbstractAggregateRoot {
       return;
     }
 
-    if (!this.status.acceptsInterest()) {
-      throw new ProjectStateException("Project cannot accept metrics");
-    }
-
     this.interestedUsers.remove(userId);
     this.registerEvent(new ProjectInterestUnstated(this.id, userId));
-  }
-
-  public boolean hasInterest(UUID uuid) {
-    return this.interestedUsers.stream().anyMatch(i -> i.getUserId().equals(uuid));
   }
 }

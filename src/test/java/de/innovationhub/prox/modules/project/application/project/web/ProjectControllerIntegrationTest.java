@@ -6,19 +6,14 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
-import de.innovationhub.prox.AbstractIntegrationTest;
-import de.innovationhub.prox.modules.project.DisciplineFixtures;
-import de.innovationhub.prox.modules.project.ModuleTypeFixtures;
 import de.innovationhub.prox.modules.project.ProjectFixtures;
+import de.innovationhub.prox.modules.project.ProjectIntegrationTest;
 import de.innovationhub.prox.modules.project.application.project.web.dto.ApplyCommitmentDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectRequest;
 import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectRequest.TimeBoxDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.CurriculumContextRequest;
 import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectStateRequestDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectTagsRequestDto;
-import de.innovationhub.prox.modules.project.domain.discipline.DisciplineRepository;
-import de.innovationhub.prox.modules.project.domain.module.ModuleTypeRepository;
-import de.innovationhub.prox.modules.project.domain.project.InterestedUser;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
 import de.innovationhub.prox.modules.project.domain.project.Supervisor;
@@ -29,7 +24,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,31 +35,17 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 @Transactional
 @WithMockUser(value = "8307f5bc-38fc-44ac-bab7-3c8ef85c1ec4")
-class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
+class ProjectControllerIntegrationTest extends ProjectIntegrationTest {
+
   @Autowired
   MockMvc mockMvc;
 
   @Autowired
   ProjectRepository projectRepository;
 
-  @Autowired
-  ModuleTypeRepository moduleTypeRepository;
-
-  @Autowired
-  DisciplineRepository disciplineRepository;
-
   @BeforeEach
-  void setUp() {
-    disciplineRepository.saveAll(DisciplineFixtures.ALL);
-    moduleTypeRepository.saveAll(ModuleTypeFixtures.ALL);
+  void setUpMockMvc() {
     RestAssuredMockMvc.standaloneSetup(() -> mockMvc);
-  }
-
-  @AfterEach
-  void tearDown() {
-    projectRepository.deleteAll();
-    moduleTypeRepository.deleteAll();
-    disciplineRepository.deleteAll();
   }
 
   @Test
@@ -331,48 +311,5 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
 
     var updatedProject = projectRepository.findById(project.getId()).get();
     assertThat(updatedProject.getTags()).containsExactlyInAnyOrderElementsOf(tags);
-  }
-
-  @Test
-  @WithMockUser(value = "00000000-0000-0000-0000-000000000001")
-  void shouldStateInterest() {
-    var project = ProjectFixtures.build_a_project();
-    projectRepository.save(project);
-    var userId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-
-    given()
-        .contentType(ContentType.JSON)
-        .accept(ContentType.JSON)
-        .when()
-        .put("projects/{id}/interests/{userId}", project.getId(), userId)
-        .then()
-        .status(HttpStatus.OK);
-
-    var updatedProject = projectRepository.findById(project.getId()).get();
-    assertThat(updatedProject.getInterestedUsers())
-        .extracting(InterestedUser::getUserId)
-        .contains(userId);
-  }
-
-  @Test
-  @WithMockUser(value = "00000000-0000-0000-0000-000000000001")
-  void shouldUnstateInterest() {
-    var project = ProjectFixtures.build_a_project();
-    var userId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-    project.stateInterest(new InterestedUser(userId));
-    projectRepository.save(project);
-
-    given()
-        .contentType(ContentType.JSON)
-        .accept(ContentType.JSON)
-        .when()
-        .delete("projects/{id}/interests/{userId}", project.getId(), userId)
-        .then()
-        .status(HttpStatus.OK);
-
-    var updatedProject = projectRepository.findById(project.getId()).get();
-    assertThat(updatedProject.getInterestedUsers())
-        .extracting(InterestedUser::getUserId)
-        .doesNotContain(userId);
   }
 }

@@ -18,7 +18,6 @@ import de.innovationhub.prox.modules.project.application.project.web.dto.Project
 import de.innovationhub.prox.modules.project.application.project.web.dto.ProjectDtoAssembler;
 import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectStateRequestDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectTagsRequestDto;
-import de.innovationhub.prox.modules.project.application.project.web.dto.StateInterestResponseDto;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -131,32 +130,6 @@ public class ProjectController {
   public ResponseEntity<Void> deleteById(@PathVariable("id") UUID id) {
     deleteById.handle(id);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-  }
-
-  @PutMapping(value = "{id}/interests/{userId}", consumes = "application/json", produces = "application/json")
-  @Operation(security = {
-      @SecurityRequirement(name = "oidc")
-  })
-  @PreAuthorize("authentication.name == #userId.toString()")
-  public ResponseEntity<StateInterestResponseDto> stateInterest(
-      @PathVariable("id") UUID id,
-      @PathVariable("userId") UUID userId
-      ) {
-    updateInterest.handle(id, userId, true);
-    return ResponseEntity.ok(new StateInterestResponseDto(true));
-  }
-
-  @DeleteMapping(value = "{id}/interests/{userId}", consumes = "application/json", produces = "application/json")
-  @Operation(security = {
-      @SecurityRequirement(name = "oidc")
-  })
-  @PreAuthorize("authentication.name == #userId.toString()")
-  public ResponseEntity<StateInterestResponseDto> unstateInterest(
-      @PathVariable("id") UUID id,
-      @PathVariable("userId") UUID userId
-  ) {
-    updateInterest.handle(id, userId, false);
-    return ResponseEntity.ok(new StateInterestResponseDto(false));
   }
 
   @GetMapping("search/filter")

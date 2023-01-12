@@ -7,9 +7,11 @@ import de.innovationhub.prox.modules.auth.contract.ProxUserStarredProjectIntegra
 import de.innovationhub.prox.modules.auth.contract.ProxUserUnstarredProjectIntegrationEvent;
 import de.innovationhub.prox.modules.auth.domain.ProxUser;
 import de.innovationhub.prox.modules.auth.domain.ProxUserRepository;
+import de.innovationhub.prox.modules.project.application.project.event.StarIntegrationEventListeners;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.event.ApplicationEvents;
 import org.springframework.test.context.event.RecordApplicationEvents;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,11 +19,18 @@ import org.springframework.transaction.annotation.Transactional;
 @RecordApplicationEvents
 @Transactional
 class ProxUserIntegrationEventPublisherTest extends AbstractIntegrationTest {
+
   @Autowired
   ApplicationEvents applicationEvents;
 
   @Autowired
   ProxUserRepository userRepository;
+
+  // TODO: This is a workaround as event listeners are invoked synchronous and it will fail because
+  //  project is not existent.
+  //  Either create the project or use async events using rabbitmq
+  @MockBean
+  StarIntegrationEventListeners starIntegrationEventListeners;
 
   @Test
   void shouldPublishStarIntegrationEvent() {

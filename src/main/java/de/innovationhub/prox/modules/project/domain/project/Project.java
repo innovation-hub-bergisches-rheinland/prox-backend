@@ -97,7 +97,7 @@ public class Project extends AbstractAggregateRoot {
 
   @ElementCollection
   @Builder.Default
-  private Set<UUID> interestedUsers = new HashSet<>();
+  private Set<InterestedUser> interestedUsers = new HashSet<>();
 
   public static Project create(
       Author author,
@@ -179,8 +179,8 @@ public class Project extends AbstractAggregateRoot {
     this.registerEvent(new ProjectTagged(this.id, tags));
   }
 
-  public void stateInterest(UUID userId) {
-    if (this.interestedUsers.contains(userId)) {
+  public void stateInterest(InterestedUser interestedUser) {
+    if (this.interestedUsers.contains(interestedUser)) {
       return;
     }
 
@@ -188,11 +188,11 @@ public class Project extends AbstractAggregateRoot {
       throw new ProjectStateException("Project cannot accept interest");
     }
 
-    this.interestedUsers.add(userId);
-    this.registerEvent(new ProjectInterestStated(this.id, userId));
+    this.interestedUsers.add(interestedUser);
+    this.registerEvent(new ProjectInterestStated(this.id, interestedUser));
   }
 
-  public void unstateInterest(UUID userId) {
+  public void unstateInterest(InterestedUser userId) {
     if (!this.interestedUsers.contains(userId)) {
       return;
     }

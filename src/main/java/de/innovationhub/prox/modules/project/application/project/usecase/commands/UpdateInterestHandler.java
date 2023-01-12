@@ -2,6 +2,7 @@ package de.innovationhub.prox.modules.project.application.project.usecase.comman
 
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.project.application.project.exception.ProjectNotFoundException;
+import de.innovationhub.prox.modules.project.domain.project.InterestedUser;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
 import java.util.UUID;
@@ -17,9 +18,9 @@ public class UpdateInterestHandler {
         .orElseThrow(ProjectNotFoundException::new);
 
     if (interested) {
-      project.stateInterest(userId);
+      project.stateInterest(new InterestedUser(userId));
     } else {
-      project.unstateInterest(userId);
+      project.unstateInterest(new InterestedUser(userId));
     }
 
     return projectRepository.save(project);

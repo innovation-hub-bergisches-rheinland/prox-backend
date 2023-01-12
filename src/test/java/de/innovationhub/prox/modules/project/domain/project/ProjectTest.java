@@ -114,7 +114,7 @@ class ProjectTest {
   @Test
   void shouldRegisterInterest() {
     var project = createTestProject(ProjectState.PROPOSED);
-    var user = UUID.randomUUID();
+    var user = new InterestedUser(UUID.randomUUID());
 
     project.stateInterest(user);
 
@@ -125,14 +125,14 @@ class ProjectTest {
         .first()
         .isInstanceOfSatisfying(ProjectInterestStated.class, event -> {
           assertThat(event.projectId()).isEqualTo(project.getId());
-          assertThat(event.userId()).isEqualTo(user);
+          assertThat(event.user()).isEqualTo(user);
         });
   }
 
   @Test
   void shouldRemoveInterest() {
     var project = createTestProject(ProjectState.PROPOSED);
-    var user = UUID.randomUUID();
+    var user = new InterestedUser(UUID.randomUUID());
     project.stateInterest(user);
 
     project.unstateInterest(user);
@@ -144,7 +144,7 @@ class ProjectTest {
         .first()
         .isInstanceOfSatisfying(ProjectInterestUnstated.class, event -> {
           assertThat(event.projectId()).isEqualTo(project.getId());
-          assertThat(event.userId()).isEqualTo(user);
+          assertThat(event.user()).isEqualTo(user);
         });
   }
 
@@ -152,7 +152,7 @@ class ProjectTest {
   void shouldThrowWhenProjectIsCompleted() {
     var project = createTestProject(ProjectState.COMPLETED);
 
-    assertThatThrownBy(() -> project.stateInterest(UUID.randomUUID()))
+    assertThatThrownBy(() -> project.stateInterest(new InterestedUser(UUID.randomUUID())))
         .isInstanceOf(ProjectStateException.class);
   }
 

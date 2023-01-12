@@ -26,6 +26,7 @@ public record ProjectDto(
     List<String> tags,
     @JsonProperty("_permissions")
     ProjectPermissions permissions,
+    ProjectMetrics metrics,
     Instant createdAt,
     Instant modifiedAt
 ) {
@@ -53,6 +54,8 @@ public record ProjectDto(
   @Schema(name = "ProjectStatus")
   public record ReadProjectStatusDto(
       ProjectState state,
+      boolean acceptsInterest,
+      boolean acceptsCommitment,
       Instant updatedAt
   ) {
 

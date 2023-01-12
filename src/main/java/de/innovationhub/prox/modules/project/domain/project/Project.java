@@ -152,7 +152,7 @@ public class Project extends AbstractAggregateRoot {
   }
 
   public void applyCommitment(UUID supervisorId) {
-    if(!this.status.canAcceptCommitment()) {
+    if(!this.status.acceptsCommitment()) {
       throw new IllegalStateException("Project cannot accept commitment");
     }
 
@@ -184,8 +184,8 @@ public class Project extends AbstractAggregateRoot {
       return;
     }
 
-    if (!this.status.canAcceptInterest()) {
-      throw new ProjectStateException("Project cannot accept interest");
+    if (!this.status.acceptsInterest()) {
+      throw new ProjectStateException("Project cannot accept metrics");
     }
 
     this.interestedUsers.add(interestedUser);
@@ -197,11 +197,15 @@ public class Project extends AbstractAggregateRoot {
       return;
     }
 
-    if (!this.status.canAcceptInterest()) {
-      throw new ProjectStateException("Project cannot accept interest");
+    if (!this.status.acceptsInterest()) {
+      throw new ProjectStateException("Project cannot accept metrics");
     }
 
     this.interestedUsers.remove(userId);
     this.registerEvent(new ProjectInterestUnstated(this.id, userId));
+  }
+
+  public boolean hasInterest(UUID uuid) {
+    return this.interestedUsers.stream().anyMatch(i -> i.getUserId().equals(uuid));
   }
 }

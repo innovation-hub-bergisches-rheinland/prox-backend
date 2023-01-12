@@ -46,11 +46,11 @@ public class ProjectStatus {
     }
   }
 
-  boolean canAcceptCommitment() {
+  public boolean acceptsCommitment() {
     return this.state == ProjectState.PROPOSED;
   }
 
-  boolean canAcceptInterest() {
+  public boolean acceptsInterest() {
     return this.state == ProjectState.OFFERED || this.state == ProjectState.PROPOSED;
   }
 }

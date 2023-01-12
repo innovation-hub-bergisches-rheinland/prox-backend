@@ -48,12 +48,30 @@ public class ProjectDtoAssembler {
             .toList()
     );
 
-    var permissions = new ProjectPermissions(projectPermissionEvaluator.hasPermission(project, authenticationFacade.getAuthentication()));
+    var permissions = evaluatePermissions(project); // TODO
+    var interest = evaluateInterest(project);
 
-    return projectMapper.toDto(project, supervisors, partnerOrg, tags, permissions);
+    return projectMapper.toDto(project, supervisors, partnerOrg, tags, permissions, interest);
   }
 
   public Page<ProjectDto> toDto(Page<Project> projects) {
     return projects.map(this::toDto);
+  }
+
+  public ProjectPermissions evaluatePermissions(Project project) {
+    var authentication = authenticationFacade.getAuthentication();
+    var permissions = new ProjectPermissions(
+        projectPermissionEvaluator.hasPermission(project, authentication),
+        authentication == null ? false : authentication.isAuthenticated()
+    );
+
+    return permissions;
+  }
+
+  public ProjectMetrics evaluateInterest(Project project) {
+    var interest = new ProjectMetrics(
+        project.getInterestedUsers().size()
+    );
+    return interest;
   }
 }

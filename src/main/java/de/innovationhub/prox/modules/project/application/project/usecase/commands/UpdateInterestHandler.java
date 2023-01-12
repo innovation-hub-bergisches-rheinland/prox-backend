@@ -9,14 +9,18 @@ import lombok.RequiredArgsConstructor;
 
 @ApplicationComponent
 @RequiredArgsConstructor
-public class StateInterestHandler {
+public class UpdateInterestHandler {
   private final ProjectRepository projectRepository;
 
-  public Project handle(UUID projectId, UUID userId) {
+  public Project handle(UUID projectId, UUID userId, boolean interested) {
     var project = projectRepository.findById(projectId)
         .orElseThrow(ProjectNotFoundException::new);
 
-    project.stateInterest(userId);
+    if (interested) {
+      project.stateInterest(userId);
+    } else {
+      project.unstateInterest(userId);
+    }
 
     return projectRepository.save(project);
   }

@@ -3,6 +3,7 @@ package de.innovationhub.prox.modules.project.domain.project;
 import de.innovationhub.prox.modules.commons.domain.AbstractAggregateRoot;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectCreated;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectInterestStated;
+import de.innovationhub.prox.modules.project.domain.project.events.ProjectInterestUnstated;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectOffered;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectStateUpdated;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectTagged;
@@ -189,5 +190,18 @@ public class Project extends AbstractAggregateRoot {
 
     this.interestedUsers.add(userId);
     this.registerEvent(new ProjectInterestStated(this.id, userId));
+  }
+
+  public void unstateInterest(UUID userId) {
+    if (!this.interestedUsers.contains(userId)) {
+      return;
+    }
+
+    if (!this.status.canAcceptInterest()) {
+      throw new ProjectStateException("Project cannot accept interest");
+    }
+
+    this.interestedUsers.remove(userId);
+    this.registerEvent(new ProjectInterestUnstated(this.id, userId));
   }
 }

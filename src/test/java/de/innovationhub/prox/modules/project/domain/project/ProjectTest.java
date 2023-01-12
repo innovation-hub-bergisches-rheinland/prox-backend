@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectCreated;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectInterestStated;
+import de.innovationhub.prox.modules.project.domain.project.events.ProjectInterestUnstated;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectOffered;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectStateUpdated;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectTagged;
@@ -123,6 +124,25 @@ class ProjectTest {
         .hasSize(1)
         .first()
         .isInstanceOfSatisfying(ProjectInterestStated.class, event -> {
+          assertThat(event.projectId()).isEqualTo(project.getId());
+          assertThat(event.userId()).isEqualTo(user);
+        });
+  }
+
+  @Test
+  void shouldRemoveInterest() {
+    var project = createTestProject(ProjectState.PROPOSED);
+    var user = UUID.randomUUID();
+    project.stateInterest(user);
+
+    project.unstateInterest(user);
+
+    assertThat(project.getInterestedUsers()).doesNotContain(user);
+    assertThat(project.getDomainEvents())
+        .filteredOn(event -> event instanceof ProjectInterestUnstated)
+        .hasSize(1)
+        .first()
+        .isInstanceOfSatisfying(ProjectInterestUnstated.class, event -> {
           assertThat(event.projectId()).isEqualTo(project.getId());
           assertThat(event.userId()).isEqualTo(user);
         });

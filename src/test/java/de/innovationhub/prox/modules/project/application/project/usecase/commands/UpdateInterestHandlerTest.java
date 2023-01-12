@@ -11,9 +11,9 @@ import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
-class StateInterestHandlerTest {
+class UpdateInterestHandlerTest {
   ProjectRepository projectRepository = mock(ProjectRepository.class);
-  StateInterestHandler handler = new StateInterestHandler(projectRepository);
+  UpdateInterestHandler handler = new UpdateInterestHandler(projectRepository);
 
   @Test
   void shouldRegisterInterest() {
@@ -22,10 +22,24 @@ class StateInterestHandlerTest {
     when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
     when(projectRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
-    var response = handler.handle(project.getId(), userId);
+    var response = handler.handle(project.getId(), userId, true);
 
     assertThat(response.getInterestedUsers())
         .hasSize(1)
         .containsExactly(userId);
+  }
+
+  @Test
+  void shouldRemoveInterest() {
+    var userId = UUID.randomUUID();
+    var project = ProjectFixtures.build_a_project();
+    project.stateInterest(userId);
+    when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
+    when(projectRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+
+    var response = handler.handle(project.getId(), userId, false);
+
+    assertThat(response.getInterestedUsers())
+        .doesNotContain(userId);
   }
 }

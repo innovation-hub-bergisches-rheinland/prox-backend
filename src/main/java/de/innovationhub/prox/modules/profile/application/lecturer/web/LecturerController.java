@@ -122,8 +122,7 @@ public class LecturerController {
     return ResponseEntity.ok(new SetLecturerTagsResponseDto(result));
   }
 
-  // TODO: Rename mapping
-  @GetMapping("search/search")
+  @GetMapping("search/filter")
   public ResponseEntity<Page<LecturerDto>> search(
       @RequestParam(value = "q", defaultValue = "") String query,
       @RequestParam(value = "tags", defaultValue = "") Collection<String> tags,
@@ -134,8 +133,8 @@ public class LecturerController {
     return ResponseEntity.ok(page);
   }
 
-  @GetMapping("search/filter")
-  public ResponseEntity<Page<LecturerDto>> getById(@RequestParam("q") String query, Pageable pageable) {
+  @GetMapping("search/findByName")
+  public ResponseEntity<Page<LecturerDto>> findByName(@RequestParam("q") String query, Pageable pageable) {
     var page = filter.handle(query, pageable)
         .map(dtoAssembler::toDto);
 

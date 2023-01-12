@@ -134,7 +134,7 @@ class LecturerControllerIntegrationTest extends AbstractIntegrationTest {
   }
 
   @Test
-  void shouldFilter() {
+  void shouldFindByName() {
     var lecturer = createDummyLecturer();
     lecturerRepository.save(lecturer);
 
@@ -143,7 +143,7 @@ class LecturerControllerIntegrationTest extends AbstractIntegrationTest {
         .accept(ContentType.JSON)
         .param("q", lecturer.getName())
         .when()
-        .get("lecturers/search/filter")
+        .get("lecturers/search/findByName")
         .then()
         .status(HttpStatus.OK)
         .body("content", hasSize(1));
@@ -238,7 +238,7 @@ class LecturerControllerIntegrationTest extends AbstractIntegrationTest {
         .accept(ContentType.JSON)
         .param("q", lecturer.getName())
         .when()
-        .get("lecturers/search/search")
+        .get("lecturers/search/filter")
         .then()
         .status(HttpStatus.OK)
         .body("content", hasSize(1));

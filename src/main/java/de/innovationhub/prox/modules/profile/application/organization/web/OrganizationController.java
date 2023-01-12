@@ -10,6 +10,7 @@ import de.innovationhub.prox.modules.profile.application.organization.usecase.co
 import de.innovationhub.prox.modules.profile.application.organization.usecase.queries.FindAllOrganizationsHandler;
 import de.innovationhub.prox.modules.profile.application.organization.usecase.queries.FindOrganizationHandler;
 import de.innovationhub.prox.modules.profile.application.organization.usecase.queries.FindOrganizationMembershipsHandler;
+import de.innovationhub.prox.modules.profile.application.organization.usecase.queries.SearchOrganizationHandler;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.AddMembershipRequestDto;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.CreateOrganizationRequestDto;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.MembershipDto;
@@ -23,6 +24,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -57,6 +59,7 @@ public class OrganizationController {
   private final SetOrganizationLogoHandler setLogo;
   private final SetOrganizationTagsHandler setTags;
 
+  private final SearchOrganizationHandler search;
   private final OrganizationDtoAssembler dtoAssembler;
 
   @GetMapping
@@ -177,5 +180,16 @@ public class OrganizationController {
       @RequestBody SetOrganizationTagsRequestDto tagsDto) {
     var result = setTags.handle(id, tagsDto.tags());
     return ResponseEntity.ok(new SetOrganizationTagsResponseDto(result));
+  }
+
+  @GetMapping("search/filter")
+  public ResponseEntity<Page<OrganizationDto>> search(
+      @RequestParam(value = "q", defaultValue = "") String query,
+      @RequestParam(value = "tags", defaultValue = "") Collection<String> tags,
+      Pageable pageable) {
+    var page = search.handle(query, tags, pageable)
+        .map(dtoAssembler::toDto);
+
+    return ResponseEntity.ok(page);
   }
 }

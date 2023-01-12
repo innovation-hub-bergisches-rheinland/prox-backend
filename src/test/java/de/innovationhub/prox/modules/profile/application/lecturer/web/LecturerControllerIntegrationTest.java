@@ -227,4 +227,20 @@ class LecturerControllerIntegrationTest extends AbstractIntegrationTest {
     var updatedLecturer = lecturerRepository.findById(lecturer.getId()).orElseThrow();
     assertThat(updatedLecturer.getTags()).containsExactlyInAnyOrderElementsOf(tags);
   }
+
+  @Test
+  void shouldSearch() {
+    var lecturer = createDummyLecturer();
+    lecturerRepository.save(lecturer);
+
+    given()
+        .contentType(ContentType.JSON)
+        .accept(ContentType.JSON)
+        .param("q", lecturer.getName())
+        .when()
+        .get("lecturers/search/search")
+        .then()
+        .status(HttpStatus.OK)
+        .body("content", hasSize(1));
+  }
 }

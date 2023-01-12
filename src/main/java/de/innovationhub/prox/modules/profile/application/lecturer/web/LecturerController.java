@@ -7,6 +7,7 @@ import de.innovationhub.prox.modules.profile.application.lecturer.usecase.comman
 import de.innovationhub.prox.modules.profile.application.lecturer.usecase.queries.FilterLecturerHandler;
 import de.innovationhub.prox.modules.profile.application.lecturer.usecase.queries.FindAllLecturersHandler;
 import de.innovationhub.prox.modules.profile.application.lecturer.usecase.queries.FindLecturerHandler;
+import de.innovationhub.prox.modules.profile.application.lecturer.usecase.queries.SearchLecturerHandler;
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerRequestDto;
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.LecturerDto;
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.LecturerDtoAssembler;
@@ -16,6 +17,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -44,6 +46,7 @@ public class LecturerController {
   private final SetLecturerAvatarHandler setAvatar;
   private final SetLecturerTagsHandler setTags;
   private final FilterLecturerHandler filter;
+  private final SearchLecturerHandler search;
   private final LecturerDtoAssembler dtoAssembler;
 
   @GetMapping
@@ -117,6 +120,18 @@ public class LecturerController {
       @RequestBody SetLecturerTagsRequestDto tagsDto) {
     var result = setTags.handle(id, tagsDto.tags());
     return ResponseEntity.ok(new SetLecturerTagsResponseDto(result));
+  }
+
+  // TODO: Rename mapping
+  @GetMapping("search/search")
+  public ResponseEntity<Page<LecturerDto>> search(
+      @RequestParam(value = "q", defaultValue = "") String query,
+      @RequestParam(value = "tags", defaultValue = "") Collection<String> tags,
+      Pageable pageable) {
+    var page = search.handle(query, tags, pageable)
+        .map(dtoAssembler::toDto);
+
+    return ResponseEntity.ok(page);
   }
 
   @GetMapping("search/filter")

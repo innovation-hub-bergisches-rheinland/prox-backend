@@ -268,4 +268,20 @@ class OrganizationControllerIntegrationTest extends AbstractIntegrationTest {
     var updatedOrg = organizationRepository.findById(org.getId()).orElseThrow();
     assertThat(updatedOrg.getTags()).containsExactlyInAnyOrderElementsOf(tags);
   }
+
+  @Test
+  void shouldSearch() {
+    var org = OrganizationFixtures.ACME_LTD;
+    organizationRepository.save(org);
+
+    given()
+        .contentType(ContentType.JSON)
+        .accept(ContentType.JSON)
+        .param("q", org.getName())
+        .when()
+        .get("organizations/search/filter")
+        .then()
+        .status(HttpStatus.OK)
+        .body("content", hasSize(1));
+  }
 }

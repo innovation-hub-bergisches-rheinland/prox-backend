@@ -8,4 +8,5 @@ import java.util.UUID;
 @ApplicationComponent
 public interface TagFacade {
   List<String> getTags(Collection<UUID> id);
+  List<TagView> getTagsByName(Collection<String> id);
 }

@@ -7,7 +7,6 @@ import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerCrea
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerProfileUpdated;
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerRenamed;
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerTagged;
-
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -49,7 +48,7 @@ class LecturerTest {
   @Test
   void shouldUpdateProfile() {
     var lecturer = createDummyLecturer();
-    var profile = new LecturerProfile();
+    var profile = new LecturerProfileInformation();
 
     lecturer.setProfile(profile);
 

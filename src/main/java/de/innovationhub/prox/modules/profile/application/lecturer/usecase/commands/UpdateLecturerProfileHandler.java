@@ -4,7 +4,7 @@ import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerRequestDto;
 import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
-import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerProfile;
+import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerProfileInformation;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
 import jakarta.transaction.Transactional;
 import java.util.UUID;
@@ -27,7 +27,7 @@ public class UpdateLecturerProfileHandler {
 
     var profile = lecturer.getProfile();
     if (profile == null) {
-      profile = new LecturerProfile();
+      profile = new LecturerProfileInformation();
     }
 
     var dtoProfile = dto.profile();

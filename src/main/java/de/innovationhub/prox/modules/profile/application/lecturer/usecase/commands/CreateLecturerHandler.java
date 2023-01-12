@@ -4,7 +4,7 @@ import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerRequestDto;
 import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
-import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerProfile;
+import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerProfileInformation;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
 import jakarta.transaction.Transactional;
 import java.util.Objects;
@@ -24,7 +24,7 @@ public class CreateLecturerHandler {
     var user = authenticationFacade.currentAuthenticatedId();
 
     var lecturer = Lecturer.create(user, dto.name());
-    var profile = new LecturerProfile();
+    var profile = new LecturerProfileInformation();
     var dtoProfile = dto.profile();
     if (dtoProfile != null) {
       profile.setAffiliation(dtoProfile.affiliation());

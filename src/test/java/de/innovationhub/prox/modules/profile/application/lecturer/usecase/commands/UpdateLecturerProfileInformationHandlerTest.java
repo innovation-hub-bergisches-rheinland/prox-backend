@@ -18,7 +18,7 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
-class UpdateLecturerProfileHandlerTest {
+class UpdateLecturerProfileInformationHandlerTest {
 
   LecturerRepository lecturerRepository = mock(LecturerRepository.class);
   AuthenticationFacade authentication = mock(AuthenticationFacade.class);

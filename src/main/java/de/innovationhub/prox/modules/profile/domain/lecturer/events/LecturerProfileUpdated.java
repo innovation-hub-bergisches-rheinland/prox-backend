@@ -1,7 +1,7 @@
 package de.innovationhub.prox.modules.profile.domain.lecturer.events;
 
 import de.innovationhub.prox.modules.commons.domain.DomainEvent;
-import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerProfile;
+import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerProfileInformation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -19,7 +19,7 @@ public record LecturerProfileUpdated(
     String homepage,
     String collegePage
 ) implements DomainEvent {
-  public static LecturerProfileUpdated from(UUID lecturerId, LecturerProfile profile) {
+  public static LecturerProfileUpdated from(UUID lecturerId, LecturerProfileInformation profile) {
     return new LecturerProfileUpdated(
         lecturerId,
         profile.getAffiliation(),

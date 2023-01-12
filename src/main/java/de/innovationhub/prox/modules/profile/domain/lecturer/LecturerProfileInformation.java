@@ -17,7 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Embeddable
-public class LecturerProfile {
+public class LecturerProfileInformation {
   private String affiliation;
   private String subject;
 

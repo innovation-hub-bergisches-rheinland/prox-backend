@@ -18,6 +18,7 @@ import de.innovationhub.prox.modules.project.application.project.web.dto.SetProj
 import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectTagsRequestDto;
 import de.innovationhub.prox.modules.project.domain.discipline.DisciplineRepository;
 import de.innovationhub.prox.modules.project.domain.module.ModuleTypeRepository;
+import de.innovationhub.prox.modules.project.domain.project.InterestedUser;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
 import de.innovationhub.prox.modules.project.domain.project.Supervisor;
@@ -330,5 +331,48 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
 
     var updatedProject = projectRepository.findById(project.getId()).get();
     assertThat(updatedProject.getTags()).containsExactlyInAnyOrderElementsOf(tags);
+  }
+
+  @Test
+  @WithMockUser(value = "00000000-0000-0000-0000-000000000001")
+  void shouldStateInterest() {
+    var project = ProjectFixtures.build_a_project();
+    projectRepository.save(project);
+    var userId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+
+    given()
+        .contentType(ContentType.JSON)
+        .accept(ContentType.JSON)
+        .when()
+        .put("projects/{id}/interests/{userId}", project.getId(), userId)
+        .then()
+        .status(HttpStatus.OK);
+
+    var updatedProject = projectRepository.findById(project.getId()).get();
+    assertThat(updatedProject.getInterestedUsers())
+        .extracting(InterestedUser::getUserId)
+        .contains(userId);
+  }
+
+  @Test
+  @WithMockUser(value = "00000000-0000-0000-0000-000000000001")
+  void shouldUnstateInterest() {
+    var project = ProjectFixtures.build_a_project();
+    var userId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+    project.stateInterest(new InterestedUser(userId));
+    projectRepository.save(project);
+
+    given()
+        .contentType(ContentType.JSON)
+        .accept(ContentType.JSON)
+        .when()
+        .delete("projects/{id}/interests/{userId}", project.getId(), userId)
+        .then()
+        .status(HttpStatus.OK);
+
+    var updatedProject = projectRepository.findById(project.getId()).get();
+    assertThat(updatedProject.getInterestedUsers())
+        .extracting(InterestedUser::getUserId)
+        .doesNotContain(userId);
   }
 }

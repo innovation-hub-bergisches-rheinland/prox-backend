@@ -31,6 +31,6 @@ class FindTagByNameHandlerTest {
 
     handler.handle(tags);
 
-    verify(tagRepository).findAllByTagNameIn(tags);
+    verify(tagRepository).findAllByTagNameInIgnoreCase(tags);
   }
 }

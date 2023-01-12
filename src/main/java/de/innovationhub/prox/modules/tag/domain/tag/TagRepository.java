@@ -1,11 +1,9 @@
 package de.innovationhub.prox.modules.tag.domain.tag;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Stream;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -16,7 +14,7 @@ public interface TagRepository extends CrudRepository<Tag, UUID> {
 
   boolean existsByTagName(String tag);
 
-  List<Tag> findAllByTagNameIn(Collection<String> tags);
+  List<Tag> findAllByTagNameInIgnoreCase(Collection<String> tags);
 
   @Query("SELECT t FROM Tag t WHERE lower(t.tagName) LIKE concat('%', lower(?1), '%')")
   List<Tag> findMatching(String tag);

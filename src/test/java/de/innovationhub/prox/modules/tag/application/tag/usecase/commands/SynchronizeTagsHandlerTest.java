@@ -8,7 +8,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import de.innovationhub.prox.modules.tag.application.tag.usecase.commands.SynchronizeTagsHandler;
 import de.innovationhub.prox.modules.tag.domain.tag.Tag;
 import de.innovationhub.prox.modules.tag.domain.tag.TagRepository;
 import java.util.List;
@@ -44,7 +43,7 @@ class SynchronizeTagsHandlerTest {
   @Test
   void shouldReturnTags() {
     var givenTags = List.of(Tag.create("test3"), Tag.create("test4"));
-    when(tagRepository.findAllByTagNameIn(any())).thenReturn(givenTags);
+    when(tagRepository.findAllByTagNameInIgnoreCase(any())).thenReturn(givenTags);
 
     var tagInput = List.of("test3", "test4");
     var returnedTags = handler.handle(tagInput);

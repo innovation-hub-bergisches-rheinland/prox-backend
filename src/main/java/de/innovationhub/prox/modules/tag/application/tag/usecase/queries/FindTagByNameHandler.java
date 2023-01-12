@@ -21,6 +21,6 @@ public class FindTagByNameHandler {
       return List.of();
     }
 
-    return tagRepository.findAllByTagNameIn(tagNames);
+    return tagRepository.findAllByTagNameInIgnoreCase(tagNames);
   }
 }

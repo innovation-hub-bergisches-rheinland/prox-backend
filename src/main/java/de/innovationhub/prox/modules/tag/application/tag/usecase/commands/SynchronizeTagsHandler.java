@@ -22,7 +22,7 @@ public class SynchronizeTagsHandler {
       return List.of();
     }
 
-    List<Tag> existingTags = this.tagRepository.findAllByTagNameIn(tags);
+    List<Tag> existingTags = this.tagRepository.findAllByTagNameInIgnoreCase(tags);
     List<String> notExistingTags = tags.stream()
         .filter(
             strTag -> existingTags.stream().noneMatch(t -> t.getTagName().equalsIgnoreCase(strTag)))

@@ -2,8 +2,8 @@ package de.innovationhub.prox.modules.profile.application.organization.web.dto;
 
 import de.innovationhub.prox.infra.storage.StorageProvider;
 import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
-import de.innovationhub.prox.modules.auth.contract.UserFacade;
-import de.innovationhub.prox.modules.auth.contract.UserView;
+import de.innovationhub.prox.modules.auth.contract.KeycloakUserFacade;
+import de.innovationhub.prox.modules.auth.contract.KeycloakUserView;
 import de.innovationhub.prox.modules.profile.application.organization.OrganizationPermissionEvaluator;
 import de.innovationhub.prox.modules.profile.domain.organization.Membership;
 import de.innovationhub.prox.modules.profile.domain.organization.Organization;
@@ -21,7 +21,7 @@ public class OrganizationDtoAssembler {
   private final TagFacade tagFacade;
   private final StorageProvider storageProvider;
   private final OrganizationDtoMapper organizationDtoMapper;
-  private final UserFacade userFacade;
+  private final KeycloakUserFacade keycloakUserFacade;
 
   // TODO: EXPERIMENTAL
   private final OrganizationPermissionEvaluator organizationPermissionEvaluator;
@@ -49,8 +49,8 @@ public class OrganizationDtoAssembler {
   public MembershipDto toDto(Membership membership) {
     String name = null;
     try {
-      var userView = userFacade.findById(membership.getMemberId());
-      name = userView.map(UserView::name).orElse(null);
+      var userView = keycloakUserFacade.findById(membership.getMemberId());
+      name = userView.map(KeycloakUserView::name).orElse(null);
     }
     catch (RuntimeException e) {
       log.error("Unable to fetch user name for user with id {}", membership.getMemberId(), e);

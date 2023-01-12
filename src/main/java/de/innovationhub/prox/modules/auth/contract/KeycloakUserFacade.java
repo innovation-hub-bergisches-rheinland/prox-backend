@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface UserFacade {
-  Optional<UserView> findById(UUID id);
+public interface KeycloakUserFacade {
+  Optional<KeycloakUserView> findById(UUID id);
   boolean existsById(UUID id);
-  List<UserView> search(String query);
+  List<KeycloakUserView> search(String query);
 }

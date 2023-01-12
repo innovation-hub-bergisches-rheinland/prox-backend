@@ -1,8 +1,8 @@
 package de.innovationhub.prox.modules.auth.application;
 
 import de.innovationhub.prox.config.CacheConfig;
-import de.innovationhub.prox.modules.auth.contract.UserFacade;
-import de.innovationhub.prox.modules.auth.contract.UserView;
+import de.innovationhub.prox.modules.auth.contract.KeycloakUserFacade;
+import de.innovationhub.prox.modules.auth.contract.KeycloakUserView;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import java.util.List;
 import java.util.Optional;
@@ -13,22 +13,22 @@ import org.keycloak.admin.client.resource.UsersResource;
 import org.springframework.cache.annotation.Cacheable;
 
 @ApplicationComponent
-public class KeycloakUserFacadeImpl implements UserFacade {
+public class KeycloakKeycloakUserFacadeImpl implements KeycloakUserFacade {
 
   private final RealmResource realmResource;
   private final UsersResource usersResource;
 
-  public KeycloakUserFacadeImpl(RealmResource realmResource) {
+  public KeycloakKeycloakUserFacadeImpl(RealmResource realmResource) {
     this.realmResource = realmResource;
     this.usersResource = realmResource.users();
   }
 
   @Cacheable(CacheConfig.USERS)
-  public Optional<UserView> findById(UUID id) {
+  public Optional<KeycloakUserView> findById(UUID id) {
     try {
       var userRepresentation = this.usersResource.get(id.toString()).toRepresentation();
       return Optional.of(userRepresentation)
-          .map(rep -> new UserView(UUID.fromString(rep.getId()),
+          .map(rep -> new KeycloakUserView(UUID.fromString(rep.getId()),
               rep.getFirstName() + " " + rep.getLastName()));
     } catch (ProcessingException e) {
       if(e.getCause() instanceof javax.ws.rs.NotFoundException) {
@@ -43,9 +43,9 @@ public class KeycloakUserFacadeImpl implements UserFacade {
   }
 
   @Cacheable(CacheConfig.USERS)
-  public List<UserView> search(String query) {
+  public List<KeycloakUserView> search(String query) {
     return this.realmResource.users().search(query, 0, 100, true).stream()
-        .map(u -> new UserView(UUID.fromString(u.getId()), u.getFirstName() + " " + u.getLastName()))
+        .map(u -> new KeycloakUserView(UUID.fromString(u.getId()), u.getFirstName() + " " + u.getLastName()))
         .toList();
   }
 }

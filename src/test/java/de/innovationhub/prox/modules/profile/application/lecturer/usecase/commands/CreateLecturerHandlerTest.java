@@ -2,69 +2,46 @@ package de.innovationhub.prox.modules.profile.application.lecturer.usecase.comma
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerRequestDto;
-import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerRequestDto.CreateLecturerProfileDto;
+import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
-import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
-import java.util.List;
+import de.innovationhub.prox.modules.user.contract.user.ProxUserView;
+import de.innovationhub.prox.modules.user.contract.user.UserFacade;
+import java.util.Optional;
 import java.util.UUID;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 class CreateLecturerHandlerTest {
-  AuthenticationFacade authenticationFacade = mock(AuthenticationFacade.class);
+
+  UserFacade userFacade = mock(UserFacade.class);
   LecturerRepository lecturerRepository = mock(LecturerRepository.class);
 
-  CreateLecturerHandler handler = new CreateLecturerHandler(lecturerRepository, authenticationFacade);
-  UUID authenticatedUserId = UUID.randomUUID();
-
-  @BeforeEach
-  void setUp() {
-    when(authenticationFacade.currentAuthenticatedId()).thenReturn(authenticatedUserId);
-  }
+  CreateLecturerHandler handler = new CreateLecturerHandler(lecturerRepository, userFacade);
 
   @Test
   void shouldThrowOnNull() {
-    assertThrows(NullPointerException.class, () -> handler.handle(UUID.randomUUID(), null));
+    assertThrows(NullPointerException.class, () -> handler.handle(null));
   }
 
   @Test
   void shouldCreateLecturer() {
-    var request = new CreateLecturerRequestDto(
-        "Max Mustermann",
-        new CreateLecturerProfileDto(
-            "affiliation",
-            "subject",
-            "vita",
-            List.of("publications"),
-            "room",
-            "consulationHour",
-            "email",
-            "telephone",
-            "homepage",
-            "collegePage"
-        ), true
-    );
+    var userId = UUID.randomUUID();
+    var user = new ProxUserView(userId, "Xavier Tester", "xavier.tester@example.com");
+    when(userFacade.findById(userId)).thenReturn(Optional.of(user));
 
-    when(lecturerRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+    handler.handle(userId);
 
-    var lecturer = handler.handle(authenticatedUserId, request);
+    var captor = ArgumentCaptor.forClass(Lecturer.class);
+    verify(lecturerRepository).save(captor.capture());
+    var lecturer = captor.getValue();
 
-    assertThat(lecturer.getUserId()).isEqualTo(authenticatedUserId);
-    assertThat(lecturer.getName()).isEqualTo("Max Mustermann");
-    assertThat(lecturer.getProfile().getAffiliation()).isEqualTo("affiliation");
-    assertThat(lecturer.getProfile().getSubject()).isEqualTo("subject");
-    assertThat(lecturer.getProfile().getVita()).isEqualTo("vita");
-    assertThat(lecturer.getProfile().getPublications()).containsExactly("publications");
-    assertThat(lecturer.getProfile().getRoom()).isEqualTo("room");
-    assertThat(lecturer.getProfile().getConsultationHour()).isEqualTo("consulationHour");
-    assertThat(lecturer.getProfile().getEmail()).isEqualTo("email");
-    assertThat(lecturer.getProfile().getTelephone()).isEqualTo("telephone");
-    assertThat(lecturer.getProfile().getHomepage()).isEqualTo("homepage");
-    assertThat(lecturer.getProfile().getCollegePage()).isEqualTo("collegePage");
+    assertThat(lecturer.getUserId()).isEqualTo(userId);
+    assertThat(lecturer.getName()).isEqualTo("Xavier Tester");
+    assertThat(lecturer.getProfile().getEmail()).isEqualTo("xavier.tester@example.com");
+    assertThat(lecturer.getVisibleInPublicSearch()).isEqualTo(false);
   }
 }

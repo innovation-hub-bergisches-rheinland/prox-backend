@@ -6,9 +6,6 @@ import de.innovationhub.prox.config.MessagingConfig;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.profile.application.lecturer.event.incoming.KeycloakAdminEventMq;
 import de.innovationhub.prox.modules.profile.application.lecturer.usecase.commands.CreateLecturerHandler;
-import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerRequestDto;
-import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerRequestDto.CreateLecturerProfileDto;
-import de.innovationhub.prox.modules.user.contract.user.UserFacade;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.events.admin.OperationType;
@@ -26,7 +23,6 @@ import org.springframework.messaging.handler.annotation.Payload;
 public class KeycloakEventListener {
 
   private final CreateLecturerHandler createLecturer;
-  private final UserFacade userFacade;
   private final ObjectMapper objectMapper;
 
   @RabbitListener(bindings = {
@@ -58,13 +54,6 @@ public class KeycloakEventListener {
     var pathParts = event.getResourcePath().split("/");
     var userId = UUID.fromString(pathParts[1]);
 
-    var user = userFacade.findById(userId).orElseThrow();
-    var request = new CreateLecturerRequestDto(
-        user.name(),
-        new CreateLecturerProfileDto(null, null, null, null, null, null, user.email(), null, null,
-            null),
-        false
-    );
-    createLecturer.handle(userId, request);
+    createLecturer.handle(userId);
   }
 }

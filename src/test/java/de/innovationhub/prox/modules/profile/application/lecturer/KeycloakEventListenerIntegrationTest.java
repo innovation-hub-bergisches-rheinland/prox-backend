@@ -49,6 +49,7 @@ class KeycloakEventListenerIntegrationTest extends AbstractIntegrationTest {
             assertThat(l.getUserId()).isEqualTo(userId);
             assertThat(l.getName()).isEqualTo(user.name());
             assertThat(l.getProfile().getEmail()).isEqualTo(user.email());
+            assertThat(l.getVisibleInPublicSearch()).isFalse();
           }
       );
     });

@@ -1,1 +1,3 @@
 rootProject.name = "prox-backend"
+
+include("modules:commons")

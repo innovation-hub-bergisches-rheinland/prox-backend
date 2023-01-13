@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("user")
 @RequiredArgsConstructor
-@Tag(name = "User", description = "User API")
+@Tag(name = "Star", description = "Star API")
 public class AuthenticatedUserStarController {
 
   private final StarProjectHandler starProject;

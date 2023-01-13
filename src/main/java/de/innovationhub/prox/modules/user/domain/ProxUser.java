@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.user.domain;
 
-import de.innovationhub.prox.modules.commons.domain.AbstractAggregateRoot;
+import de.innovationhub.prox.modules.commons.domain.AuditedAggregateRoot;
 import de.innovationhub.prox.modules.user.domain.event.ProxUserRegistered;
 import de.innovationhub.prox.modules.user.domain.event.ProxUserStarredProject;
 import de.innovationhub.prox.modules.user.domain.event.ProxUserUnstarredProject;
@@ -20,7 +20,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
-public class ProxUser extends AbstractAggregateRoot {
+public class ProxUser extends AuditedAggregateRoot {
+
   @Id
   private UUID id;
 

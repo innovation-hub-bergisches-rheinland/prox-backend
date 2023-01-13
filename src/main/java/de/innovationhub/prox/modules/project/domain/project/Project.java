@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.project.domain.project;
 
-import de.innovationhub.prox.modules.commons.domain.AbstractAggregateRoot;
+import de.innovationhub.prox.modules.commons.domain.AuditedAggregateRoot;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectCreated;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectInterestStated;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectInterestUnstated;
@@ -46,7 +46,7 @@ import org.springframework.lang.Nullable;
 @Builder(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Project extends AbstractAggregateRoot {
+public class Project extends AuditedAggregateRoot {
 
   @Id
   @Builder.Default

@@ -5,8 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-class AbstractAggregateRootTest {
-  AbstractAggregateRoot aggregateRoot = new AbstractAggregateRoot() {};
+class AuditedAggregateRootTest {
+
+  AuditedAggregateRoot aggregateRoot = new AuditedAggregateRoot() {
+  };
 
   @Test
   void shouldReturnDomainEventsAsUnmodifiableCollection() {

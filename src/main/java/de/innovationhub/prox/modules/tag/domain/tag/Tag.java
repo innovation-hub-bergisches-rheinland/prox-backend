@@ -1,7 +1,7 @@
 package de.innovationhub.prox.modules.tag.domain.tag;
 
 import de.innovationhub.prox.Default;
-import de.innovationhub.prox.modules.commons.domain.AbstractAggregateRoot;
+import de.innovationhub.prox.modules.commons.domain.AuditedAggregateRoot;
 import de.innovationhub.prox.modules.tag.domain.tag.events.TagCreated;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -20,7 +20,7 @@ import org.hibernate.annotations.NaturalId;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Tag extends AbstractAggregateRoot {
+public class Tag extends AuditedAggregateRoot {
 
   @Id
   private UUID id;

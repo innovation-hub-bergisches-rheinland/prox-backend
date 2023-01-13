@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.profile.domain.organization;
 
-import de.innovationhub.prox.modules.commons.domain.AbstractAggregateRoot;
+import de.innovationhub.prox.modules.commons.domain.AuditedAggregateRoot;
 import de.innovationhub.prox.modules.profile.domain.organization.events.OrganizationCreated;
 import de.innovationhub.prox.modules.profile.domain.organization.events.OrganizationLogoSet;
 import de.innovationhub.prox.modules.profile.domain.organization.events.OrganizationMemberAdded;
@@ -35,7 +35,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Organization extends AbstractAggregateRoot {
+public class Organization extends AuditedAggregateRoot {
 
   @Id
   private UUID id;

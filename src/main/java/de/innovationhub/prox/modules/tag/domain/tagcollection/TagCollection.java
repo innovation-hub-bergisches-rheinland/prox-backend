@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.tag.domain.tagcollection;
 
-import de.innovationhub.prox.modules.commons.domain.AbstractAggregateRoot;
+import de.innovationhub.prox.modules.commons.domain.AuditedAggregateRoot;
 import de.innovationhub.prox.modules.tag.domain.tag.Tag;
 import de.innovationhub.prox.modules.tag.domain.tagcollection.events.TagCollectionCreated;
 import de.innovationhub.prox.modules.tag.domain.tagcollection.events.TagCollectionUpdated;
@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class TagCollection extends AbstractAggregateRoot {
+public class TagCollection extends AuditedAggregateRoot {
 
   @Id
   private UUID id;

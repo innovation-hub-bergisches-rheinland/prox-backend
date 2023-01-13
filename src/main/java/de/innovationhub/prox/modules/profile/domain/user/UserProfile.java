@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.profile.domain.user;
 
-import de.innovationhub.prox.modules.commons.domain.AbstractAggregateRoot;
+import de.innovationhub.prox.modules.commons.domain.AuditedAggregateRoot;
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerAvatarSet;
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerRenamed;
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerTagged;
@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 // @Inheritance(strategy = InheritanceType.)
 // @Entity
 @MappedSuperclass
-public abstract class UserProfile extends AbstractAggregateRoot {
+public abstract class UserProfile extends AuditedAggregateRoot {
 
   @Id
   private UUID id;

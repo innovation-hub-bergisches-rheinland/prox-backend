@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.project.domain.module;
 
-import de.innovationhub.prox.modules.commons.domain.AbstractAggregateRoot;
+import de.innovationhub.prox.modules.commons.domain.AuditedAggregateRoot;
 import de.innovationhub.prox.modules.project.domain.discipline.Discipline;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class ModuleType extends AbstractAggregateRoot {
+public class ModuleType extends AuditedAggregateRoot {
 
   @Id
   private String key;

@@ -10,11 +10,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import de.innovationhub.prox.infra.storage.StorageProvider;
-import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
-import de.innovationhub.prox.modules.profile.application.lecturer.usecase.commands.SetLecturerAvatarHandler;
 import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
-
+import de.innovationhub.prox.modules.user.contract.AuthenticationFacade;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;

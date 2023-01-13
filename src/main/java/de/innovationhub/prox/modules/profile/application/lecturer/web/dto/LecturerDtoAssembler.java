@@ -1,10 +1,10 @@
 package de.innovationhub.prox.modules.profile.application.lecturer.web.dto;
 
 import de.innovationhub.prox.infra.storage.StorageProvider;
-import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.profile.application.lecturer.LecturerPermissionEvaluator;
 import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
+import de.innovationhub.prox.modules.user.contract.AuthenticationFacade;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

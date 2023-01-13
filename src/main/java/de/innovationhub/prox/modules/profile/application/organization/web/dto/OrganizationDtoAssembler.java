@@ -1,13 +1,13 @@
 package de.innovationhub.prox.modules.profile.application.organization.web.dto;
 
 import de.innovationhub.prox.infra.storage.StorageProvider;
-import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
-import de.innovationhub.prox.modules.auth.contract.KeycloakUserFacade;
-import de.innovationhub.prox.modules.auth.contract.KeycloakUserView;
 import de.innovationhub.prox.modules.profile.application.organization.OrganizationPermissionEvaluator;
 import de.innovationhub.prox.modules.profile.domain.organization.Membership;
 import de.innovationhub.prox.modules.profile.domain.organization.Organization;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
+import de.innovationhub.prox.modules.user.contract.AuthenticationFacade;
+import de.innovationhub.prox.modules.user.contract.KeycloakUserFacade;
+import de.innovationhub.prox.modules.user.contract.KeycloakUserView;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

@@ -6,10 +6,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.project.ProjectFixtures;
-import de.innovationhub.prox.modules.project.application.project.usecase.commands.DeleteProjectByIdHandler;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
+import de.innovationhub.prox.modules.user.contract.AuthenticationFacade;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;

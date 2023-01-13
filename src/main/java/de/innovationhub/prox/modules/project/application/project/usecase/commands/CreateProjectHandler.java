@@ -1,6 +1,5 @@
 package de.innovationhub.prox.modules.project.application.project.usecase.commands;
 
-import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectRequest;
 import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectRequest.TimeBoxDto;
@@ -14,6 +13,7 @@ import de.innovationhub.prox.modules.project.domain.project.CurriculumContext;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
 import de.innovationhub.prox.modules.project.domain.project.TimeBox;
+import de.innovationhub.prox.modules.user.contract.AuthenticationFacade;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 

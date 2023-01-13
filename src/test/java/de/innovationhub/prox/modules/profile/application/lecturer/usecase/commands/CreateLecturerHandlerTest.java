@@ -6,10 +6,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerRequestDto;
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerRequestDto.CreateLecturerProfileDto;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
+import de.innovationhub.prox.modules.user.contract.AuthenticationFacade;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,6 +1,5 @@
 package de.innovationhub.prox.modules.project.application.project.web.dto;
 
-import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.profile.contract.LecturerFacade;
 import de.innovationhub.prox.modules.profile.contract.OrganizationFacade;
 import de.innovationhub.prox.modules.profile.contract.OrganizationView;
@@ -8,6 +7,7 @@ import de.innovationhub.prox.modules.project.application.ProjectPermissionEvalua
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.Supervisor;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
+import de.innovationhub.prox.modules.user.contract.AuthenticationFacade;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

@@ -7,7 +7,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.profile.OrganizationFixtures;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.CreateOrganizationRequestDto;
 import de.innovationhub.prox.modules.profile.application.organization.web.dto.CreateOrganizationRequestDto.CreateOrganizationProfileDto;
@@ -15,6 +14,7 @@ import de.innovationhub.prox.modules.profile.domain.organization.Organization;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRepository;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRole;
 import de.innovationhub.prox.modules.profile.domain.organization.SocialMedia;
+import de.innovationhub.prox.modules.user.contract.AuthenticationFacade;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;

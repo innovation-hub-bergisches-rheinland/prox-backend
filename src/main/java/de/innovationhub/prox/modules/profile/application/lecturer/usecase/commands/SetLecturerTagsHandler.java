@@ -1,10 +1,10 @@
 package de.innovationhub.prox.modules.profile.application.lecturer.usecase.commands;
 
-import de.innovationhub.prox.modules.auth.application.exception.UnauthorizedAccessException;
-import de.innovationhub.prox.modules.auth.contract.AuthenticationFacade;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.profile.application.lecturer.exception.LecturerNotFoundException;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
+import de.innovationhub.prox.modules.user.application.exception.UnauthorizedAccessException;
+import de.innovationhub.prox.modules.user.contract.AuthenticationFacade;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;

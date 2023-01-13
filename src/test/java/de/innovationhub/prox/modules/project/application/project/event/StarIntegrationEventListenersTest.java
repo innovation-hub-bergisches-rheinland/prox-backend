@@ -2,12 +2,12 @@ package de.innovationhub.prox.modules.project.application.project.event;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import de.innovationhub.prox.modules.auth.contract.ProxUserStarredProjectIntegrationEvent;
-import de.innovationhub.prox.modules.auth.contract.ProxUserUnstarredProjectIntegrationEvent;
 import de.innovationhub.prox.modules.project.ProjectFixtures;
 import de.innovationhub.prox.modules.project.ProjectIntegrationTest;
 import de.innovationhub.prox.modules.project.domain.project.InterestedUser;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
+import de.innovationhub.prox.modules.user.contract.ProxUserStarredProjectIntegrationEvent;
+import de.innovationhub.prox.modules.user.contract.ProxUserUnstarredProjectIntegrationEvent;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

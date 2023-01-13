@@ -87,4 +87,38 @@ class AuthenticatedUserStarControllerIntegrationTest extends AbstractIntegration
     assertThat(updatedCollection.getStarredProjects())
         .doesNotContain(projectId);
   }
+
+  @Test
+  @WithMockUser(value = "00000000-0000-0000-0000-000000000001")
+  void shouldReturnNoContentWhenProjectStarred() {
+    var userId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+    var projectId = UUID.randomUUID();
+    var collection = new StarCollection(userId);
+    collection.starProject(projectId);
+
+    starCollectionRepository.save(collection);
+
+    given()
+        .accept(ContentType.JSON)
+        .when()
+        .get("user/stars/projects/{id}", projectId)
+        .then()
+        .status(HttpStatus.NO_CONTENT);
+  }
+
+  @Test
+  @WithMockUser(value = "00000000-0000-0000-0000-000000000001")
+  void shouldReturnNotFoundWhenProjectNotStarred() {
+    var userId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+    var projectId = UUID.randomUUID();
+    var collection = new StarCollection(userId);
+    starCollectionRepository.save(collection);
+
+    given()
+        .accept(ContentType.JSON)
+        .when()
+        .get("user/stars/projects/{id}", projectId)
+        .then()
+        .status(HttpStatus.NOT_FOUND);
+  }
 }

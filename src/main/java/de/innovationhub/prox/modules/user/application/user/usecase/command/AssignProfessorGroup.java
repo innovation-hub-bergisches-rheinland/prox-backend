@@ -18,7 +18,7 @@ public class AssignProfessorGroup {
 
     String professorGroupName = KeycloakConfig.PROFESSOR_GROUP;
 
-    var foundGroups = resource.groups().groups (professorGroupName, true, 1, 1, true);
+    var foundGroups = resource.groups().groups(professorGroupName, true, 0, 1, true);
     if(foundGroups.isEmpty()) {
       throw new RuntimeException("Group %s not found".formatted(professorGroupName));
     }

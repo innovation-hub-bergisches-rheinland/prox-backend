@@ -3,8 +3,8 @@ package de.innovationhub.prox.modules.profile.application.lecturer.usecase.comma
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.profile.application.lecturer.exception.LecturerNotFoundException;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
-import de.innovationhub.prox.modules.user.application.exception.UnauthorizedAccessException;
-import de.innovationhub.prox.modules.user.contract.AuthenticationFacade;
+import de.innovationhub.prox.modules.user.application.user.exception.UnauthorizedAccessException;
+import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;

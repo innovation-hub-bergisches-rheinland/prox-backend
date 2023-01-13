@@ -14,7 +14,7 @@ import de.innovationhub.prox.modules.profile.domain.organization.Organization;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRepository;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRole;
 import de.innovationhub.prox.modules.profile.domain.organization.SocialMedia;
-import de.innovationhub.prox.modules.user.contract.AuthenticationFacade;
+import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;

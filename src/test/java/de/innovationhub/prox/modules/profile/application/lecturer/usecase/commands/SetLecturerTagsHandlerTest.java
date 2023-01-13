@@ -9,7 +9,7 @@ import static org.mockito.Mockito.when;
 
 import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
-import de.innovationhub.prox.modules.user.contract.AuthenticationFacade;
+import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

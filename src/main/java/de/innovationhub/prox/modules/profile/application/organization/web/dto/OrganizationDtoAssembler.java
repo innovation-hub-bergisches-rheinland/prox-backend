@@ -5,9 +5,9 @@ import de.innovationhub.prox.modules.profile.application.organization.Organizati
 import de.innovationhub.prox.modules.profile.domain.organization.Membership;
 import de.innovationhub.prox.modules.profile.domain.organization.Organization;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
-import de.innovationhub.prox.modules.user.contract.AuthenticationFacade;
-import de.innovationhub.prox.modules.user.contract.KeycloakUserFacade;
-import de.innovationhub.prox.modules.user.contract.KeycloakUserView;
+import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
+import de.innovationhub.prox.modules.user.contract.user.ProxUserView;
+import de.innovationhub.prox.modules.user.contract.user.UserFacade;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class OrganizationDtoAssembler {
   private final TagFacade tagFacade;
   private final StorageProvider storageProvider;
   private final OrganizationDtoMapper organizationDtoMapper;
-  private final KeycloakUserFacade keycloakUserFacade;
+  private final UserFacade userFacade;
 
   // TODO: EXPERIMENTAL
   private final OrganizationPermissionEvaluator organizationPermissionEvaluator;
@@ -49,8 +49,8 @@ public class OrganizationDtoAssembler {
   public MembershipDto toDto(Membership membership) {
     String name = null;
     try {
-      var userView = keycloakUserFacade.findById(membership.getMemberId());
-      name = userView.map(KeycloakUserView::name).orElse(null);
+      var userView = userFacade.findById(membership.getMemberId());
+      name = userView.map(ProxUserView::name).orElse(null);
     }
     catch (RuntimeException e) {
       log.error("Unable to fetch user name for user with id {}", membership.getMemberId(), e);

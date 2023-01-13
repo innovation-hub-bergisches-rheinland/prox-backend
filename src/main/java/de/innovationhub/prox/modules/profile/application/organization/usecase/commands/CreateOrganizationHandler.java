@@ -5,7 +5,7 @@ import de.innovationhub.prox.modules.profile.application.organization.web.dto.Cr
 import de.innovationhub.prox.modules.profile.domain.organization.Organization;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationProfile;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRepository;
-import de.innovationhub.prox.modules.user.contract.AuthenticationFacade;
+import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

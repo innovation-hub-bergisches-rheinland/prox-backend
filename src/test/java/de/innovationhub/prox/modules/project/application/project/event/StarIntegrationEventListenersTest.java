@@ -6,8 +6,8 @@ import de.innovationhub.prox.modules.project.ProjectFixtures;
 import de.innovationhub.prox.modules.project.ProjectIntegrationTest;
 import de.innovationhub.prox.modules.project.domain.project.InterestedUser;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
-import de.innovationhub.prox.modules.user.contract.ProxUserStarredProjectIntegrationEvent;
-import de.innovationhub.prox.modules.user.contract.ProxUserUnstarredProjectIntegrationEvent;
+import de.innovationhub.prox.modules.user.contract.star.ProjectStarredIntegrationEvent;
+import de.innovationhub.prox.modules.user.contract.star.ProjectUnstarredIntegrationEvent;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ class StarIntegrationEventListenersTest extends ProjectIntegrationTest {
     var userId = UUID.randomUUID();
     projectRepository.save(project);
 
-    eventPublisher.publishEvent(new ProxUserStarredProjectIntegrationEvent(userId, project.getId()));
+    eventPublisher.publishEvent(new ProjectStarredIntegrationEvent(userId, project.getId()));
 
     var updatedProject = projectRepository.findById(project.getId()).get();
     assertThat(updatedProject.getInterestedUsers())
@@ -41,7 +41,7 @@ class StarIntegrationEventListenersTest extends ProjectIntegrationTest {
     project.stateInterest(new InterestedUser(userId));
     projectRepository.save(project);
 
-    eventPublisher.publishEvent(new ProxUserUnstarredProjectIntegrationEvent(userId, project.getId()));
+    eventPublisher.publishEvent(new ProjectUnstarredIntegrationEvent(userId, project.getId()));
 
     var updatedProject = projectRepository.findById(project.getId()).get();
     assertThat(updatedProject.getInterestedUsers())

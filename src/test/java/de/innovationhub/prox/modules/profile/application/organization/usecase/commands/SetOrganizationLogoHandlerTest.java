@@ -13,7 +13,7 @@ import de.innovationhub.prox.infra.storage.StorageProvider;
 import de.innovationhub.prox.modules.profile.OrganizationFixtures;
 import de.innovationhub.prox.modules.profile.domain.organization.Organization;
 import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRepository;
-import de.innovationhub.prox.modules.user.contract.AuthenticationFacade;
+import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;

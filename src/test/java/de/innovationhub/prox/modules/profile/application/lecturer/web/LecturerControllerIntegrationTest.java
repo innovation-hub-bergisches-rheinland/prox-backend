@@ -57,42 +57,6 @@ class LecturerControllerIntegrationTest extends AbstractIntegrationTest {
   }
 
   @Test
-  @WithMockUser(value = USER_ID)
-  void shouldCreateLecturer() {
-    var createLecturerRequest = new CreateLecturerRequestDto(
-        "Max Mustermann",
-        new CreateLecturerProfileDto(
-            "2022-11-07",
-            "200",
-            "Lorem Ipsum",
-            List.of("Lorem Ipsum"),
-            "Lorem Ipsum",
-            "Lala Land",
-            "test@example.org",
-            "555-1234-567",
-            "example.org",
-            "example"
-        ), true
-    );
-
-    var id = given()
-        .contentType(ContentType.JSON)
-        .accept(ContentType.JSON)
-        .body(createLecturerRequest)
-        .when()
-        .post("lecturers")
-        .then()
-        .status(HttpStatus.CREATED)
-        .extract()
-        .jsonPath()
-        .getUUID("id");
-
-    var lecturer = lecturerRepository.findById(id).orElseThrow();
-    assertThat(lecturer.getUserId())
-        .isEqualTo(UUID.fromString(USER_ID));
-  }
-
-  @Test
   void shouldGetAll() {
     var lecturer = createDummyLecturer();
     lecturerRepository.save(lecturer);

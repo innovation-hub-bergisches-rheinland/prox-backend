@@ -15,7 +15,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 
 @ApplicationComponent
 @RequiredArgsConstructor
-public class KeycloakEventListener {
+public class KeycloakVerifyEmailEventListener {
 
   private final AssignProfessorGroup assignGroup;
 

@@ -20,7 +20,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-class KeycloakEventListenerIntegrationTest extends AbstractIntegrationTest {
+class KeycloakGroupAddedEventListenerIntegrationTest extends AbstractIntegrationTest {
 
   private static final String ROUTING_KEY_GROUP_ADD = "KK.EVENT.ADMIN.test-realm.SUCCESS.GROUP_MEMBERSHIP.CREATE";
 

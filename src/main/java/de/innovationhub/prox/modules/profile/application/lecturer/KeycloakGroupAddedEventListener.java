@@ -20,7 +20,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 
 @ApplicationComponent
 @RequiredArgsConstructor
-public class KeycloakEventListener {
+public class KeycloakGroupAddedEventListener {
 
   private final CreateLecturerHandler createLecturer;
   private final ObjectMapper objectMapper;

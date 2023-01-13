@@ -3,6 +3,7 @@ package de.innovationhub.prox.modules.user.application.user;
 import de.innovationhub.prox.config.MessagingConfig;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.user.application.user.usecase.command.AssignProfessorGroup;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.events.Event;
 import org.keycloak.events.EventType;
@@ -18,6 +19,8 @@ import org.springframework.messaging.handler.annotation.Payload;
 public class KeycloakVerifyEmailEventListener {
 
   private final AssignProfessorGroup assignGroup;
+  private static final List<String> PROFESSOR_EMAIL_PATTERNS = List.of("@th-koeln.de",
+      "@fh-koeln.de");
 
   @RabbitListener(bindings = {
       @QueueBinding(
@@ -33,6 +36,15 @@ public class KeycloakVerifyEmailEventListener {
   public void handleGroupAdded(@Payload Event event) {
     if (event.getType() != EventType.VERIFY_EMAIL) {
       throw new RuntimeException("Invalid resource type received: " + event.getType());
+    }
+
+    var email = event.getDetails().get("email");
+    if (email == null) {
+      return;
+    }
+
+    if (PROFESSOR_EMAIL_PATTERNS.stream().noneMatch(email::endsWith)) {
+      return;
     }
 
     assignGroup.handle(event.getUserId());

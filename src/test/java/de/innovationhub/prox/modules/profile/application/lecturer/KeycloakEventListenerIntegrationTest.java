@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.config.MessagingConfig;
-import de.innovationhub.prox.modules.profile.application.lecturer.event.incoming.KeycloakAdminEventMq;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
 import de.innovationhub.prox.modules.user.contract.user.ProxUserView;
 import de.innovationhub.prox.modules.user.contract.user.UserFacade;
@@ -14,6 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.keycloak.events.admin.AdminEvent;
 import org.keycloak.events.admin.OperationType;
 import org.keycloak.events.admin.ResourceType;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -59,8 +59,8 @@ class KeycloakEventListenerIntegrationTest extends AbstractIntegrationTest {
     });
   }
 
-  public KeycloakAdminEventMq createGroupAddedEvent(UUID userId, String group) {
-    var event = new KeycloakAdminEventMq();
+  public AdminEvent createGroupAddedEvent(UUID userId, String group) {
+    var event = new AdminEvent();
     event.setResourceType(ResourceType.GROUP_MEMBERSHIP);
     event.setOperationType(OperationType.CREATE);
     event.setResourcePath("users/" + userId + "/groups/" + UUID.randomUUID());

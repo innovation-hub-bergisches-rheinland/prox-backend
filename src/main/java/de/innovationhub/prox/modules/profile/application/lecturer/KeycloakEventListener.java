@@ -4,10 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.innovationhub.prox.config.MessagingConfig;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
-import de.innovationhub.prox.modules.profile.application.lecturer.event.incoming.KeycloakAdminEventMq;
 import de.innovationhub.prox.modules.profile.application.lecturer.usecase.commands.CreateLecturerHandler;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.keycloak.events.admin.AdminEvent;
 import org.keycloak.events.admin.OperationType;
 import org.keycloak.events.admin.ResourceType;
 import org.keycloak.representations.idm.GroupRepresentation;
@@ -36,7 +36,7 @@ public class KeycloakEventListener {
           key = MessagingConfig.CREATE_GROUP_MEMBERSHIP_KEY
       )
   })
-  public void handleGroupAdded(@Payload KeycloakAdminEventMq event) throws JsonProcessingException {
+  public void handleGroupAdded(@Payload AdminEvent event) throws JsonProcessingException {
     if (event.getResourceType() != ResourceType.GROUP_MEMBERSHIP) {
       throw new RuntimeException("Invalid resource type received: " + event.getResourceType());
     }

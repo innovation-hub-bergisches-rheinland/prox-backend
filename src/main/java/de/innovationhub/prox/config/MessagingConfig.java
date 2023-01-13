@@ -17,7 +17,9 @@ public class MessagingConfig {
   public static final String ERROR_EXCHANGE_NAME = "error";
   public static final String DEAD_LETTER_QUEUE_NAME = "dlt";
   public static final String CREATE_GROUP_MEMBERSHIP_KEY = "KK.EVENT.ADMIN.*.SUCCESS.GROUP_MEMBERSHIP.CREATE";
+  public static final String VERIFY_EMAIL_KEY = "KK.EVENT.CLIENT.*.SUCCESS.*.VERIFY_EMAIL";
   public static final String GROUP_ADDED_QUEUE_NAME = "prox-group-added";
+  public static final String VERIFY_EMAIL_QUEUE_NAME = "prox-verify-email";
   public static final String X_MESSAGE_TTL = "x-message-ttl";
   public static final String X_QUEUE_EXPIRES = "x-expires";
   public static final String X_DEAD_LETTER_EXCHANGE = "x-dead-letter-exchange";

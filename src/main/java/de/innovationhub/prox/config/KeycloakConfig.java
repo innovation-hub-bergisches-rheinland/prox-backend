@@ -14,6 +14,9 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 public class KeycloakConfig {
 
+  public static final String PROFESSOR_GROUP = "professor";
+
+
   @Value("${keycloak.credentials.secret}")
   private String secret;
   @Value("${keycloak.client-id}")

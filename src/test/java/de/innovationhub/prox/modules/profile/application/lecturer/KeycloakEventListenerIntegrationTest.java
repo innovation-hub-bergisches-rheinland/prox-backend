@@ -17,9 +17,14 @@ import org.keycloak.events.admin.OperationType;
 import org.keycloak.events.admin.ResourceType;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-// TODO: Flaky because of MockBean
+// TODO: This is necessary because we're trying to mock a bean that is created by the parent class
+@SpringBootTest
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 class KeycloakEventListenerIntegrationTest extends AbstractIntegrationTest {
 
   private static final String ROUTING_KEY_GROUP_ADD = "KK.EVENT.ADMIN.test-realm.SUCCESS.GROUP_MEMBERSHIP.CREATE";

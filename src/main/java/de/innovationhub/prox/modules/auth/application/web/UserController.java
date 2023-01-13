@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.auth.application.web;
 
-import de.innovationhub.prox.modules.auth.contract.KeycloakUserFacade;
+import de.innovationhub.prox.modules.auth.application.usecase.queries.SearchUserHandler;
 import de.innovationhub.prox.modules.auth.contract.KeycloakUserView;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -17,13 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Tag(name = "User", description = "User API")
 public class UserController {
-  private final KeycloakUserFacade keycloakUserFacade;
+
+  private final SearchUserHandler search;
 
   @GetMapping("search")
   @Operation(security = {
       @SecurityRequirement(name = "oidc")
   })
   public List<KeycloakUserView> find(@RequestParam("q") String searchQuery) {
-    return keycloakUserFacade.search(searchQuery);
+    return search.handle(searchQuery);
   }
 }

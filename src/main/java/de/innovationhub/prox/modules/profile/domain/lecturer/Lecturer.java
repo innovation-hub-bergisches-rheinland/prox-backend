@@ -28,7 +28,7 @@ public class Lecturer extends UserProfile {
   private LecturerProfileInformation profile;
 
   public Lecturer(UUID userId, String name) {
-    super(UUID.randomUUID(), false, userId, name);
+    super(userId, false, userId, name);
   }
 
   @Default

@@ -3,7 +3,7 @@ package de.innovationhub.prox.modules.profile.domain.lecturer;
 import de.innovationhub.prox.Default;
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerCreated;
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerProfileUpdated;
-import de.innovationhub.prox.modules.profile.domain.user.ProxManagedUser;
+import de.innovationhub.prox.modules.profile.domain.user.UserProfile;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import java.util.UUID;
@@ -22,7 +22,7 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = false)
 @Entity
-public class Lecturer extends ProxManagedUser {
+public class Lecturer extends UserProfile {
 
   @Embedded
   private LecturerProfileInformation profile;

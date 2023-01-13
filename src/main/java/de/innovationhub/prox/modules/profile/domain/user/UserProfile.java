@@ -25,7 +25,8 @@ import lombok.NoArgsConstructor;
 // @Inheritance(strategy = InheritanceType.)
 // @Entity
 @MappedSuperclass
-public abstract class ProxManagedUser extends AbstractAggregateRoot {
+public abstract class UserProfile extends AbstractAggregateRoot {
+
   @Id
   private UUID id;
   private Boolean visibleInPublicSearch = false;
@@ -35,13 +36,12 @@ public abstract class ProxManagedUser extends AbstractAggregateRoot {
 
   private String name;
 
-
   @ElementCollection
   private Set<UUID> tags = new HashSet<>();
 
   private String avatarKey;
 
-  public ProxManagedUser(UUID id, Boolean visibleInPublicSearch, UUID userId, String name) {
+  public UserProfile(UUID id, Boolean visibleInPublicSearch, UUID userId, String name) {
     this.id = id;
     this.visibleInPublicSearch = visibleInPublicSearch;
     this.userId = userId;

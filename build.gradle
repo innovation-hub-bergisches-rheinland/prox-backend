@@ -1,6 +1,5 @@
 plugins {
-  id 'org.springframework.boot' version '3.0.1'
-  id 'io.spring.dependency-management' version '1.1.0'
+  id 'spring-conventions'
   id 'java'
   id "java-conventions"
   id "mapstruct-conventions"
@@ -23,13 +22,7 @@ ext {
   set('springdocVersion', "2.0.2")
 }
 
-springBoot {
-  buildInfo()
-}
-
 dependencies {
-  annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
-
   implementation project(":modules:commons")
 
   implementation "com.google.code.findbugs:annotations:3.0.1u2"

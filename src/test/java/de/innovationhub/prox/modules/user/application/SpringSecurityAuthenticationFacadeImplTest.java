@@ -7,7 +7,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.modules.commons.application.exception.UnauthenticatedException;
+import de.innovationhub.prox.modules.user.domain.ProxUser;
+import de.innovationhub.prox.modules.user.domain.ProxUserRepository;
 import java.util.Collection;
+import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,9 +25,13 @@ class SpringSecurityAuthenticationFacadeImplTest extends AbstractIntegrationTest
   @Autowired
   private SpringSecurityAuthenticationFacadeImpl authenticationFacade;
 
+  @Autowired
+  private ProxUserRepository userRepository;
+
   @Test
   void shouldThrowWhenUnauthenticated() {
-    assertThrows(UnauthenticatedException.class, () -> authenticationFacade.currentAuthenticatedId());
+    assertThrows(UnauthenticatedException.class,
+        () -> authenticationFacade.currentAuthenticatedId());
   }
 
   @Test
@@ -54,7 +61,21 @@ class SpringSecurityAuthenticationFacadeImplTest extends AbstractIntegrationTest
     var context = SecurityContextHolder.getContext();
     context.setAuthentication(token);
 
-    assertEquals("0d77461b-748e-4f1d-891a-2749f9746018", authenticationFacade.currentAuthenticatedId().toString());
+    assertEquals("0d77461b-748e-4f1d-891a-2749f9746018",
+        authenticationFacade.currentAuthenticatedId().toString());
     assertThat(authenticationFacade.getAuthentication()).isEqualTo(token);
+  }
+
+  @Test
+  @WithMockUser(username = "5f230652-c1d7-40f5-b076-f0a9baa684dd")
+  void shouldReturnProxUser() {
+    UUID id = UUID.fromString("5f230652-c1d7-40f5-b076-f0a9baa684dd");
+    var user = ProxUser.register(id);
+    userRepository.save(user);
+
+    assertThat(authenticationFacade.getAuthenticatedUser())
+        .satisfies(usr -> {
+          assertThat(usr.id()).isEqualTo(id);
+        });
   }
 }

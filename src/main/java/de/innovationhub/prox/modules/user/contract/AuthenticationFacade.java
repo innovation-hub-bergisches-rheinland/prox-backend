@@ -1,6 +1,5 @@
 package de.innovationhub.prox.modules.user.contract;
 
-import de.innovationhub.prox.modules.user.domain.ProxUser;
 import java.util.UUID;
 import org.springframework.security.core.Authentication;
 
@@ -9,5 +8,5 @@ public interface AuthenticationFacade {
 
   Authentication getAuthentication();
 
-  ProxUser getAuthenticatedUser();
+  ProxUserView getAuthenticatedUser();
 }

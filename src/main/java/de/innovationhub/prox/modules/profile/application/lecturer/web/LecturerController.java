@@ -13,6 +13,7 @@ import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.Lectur
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.LecturerDtoAssembler;
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.SetLecturerTagsRequestDto;
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.SetLecturerTagsResponseDto;
+import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -48,6 +49,7 @@ public class LecturerController {
   private final FilterLecturerHandler filter;
   private final SearchLecturerHandler search;
   private final LecturerDtoAssembler dtoAssembler;
+  private final AuthenticationFacade auth;
 
   @GetMapping
   public ResponseEntity<Page<LecturerDto>> getAll(Pageable pageable) {
@@ -74,7 +76,7 @@ public class LecturerController {
   public ResponseEntity<LecturerDto> create(
       @RequestBody CreateLecturerRequestDto createLecturerRequestDto
   ) {
-    var lecturer = create.handle(createLecturerRequestDto);
+    var lecturer = create.handle(auth.currentAuthenticatedId(), createLecturerRequestDto);
     var dto = dtoAssembler.toDto(lecturer);
     return ResponseEntity.status(HttpStatus.CREATED).body(dto);
   }

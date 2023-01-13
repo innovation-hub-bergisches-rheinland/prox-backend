@@ -8,6 +8,7 @@ import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
 import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
 import jakarta.transaction.Transactional;
 import java.util.Objects;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 
 @ApplicationComponent
@@ -18,12 +19,10 @@ public class CreateLecturerHandler {
   private final AuthenticationFacade authenticationFacade;
 
   @Transactional
-  public Lecturer handle(CreateLecturerRequestDto dto) {
+  public Lecturer handle(UUID userId, CreateLecturerRequestDto dto) {
     Objects.requireNonNull(dto);
 
-    var user = authenticationFacade.currentAuthenticatedId();
-
-    var lecturer = Lecturer.create(user, dto.name());
+    var lecturer = Lecturer.create(userId, dto.name());
     var profile = new LecturerProfileInformation();
     var dtoProfile = dto.profile();
     if (dtoProfile != null) {

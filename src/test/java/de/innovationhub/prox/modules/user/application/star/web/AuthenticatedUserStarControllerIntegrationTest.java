@@ -43,7 +43,7 @@ class AuthenticatedUserStarControllerIntegrationTest extends AbstractIntegration
   }
 
   private ProxUser createDummyUser(UUID id) {
-    return new ProxUser(id, "Xavier Tester");
+    return new ProxUser(id, "Xavier Tester", "xavier.tester@example.com");
   }
 
   @Test

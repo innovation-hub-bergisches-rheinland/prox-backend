@@ -29,7 +29,7 @@ class CreateLecturerHandlerTest {
 
   @Test
   void shouldThrowOnNull() {
-    assertThrows(NullPointerException.class, () -> handler.handle(null));
+    assertThrows(NullPointerException.class, () -> handler.handle(UUID.randomUUID(), null));
   }
 
   @Test
@@ -52,7 +52,7 @@ class CreateLecturerHandlerTest {
 
     when(lecturerRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
-    var lecturer = handler.handle(request);
+    var lecturer = handler.handle(authenticatedUserId, request);
 
     assertThat(lecturer.getUserId()).isEqualTo(authenticatedUserId);
     assertThat(lecturer.getName()).isEqualTo("Max Mustermann");

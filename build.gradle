@@ -46,6 +46,7 @@ dependencies {
 
   implementation "org.flywaydb:flyway-core"
 
+  implementation "org.keycloak:keycloak-server-spi-private:20.0.2"
   implementation "org.keycloak:keycloak-admin-client:20.0.2"
   // AWS
   implementation "com.amazonaws:aws-java-sdk-s3:1.12.380"
@@ -60,6 +61,7 @@ dependencies {
 
   runtimeOnly 'org.postgresql:postgresql'
 
+  testImplementation 'org.awaitility:awaitility:4.2.0'
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'org.springframework.amqp:spring-rabbit-test'
   testImplementation 'org.springframework.security:spring-security-test'

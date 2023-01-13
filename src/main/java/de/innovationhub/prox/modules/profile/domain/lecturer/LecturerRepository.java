@@ -1,6 +1,7 @@
 package de.innovationhub.prox.modules.profile.domain.lecturer;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +10,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface LecturerRepository extends JpaRepository<Lecturer, UUID> {
+
+  @Query("select l from Lecturer l where l.userId = ?1")
+  Optional<Lecturer> findByUserId(UUID id);
 
   @Override
   @Query("select l from Lecturer l where l.visibleInPublicSearch = true order by l.name asc")

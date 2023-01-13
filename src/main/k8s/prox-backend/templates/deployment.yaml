@@ -56,13 +56,23 @@ spec:
             - name: AWS_SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.config.existingSecret | default (include "prox-backend.fullname" .) }}
+                  name: { { .Values.config.existingSecret | default (include "prox-backend.fullname" .) } }
                   key: awsSecretKey
             - name: AWS_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.config.existingSecret | default (include "prox-backend.fullname" .) }}
+                  name: { { .Values.config.existingSecret | default (include "prox-backend.fullname" .) } }
                   key: awsAccessKey
+            - name: RABBITMQ_USER
+              valueFrom:
+                secretKeyRef:
+                  name: { { .Values.config.existingSecret | default (include "prox-backend.fullname" .) } }
+                  key: rabbitMqUser
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: { { .Values.config.existingSecret | default (include "prox-backend.fullname" .) } }
+                  key: rabbitMqPassword
           livenessProbe:
             # slow java
             initialDelaySeconds: 90

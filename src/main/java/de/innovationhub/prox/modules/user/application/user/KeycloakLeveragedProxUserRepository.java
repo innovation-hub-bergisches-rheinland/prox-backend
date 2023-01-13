@@ -29,7 +29,7 @@ public class KeycloakLeveragedProxUserRepository implements ProxUserRepository {
     try {
       var userRepresentation = this.usersResource.get(id.toString()).toRepresentation();
       return Optional.of(userRepresentation)
-          .map(rep -> new ProxUser(UUID.fromString(rep.getId()), extractName(rep)));
+          .map(rep -> new ProxUser(UUID.fromString(rep.getId()), extractName(rep), rep.getEmail()));
     } catch (ProcessingException e) {
       if(e.getCause() instanceof javax.ws.rs.NotFoundException) {
         return Optional.empty();
@@ -51,7 +51,7 @@ public class KeycloakLeveragedProxUserRepository implements ProxUserRepository {
   @Override
   public List<ProxUser> search(String query) {
     return this.realmResource.users().search(query, 0, 100, true).stream()
-        .map(u -> new ProxUser(UUID.fromString(u.getId()), extractName(u)))
+        .map(u -> new ProxUser(UUID.fromString(u.getId()), extractName(u), u.getEmail()))
         .toList();
   }
 

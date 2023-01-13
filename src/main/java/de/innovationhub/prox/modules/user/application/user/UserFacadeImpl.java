@@ -17,6 +17,6 @@ public class UserFacadeImpl implements UserFacade {
   @Override
   public Optional<ProxUserView> findById(UUID id) {
     return findById.handle(id)
-        .map(u -> new ProxUserView(u.getId(), u.getName()));
+        .map(u -> new ProxUserView(u.getId(), u.getName(), u.getEmail()));
   }
 }

@@ -25,7 +25,7 @@ public record LecturerProfileUpdated(
         profile.getAffiliation(),
         profile.getSubject(),
         profile.getVita(),
-        new ArrayList<>(profile.getPublications()),
+        profile.getPublications() != null ? new ArrayList<>(profile.getPublications()) : null,
         profile.getRoom(),
         profile.getConsultationHour(),
         profile.getEmail(),

@@ -35,6 +35,12 @@ spring:
   mvc:
     problemdetails:
       enabled: true
+  rabbitmq:
+    host: ${RABBITMQ_HOST:rabbitmq}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USER:admin}
+    password: ${RABBITMQ_PASSWORD:admin}
+    virtual-host: "/"
   security:
     oauth2:
       resourceserver:

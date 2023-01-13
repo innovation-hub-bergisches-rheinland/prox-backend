@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.keycloak.events.admin.OperationType;
 import org.keycloak.events.admin.ResourceType;
 import org.keycloak.representations.idm.GroupRepresentation;
+import org.springframework.amqp.rabbit.annotation.Argument;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
@@ -30,7 +31,11 @@ public class KeycloakEventListener {
 
   @RabbitListener(bindings = {
       @QueueBinding(
-          value = @Queue(value = MessagingConfig.GROUP_ADDED_QUEUE_NAME),
+          value = @Queue(value = MessagingConfig.GROUP_ADDED_QUEUE_NAME, arguments = {
+              // TODO: Is it possible to define that globally?
+              // TODO: We might refine the strategy here. E.g. we could use automatic requeing
+              @Argument(name = MessagingConfig.X_DEAD_LETTER_EXCHANGE, value = MessagingConfig.ERROR_EXCHANGE_NAME)
+          }),
           exchange = @Exchange(value = MessagingConfig.TOPIC_EXCHANGE_NAME, type = "topic"),
           key = MessagingConfig.CREATE_GROUP_MEMBERSHIP_KEY
       )

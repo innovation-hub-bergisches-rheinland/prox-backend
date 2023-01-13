@@ -41,6 +41,10 @@ spring:
     username: ${RABBITMQ_USER:admin}
     password: ${RABBITMQ_PASSWORD:admin}
     virtual-host: "/"
+    listener:
+      simple:
+        # TODO: We might need a more sophisticated approach
+        default-requeue-rejected: false
   security:
     oauth2:
       resourceserver:

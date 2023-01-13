@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
-import de.innovationhub.prox.config.MessagingConfig;
+import de.innovationhub.prox.infra.rabbitmq.MessagingConfig;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
 import de.innovationhub.prox.modules.user.contract.user.ProxUserView;
 import de.innovationhub.prox.modules.user.contract.user.UserFacade;

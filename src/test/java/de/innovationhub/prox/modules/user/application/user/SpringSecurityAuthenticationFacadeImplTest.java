@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.modules.commons.application.exception.UnauthenticatedException;
-import de.innovationhub.prox.modules.user.application.user.SpringSecurityAuthenticationFacadeImpl;
 import de.innovationhub.prox.modules.user.domain.user.ProxUserRepository;
 import java.util.Collection;
 import org.junit.jupiter.api.Test;

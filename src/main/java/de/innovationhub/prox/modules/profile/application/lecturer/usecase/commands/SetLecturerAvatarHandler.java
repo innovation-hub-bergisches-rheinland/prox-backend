@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.profile.application.lecturer.usecase.commands;
 
-import de.innovationhub.prox.infra.storage.StorageProvider;
+import de.innovationhub.prox.infra.aws.s3.StorageProvider;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.profile.application.lecturer.exception.LecturerNotFoundException;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;

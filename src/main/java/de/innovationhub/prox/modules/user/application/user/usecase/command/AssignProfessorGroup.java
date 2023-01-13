@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.user.application.user.usecase.command;
 
-import de.innovationhub.prox.config.KeycloakConfig;
+import de.innovationhub.prox.infra.keycloak.KeycloakConfig;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.profile.application.lecturer.web.dto;
 
-import de.innovationhub.prox.infra.storage.StorageProvider;
+import de.innovationhub.prox.infra.aws.s3.StorageProvider;
 import de.innovationhub.prox.modules.profile.application.lecturer.LecturerPermissionEvaluator;
 import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;

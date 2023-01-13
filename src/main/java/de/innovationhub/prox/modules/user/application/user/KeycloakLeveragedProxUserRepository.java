@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.user.application.user;
 
-import de.innovationhub.prox.config.CacheConfig;
+import de.innovationhub.prox.infra.cache.CacheConfig;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.user.domain.user.ProxUser;
 import de.innovationhub.prox.modules.user.domain.user.ProxUserRepository;

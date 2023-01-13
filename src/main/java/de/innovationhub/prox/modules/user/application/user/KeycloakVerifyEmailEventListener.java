@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.user.application.user;
 
-import de.innovationhub.prox.config.MessagingConfig;
+import de.innovationhub.prox.infra.rabbitmq.MessagingConfig;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.user.application.user.usecase.command.AssignProfessorGroup;
 import java.util.List;

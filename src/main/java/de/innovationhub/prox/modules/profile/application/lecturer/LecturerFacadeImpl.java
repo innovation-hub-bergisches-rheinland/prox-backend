@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.profile.application.lecturer;
 
-import de.innovationhub.prox.config.CacheConfig;
+import de.innovationhub.prox.infra.cache.CacheConfig;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.profile.application.lecturer.usecase.queries.FindAllLecturerByIdsHandler;
 import de.innovationhub.prox.modules.profile.application.lecturer.usecase.queries.FindLecturerHandler;

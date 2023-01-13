@@ -20,7 +20,6 @@ services:
       - ./src/main/docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
     command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
   rabbitmq:
-    container_name: rabbitmq
     image: rabbitmq:3-management-alpine
     ports:
       - "5672:5672"

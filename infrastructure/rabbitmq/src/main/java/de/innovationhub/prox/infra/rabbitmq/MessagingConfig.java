@@ -1,4 +1,4 @@
-package de.innovationhub.prox.config;
+package de.innovationhub.prox.infra.rabbitmq;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;

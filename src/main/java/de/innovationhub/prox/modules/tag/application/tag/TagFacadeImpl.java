@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.tag.application.tag;
 
-import de.innovationhub.prox.config.CacheConfig;
+import de.innovationhub.prox.infra.cache.CacheConfig;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.tag.application.tag.usecase.queries.FindTagByIdsHandler;
 import de.innovationhub.prox.modules.tag.application.tag.usecase.queries.FindTagByNameHandler;

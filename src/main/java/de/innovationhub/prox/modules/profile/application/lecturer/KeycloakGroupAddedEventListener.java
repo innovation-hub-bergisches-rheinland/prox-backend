@@ -2,7 +2,7 @@ package de.innovationhub.prox.modules.profile.application.lecturer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.innovationhub.prox.config.MessagingConfig;
+import de.innovationhub.prox.infra.rabbitmq.MessagingConfig;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.profile.application.lecturer.usecase.commands.CreateLecturerHandler;
 import java.util.UUID;

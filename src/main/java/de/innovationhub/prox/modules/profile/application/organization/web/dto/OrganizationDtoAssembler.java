@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.profile.application.organization.web.dto;
 
-import de.innovationhub.prox.infra.storage.StorageProvider;
+import de.innovationhub.prox.infra.aws.s3.StorageProvider;
 import de.innovationhub.prox.modules.profile.application.organization.OrganizationPermissionEvaluator;
 import de.innovationhub.prox.modules.profile.domain.organization.Membership;
 import de.innovationhub.prox.modules.profile.domain.organization.Organization;

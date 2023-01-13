@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.profile.application.organization;
 
-import de.innovationhub.prox.config.CacheConfig;
+import de.innovationhub.prox.infra.cache.CacheConfig;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.profile.application.organization.usecase.queries.FindOrganizationHandler;
 import de.innovationhub.prox.modules.profile.contract.OrganizationFacade;

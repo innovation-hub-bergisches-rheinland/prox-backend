@@ -1,4 +1,4 @@
-package de.innovationhub.prox.config;
+package de.innovationhub.prox.infra.cache;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 import java.util.List;

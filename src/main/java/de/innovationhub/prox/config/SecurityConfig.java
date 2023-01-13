@@ -1,5 +1,6 @@
 package de.innovationhub.prox.config;
 
+import de.innovationhub.prox.infra.keycloak.KeycloakGrantedAuthoritiesConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

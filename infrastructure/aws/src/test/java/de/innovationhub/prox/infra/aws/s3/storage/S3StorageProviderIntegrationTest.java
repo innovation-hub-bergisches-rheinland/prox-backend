@@ -1,23 +1,30 @@
-package de.innovationhub.prox.infra.storage;
+package de.innovationhub.prox.infra.aws.s3.storage;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 import com.amazonaws.services.s3.AmazonS3;
-import de.innovationhub.prox.AbstractIntegrationTest;
+import de.innovationhub.prox.infra.aws.AwsConfig;
+import de.innovationhub.prox.infra.aws.AwsConfigurationProperties;
+import de.innovationhub.prox.infra.aws.s3.S3StorageProvider;
 import java.io.IOException;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 
 // TODO: We probably do not need to spin up spring boot at all. Re-evaluate test slices
-class S3StorageProviderIntegrationTest extends AbstractIntegrationTest {
+@SpringBootTest
+@ContextConfiguration(classes = {S3StorageProvider.class, AwsConfig.class})
+@EnableConfigurationProperties(AwsConfigurationProperties.class)
+class S3StorageProviderIntegrationTest extends AbstractLocalStackTest {
+
   @Autowired
   S3StorageProvider s3StorageProvider;
-
   @Autowired
   AmazonS3 s3Client;
-
   @Autowired
   AwsConfigurationProperties config;
 

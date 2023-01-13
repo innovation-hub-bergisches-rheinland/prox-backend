@@ -1,4 +1,4 @@
-package de.innovationhub.prox.config;
+package de.innovationhub.prox.infra.keycloak;
 
 import static org.keycloak.OAuth2Constants.CLIENT_CREDENTIALS;
 
@@ -7,6 +7,7 @@ import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
 import org.keycloak.admin.client.resource.RealmResource;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -27,6 +28,7 @@ public class KeycloakConfig {
   private String realm;
 
   @Bean
+  @ConditionalOnMissingBean
   public Keycloak keycloak() {
     return KeycloakBuilder.builder()
         .grantType(CLIENT_CREDENTIALS)
@@ -38,6 +40,7 @@ public class KeycloakConfig {
   }
 
   @Bean
+  @ConditionalOnMissingBean
   public RealmResource realmResource(Keycloak keycloak) {
     return keycloak.realm(realm);
   }

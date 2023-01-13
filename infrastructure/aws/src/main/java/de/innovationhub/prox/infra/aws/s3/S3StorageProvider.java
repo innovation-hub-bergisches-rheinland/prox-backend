@@ -1,8 +1,9 @@
-package de.innovationhub.prox.infra.storage;
+package de.innovationhub.prox.infra.aws.s3;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import de.innovationhub.prox.infra.aws.AwsConfigurationProperties;
 import java.io.ByteArrayInputStream;
 import org.springframework.stereotype.Component;
 

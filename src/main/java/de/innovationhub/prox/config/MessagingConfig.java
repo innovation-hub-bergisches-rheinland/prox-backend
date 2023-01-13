@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MessagingConfig {
 
-  public static final String TOPIC_EXCHANGE_NAME = "amqp.topic";
+  public static final String TOPIC_EXCHANGE_NAME = "amq.topic";
   public static final String ERROR_EXCHANGE_NAME = "error";
   public static final String DEAD_LETTER_QUEUE_NAME = "dlt";
   public static final String CREATE_GROUP_MEMBERSHIP_KEY = "KK.EVENT.ADMIN.*.SUCCESS.GROUP_MEMBERSHIP.CREATE";

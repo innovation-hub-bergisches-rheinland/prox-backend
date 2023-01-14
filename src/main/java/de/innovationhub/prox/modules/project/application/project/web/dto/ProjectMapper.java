@@ -1,13 +1,13 @@
 package de.innovationhub.prox.modules.project.application.project.web.dto;
 
 import de.innovationhub.prox.modules.organization.contract.OrganizationView;
-import de.innovationhub.prox.modules.profile.contract.LecturerView;
 import de.innovationhub.prox.modules.project.application.discipline.web.dto.DisciplineMapper;
 import de.innovationhub.prox.modules.project.application.module.web.dto.ModuleTypeMapper;
 import de.innovationhub.prox.modules.project.application.project.web.dto.ProjectDto.ReadProjectStatusDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.ProjectDto.ReadSupervisorDto;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.ProjectStatus;
+import de.innovationhub.prox.modules.user.contract.lecturer.LecturerView;
 import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

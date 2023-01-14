@@ -2,12 +2,12 @@ package de.innovationhub.prox.modules.project.application.project.web.dto;
 
 import de.innovationhub.prox.modules.organization.contract.OrganizationFacade;
 import de.innovationhub.prox.modules.organization.contract.OrganizationView;
-import de.innovationhub.prox.modules.profile.contract.LecturerFacade;
 import de.innovationhub.prox.modules.project.application.ProjectPermissionEvaluator;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.Supervisor;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
 import de.innovationhub.prox.modules.user.contract.account.AuthenticationFacade;
+import de.innovationhub.prox.modules.user.contract.lecturer.LecturerFacade;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

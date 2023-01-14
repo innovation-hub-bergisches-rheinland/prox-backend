@@ -4,9 +4,9 @@ import static org.mockito.Mockito.verify;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.modules.organization.domain.events.OrganizationTagged;
-import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerTagged;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectTagged;
 import de.innovationhub.prox.modules.tag.application.tagcollection.usecase.SetTagCollectionHandler;
+import de.innovationhub.prox.modules.user.domain.lecturer.events.LecturerTagged;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;

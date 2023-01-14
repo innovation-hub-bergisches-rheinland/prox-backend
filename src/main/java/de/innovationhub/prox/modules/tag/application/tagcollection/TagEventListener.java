@@ -2,9 +2,9 @@ package de.innovationhub.prox.modules.tag.application.tagcollection;
 
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.organization.domain.events.OrganizationTagged;
-import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerTagged;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectTagged;
 import de.innovationhub.prox.modules.tag.application.tagcollection.usecase.SetTagCollectionHandler;
+import de.innovationhub.prox.modules.user.domain.lecturer.events.LecturerTagged;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 

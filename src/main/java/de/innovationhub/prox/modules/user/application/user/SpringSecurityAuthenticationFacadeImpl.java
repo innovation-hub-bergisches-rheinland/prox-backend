@@ -7,11 +7,13 @@ import de.innovationhub.prox.modules.user.domain.user.ProxUserAccountRepository;
 import io.micrometer.core.lang.Nullable;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 @RequiredArgsConstructor
 @ApplicationComponent
+@Slf4j
 public class SpringSecurityAuthenticationFacadeImpl implements AuthenticationFacade {
 
   private final ProxUserAccountRepository userRepository;
@@ -24,8 +26,12 @@ public class SpringSecurityAuthenticationFacadeImpl implements AuthenticationFac
       throw new UnauthenticatedException();
     }
 
-    // Name should always be a UUID. Investigate a better way.
-    return UUID.fromString(auth.getName());
+    try {
+      return UUID.fromString(auth.getName());
+    } catch (IllegalArgumentException e) {
+      log.error("Invalid UUID in authentication: {}", auth.getName());
+      throw new UnauthenticatedException();
+    }
   }
 
   @Override

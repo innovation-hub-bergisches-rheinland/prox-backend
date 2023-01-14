@@ -15,8 +15,7 @@ public class ProjectPermissionEvaluator {
   public boolean hasPermission(Project target, Authentication authentication) {
     if(authentication == null || !authentication.isAuthenticated()) return false;
 
-    var id = UUID.fromString(authentication.getName());
-    return target.getAuthor().getUserId().equals(id);
+    return authentication.getName().equals(target.getAuthor().getUserId());
   }
 
   public boolean hasPermission(UUID projectId, Authentication authentication) {

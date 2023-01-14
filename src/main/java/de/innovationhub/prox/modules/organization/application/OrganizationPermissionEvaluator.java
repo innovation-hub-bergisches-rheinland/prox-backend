@@ -14,10 +14,16 @@ public class OrganizationPermissionEvaluator {
   private final OrganizationRepository organizationRepository;
 
   public boolean hasPermission(Organization target, Authentication authentication) {
-    if(authentication == null || !authentication.isAuthenticated()) return false;
+    if (authentication == null || !authentication.isAuthenticated()) {
+      return false;
+    }
 
-    var id = UUID.fromString(authentication.getName());
-    return target.isInRole(id, OrganizationRole.ADMIN);
+    try {
+      var id = UUID.fromString(authentication.getName());
+      return target.isInRole(id, OrganizationRole.ADMIN);
+    } catch (IllegalArgumentException e) {
+      return false;
+    }
   }
 
   public boolean hasPermission(UUID organizationId, Authentication authentication) {

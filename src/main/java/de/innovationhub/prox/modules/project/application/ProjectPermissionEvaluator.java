@@ -1,8 +1,5 @@
 package de.innovationhub.prox.modules.project.application;
 
-import de.innovationhub.prox.modules.profile.domain.organization.Organization;
-import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRepository;
-import de.innovationhub.prox.modules.profile.domain.organization.OrganizationRole;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
 import java.util.UUID;

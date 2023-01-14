@@ -3,8 +3,8 @@ package de.innovationhub.prox.modules.tag.application.tagcollection;
 import static org.mockito.Mockito.verify;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
+import de.innovationhub.prox.modules.organization.domain.events.OrganizationTagged;
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerTagged;
-import de.innovationhub.prox.modules.profile.domain.organization.events.OrganizationTagged;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectTagged;
 import de.innovationhub.prox.modules.tag.application.tagcollection.usecase.SetTagCollectionHandler;
 import java.util.List;

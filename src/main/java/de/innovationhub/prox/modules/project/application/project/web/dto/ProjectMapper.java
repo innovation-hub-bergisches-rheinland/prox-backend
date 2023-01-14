@@ -1,7 +1,7 @@
 package de.innovationhub.prox.modules.project.application.project.web.dto;
 
+import de.innovationhub.prox.modules.organization.contract.OrganizationView;
 import de.innovationhub.prox.modules.profile.contract.LecturerView;
-import de.innovationhub.prox.modules.profile.contract.OrganizationView;
 import de.innovationhub.prox.modules.project.application.discipline.web.dto.DisciplineMapper;
 import de.innovationhub.prox.modules.project.application.module.web.dto.ModuleTypeMapper;
 import de.innovationhub.prox.modules.project.application.project.web.dto.ProjectDto.ReadProjectStatusDto;

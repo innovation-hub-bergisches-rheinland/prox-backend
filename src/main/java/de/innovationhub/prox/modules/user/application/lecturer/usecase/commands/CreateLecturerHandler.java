@@ -1,7 +1,7 @@
 package de.innovationhub.prox.modules.user.application.lecturer.usecase.commands;
 
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
-import de.innovationhub.prox.modules.user.contract.account.UserAccountFacade;
+import de.innovationhub.prox.modules.user.contract.account.UserFacade;
 import de.innovationhub.prox.modules.user.domain.lecturer.Lecturer;
 import de.innovationhub.prox.modules.user.domain.lecturer.LecturerProfileInformation;
 import de.innovationhub.prox.modules.user.domain.lecturer.LecturerRepository;
@@ -15,12 +15,12 @@ import lombok.RequiredArgsConstructor;
 public class CreateLecturerHandler {
 
   private final LecturerRepository lecturerRepository;
-  private final UserAccountFacade userAccountFacade;
+  private final UserFacade userFacade;
 
   @Transactional
   public Lecturer handle(UUID userId) {
     Objects.requireNonNull(userId);
-    var user = userAccountFacade.findById(userId).orElseThrow();
+    var user = userFacade.findById(userId).orElseThrow();
 
     var lecturer = Lecturer.create(userId, user.name());
 

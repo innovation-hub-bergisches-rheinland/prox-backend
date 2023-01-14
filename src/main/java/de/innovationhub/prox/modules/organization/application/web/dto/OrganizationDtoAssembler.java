@@ -6,8 +6,8 @@ import de.innovationhub.prox.modules.organization.domain.Membership;
 import de.innovationhub.prox.modules.organization.domain.Organization;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
 import de.innovationhub.prox.modules.user.contract.account.AuthenticationFacade;
-import de.innovationhub.prox.modules.user.contract.account.ProxUserAccountView;
-import de.innovationhub.prox.modules.user.contract.account.UserAccountFacade;
+import de.innovationhub.prox.modules.user.contract.account.ProxUserView;
+import de.innovationhub.prox.modules.user.contract.account.UserFacade;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class OrganizationDtoAssembler {
   private final TagFacade tagFacade;
   private final StorageProvider storageProvider;
   private final OrganizationDtoMapper organizationDtoMapper;
-  private final UserAccountFacade userAccountFacade;
+  private final UserFacade userFacade;
 
   // TODO: EXPERIMENTAL
   private final OrganizationPermissionEvaluator organizationPermissionEvaluator;
@@ -49,8 +49,8 @@ public class OrganizationDtoAssembler {
   public MembershipDto toDto(Membership membership) {
     String name = null;
     try {
-      var userView = userAccountFacade.findById(membership.getMemberId());
-      name = userView.map(ProxUserAccountView::name).orElse(null);
+      var userView = userFacade.findById(membership.getMemberId());
+      name = userView.map(ProxUserView::name).orElse(null);
     }
     catch (RuntimeException e) {
       log.error("Unable to fetch user displayName for user with id {}", membership.getMemberId(),

@@ -63,7 +63,7 @@ class UpdateLecturerProfileInformationHandlerTest {
 
     var lecturerArgumentCaptor = ArgumentCaptor.forClass(Lecturer.class);
     verify(lecturerRepository).save(lecturerArgumentCaptor.capture());
-    assertThat(lecturerArgumentCaptor.getValue().getName()).isEqualTo(dto.name());
+    assertThat(lecturerArgumentCaptor.getValue().getDisplayName()).isEqualTo(dto.name());
     assertThat(lecturerArgumentCaptor.getValue().getProfile().getAffiliation()).isEqualTo(
         dto.profile().affiliation());
     assertThat(lecturerArgumentCaptor.getValue().getProfile().getSubject()).isEqualTo(

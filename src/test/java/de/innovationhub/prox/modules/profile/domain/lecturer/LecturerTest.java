@@ -63,10 +63,10 @@ class LecturerTest {
     var lecturer = createDummyLecturer();
 
     // Same as the dummy lecturer
-    lecturer.setName("Max Mustermann");
+    lecturer.setDisplayName("Max Mustermann");
 
     // Unchanged
-    assertThat(lecturer.getName()).isEqualTo("Max Mustermann");
+    assertThat(lecturer.getDisplayName()).isEqualTo("Max Mustermann");
     assertThat(lecturer.getDomainEvents())
         .filteredOn(e -> e instanceof LecturerRenamed)
         .isEmpty();
@@ -76,9 +76,9 @@ class LecturerTest {
   void shouldSetName() {
     var lecturer = createDummyLecturer();
 
-    lecturer.setName("Erika Musterfrau");
+    lecturer.setDisplayName("Erika Musterfrau");
 
-    assertThat(lecturer.getName()).isEqualTo("Erika Musterfrau");
+    assertThat(lecturer.getDisplayName()).isEqualTo("Erika Musterfrau");
     assertThat(lecturer.getDomainEvents())
         .filteredOn(e -> e instanceof LecturerRenamed)
         .hasSize(1)

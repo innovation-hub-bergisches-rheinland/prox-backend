@@ -33,7 +33,7 @@ class LecturerFacadeImplIntegrationTest extends AbstractIntegrationTest {
         .isPresent()
         .get()
         .satisfies(l -> assertThat(l.id()).isEqualTo(lecturer.getId()))
-        .satisfies(l -> assertThat(l.name()).isEqualTo(lecturer.getName()));
+        .satisfies(l -> assertThat(l.displayName()).isEqualTo(lecturer.getDisplayName()));
   }
 
   @Test
@@ -46,6 +46,6 @@ class LecturerFacadeImplIntegrationTest extends AbstractIntegrationTest {
         .hasSize(1)
         .first()
         .satisfies(l -> assertThat(l.id()).isEqualTo(lecturer.getId()))
-        .satisfies(l -> assertThat(l.name()).isEqualTo(lecturer.getName()));
+        .satisfies(l -> assertThat(l.displayName()).isEqualTo(lecturer.getDisplayName()));
   }
 }

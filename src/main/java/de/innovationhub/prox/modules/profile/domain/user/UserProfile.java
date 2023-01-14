@@ -5,9 +5,12 @@ import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerAvat
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerRenamed;
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerTagged;
 import de.innovationhub.prox.modules.profile.domain.lecturer.events.LecturerVisibilityChanged;
+import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.HashSet;
@@ -20,11 +23,9 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-// TODO: Revisit Inheritance strategy. The only reason I choose a mapped superclass was to not make
-//      any changes to the database schema.
-// @Inheritance(strategy = InheritanceType.)
-// @Entity
-@MappedSuperclass
+@DiscriminatorColumn(name = "profile_type")
+@Inheritance(strategy = InheritanceType.JOINED)
+@Entity
 public abstract class UserProfile extends AuditedAggregateRoot {
 
   @Id
@@ -34,18 +35,18 @@ public abstract class UserProfile extends AuditedAggregateRoot {
   @NotNull
   private UUID userId;
 
-  private String name;
+  private String displayName;
 
   @ElementCollection
   private Set<UUID> tags = new HashSet<>();
 
   private String avatarKey;
 
-  public UserProfile(UUID id, Boolean visibleInPublicSearch, UUID userId, String name) {
+  public UserProfile(UUID id, Boolean visibleInPublicSearch, UUID userId, String displayName) {
     this.id = id;
     this.visibleInPublicSearch = visibleInPublicSearch;
     this.userId = userId;
-    this.name = name;
+    this.displayName = displayName;
   }
 
   public UUID getId() {
@@ -57,16 +58,16 @@ public abstract class UserProfile extends AuditedAggregateRoot {
     this.registerEvent(new LecturerTagged(this.id, this.tags));
   }
 
-  public void setName(String name) {
+  public void setDisplayName(String name) {
     if (name == null) {
       throw new IllegalArgumentException("Lecturer title cannot be null");
     }
-    if (this.name.equals(name)) {
+    if (this.displayName.equals(name)) {
       return;
     }
 
-    this.name = name;
-    this.registerEvent(new LecturerRenamed(this.id, this.name));
+    this.displayName = name;
+    this.registerEvent(new LecturerRenamed(this.id, this.displayName));
   }
 
   public void setAvatarKey(String avatarKey) {

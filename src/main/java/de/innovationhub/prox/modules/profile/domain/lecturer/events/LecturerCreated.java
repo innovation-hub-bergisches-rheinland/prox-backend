@@ -13,7 +13,7 @@ public record LecturerCreated(
     return new LecturerCreated(
         lecturer.getId(),
         lecturer.getUserId(),
-        lecturer.getName()
+        lecturer.getDisplayName()
     );
   }
 }

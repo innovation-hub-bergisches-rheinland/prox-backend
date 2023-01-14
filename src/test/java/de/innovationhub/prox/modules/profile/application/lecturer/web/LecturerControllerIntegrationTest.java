@@ -105,7 +105,7 @@ class LecturerControllerIntegrationTest extends AbstractIntegrationTest {
     given()
         .contentType(ContentType.JSON)
         .accept(ContentType.JSON)
-        .param("q", lecturer.getName())
+        .param("q", lecturer.getDisplayName())
         .when()
         .get("lecturers/search/findByName")
         .then()
@@ -145,7 +145,7 @@ class LecturerControllerIntegrationTest extends AbstractIntegrationTest {
         .status(HttpStatus.OK);
 
     var updatedLecturer = lecturerRepository.findById(lecturer.getId()).orElseThrow();
-    assertThat(updatedLecturer.getName()).isEqualTo("Max Mustermann");
+    assertThat(updatedLecturer.getDisplayName()).isEqualTo("Max Mustermann");
     assertThat(updatedLecturer.getProfile().getAffiliation()).isEqualTo("2022-11-07");
     assertThat(updatedLecturer.getVisibleInPublicSearch()).isFalse();
   }
@@ -200,7 +200,7 @@ class LecturerControllerIntegrationTest extends AbstractIntegrationTest {
     given()
         .contentType(ContentType.JSON)
         .accept(ContentType.JSON)
-        .param("q", lecturer.getName())
+        .param("q", lecturer.getDisplayName())
         .when()
         .get("lecturers/search/filter")
         .then()

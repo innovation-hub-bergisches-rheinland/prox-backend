@@ -23,7 +23,7 @@ public class UpdateLecturerProfileHandler {
   public Lecturer handle(UUID lecturerId, CreateLecturerRequestDto dto) {
     var lecturer = this.lecturerRepository.findById(lecturerId)
         .orElseThrow(() -> new RuntimeException("Lecturer '" + lecturerId + "' could not be found"));
-    lecturer.setName(dto.name());
+    lecturer.setDisplayName(dto.name());
 
     var profile = lecturer.getProfile();
     if (profile == null) {

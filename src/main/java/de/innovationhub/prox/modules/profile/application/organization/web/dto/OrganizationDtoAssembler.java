@@ -53,7 +53,8 @@ public class OrganizationDtoAssembler {
       name = userView.map(ProxUserView::name).orElse(null);
     }
     catch (RuntimeException e) {
-      log.error("Unable to fetch user name for user with id {}", membership.getMemberId(), e);
+      log.error("Unable to fetch user displayName for user with id {}", membership.getMemberId(),
+          e);
     }
     return organizationDtoMapper.toDto(membership, name);
   }

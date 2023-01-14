@@ -15,10 +15,10 @@ public interface LecturerRepository extends JpaRepository<Lecturer, UUID> {
   Optional<Lecturer> findByUserId(UUID id);
 
   @Override
-  @Query("select l from Lecturer l where l.visibleInPublicSearch = true order by l.name asc")
+  @Query("select l from Lecturer l where l.visibleInPublicSearch = true order by l.displayName asc")
   Page<Lecturer> findAll(Pageable pageable);
 
-  @Query("select l from Lecturer l where lower(l.name) like concat('%', lower(?1), '%') and l.visibleInPublicSearch = true order by l.name asc")
+  @Query("select l from Lecturer l where lower(l.displayName) like concat('%', lower(?1), '%') and l.visibleInPublicSearch = true order by l.displayName asc")
   Page<Lecturer> filter(String query, Pageable pageable);
 
   @Query(nativeQuery = true, value = """

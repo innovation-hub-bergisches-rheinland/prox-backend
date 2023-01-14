@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public record LecturerView(
     UUID id,
-    String name
+    String displayName
 ) implements Serializable {
 
 }

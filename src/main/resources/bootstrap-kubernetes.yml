@@ -1,6 +1,6 @@
 spring:
   application:
-    name: prox-backend # Ensure the correct application name as it is used for the kubernetes resource resolution
+    name: prox-backend # Ensure the correct application displayName as it is used for the kubernetes resource resolution
   cloud:
     kubernetes:
       config:

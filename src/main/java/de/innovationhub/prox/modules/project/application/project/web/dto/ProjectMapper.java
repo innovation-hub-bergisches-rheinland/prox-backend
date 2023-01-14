@@ -5,6 +5,7 @@ import de.innovationhub.prox.modules.profile.contract.OrganizationView;
 import de.innovationhub.prox.modules.project.application.discipline.web.dto.DisciplineMapper;
 import de.innovationhub.prox.modules.project.application.module.web.dto.ModuleTypeMapper;
 import de.innovationhub.prox.modules.project.application.project.web.dto.ProjectDto.ReadProjectStatusDto;
+import de.innovationhub.prox.modules.project.application.project.web.dto.ProjectDto.ReadSupervisorDto;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.ProjectStatus;
 import java.util.List;
@@ -25,7 +26,17 @@ interface ProjectMapper {
   @Mapping(target = "partner", source = "organizationView")
   @Mapping(target = "supervisors", source = "lecturerView")
   ProjectDto toDto(Project project, List<LecturerView> lecturerView,
-      OrganizationView organizationView, List<String> tags, ProjectPermissions permissions, ProjectMetrics metrics);
+      OrganizationView organizationView, List<String> tags, ProjectPermissions permissions,
+      ProjectMetrics metrics);
+
+  default List<ReadSupervisorDto> toSupervisors(List<LecturerView> lecturerView) {
+    if (lecturerView == null) {
+      return List.of();
+    }
+    return lecturerView.stream()
+        .map(l -> new ReadSupervisorDto(l.id(), l.displayName()))
+        .toList();
+  }
 
   default ReadProjectStatusDto toDto(ProjectStatus status) {
     if (status == null) {

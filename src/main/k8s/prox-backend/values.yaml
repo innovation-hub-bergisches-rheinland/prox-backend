@@ -19,8 +19,8 @@ serviceAccount:
   create: true
   # Annotations to add to the service account
   annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
+  # The displayName of the service account to use.
+  # If not set and create is true, a displayName is generated using the fullname template
   name: ""
 
 podAnnotations: {}
@@ -82,9 +82,9 @@ tolerations: []
 affinity: {}
 
 config:
-  # The name of the config map to use.
+  # The displayName of the config map to use.
   # If not set a default config map will be created
   existingConfigMap: ""
-  # The name of the secret to use.
+  # The displayName of the secret to use.
   # If not set a default secret will be created
   existingSecret: ""

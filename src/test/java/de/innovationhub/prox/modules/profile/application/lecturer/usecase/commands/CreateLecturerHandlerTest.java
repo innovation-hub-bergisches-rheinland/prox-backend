@@ -40,7 +40,7 @@ class CreateLecturerHandlerTest {
     var lecturer = captor.getValue();
 
     assertThat(lecturer.getUserId()).isEqualTo(userId);
-    assertThat(lecturer.getName()).isEqualTo("Xavier Tester");
+    assertThat(lecturer.getDisplayName()).isEqualTo("Xavier Tester");
     assertThat(lecturer.getProfile().getEmail()).isEqualTo("xavier.tester@example.com");
     assertThat(lecturer.getVisibleInPublicSearch()).isEqualTo(false);
   }

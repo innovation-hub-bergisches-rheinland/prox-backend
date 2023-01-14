@@ -51,7 +51,7 @@ class KeycloakGroupAddedEventListenerIntegrationTest extends AbstractIntegration
       assertThat(lecturer.get()).satisfies(
           l -> {
             assertThat(l.getUserId()).isEqualTo(userId);
-            assertThat(l.getName()).isEqualTo(user.name());
+            assertThat(l.getDisplayName()).isEqualTo(user.name());
             assertThat(l.getProfile().getEmail()).isEqualTo(user.email());
             assertThat(l.getVisibleInPublicSearch()).isFalse();
           }
@@ -64,7 +64,7 @@ class KeycloakGroupAddedEventListenerIntegrationTest extends AbstractIntegration
     event.setResourceType(ResourceType.GROUP_MEMBERSHIP);
     event.setOperationType(OperationType.CREATE);
     event.setResourcePath("users/" + userId + "/groups/" + UUID.randomUUID());
-    var representation = "{\"name\":\"" + group + "\"}";
+    var representation = "{\"displayName\":\"" + group + "\"}";
     event.setRepresentation(representation);
     return event;
   }

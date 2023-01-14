@@ -13,7 +13,7 @@ public abstract class ProxUser extends AuditedAggregateRoot {
   private final String name;
   private final String email;
 
-  public ProxUser(UUID id, String name, String email) {
+  protected ProxUser(UUID id, String name, String email) {
     this.id = id;
     this.name = name;
     this.email = email;

@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.user.contract.star;
+package de.innovationhub.prox.modules.star.contract;
 
 import de.innovationhub.prox.modules.commons.application.IntegrationEvent;
 import java.util.UUID;

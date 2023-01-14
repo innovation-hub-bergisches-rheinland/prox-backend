@@ -1,14 +1,14 @@
-package de.innovationhub.prox.modules.user.application.star.web;
+package de.innovationhub.prox.modules.star.application.web;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.modules.project.application.project.event.StarIntegrationEventListeners;
+import de.innovationhub.prox.modules.star.domain.StarCollection;
+import de.innovationhub.prox.modules.star.domain.StarCollectionRepository;
 import de.innovationhub.prox.modules.user.domain.account.ProxUserAccount;
 import de.innovationhub.prox.modules.user.domain.account.StandardUserAccount;
-import de.innovationhub.prox.modules.user.domain.star.StarCollection;
-import de.innovationhub.prox.modules.user.domain.star.StarCollectionRepository;
 import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import jakarta.transaction.Transactional;

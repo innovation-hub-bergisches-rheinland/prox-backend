@@ -1,8 +1,8 @@
-package de.innovationhub.prox.modules.user.domain.star;
+package de.innovationhub.prox.modules.star.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import de.innovationhub.prox.modules.user.domain.star.event.ProjectStarred;
+import de.innovationhub.prox.modules.star.domain.event.ProjectStarred;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 

@@ -1,10 +1,10 @@
-package de.innovationhub.prox.modules.user.application.star;
+package de.innovationhub.prox.modules.star.application;
 
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
-import de.innovationhub.prox.modules.user.contract.star.ProjectStarredIntegrationEvent;
-import de.innovationhub.prox.modules.user.contract.star.ProjectUnstarredIntegrationEvent;
-import de.innovationhub.prox.modules.user.domain.star.event.ProjectStarred;
-import de.innovationhub.prox.modules.user.domain.star.event.ProjectUnstarred;
+import de.innovationhub.prox.modules.star.contract.ProjectStarredIntegrationEvent;
+import de.innovationhub.prox.modules.star.contract.ProjectUnstarredIntegrationEvent;
+import de.innovationhub.prox.modules.star.domain.event.ProjectStarred;
+import de.innovationhub.prox.modules.star.domain.event.ProjectUnstarred;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;

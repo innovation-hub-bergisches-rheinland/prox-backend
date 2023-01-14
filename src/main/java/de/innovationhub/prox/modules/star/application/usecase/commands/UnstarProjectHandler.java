@@ -1,21 +1,21 @@
-package de.innovationhub.prox.modules.user.application.star.usecase.commands;
+package de.innovationhub.prox.modules.star.application.usecase.commands;
 
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
-import de.innovationhub.prox.modules.user.domain.star.StarCollection;
-import de.innovationhub.prox.modules.user.domain.star.StarCollectionRepository;
+import de.innovationhub.prox.modules.star.domain.StarCollectionRepository;
+import de.innovationhub.prox.modules.user.application.account.exception.UserNotFoundException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @ApplicationComponent
-public class StarProjectHandler {
+public class UnstarProjectHandler {
 
   private final StarCollectionRepository starCollectionRepository;
 
   public void handle(UUID userId, UUID projectId) {
     var user = starCollectionRepository.findByUserId(userId)
-        .orElse(new StarCollection(userId));
-    user.starProject(projectId);
+        .orElseThrow(UserNotFoundException::new);
+    user.unstarProject(projectId);
     starCollectionRepository.save(user);
   }
 }

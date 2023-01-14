@@ -1,12 +1,13 @@
-package de.innovationhub.prox.modules.user.application.star.usecase.commands;
+package de.innovationhub.prox.modules.star.application.commands;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import de.innovationhub.prox.modules.user.domain.star.StarCollection;
-import de.innovationhub.prox.modules.user.domain.star.StarCollectionRepository;
+import de.innovationhub.prox.modules.star.application.usecase.commands.StarProjectHandler;
+import de.innovationhub.prox.modules.star.domain.StarCollection;
+import de.innovationhub.prox.modules.star.domain.StarCollectionRepository;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;

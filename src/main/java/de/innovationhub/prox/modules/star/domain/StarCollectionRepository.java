@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.user.domain.star;
+package de.innovationhub.prox.modules.star.domain;
 
 import java.util.Optional;
 import java.util.UUID;

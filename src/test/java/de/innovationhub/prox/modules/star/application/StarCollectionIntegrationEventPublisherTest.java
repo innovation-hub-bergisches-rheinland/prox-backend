@@ -1,13 +1,13 @@
-package de.innovationhub.prox.modules.user.application.star;
+package de.innovationhub.prox.modules.star.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.modules.project.application.project.event.StarIntegrationEventListeners;
-import de.innovationhub.prox.modules.user.contract.star.ProjectStarredIntegrationEvent;
-import de.innovationhub.prox.modules.user.contract.star.ProjectUnstarredIntegrationEvent;
-import de.innovationhub.prox.modules.user.domain.star.StarCollection;
-import de.innovationhub.prox.modules.user.domain.star.StarCollectionRepository;
+import de.innovationhub.prox.modules.star.contract.ProjectStarredIntegrationEvent;
+import de.innovationhub.prox.modules.star.contract.ProjectUnstarredIntegrationEvent;
+import de.innovationhub.prox.modules.star.domain.StarCollection;
+import de.innovationhub.prox.modules.star.domain.StarCollectionRepository;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

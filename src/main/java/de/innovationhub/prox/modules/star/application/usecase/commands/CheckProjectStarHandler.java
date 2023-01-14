@@ -1,7 +1,7 @@
-package de.innovationhub.prox.modules.user.application.star.usecase.commands;
+package de.innovationhub.prox.modules.star.application.usecase.commands;
 
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
-import de.innovationhub.prox.modules.user.domain.star.StarCollectionRepository;
+import de.innovationhub.prox.modules.star.domain.StarCollectionRepository;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 

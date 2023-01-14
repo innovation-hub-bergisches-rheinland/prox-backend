@@ -1,8 +1,8 @@
-package de.innovationhub.prox.modules.user.domain.star;
+package de.innovationhub.prox.modules.star.domain;
 
 import de.innovationhub.prox.modules.commons.domain.AuditedAggregateRoot;
-import de.innovationhub.prox.modules.user.domain.star.event.ProjectStarred;
-import de.innovationhub.prox.modules.user.domain.star.event.ProjectUnstarred;
+import de.innovationhub.prox.modules.star.domain.event.ProjectStarred;
+import de.innovationhub.prox.modules.star.domain.event.ProjectUnstarred;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

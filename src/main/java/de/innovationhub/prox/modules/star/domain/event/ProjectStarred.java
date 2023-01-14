@@ -1,9 +1,9 @@
-package de.innovationhub.prox.modules.user.domain.star.event;
+package de.innovationhub.prox.modules.star.domain.event;
 
 import de.innovationhub.prox.modules.commons.domain.DomainEvent;
 import java.util.UUID;
 
-public record ProjectUnstarred(
+public record ProjectStarred(
     UUID collectionId,
     UUID userId,
     UUID projectId

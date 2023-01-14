@@ -42,7 +42,7 @@ public abstract class UserProfile extends AuditedAggregateRoot {
 
   private String avatarKey;
 
-  public UserProfile(UUID id, Boolean visibleInPublicSearch, UUID userId, String displayName) {
+  protected UserProfile(UUID id, Boolean visibleInPublicSearch, UUID userId, String displayName) {
     this.id = id;
     this.visibleInPublicSearch = visibleInPublicSearch;
     this.userId = userId;

@@ -8,8 +8,8 @@ import static org.mockito.Mockito.when;
 
 import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
-import de.innovationhub.prox.modules.user.contract.user.ProxUserView;
-import de.innovationhub.prox.modules.user.contract.user.UserFacade;
+import de.innovationhub.prox.modules.user.contract.account.ProxUserView;
+import de.innovationhub.prox.modules.user.contract.account.UserFacade;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;

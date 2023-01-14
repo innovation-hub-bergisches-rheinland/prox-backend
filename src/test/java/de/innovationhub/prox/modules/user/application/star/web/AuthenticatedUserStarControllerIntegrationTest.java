@@ -5,10 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.modules.project.application.project.event.StarIntegrationEventListeners;
+import de.innovationhub.prox.modules.user.domain.account.ProxUserAccount;
+import de.innovationhub.prox.modules.user.domain.account.StandardUserAccount;
 import de.innovationhub.prox.modules.user.domain.star.StarCollection;
 import de.innovationhub.prox.modules.user.domain.star.StarCollectionRepository;
-import de.innovationhub.prox.modules.user.domain.user.ProxUser;
-import de.innovationhub.prox.modules.user.domain.user.StandardUser;
 import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import jakarta.transaction.Transactional;
@@ -43,8 +43,8 @@ class AuthenticatedUserStarControllerIntegrationTest extends AbstractIntegration
     RestAssuredMockMvc.standaloneSetup(() -> mockMvc);
   }
 
-  private ProxUser createDummyUser(UUID id) {
-    return new StandardUser(id, "Xavier Tester", "xavier.tester@example.com");
+  private ProxUserAccount createDummyUser(UUID id) {
+    return new StandardUserAccount(id, "Xavier Tester", "xavier.tester@example.com");
   }
 
   @Test

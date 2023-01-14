@@ -16,7 +16,7 @@ import de.innovationhub.prox.modules.project.domain.module.ModuleTypeRepository;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
 import de.innovationhub.prox.modules.project.domain.project.Supervisor;
-import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
+import de.innovationhub.prox.modules.user.contract.account.AuthenticationFacade;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;

@@ -11,7 +11,7 @@ import de.innovationhub.prox.modules.organization.domain.Organization;
 import de.innovationhub.prox.modules.organization.domain.OrganizationRepository;
 import de.innovationhub.prox.modules.organization.domain.OrganizationRole;
 import de.innovationhub.prox.modules.organization.domain.SocialMedia;
-import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
+import de.innovationhub.prox.modules.user.contract.account.AuthenticationFacade;
 import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;

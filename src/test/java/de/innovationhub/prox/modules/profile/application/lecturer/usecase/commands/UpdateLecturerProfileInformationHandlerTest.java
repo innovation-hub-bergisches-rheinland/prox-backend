@@ -11,7 +11,7 @@ import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.Create
 import de.innovationhub.prox.modules.profile.application.lecturer.web.dto.CreateLecturerRequestDto.CreateLecturerProfileDto;
 import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
-import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
+import de.innovationhub.prox.modules.user.contract.account.AuthenticationFacade;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

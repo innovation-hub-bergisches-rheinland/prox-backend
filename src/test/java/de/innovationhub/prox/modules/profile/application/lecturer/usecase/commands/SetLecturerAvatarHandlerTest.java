@@ -12,7 +12,7 @@ import static org.mockito.Mockito.when;
 import de.innovationhub.prox.infra.storage.StorageProvider;
 import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
-import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
+import de.innovationhub.prox.modules.user.contract.account.AuthenticationFacade;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;

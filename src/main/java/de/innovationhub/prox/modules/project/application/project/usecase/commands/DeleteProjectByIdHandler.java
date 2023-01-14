@@ -3,7 +3,7 @@ package de.innovationhub.prox.modules.project.application.project.usecase.comman
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.project.application.project.exception.ProjectNotFoundException;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
-import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
+import de.innovationhub.prox.modules.user.contract.account.AuthenticationFacade;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -8,7 +8,7 @@ import static org.mockito.Mockito.when;
 
 import de.innovationhub.prox.modules.project.ProjectFixtures;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
-import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
+import de.innovationhub.prox.modules.user.contract.account.AuthenticationFacade;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;

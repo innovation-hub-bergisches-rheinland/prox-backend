@@ -4,7 +4,7 @@ import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.profile.domain.lecturer.Lecturer;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerProfileInformation;
 import de.innovationhub.prox.modules.profile.domain.lecturer.LecturerRepository;
-import de.innovationhub.prox.modules.user.contract.user.UserFacade;
+import de.innovationhub.prox.modules.user.contract.account.UserFacade;
 import jakarta.transaction.Transactional;
 import java.util.Objects;
 import java.util.UUID;

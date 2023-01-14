@@ -7,7 +7,7 @@ import org.springframework.data.repository.Repository;
 @NoRepositoryBean
 public interface ReadOnlyRepository<T, ID> extends Repository<T, ID> {
 
-    Optional<T> findById(ID id);
+    <S extends T> Optional<S> findById(ID id);
 
     boolean existsById(ID id);
 

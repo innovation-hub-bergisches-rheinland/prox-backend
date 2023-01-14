@@ -4,6 +4,7 @@ import de.innovationhub.prox.config.CacheConfig;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.user.domain.user.ProxUser;
 import de.innovationhub.prox.modules.user.domain.user.ProxUserRepository;
+import de.innovationhub.prox.modules.user.domain.user.StandardUser;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -29,7 +30,8 @@ public class KeycloakLeveragedProxUserRepository implements ProxUserRepository {
     try {
       var userRepresentation = this.usersResource.get(id.toString()).toRepresentation();
       return Optional.of(userRepresentation)
-          .map(rep -> new ProxUser(UUID.fromString(rep.getId()), extractName(rep), rep.getEmail()));
+          .map(rep -> new StandardUser(UUID.fromString(rep.getId()), extractName(rep),
+              rep.getEmail()));
     } catch (ProcessingException e) {
       if(e.getCause() instanceof javax.ws.rs.NotFoundException) {
         return Optional.empty();
@@ -49,9 +51,9 @@ public class KeycloakLeveragedProxUserRepository implements ProxUserRepository {
   }
 
   @Override
-  public List<ProxUser> search(String query) {
+  public List<? extends ProxUser> search(String query) {
     return this.realmResource.users().search(query, 0, 100, true).stream()
-        .map(u -> new ProxUser(UUID.fromString(u.getId()), extractName(u), u.getEmail()))
+        .map(u -> new StandardUser(UUID.fromString(u.getId()), extractName(u), u.getEmail()))
         .toList();
   }
 

@@ -6,7 +6,7 @@ import lombok.Getter;
 
 
 @Getter
-public class ProxUser extends AuditedAggregateRoot {
+public abstract class ProxUser extends AuditedAggregateRoot {
 
   private final UUID id;
 

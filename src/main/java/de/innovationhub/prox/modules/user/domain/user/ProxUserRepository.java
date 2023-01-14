@@ -8,5 +8,5 @@ import org.springframework.data.repository.NoRepositoryBean;
 @NoRepositoryBean
 public interface ProxUserRepository extends ReadOnlyRepository<ProxUser, UUID> {
 
-  List<ProxUser> search(String query);
+  <S extends ProxUser> List<S> search(String query);
 }

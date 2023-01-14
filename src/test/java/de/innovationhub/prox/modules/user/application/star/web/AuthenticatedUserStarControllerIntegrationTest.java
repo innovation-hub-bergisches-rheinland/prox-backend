@@ -8,6 +8,7 @@ import de.innovationhub.prox.modules.project.application.project.event.StarInteg
 import de.innovationhub.prox.modules.user.domain.star.StarCollection;
 import de.innovationhub.prox.modules.user.domain.star.StarCollectionRepository;
 import de.innovationhub.prox.modules.user.domain.user.ProxUser;
+import de.innovationhub.prox.modules.user.domain.user.StandardUser;
 import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import jakarta.transaction.Transactional;
@@ -43,7 +44,7 @@ class AuthenticatedUserStarControllerIntegrationTest extends AbstractIntegration
   }
 
   private ProxUser createDummyUser(UUID id) {
-    return new ProxUser(id, "Xavier Tester", "xavier.tester@example.com");
+    return new StandardUser(id, "Xavier Tester", "xavier.tester@example.com");
   }
 
   @Test

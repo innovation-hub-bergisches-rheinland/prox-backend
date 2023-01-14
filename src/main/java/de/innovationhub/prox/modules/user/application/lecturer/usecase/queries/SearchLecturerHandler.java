@@ -3,8 +3,8 @@ package de.innovationhub.prox.modules.user.application.lecturer.usecase.queries;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
 import de.innovationhub.prox.modules.tag.contract.TagView;
-import de.innovationhub.prox.modules.user.domain.lecturer.Lecturer;
-import de.innovationhub.prox.modules.user.domain.lecturer.LecturerRepository;
+import de.innovationhub.prox.modules.user.domain.lecturer.LecturerProfile;
+import de.innovationhub.prox.modules.user.domain.lecturer.LecturerProfileRepository;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -17,15 +17,15 @@ import org.springframework.data.domain.Pageable;
 @RequiredArgsConstructor
 public class SearchLecturerHandler {
 
-  private final LecturerRepository lecturerRepository;
+  private final LecturerProfileRepository lecturerRepository;
   private final TagFacade tagFacade;
 
-  public Page<Lecturer> handle(
+  public Page<LecturerProfile> handle(
       String query,
       Collection<String> tags,
       Pageable pageable) {
     List<UUID> tagIds = new ArrayList<>();
-    if(tags != null) {
+    if (tags != null) {
       tagIds.addAll(
           tagFacade.getTagsByName(tags).stream().map(TagView::id).toList()
       );

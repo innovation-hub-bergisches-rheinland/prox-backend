@@ -13,7 +13,7 @@ import de.innovationhub.prox.modules.project.domain.project.CurriculumContext;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
 import de.innovationhub.prox.modules.project.domain.project.TimeBox;
-import de.innovationhub.prox.modules.user.contract.account.AuthenticationFacade;
+import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 

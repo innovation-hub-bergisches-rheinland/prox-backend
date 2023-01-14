@@ -3,12 +3,13 @@ package de.innovationhub.prox.modules.user.application.lecturer.usecase.queries;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import de.innovationhub.prox.modules.user.domain.lecturer.LecturerRepository;
+import de.innovationhub.prox.modules.user.domain.lecturer.LecturerProfileRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
 
 class FindAllLecturersHandlerTest {
-  LecturerRepository lecturerRepository = mock(LecturerRepository.class);
+
+  LecturerProfileRepository lecturerRepository = mock(LecturerProfileRepository.class);
   FindAllLecturersHandler handler = new FindAllLecturersHandler(lecturerRepository);
 
   @Test

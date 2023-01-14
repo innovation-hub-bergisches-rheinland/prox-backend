@@ -2,10 +2,10 @@ package de.innovationhub.prox.modules.user.application.lecturer.usecase.commands
 
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.user.application.lecturer.web.dto.CreateLecturerRequestDto;
-import de.innovationhub.prox.modules.user.contract.account.AuthenticationFacade;
-import de.innovationhub.prox.modules.user.domain.lecturer.Lecturer;
+import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
+import de.innovationhub.prox.modules.user.domain.lecturer.LecturerProfile;
 import de.innovationhub.prox.modules.user.domain.lecturer.LecturerProfileInformation;
-import de.innovationhub.prox.modules.user.domain.lecturer.LecturerRepository;
+import de.innovationhub.prox.modules.user.domain.lecturer.LecturerProfileRepository;
 import jakarta.transaction.Transactional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -15,14 +15,15 @@ import org.springframework.security.access.prepost.PreAuthorize;
 @RequiredArgsConstructor
 public class UpdateLecturerProfileHandler {
 
-  private final LecturerRepository lecturerRepository;
+  private final LecturerProfileRepository lecturerRepository;
   private final AuthenticationFacade authentication;
 
   @Transactional
   @PreAuthorize("@lecturerPermissionEvaluator.hasPermission(#lecturerId, authentication)")
-  public Lecturer handle(UUID lecturerId, CreateLecturerRequestDto dto) {
+  public LecturerProfile handle(UUID lecturerId, CreateLecturerRequestDto dto) {
     var lecturer = this.lecturerRepository.findById(lecturerId)
-        .orElseThrow(() -> new RuntimeException("Lecturer '" + lecturerId + "' could not be found"));
+        .orElseThrow(
+            () -> new RuntimeException("Lecturer '" + lecturerId + "' could not be found"));
     lecturer.setDisplayName(dto.name());
 
     var profile = lecturer.getProfile();

@@ -7,8 +7,8 @@ import de.innovationhub.prox.modules.organization.application.web.dto.AddMembers
 import de.innovationhub.prox.modules.organization.domain.Membership;
 import de.innovationhub.prox.modules.organization.domain.OrganizationRepository;
 import de.innovationhub.prox.modules.organization.domain.OrganizationRole;
-import de.innovationhub.prox.modules.user.application.account.exception.UnauthorizedAccessException;
-import de.innovationhub.prox.modules.user.contract.account.AuthenticationFacade;
+import de.innovationhub.prox.modules.user.application.user.exception.UnauthorizedAccessException;
+import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -6,8 +6,8 @@ import de.innovationhub.prox.modules.project.application.ProjectPermissionEvalua
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.Supervisor;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
-import de.innovationhub.prox.modules.user.contract.account.AuthenticationFacade;
 import de.innovationhub.prox.modules.user.contract.lecturer.LecturerFacade;
+import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

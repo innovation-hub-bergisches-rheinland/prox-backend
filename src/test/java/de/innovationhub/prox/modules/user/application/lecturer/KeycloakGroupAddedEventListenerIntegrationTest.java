@@ -6,9 +6,9 @@ import static org.mockito.Mockito.when;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.config.MessagingConfig;
-import de.innovationhub.prox.modules.user.contract.account.ProxUserView;
-import de.innovationhub.prox.modules.user.contract.account.UserFacade;
-import de.innovationhub.prox.modules.user.domain.lecturer.LecturerRepository;
+import de.innovationhub.prox.modules.user.contract.user.ProxUserView;
+import de.innovationhub.prox.modules.user.contract.user.UserFacade;
+import de.innovationhub.prox.modules.user.domain.lecturer.LecturerProfileRepository;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.Disabled;
@@ -28,7 +28,7 @@ class KeycloakGroupAddedEventListenerIntegrationTest extends AbstractIntegration
   RabbitTemplate rabbitTemplate;
 
   @Autowired
-  LecturerRepository lecturerRepository;
+  LecturerProfileRepository lecturerRepository;
 
   @MockBean
   UserFacade userFacade;

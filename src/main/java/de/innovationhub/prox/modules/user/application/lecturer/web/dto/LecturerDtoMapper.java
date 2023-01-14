@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.user.application.lecturer.web.dto;
 
-import de.innovationhub.prox.modules.user.domain.lecturer.Lecturer;
+import de.innovationhub.prox.modules.user.domain.lecturer.LecturerProfile;
 import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -15,5 +15,6 @@ interface LecturerDtoMapper {
   @Mapping(target = "tags", source = "tags")
   @Mapping(target = "avatarUrl", source = "avatarUrl")
   @Mapping(target = "name", source = "lecturer.displayName")
-  LecturerDto toDto(Lecturer lecturer, List<String> tags, String avatarUrl, LecturerPermissions permissions);
+  LecturerDto toDto(LecturerProfile lecturer, List<String> tags, String avatarUrl,
+      LecturerPermissions permissions);
 }

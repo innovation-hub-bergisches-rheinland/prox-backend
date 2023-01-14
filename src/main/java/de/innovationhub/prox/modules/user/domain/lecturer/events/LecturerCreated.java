@@ -1,7 +1,7 @@
 package de.innovationhub.prox.modules.user.domain.lecturer.events;
 
 import de.innovationhub.prox.modules.commons.domain.DomainEvent;
-import de.innovationhub.prox.modules.user.domain.lecturer.Lecturer;
+import de.innovationhub.prox.modules.user.domain.lecturer.LecturerProfile;
 import java.util.UUID;
 
 public record LecturerCreated(
@@ -9,11 +9,12 @@ public record LecturerCreated(
     UUID userId,
     String name
 ) implements DomainEvent {
-  public static LecturerCreated from(Lecturer lecturer) {
+
+  public static LecturerCreated from(LecturerProfile lecturerProfile) {
     return new LecturerCreated(
-        lecturer.getId(),
-        lecturer.getUserId(),
-        lecturer.getDisplayName()
+        lecturerProfile.getId(),
+        lecturerProfile.getUserId(),
+        lecturerProfile.getDisplayName()
     );
   }
 }

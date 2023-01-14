@@ -3,8 +3,8 @@ package de.innovationhub.prox.modules.user.application.lecturer.web.dto;
 import de.innovationhub.prox.infra.storage.StorageProvider;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
 import de.innovationhub.prox.modules.user.application.lecturer.LecturerPermissionEvaluator;
-import de.innovationhub.prox.modules.user.contract.account.AuthenticationFacade;
-import de.innovationhub.prox.modules.user.domain.lecturer.Lecturer;
+import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
+import de.innovationhub.prox.modules.user.domain.lecturer.LecturerProfile;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -21,22 +21,23 @@ public class LecturerDtoAssembler {
   private final LecturerPermissionEvaluator lecturerPermissionEvaluator;
   private final AuthenticationFacade authenticationFacade;
 
-  public LecturerDto toDto(Lecturer lecturer) {
+  public LecturerDto toDto(LecturerProfile lecturerProfile) {
     String avatarUrl = null;
 
-    if(lecturer.getAvatarKey() != null) {
-      avatarUrl = storageProvider.buildUrl(lecturer.getAvatarKey());
+    if (lecturerProfile.getAvatarKey() != null) {
+      avatarUrl = storageProvider.buildUrl(lecturerProfile.getAvatarKey());
     }
 
     List<String> tags = Collections.emptyList();
-    if (lecturer.getTags() != null) {
-      tags = tagFacade.getTags(lecturer.getTags());
+    if (lecturerProfile.getTags() != null) {
+      tags = tagFacade.getTags(lecturerProfile.getTags());
     }
 
     var permissions = new LecturerPermissions(
-        lecturerPermissionEvaluator.hasPermission(lecturer, authenticationFacade.getAuthentication())
+        lecturerPermissionEvaluator.hasPermission(lecturerProfile,
+            authenticationFacade.getAuthentication())
     );
 
-    return lecturerDtoMapper.toDto(lecturer, tags, avatarUrl, permissions);
+    return lecturerDtoMapper.toDto(lecturerProfile, tags, avatarUrl, permissions);
   }
 }

@@ -5,9 +5,9 @@ import de.innovationhub.prox.modules.organization.application.OrganizationPermis
 import de.innovationhub.prox.modules.organization.domain.Membership;
 import de.innovationhub.prox.modules.organization.domain.Organization;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
-import de.innovationhub.prox.modules.user.contract.account.AuthenticationFacade;
-import de.innovationhub.prox.modules.user.contract.account.ProxUserView;
-import de.innovationhub.prox.modules.user.contract.account.UserFacade;
+import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
+import de.innovationhub.prox.modules.user.contract.user.ProxUserView;
+import de.innovationhub.prox.modules.user.contract.user.UserFacade;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

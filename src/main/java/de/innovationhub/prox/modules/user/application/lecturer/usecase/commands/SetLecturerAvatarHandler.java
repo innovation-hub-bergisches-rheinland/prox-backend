@@ -2,10 +2,10 @@ package de.innovationhub.prox.modules.user.application.lecturer.usecase.commands
 
 import de.innovationhub.prox.infra.storage.StorageProvider;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
-import de.innovationhub.prox.modules.user.application.account.exception.UnauthorizedAccessException;
 import de.innovationhub.prox.modules.user.application.lecturer.exception.LecturerNotFoundException;
-import de.innovationhub.prox.modules.user.contract.account.AuthenticationFacade;
-import de.innovationhub.prox.modules.user.domain.lecturer.LecturerRepository;
+import de.innovationhub.prox.modules.user.application.user.exception.UnauthorizedAccessException;
+import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
+import de.innovationhub.prox.modules.user.domain.lecturer.LecturerProfileRepository;
 import jakarta.transaction.Transactional;
 import java.io.IOException;
 import java.util.UUID;
@@ -19,7 +19,7 @@ public class SetLecturerAvatarHandler {
 
   private final StorageProvider storage;
   private final AuthenticationFacade authentication;
-  private final LecturerRepository lecturerRepository;
+  private final LecturerProfileRepository lecturerRepository;
 
   @Transactional
   @PreAuthorize("@lecturerPermissionEvaluator.hasPermission(#lecturerId, authentication)")

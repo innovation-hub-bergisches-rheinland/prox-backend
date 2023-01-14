@@ -6,8 +6,8 @@ import static org.mockito.Mockito.when;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.config.MessagingConfig;
-import de.innovationhub.prox.modules.user.contract.account.ProxUserView;
-import de.innovationhub.prox.modules.user.contract.account.UserFacade;
+import de.innovationhub.prox.modules.user.contract.account.ProxUserAccountView;
+import de.innovationhub.prox.modules.user.contract.account.UserAccountFacade;
 import de.innovationhub.prox.modules.user.domain.lecturer.LecturerRepository;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,19 +31,20 @@ class KeycloakGroupAddedEventListenerIntegrationTest extends AbstractIntegration
   LecturerRepository lecturerRepository;
 
   @MockBean
-  UserFacade userFacade;
+  UserAccountFacade userAccountFacade;
 
   @Test
   // TODO: Fix this test: Context: https://stackoverflow.com/questions/75111282/using-spring-boot-mockbean-annotation-in-rabbitmq-listener
   @Disabled(value = "This test is disabled because I don't know how to get the mock of the user facade to work")
   void shouldCreateLecturer() {
     var userId = UUID.randomUUID();
-    var user = new ProxUserView(userId, "Xavier Tester", "xavier.tester@example.com");
-    when(userFacade.findById(userId)).thenReturn(Optional.of(user));
+    var user = new ProxUserAccountView(userId, "Xavier Tester", "xavier.tester@example.com");
+    when(userAccountFacade.findById(userId)).thenReturn(Optional.of(user));
     var group = "professor";
     var event = createGroupAddedEvent(userId, group);
 
-    rabbitTemplate.convertAndSend(MessagingConfig.TOPIC_EXCHANGE_NAME, ROUTING_KEY_GROUP_ADD, event);
+    rabbitTemplate.convertAndSend(MessagingConfig.TOPIC_EXCHANGE_NAME, ROUTING_KEY_GROUP_ADD,
+        event);
 
     assertEventually(() -> {
       var lecturer = lecturerRepository.findByUserId(userId);

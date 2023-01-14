@@ -6,8 +6,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import de.innovationhub.prox.modules.user.contract.account.ProxUserView;
-import de.innovationhub.prox.modules.user.contract.account.UserFacade;
+import de.innovationhub.prox.modules.user.contract.account.ProxUserAccountView;
+import de.innovationhub.prox.modules.user.contract.account.UserAccountFacade;
 import de.innovationhub.prox.modules.user.domain.lecturer.Lecturer;
 import de.innovationhub.prox.modules.user.domain.lecturer.LecturerRepository;
 import java.util.Optional;
@@ -17,10 +17,10 @@ import org.mockito.ArgumentCaptor;
 
 class CreateLecturerHandlerTest {
 
-  UserFacade userFacade = mock(UserFacade.class);
+  UserAccountFacade userAccountFacade = mock(UserAccountFacade.class);
   LecturerRepository lecturerRepository = mock(LecturerRepository.class);
 
-  CreateLecturerHandler handler = new CreateLecturerHandler(lecturerRepository, userFacade);
+  CreateLecturerHandler handler = new CreateLecturerHandler(lecturerRepository, userAccountFacade);
 
   @Test
   void shouldThrowOnNull() {
@@ -30,8 +30,8 @@ class CreateLecturerHandlerTest {
   @Test
   void shouldCreateLecturer() {
     var userId = UUID.randomUUID();
-    var user = new ProxUserView(userId, "Xavier Tester", "xavier.tester@example.com");
-    when(userFacade.findById(userId)).thenReturn(Optional.of(user));
+    var user = new ProxUserAccountView(userId, "Xavier Tester", "xavier.tester@example.com");
+    when(userAccountFacade.findById(userId)).thenReturn(Optional.of(user));
 
     handler.handle(userId);
 

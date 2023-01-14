@@ -4,24 +4,26 @@ import de.innovationhub.prox.config.CacheConfig;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.user.domain.user.ProxUser;
 import de.innovationhub.prox.modules.user.domain.user.ProxUserRepository;
-import de.innovationhub.prox.modules.user.domain.user.StandardUser;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import javax.ws.rs.ProcessingException;
 import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.admin.client.resource.UsersResource;
-import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.cache.annotation.Cacheable;
 
 @ApplicationComponent
 public class KeycloakLeveragedProxUserRepository implements ProxUserRepository {
+
   private final UsersResource usersResource;
   private final RealmResource realmResource;
+  private final KeycloakUserMapper userMapper;
 
-  public KeycloakLeveragedProxUserRepository(RealmResource realmResource) {
+  public KeycloakLeveragedProxUserRepository(RealmResource realmResource,
+      KeycloakUserMapper userMapper) {
     this.usersResource = realmResource.users();
     this.realmResource = realmResource;
+    this.userMapper = userMapper;
   }
 
   @Override
@@ -30,8 +32,7 @@ public class KeycloakLeveragedProxUserRepository implements ProxUserRepository {
     try {
       var userRepresentation = this.usersResource.get(id.toString()).toRepresentation();
       return Optional.of(userRepresentation)
-          .map(rep -> new StandardUser(UUID.fromString(rep.getId()), extractName(rep),
-              rep.getEmail()));
+          .map(this.userMapper::map);
     } catch (ProcessingException e) {
       if(e.getCause() instanceof javax.ws.rs.NotFoundException) {
         return Optional.empty();
@@ -51,13 +52,7 @@ public class KeycloakLeveragedProxUserRepository implements ProxUserRepository {
   }
 
   @Override
-  public List<? extends ProxUser> search(String query) {
-    return this.realmResource.users().search(query, 0, 100, true).stream()
-        .map(u -> new StandardUser(UUID.fromString(u.getId()), extractName(u), u.getEmail()))
-        .toList();
-  }
-
-  private String extractName(UserRepresentation rep) {
-    return rep.getFirstName() + " " + rep.getLastName();
+  public List<ProxUser> search(String query) {
+    return this.userMapper.map(this.realmResource.users().search(query, 0, 100, true));
   }
 }

@@ -1,44 +1,23 @@
 package de.innovationhub.prox.modules.user.application.account;
 
-import de.innovationhub.prox.config.CacheConfig;
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.user.domain.account.ProxUserAccount;
 import de.innovationhub.prox.modules.user.domain.account.ProxUserAccountRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import javax.ws.rs.ProcessingException;
-import org.keycloak.admin.client.resource.RealmResource;
-import org.keycloak.admin.client.resource.UsersResource;
-import org.springframework.cache.annotation.Cacheable;
+import lombok.RequiredArgsConstructor;
 
 @ApplicationComponent
+@RequiredArgsConstructor
 public class KeycloakBasedProxUserAccountRepository implements ProxUserAccountRepository {
 
-  private final UsersResource usersResource;
-  private final RealmResource realmResource;
   private final KeycloakUserAccountMapper userMapper;
-
-  public KeycloakBasedProxUserAccountRepository(RealmResource realmResource,
-      KeycloakUserAccountMapper userMapper) {
-    this.usersResource = realmResource.users();
-    this.realmResource = realmResource;
-    this.userMapper = userMapper;
-  }
+  private final KeycloakClient keycloakClient;
 
   @Override
-  @Cacheable(CacheConfig.USERS)
   public Optional<ProxUserAccount> findById(UUID id) {
-    try {
-      var userRepresentation = this.usersResource.get(id.toString()).toRepresentation();
-      return Optional.of(userRepresentation)
-          .map(this.userMapper::map);
-    } catch (ProcessingException e) {
-      if (e.getCause() instanceof javax.ws.rs.NotFoundException) {
-        return Optional.empty();
-      }
-      throw e;
-    }
+    return keycloakClient.getById(id.toString()).map(userMapper::map);
   }
 
   @Override
@@ -48,11 +27,23 @@ public class KeycloakBasedProxUserAccountRepository implements ProxUserAccountRe
 
   @Override
   public long count() {
-    return this.usersResource.count();
+    return keycloakClient.count();
   }
 
   @Override
   public List<ProxUserAccount> search(String query) {
-    return this.userMapper.map(this.realmResource.users().search(query, 0, 100, true));
+    return keycloakClient.search(query).stream().map(userMapper::map).toList();
+  }
+
+  @Override
+  public List<ProxUserAccount> searchWithRole(String query, String roleName) {
+    var users = keycloakClient.getAllInRole(roleName);
+    // TODO: refine search query
+    var words = List.of(query.split("\\s+"));
+    return users.stream().filter(user -> words.stream().allMatch(
+        word -> user.getFirstName().toLowerCase().contains(word.toLowerCase()) || user.getLastName()
+            .toLowerCase().contains(word.toLowerCase()) || user.getEmail().toLowerCase()
+            .contains(word.toLowerCase()) || user.getUsername().toLowerCase()
+            .contains(word.toLowerCase()))).map(userMapper::map).toList();
   }
 }

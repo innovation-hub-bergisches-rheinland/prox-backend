@@ -26,7 +26,10 @@ public class UserAccountController {
   @Operation(security = {
       @SecurityRequirement(name = "oidc")
   })
-  public List<ProxUserDto> find(@RequestParam("q") String searchQuery) {
-    return mapper.toDto(search.handle(searchQuery));
+  public List<ProxUserDto> find(
+      @RequestParam("q") String searchQuery,
+      @RequestParam(value = "role", required = false) String role
+  ) {
+    return mapper.toDto(search.handle(searchQuery, role));
   }
 }

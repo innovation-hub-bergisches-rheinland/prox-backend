@@ -12,22 +12,26 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableCaching
 public class CacheConfig {
-    public static final String TAGS = "tags";
-    public static final String ORGANIZATIONS = "organizations";
-    public static final String LECTURERS = "lecturers";
-    public static final String USERS = "users";
 
-    // TODO: Revisit Cache Configs
-    @Bean
-    public Caffeine caffeineConfig() {
-        return Caffeine.newBuilder().expireAfterWrite(60, TimeUnit.MINUTES);
-    }
+  public static final String TAGS = "tags";
+  public static final String ORGANIZATIONS = "organizations";
+  public static final String LECTURERS = "lecturers";
+  public static final String USERS = "users";
+  public static final String USERS_ROLE = "users_role";
+  public static final String USERS_SEARCH = "users_search";
 
-    @Bean
-    public CacheManager cacheManager(Caffeine caffeine) {
-      CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
-      caffeineCacheManager.setCaffeine(caffeine);
-      caffeineCacheManager.setCacheNames(List.of(TAGS, ORGANIZATIONS, LECTURERS, USERS));
-      return caffeineCacheManager;
-    }
+  // TODO: Revisit Cache Configs
+  @Bean
+  public Caffeine caffeineConfig() {
+    return Caffeine.newBuilder().expireAfterWrite(60, TimeUnit.MINUTES);
+  }
+
+  @Bean
+  public CacheManager cacheManager(Caffeine caffeine) {
+    CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
+    caffeineCacheManager.setCaffeine(caffeine);
+    caffeineCacheManager.setCacheNames(
+        List.of(TAGS, ORGANIZATIONS, LECTURERS, USERS, USERS_ROLE, USERS_SEARCH));
+    return caffeineCacheManager;
+  }
 }

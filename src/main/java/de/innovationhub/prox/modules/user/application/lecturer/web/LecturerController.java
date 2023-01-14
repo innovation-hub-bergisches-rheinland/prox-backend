@@ -3,7 +3,6 @@ package de.innovationhub.prox.modules.user.application.lecturer.web;
 import de.innovationhub.prox.modules.user.application.lecturer.usecase.commands.SetLecturerAvatarHandler;
 import de.innovationhub.prox.modules.user.application.lecturer.usecase.commands.SetLecturerTagsHandler;
 import de.innovationhub.prox.modules.user.application.lecturer.usecase.commands.UpdateLecturerProfileHandler;
-import de.innovationhub.prox.modules.user.application.lecturer.usecase.queries.FilterLecturerHandler;
 import de.innovationhub.prox.modules.user.application.lecturer.usecase.queries.FindAllLecturersHandler;
 import de.innovationhub.prox.modules.user.application.lecturer.usecase.queries.FindLecturerHandler;
 import de.innovationhub.prox.modules.user.application.lecturer.usecase.queries.SearchLecturerHandler;
@@ -43,7 +42,6 @@ public class LecturerController {
   private final UpdateLecturerProfileHandler update;
   private final SetLecturerAvatarHandler setAvatar;
   private final SetLecturerTagsHandler setTags;
-  private final FilterLecturerHandler filter;
   private final SearchLecturerHandler search;
   private final LecturerDtoAssembler dtoAssembler;
 
@@ -114,14 +112,6 @@ public class LecturerController {
       @RequestParam(value = "tags", defaultValue = "") Collection<String> tags,
       Pageable pageable) {
     var page = search.handle(query, tags, pageable)
-        .map(dtoAssembler::toDto);
-
-    return ResponseEntity.ok(page);
-  }
-
-  @GetMapping("search/findByName")
-  public ResponseEntity<Page<LecturerDto>> findByName(@RequestParam("q") String query, Pageable pageable) {
-    var page = filter.handle(query, pageable)
         .map(dtoAssembler::toDto);
 
     return ResponseEntity.ok(page);

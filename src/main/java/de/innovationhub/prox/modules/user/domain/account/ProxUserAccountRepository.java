@@ -9,4 +9,6 @@ import org.springframework.data.repository.NoRepositoryBean;
 public interface ProxUserAccountRepository extends ReadOnlyRepository<ProxUserAccount, UUID> {
 
   <S extends ProxUserAccount> List<S> search(String query);
+
+  <S extends ProxUserAccount> List<S> searchWithRole(String query, String role);
 }

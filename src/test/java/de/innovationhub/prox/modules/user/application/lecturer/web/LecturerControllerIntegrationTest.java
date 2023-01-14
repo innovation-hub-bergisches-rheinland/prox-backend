@@ -98,22 +98,6 @@ class LecturerControllerIntegrationTest extends AbstractIntegrationTest {
   }
 
   @Test
-  void shouldFindByName() {
-    var lecturer = createDummyLecturer();
-    lecturerRepository.save(lecturer);
-
-    given()
-        .contentType(ContentType.JSON)
-        .accept(ContentType.JSON)
-        .param("q", lecturer.getDisplayName())
-        .when()
-        .get("lecturers/search/findByName")
-        .then()
-        .status(HttpStatus.OK)
-        .body("content", hasSize(1));
-  }
-
-  @Test
   @WithMockUser(value = USER_ID)
   void shouldUpdate() {
     var lecturer = createDummyLecturer();

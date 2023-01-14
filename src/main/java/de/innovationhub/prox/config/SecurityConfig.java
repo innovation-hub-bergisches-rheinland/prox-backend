@@ -2,6 +2,8 @@ package de.innovationhub.prox.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,13 +23,27 @@ class SecurityConfig {
   }
 
   @Bean
+  @Profile("unsecure")
+  public SecurityFilterChain unsecureSecurityFilterChain(HttpSecurity http) throws Exception {
+    http
+        .cors()
+        .and()
+        .csrf().disable()
+        .authorizeHttpRequests()
+        .anyRequest().permitAll();
+
+    return http.build();
+  }
+
+  @Bean
+  @Primary
   public SecurityFilterChain configure(HttpSecurity http) throws Exception {
     http.cors()
         .configurationSource(request -> {
-          var cors = new CorsConfiguration().applyPermitDefaultValues();
-          cors.addAllowedMethod("*");
-          return cors;
-          }
+              var cors = new CorsConfiguration().applyPermitDefaultValues();
+              cors.addAllowedMethod("*");
+              return cors;
+            }
         )
         .and()
         .csrf()

@@ -22,16 +22,17 @@ public interface LecturerRepository extends JpaRepository<Lecturer, UUID> {
   Page<Lecturer> filter(String query, Pageable pageable);
 
   @Query(nativeQuery = true, value = """
-      SELECT DISTINCT l.*, ts_rank(document, q) AS rank
+      SELECT DISTINCT l.*, up.*, ts_rank(document, q) AS rank
         FROM lecturer l
-                 LEFT JOIN lecturer_tags lt ON l.id = lt.lecturer_id,
-              to_tsvector('simple', concat_ws(' ', l.name, l.email, l.subject)) document,
+                 LEFT JOIN user_profile up ON l.id = up.id
+                 LEFT JOIN user_profile_tags lt ON l.id = lt.user_profile_id,
+              to_tsvector('simple', concat_ws(' ', up.display_name, l.email, l.subject)) document,
               to_tsquery('simple', REGEXP_REPLACE(lower(:query), '\\s+', ':* & ', 'g')) q
         WHERE (:tagIds IS NULL OR lt.tags IN (:tagIds))
             AND (:query <> '' IS NOT TRUE OR
                   document @@ q
               )
-        ORDER BY rank DESC, l.name ASC 
+        ORDER BY rank DESC, up.display_name ASC 
       """)
   Page<Lecturer> search(
       @Param("query") String query,

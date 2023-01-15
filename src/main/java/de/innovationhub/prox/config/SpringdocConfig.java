@@ -30,7 +30,7 @@ public class SpringdocConfig {
   public GroupedOpenApi usersApi() {
     return GroupedOpenApi.builder()
         .group("users")
-        .pathsToMatch("/users/**")
+        .pathsToMatch("/users/**", "/user/**")
         .build();
   }
 

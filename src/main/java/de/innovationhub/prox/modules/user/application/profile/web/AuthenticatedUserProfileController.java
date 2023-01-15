@@ -8,6 +8,7 @@ import de.innovationhub.prox.modules.user.application.profile.web.dto.CreateUser
 import de.innovationhub.prox.modules.user.application.profile.web.dto.UserProfileDto;
 import de.innovationhub.prox.modules.user.application.profile.web.dto.UserProfileDtoMapper;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("user/profile")
 @SecurityRequirement(name = "oidc")
 @RequiredArgsConstructor
+@Tag(name = "User Profile", description = "Endpoints for managing user profiles")
 public class AuthenticatedUserProfileController {
   private final CreateUserProfileHandler createUserProfile;
   private final FindUserProfileHandler findUserProfileHandler;

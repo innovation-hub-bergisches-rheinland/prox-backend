@@ -12,6 +12,7 @@ import de.innovationhub.prox.modules.user.application.profile.web.dto.SetLecture
 import de.innovationhub.prox.modules.user.application.profile.web.dto.UserProfileDto;
 import de.innovationhub.prox.modules.user.application.profile.web.dto.UserProfileDtoMapper;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("user/profile/lecturer")
 @SecurityRequirement(name = "oidc")
 @RequiredArgsConstructor
+@Tag(name = "User Profile")
 public class AuthenticatedUserLecturerProfileController {
   private final CreateUserProfileHandler createUserProfile;
   private final UpdateUserProfileHandler updateUserProfileHandler;

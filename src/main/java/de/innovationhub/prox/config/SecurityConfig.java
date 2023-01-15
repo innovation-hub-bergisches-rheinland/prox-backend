@@ -65,7 +65,7 @@ class SecurityConfig {
                     .permitAll()
                     .requestMatchers(HttpMethod.GET, "/projects/**", "/tags/**",
                         "/organizations/**",
-                        "/lecturers/**", "/disciplines/**", "/moduleTypes/**")
+                        "/lecturers/**", "/disciplines/**", "/moduleTypes/**", "/users/**")
                     .permitAll()
                     .requestMatchers(HttpMethod.GET, "/users/search")
                     .authenticated()

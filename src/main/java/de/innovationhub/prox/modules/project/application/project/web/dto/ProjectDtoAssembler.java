@@ -41,17 +41,20 @@ public class ProjectDtoAssembler {
       tags = tagFacade.getTagsAsString(project.getTags());
     }
 
-    var supervisors = userProfileFacade.findByIds(
+    var supervisors = userProfileFacade.findByUserId(
         project.getSupervisors()
             .stream()
             .map(Supervisor::getLecturerId)
             .toList()
     );
 
+    var author = userProfileFacade.getByUserId(project.getAuthor().getUserId()).orElse(null);
+
     var permissions = evaluatePermissions(project); // TODO
     var interest = evaluateInterest(project);
 
-    return projectMapper.toDto(project, supervisors, partnerOrg, tags, permissions, interest);
+    return projectMapper.toDto(project, supervisors, partnerOrg, tags, permissions, author,
+        interest);
   }
 
   public Page<ProjectDto> toDto(Page<Project> projects) {

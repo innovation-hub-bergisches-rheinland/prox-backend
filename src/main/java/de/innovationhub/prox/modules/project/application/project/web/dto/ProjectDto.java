@@ -32,7 +32,8 @@ public record ProjectDto(
 ) {
   @Schema(name = "Author")
   public record AuthorDto(
-      UUID userId
+      UUID userId,
+      String name
   ) {}
 
   @Schema(name = "CurriculumContext")

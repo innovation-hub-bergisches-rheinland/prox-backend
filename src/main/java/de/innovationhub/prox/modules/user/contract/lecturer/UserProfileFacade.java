@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public interface UserProfileFacade {
 
-  Optional<UserProfileView> get(UUID id);
+  Optional<UserProfileView> getByUserId(UUID id);
 
-  List<UserProfileView> findByIds(List<UUID> ids);
+  List<UserProfileView> findByUserId(List<UUID> ids);
 }

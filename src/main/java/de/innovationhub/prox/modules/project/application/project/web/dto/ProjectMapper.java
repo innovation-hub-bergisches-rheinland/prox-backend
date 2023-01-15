@@ -3,6 +3,7 @@ package de.innovationhub.prox.modules.project.application.project.web.dto;
 import de.innovationhub.prox.modules.organization.contract.OrganizationView;
 import de.innovationhub.prox.modules.project.application.discipline.web.dto.DisciplineMapper;
 import de.innovationhub.prox.modules.project.application.module.web.dto.ModuleTypeMapper;
+import de.innovationhub.prox.modules.project.application.project.web.dto.ProjectDto.AuthorDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.ProjectDto.ReadProjectStatusDto;
 import de.innovationhub.prox.modules.project.application.project.web.dto.ProjectDto.ReadSupervisorDto;
 import de.innovationhub.prox.modules.project.domain.project.Project;
@@ -25,9 +26,18 @@ interface ProjectMapper {
   @Mapping(target = "tags", source = "tags")
   @Mapping(target = "partner", source = "organizationView")
   @Mapping(target = "supervisors", source = "userProfileView")
+  @Mapping(target = "author", source = "author")
   ProjectDto toDto(Project project, List<UserProfileView> userProfileView,
       OrganizationView organizationView, List<String> tags, ProjectPermissions permissions,
+      UserProfileView author,
       ProjectMetrics metrics);
+
+  default AuthorDto toSupervisors(UserProfileView author) {
+    if (author == null) {
+      return null;
+    }
+    return new AuthorDto(author.id(), author.displayName());
+  }
 
   default List<ReadSupervisorDto> toSupervisors(List<UserProfileView> userProfileView) {
     if (userProfileView == null) {

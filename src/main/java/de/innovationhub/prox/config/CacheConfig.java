@@ -15,7 +15,7 @@ public class CacheConfig {
 
   public static final String TAGS = "tags";
   public static final String ORGANIZATIONS = "organizations";
-  public static final String LECTURERS = "lecturers";
+  public static final String USER_PROFILE = "userProfile";
   public static final String USERS = "users";
   public static final String USERS_ROLE = "users_role";
   public static final String USERS_SEARCH = "users_search";
@@ -31,7 +31,7 @@ public class CacheConfig {
     CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
     caffeineCacheManager.setCaffeine(caffeine);
     caffeineCacheManager.setCacheNames(
-        List.of(TAGS, ORGANIZATIONS, LECTURERS, USERS, USERS_ROLE, USERS_SEARCH));
+        List.of(TAGS, ORGANIZATIONS, USER_PROFILE, USERS, USERS_ROLE, USERS_SEARCH));
     return caffeineCacheManager;
   }
 }

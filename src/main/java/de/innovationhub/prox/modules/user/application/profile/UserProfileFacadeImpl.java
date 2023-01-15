@@ -22,15 +22,15 @@ public class UserProfileFacadeImpl implements UserProfileFacade {
   private final UserProfileViewMapper userProfileViewMapper;
 
   @Override
-  @Cacheable(CacheConfig.LECTURERS)
-  public Optional<UserProfileView> get(UUID id) {
+  @Cacheable(CacheConfig.USER_PROFILE)
+  public Optional<UserProfileView> getByUserId(UUID id) {
     return findUserProfileHandler.handle(id)
         .map(userProfileViewMapper::toView);
   }
 
   @Override
-  @Cacheable(CacheConfig.LECTURERS)
-  public List<UserProfileView> findByIds(List<UUID> ids) {
+  @Cacheable(CacheConfig.USER_PROFILE)
+  public List<UserProfileView> findByUserId(List<UUID> ids) {
     return userProfileViewMapper.toViewList(
         findAllUserProfilesByIdsHandler.handle(ids)
     );

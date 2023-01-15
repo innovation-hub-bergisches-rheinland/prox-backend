@@ -17,14 +17,20 @@ import org.springframework.cache.annotation.Cacheable;
 @ApplicationComponent
 @RequiredArgsConstructor
 public class TagFacadeImpl implements TagFacade {
+
   private final FindTagByIdsHandler findTagByIdsHandler;
   private final FindTagByNameHandler findTagByNameHandler;
   private final TagViewMapper tagViewMapper;
 
   @Override
   @Cacheable(CacheConfig.TAGS)
-  public List<String> getTags(Collection<UUID> id) {
+  public List<String> getTagsAsString(Collection<UUID> id) {
     return findTagByIdsHandler.handle(id).stream().map(Tag::getTagName).toList();
+  }
+
+  @Override
+  public List<TagView> getTags(Collection<UUID> id) {
+    return findTagByIdsHandler.handle(id).stream().map(tagViewMapper::toView).toList();
   }
 
   @Override

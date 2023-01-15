@@ -6,7 +6,7 @@ import de.innovationhub.prox.modules.project.application.ProjectPermissionEvalua
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.Supervisor;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
-import de.innovationhub.prox.modules.user.contract.lecturer.LecturerFacade;
+import de.innovationhub.prox.modules.user.contract.lecturer.UserProfileFacade;
 import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
 import java.util.Collections;
 import java.util.List;
@@ -20,7 +20,7 @@ public class ProjectDtoAssembler {
 
   private final TagFacade tagFacade;
   private final OrganizationFacade organizationFacade;
-  private final LecturerFacade lecturerFacade;
+  private final UserProfileFacade userProfileFacade;
   private final ProjectMapper projectMapper;
 
   // TODO: EXPERIMENTAL
@@ -38,10 +38,10 @@ public class ProjectDtoAssembler {
 
     List<String> tags = Collections.emptyList();
     if (project.getTags() != null) {
-      tags = tagFacade.getTags(project.getTags());
+      tags = tagFacade.getTagsAsString(project.getTags());
     }
 
-    var supervisors = lecturerFacade.findByIds(
+    var supervisors = userProfileFacade.findByIds(
         project.getSupervisors()
             .stream()
             .map(Supervisor::getLecturerId)

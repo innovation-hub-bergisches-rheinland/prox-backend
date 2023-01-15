@@ -36,7 +36,7 @@ public class OrganizationDtoAssembler {
 
     List<String> tags = Collections.emptyList();
     if (organization.getTags() != null) {
-      tags = tagFacade.getTags(organization.getTags());
+      tags = tagFacade.getTagsAsString(organization.getTags());
     }
 
     var permissions = new OrganizationPermissions(

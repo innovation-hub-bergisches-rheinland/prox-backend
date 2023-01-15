@@ -29,7 +29,7 @@ class TagFacadeImplIntegrationTest extends AbstractIntegrationTest {
     var tag2 = Tag.create("tag2");
     tagRepository.saveAll(List.of(tag1, tag2));
 
-    var result = tagFacadeImpl.getTags(List.of(tag1.getId(), tag2.getId()));
+    var result = tagFacadeImpl.getTagsAsString(List.of(tag1.getId(), tag2.getId()));
 
     assertThat(result).containsExactlyInAnyOrder("tag1", "tag2");
   }

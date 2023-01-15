@@ -7,7 +7,7 @@ import de.innovationhub.prox.modules.project.application.project.web.dto.Project
 import de.innovationhub.prox.modules.project.application.project.web.dto.ProjectDto.ReadSupervisorDto;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.ProjectStatus;
-import de.innovationhub.prox.modules.user.contract.lecturer.LecturerView;
+import de.innovationhub.prox.modules.user.contract.lecturer.UserProfileView;
 import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -24,16 +24,16 @@ interface ProjectMapper {
   @Mapping(target = "timeBox.end", source = "project.timeBox.endDate")
   @Mapping(target = "tags", source = "tags")
   @Mapping(target = "partner", source = "organizationView")
-  @Mapping(target = "supervisors", source = "lecturerView")
-  ProjectDto toDto(Project project, List<LecturerView> lecturerView,
+  @Mapping(target = "supervisors", source = "userProfileView")
+  ProjectDto toDto(Project project, List<UserProfileView> userProfileView,
       OrganizationView organizationView, List<String> tags, ProjectPermissions permissions,
       ProjectMetrics metrics);
 
-  default List<ReadSupervisorDto> toSupervisors(List<LecturerView> lecturerView) {
-    if (lecturerView == null) {
+  default List<ReadSupervisorDto> toSupervisors(List<UserProfileView> userProfileView) {
+    if (userProfileView == null) {
       return List.of();
     }
-    return lecturerView.stream()
+    return userProfileView.stream()
         .map(l -> new ReadSupervisorDto(l.id(), l.displayName()))
         .toList();
   }

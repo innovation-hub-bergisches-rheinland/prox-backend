@@ -7,6 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import de.innovationhub.prox.modules.user.application.profile.UserProfileMapper;
 import de.innovationhub.prox.modules.user.application.profile.web.dto.CreateLecturerRequestDto;
 import de.innovationhub.prox.modules.user.application.profile.web.dto.CreateLecturerRequestDto.CreateLecturerProfileDto;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfile;
@@ -18,8 +19,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 class CreateLecturerProfileHandlerTest {
+
   UserProfileRepository userProfileRepository = mock(UserProfileRepository.class);
-  CreateLecturerProfileHandler handler = new CreateLecturerProfileHandler(userProfileRepository);
+  CreateLecturerProfileHandler handler = new CreateLecturerProfileHandler(userProfileRepository,
+      UserProfileMapper.INSTANCE);
 
   @Test
   void shouldThrowWhenNotFound() {

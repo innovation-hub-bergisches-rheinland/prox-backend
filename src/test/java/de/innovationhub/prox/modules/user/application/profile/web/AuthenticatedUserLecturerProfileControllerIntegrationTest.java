@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.modules.user.application.profile.web.dto.CreateLecturerRequestDto;
 import de.innovationhub.prox.modules.user.application.profile.web.dto.CreateLecturerRequestDto.CreateLecturerProfileDto;
-import de.innovationhub.prox.modules.user.application.profile.web.dto.SetLecturerTagsRequestDto;
 import de.innovationhub.prox.modules.user.domain.profile.LecturerProfileInformation;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfile;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfileRepository;
@@ -50,7 +49,7 @@ class AuthenticatedUserLecturerProfileControllerIntegrationTest extends Abstract
 
   @ParameterizedTest
   @WithMockUser(value = AUTH_USER_ID)
-  @CsvSource(value = {"POST:user/profile/lecturer", "PUT:user/profile/lecturer", "PUT:user/profile/lecturer/tags"}, delimiter = ':')
+  @CsvSource(value = {"POST:user/profile/lecturer", "PUT:user/profile/lecturer"}, delimiter = ':')
   void shouldReturnForbiddenWhenNotInRole(String method, String path) {
     given()
         .accept(ContentType.JSON)
@@ -102,29 +101,6 @@ class AuthenticatedUserLecturerProfileControllerIntegrationTest extends Abstract
 
     assertThat(userProfileRepository.findByUserId(authUserId).get().getLecturerProfile().getProfile())
         .isNotEqualTo(lecturerProfile);
-  }
-
-  @Test
-  @WithMockUser(value = AUTH_USER_ID, roles = "professor")
-  void shouldSetLecturerTags() {
-    var profile = createDummyProfile();
-    profile.createLecturerProfile(false, new LecturerProfileInformation());
-    userProfileRepository.save(profile);
-
-    var tags = List.of(UUID.randomUUID(), UUID.randomUUID());
-    var request = new SetLecturerTagsRequestDto(tags);
-
-    given()
-        .accept(ContentType.JSON)
-        .contentType(ContentType.JSON)
-        .body(request)
-        .when()
-        .put("/user/profile/lecturer/tags")
-        .then()
-        .statusCode(200);
-
-    assertThat(userProfileRepository.findByUserId(authUserId).get().getTags())
-        .containsExactlyInAnyOrderElementsOf(tags);
   }
 
   private UserProfile createDummyProfile() {

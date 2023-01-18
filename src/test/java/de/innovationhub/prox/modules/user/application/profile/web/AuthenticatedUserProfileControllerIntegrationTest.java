@@ -6,11 +6,13 @@ import static org.hamcrest.Matchers.is;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.modules.user.application.profile.web.dto.CreateUserProfileRequestDto;
+import de.innovationhub.prox.modules.user.application.profile.web.dto.SetTagsRequestDto;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfile;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfileRepository;
 import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,8 +25,10 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 @AutoConfigureMockMvc
+@Transactional
 class AuthenticatedUserProfileControllerIntegrationTest extends AbstractIntegrationTest {
   private static final String AUTH_USER_ID = "00000000-0000-0000-0000-000000000001";
   UUID authUserId = UUID.fromString(AUTH_USER_ID);
@@ -46,7 +50,7 @@ class AuthenticatedUserProfileControllerIntegrationTest extends AbstractIntegrat
   }
 
   @ParameterizedTest
-  @CsvSource(value = {"GET:user/profile", "POST:user/profile", "PUT:user/profile", "POST:user/profile/avatar"}, delimiter = ':')
+  @CsvSource(value = {"GET:user/profile", "POST:user/profile", "PUT:user/profile", "POST:user/profile/avatar", "PUT:user/profile/tags"}, delimiter = ':')
   void shouldReturnUnauthorizedWhenUnauthorized(String method, String path) {
     given()
         .accept(ContentType.JSON)
@@ -139,6 +143,28 @@ class AuthenticatedUserProfileControllerIntegrationTest extends AbstractIntegrat
 
     var updatedProfile = userProfileRepository.findByUserId(authUserId).get();
     assertThat(updatedProfile.getAvatarKey()).isNotNull();
+  }
+
+  @Test
+  @WithMockUser(value = AUTH_USER_ID, roles = "professor")
+  void shouldSetLecturerTags() {
+    var profile = createDummyProfile();
+    userProfileRepository.save(profile);
+
+    var tags = List.of(UUID.randomUUID(), UUID.randomUUID());
+    var request = new SetTagsRequestDto(tags);
+
+    given()
+        .accept(ContentType.JSON)
+        .contentType(ContentType.JSON)
+        .body(request)
+        .when()
+        .put("/user/profile/tags")
+        .then()
+        .statusCode(200);
+
+    assertThat(userProfileRepository.findByUserId(authUserId).get().getTags())
+        .containsExactlyInAnyOrderElementsOf(tags);
   }
 
   private UserProfile createDummyProfile() {

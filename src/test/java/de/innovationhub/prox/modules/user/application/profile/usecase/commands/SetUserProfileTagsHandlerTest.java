@@ -15,9 +15,9 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
-public class SetLecturerTagsHandlerTest {
+public class SetUserProfileTagsHandlerTest {
   UserProfileRepository userProfileRepository = mock(UserProfileRepository.class);
-  SetLecturerTagsHandler handler = new SetLecturerTagsHandler(userProfileRepository);
+  SetUserProfileTagsHandler handler = new SetUserProfileTagsHandler(userProfileRepository);
 
   @Test
   void shouldThrowWhenNotExists() {

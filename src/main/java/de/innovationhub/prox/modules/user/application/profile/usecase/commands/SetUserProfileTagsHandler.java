@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 
 @ApplicationComponent
 @RequiredArgsConstructor
-public class SetLecturerTagsHandler {
+public class SetUserProfileTagsHandler {
 
   private final UserProfileRepository userProfileRepository;
 

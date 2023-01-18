@@ -1,10 +1,13 @@
 package de.innovationhub.prox.modules.user.application.profile.web;
 
 import de.innovationhub.prox.modules.user.application.profile.usecase.commands.CreateUserProfileHandler;
+import de.innovationhub.prox.modules.user.application.profile.usecase.commands.SetUserProfileTagsHandler;
 import de.innovationhub.prox.modules.user.application.profile.usecase.commands.SetUserProfileAvatarHandler;
 import de.innovationhub.prox.modules.user.application.profile.usecase.commands.UpdateUserProfileHandler;
 import de.innovationhub.prox.modules.user.application.profile.usecase.queries.FindUserProfileHandler;
 import de.innovationhub.prox.modules.user.application.profile.web.dto.CreateUserProfileRequestDto;
+import de.innovationhub.prox.modules.user.application.profile.web.dto.SetTagsRequestDto;
+import de.innovationhub.prox.modules.user.application.profile.web.dto.SetLecturerTagsResponseDto;
 import de.innovationhub.prox.modules.user.application.profile.web.dto.UserProfileDto;
 import de.innovationhub.prox.modules.user.application.profile.web.dto.UserProfileDtoMapper;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -35,6 +38,7 @@ public class AuthenticatedUserProfileController {
   private final UpdateUserProfileHandler updateUserProfileHandler;
   private final UserProfileDtoMapper dtoMapper;
   private final SetUserProfileAvatarHandler setAvatar;
+  private final SetUserProfileTagsHandler setTags;
 
   @GetMapping(produces = "application/json")
   public ResponseEntity<UserProfileDto> get(Authentication authentication) {
@@ -54,6 +58,14 @@ public class AuthenticatedUserProfileController {
   public ResponseEntity<UserProfileDto> update(@RequestBody CreateUserProfileRequestDto requestDto, Authentication authentication) {
     var up = updateUserProfileHandler.handle(extractUserId(authentication), requestDto);
     return ResponseEntity.ok(dtoMapper.toDtoUserProfile(up));
+  }
+
+  @PutMapping(value = "tags", consumes = "application/json", produces = "application/json")
+  public ResponseEntity<SetLecturerTagsResponseDto> setLecturerTags(
+      @RequestBody SetTagsRequestDto tagsDto,
+      Authentication authentication) {
+    var result = setTags.handle(extractUserId(authentication), tagsDto.tags());
+    return ResponseEntity.ok(new SetLecturerTagsResponseDto(dtoMapper.retrieveTags(result)));
   }
 
   @PostMapping(value = "avatar", consumes = "multipart/form-data")

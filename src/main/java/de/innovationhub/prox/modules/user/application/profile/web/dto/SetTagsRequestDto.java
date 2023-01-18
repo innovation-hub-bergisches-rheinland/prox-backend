@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Schema(name = "SetLecturerTagsRequest")
-public record SetLecturerTagsRequestDto(
+public record SetTagsRequestDto(
     List<UUID> tags
 ) {
 

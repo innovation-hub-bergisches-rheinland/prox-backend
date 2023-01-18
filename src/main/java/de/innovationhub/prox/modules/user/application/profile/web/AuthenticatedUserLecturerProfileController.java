@@ -26,12 +26,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Tag(name = "User Profile")
 public class AuthenticatedUserLecturerProfileController {
-  private final CreateUserProfileHandler createUserProfile;
-  private final UpdateUserProfileHandler updateUserProfileHandler;
   private final UserProfileDtoMapper dtoMapper;
   private final CreateLecturerProfileHandler createLecturerProfile;
   private final UpdateLecturerProfileHandler updateLecturerProfile;
-  private final SetUserProfileAvatarHandler setAvatar;
 
   @PostMapping(consumes = "application/json", produces = "application/json")
   public ResponseEntity<UserProfileDto> createLecturerProfile(

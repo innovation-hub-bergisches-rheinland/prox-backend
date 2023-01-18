@@ -22,8 +22,8 @@ public abstract class UserProfileDtoMapper {
 
 
   @Mapping(target = "avatarUrl", source = ".", qualifiedByName = "retrieveAvatarUrl")
-  public abstract UserProfileDto toDtoUserProfile(UserProfile userProfile);
   @Mapping(target = "tags", source = "tags", qualifiedByName = "retrieveTags")
+  public abstract UserProfileDto toDtoUserProfile(UserProfile userProfile);
   public abstract LecturerProfileDto toDtoLecturerProfile(LecturerProfile profile);
   public abstract LecturerProfileInformationDto toDtoLecturerProfileInformation(LecturerProfileInformation profileInformation);
 

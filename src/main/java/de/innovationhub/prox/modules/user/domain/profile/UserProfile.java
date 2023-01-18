@@ -2,7 +2,7 @@ package de.innovationhub.prox.modules.user.domain.profile;
 
 import de.innovationhub.prox.modules.commons.domain.AuditedAggregateRoot;
 import de.innovationhub.prox.modules.user.domain.profile.events.LecturerProfileCreated;
-import de.innovationhub.prox.modules.user.domain.profile.events.LecturerProfileTagged;
+import de.innovationhub.prox.modules.user.domain.profile.events.UserProfileTagged;
 import de.innovationhub.prox.modules.user.domain.profile.events.LecturerProfileUpdated;
 import de.innovationhub.prox.modules.user.domain.profile.events.UserProfileAvatarSet;
 import de.innovationhub.prox.modules.user.domain.profile.events.UserProfileCreated;
@@ -11,12 +11,15 @@ import de.innovationhub.prox.modules.user.domain.profile.exception.LecturerProfi
 import de.innovationhub.prox.modules.user.domain.profile.exception.LecturerProfileDoesNotExistException;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotNull;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -44,24 +47,32 @@ public class UserProfile extends AuditedAggregateRoot {
   @OneToOne(cascade = CascadeType.ALL)
   private LecturerProfile lecturerProfile;
 
-  protected UserProfile(UUID id, UUID userId, String displayName) {
+  @Column(columnDefinition = "TEXT")
+  private String vita;
+
+  @ElementCollection
+  private Set<UUID> tags = new HashSet<>();
+
+  protected UserProfile(UUID id, UUID userId, String displayName, String vita) {
     this.id = id;
     this.userId = userId;
     this.displayName = displayName;
+    this.vita = vita;
   }
 
-  public static UserProfile create(UUID userId, String displayName) {
+  public static UserProfile create(UUID userId, String displayName, String vita) {
     Objects.requireNonNull(userId);
     Objects.requireNonNull(displayName);
 
-    var profile = new UserProfile(UUID.randomUUID(), userId, displayName);
-    profile.registerEvent(new UserProfileCreated(profile.id, profile.userId, profile.displayName));
+    var profile = new UserProfile(UUID.randomUUID(), userId, displayName, vita);
+    profile.registerEvent(new UserProfileCreated(profile.id, profile.userId, profile.displayName, profile.vita));
     return profile;
   }
 
-  public void update(String displayName) {
+  public void update(String displayName, String vita) {
     this.displayName = displayName;
-    registerEvent(new UserProfileUpdated(id, this.userId, displayName));
+    this.vita = vita;
+    registerEvent(new UserProfileUpdated(id, this.userId, displayName, vita));
   }
 
   public UUID getId() {
@@ -93,13 +104,8 @@ public class UserProfile extends AuditedAggregateRoot {
     this.registerEvent(new LecturerProfileUpdated(this.id, this.lecturerProfile.getId()));
   }
 
-  public void tagLecturerProfile(Collection<UUID> tagIds) {
-    if (this.lecturerProfile == null) {
-      throw new LecturerProfileDoesNotExistException("Cannot tag a non-existing lecturer profile");
-    }
-
-    this.lecturerProfile.setTags(tagIds);
-    this.registerEvent(new LecturerProfileTagged(this.id, this.lecturerProfile.getId(),
-        this.lecturerProfile.getTags()));
+  public void tagProfile(Collection<UUID> tagIds) {
+    this.tags = new HashSet<>(tagIds);
+    this.registerEvent(new UserProfileTagged(this.id, this.getTags()));
   }
 }

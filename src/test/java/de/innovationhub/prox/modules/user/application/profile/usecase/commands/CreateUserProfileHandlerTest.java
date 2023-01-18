@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import de.innovationhub.prox.modules.user.application.profile.web.dto.CreateUserProfileRequestDto;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfile;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfileRepository;
 import java.util.UUID;
@@ -22,7 +23,7 @@ class CreateUserProfileHandlerTest {
     when(userProfileRepository.existsByUserId(userId))
         .thenReturn(true);
 
-    assertThatThrownBy(() -> handler.handle(userId, "displayName"))
+    assertThatThrownBy(() -> handler.handle(userId, new CreateUserProfileRequestDto("displayName", "Lorem Ipsum")))
         .isInstanceOf(RuntimeException.class);
 
     verify(userProfileRepository).existsByUserId(userId);
@@ -33,11 +34,16 @@ class CreateUserProfileHandlerTest {
     UUID userId = UUID.randomUUID();
     when(userProfileRepository.existsByUserId(userId)).thenReturn(false);
 
-    handler.handle(userId, "Xavier Tester");
+    var request = new CreateUserProfileRequestDto("Xavier Tester", "Lorem Ipsum");
+    handler.handle(userId, request);
 
     var captor = ArgumentCaptor.forClass(UserProfile.class);
     verify(userProfileRepository).save(captor.capture());
-    assertThat(captor.getValue().getUserId()).isEqualTo(userId);
-    assertThat(captor.getValue().getDisplayName()).isEqualTo("Xavier Tester");
+    assertThat(captor.getValue())
+        .satisfies(profile -> {
+          assertThat(profile.getUserId()).isEqualTo(userId);
+          assertThat(profile.getDisplayName()).isEqualTo(request.displayName());
+          assertThat(profile.getVita()).isEqualTo(request.vita());
+        });
   }
 }

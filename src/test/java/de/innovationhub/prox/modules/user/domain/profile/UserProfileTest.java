@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import de.innovationhub.prox.modules.commons.domain.DomainEvent;
 import de.innovationhub.prox.modules.user.domain.profile.events.LecturerProfileCreated;
-import de.innovationhub.prox.modules.user.domain.profile.events.LecturerProfileTagged;
+import de.innovationhub.prox.modules.user.domain.profile.events.UserProfileTagged;
 import de.innovationhub.prox.modules.user.domain.profile.events.LecturerProfileUpdated;
 import de.innovationhub.prox.modules.user.domain.profile.events.UserProfileAvatarSet;
 import de.innovationhub.prox.modules.user.domain.profile.events.UserProfileCreated;
@@ -27,7 +27,7 @@ class UserProfileTest {
   @Test
   void shouldRegisterUpdateEvent() {
     var up = createDummyUserProfile();
-    up.update("Xavier Tester 2");
+    up.update("Xavier Tester 2", "Lorem Ipsum 2");
     domainEventsContainOne(up, UserProfileUpdated.class);
   }
 
@@ -74,21 +74,13 @@ class UserProfileTest {
   }
 
   @Test
-  void shouldThrowWhenLecturerProfileNotExistsOnTag() {
-    var up = createDummyUserProfile();
-
-    assertThatThrownBy(() -> up.tagLecturerProfile(List.of()))
-        .isInstanceOf(LecturerProfileDoesNotExistException.class);
-  }
-
-  @Test
   void shouldRegisterLecturerTaggedEvent() {
     var up = createDummyUserProfile();
     up.createLecturerProfile(false, createDummyLecturerProfileInfo());
 
-    up.tagLecturerProfile(List.of());
+    up.tagProfile(List.of());
 
-    domainEventsContainOne(up, LecturerProfileTagged.class);
+    domainEventsContainOne(up, UserProfileTagged.class);
   }
 
   private void domainEventsContainOne(UserProfile up, Class<? extends DomainEvent> domainEvent) {
@@ -98,7 +90,7 @@ class UserProfileTest {
   }
 
   private UserProfile createDummyUserProfile() {
-    return UserProfile.create(UUID.randomUUID(), "Xavier Tester");
+    return UserProfile.create(UUID.randomUUID(), "Xavier Tester", "Lorem Ipsum");
   }
 
   private LecturerProfileInformation createDummyLecturerProfileInfo() {

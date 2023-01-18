@@ -35,19 +35,12 @@ public class LecturerProfile {
   @Embedded
   private LecturerProfileInformation profile;
 
-  @ElementCollection
-  private Set<UUID> tags = new HashSet<>();
-
   @Default
   public LecturerProfile(UUID id, Boolean visibleInPublicSearch,
       LecturerProfileInformation profile) {
     this.id = id;
     this.visibleInPublicSearch = visibleInPublicSearch;
     this.profile = profile;
-  }
-
-  void setTags(Collection<UUID> tags) {
-    this.tags = new HashSet<>(tags);
   }
 
   void setVisibleInPublicSearch(Boolean visibleInPublicSearch) {

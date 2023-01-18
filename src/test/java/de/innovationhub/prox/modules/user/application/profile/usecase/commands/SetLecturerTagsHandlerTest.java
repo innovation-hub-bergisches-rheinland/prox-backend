@@ -41,11 +41,11 @@ public class SetLecturerTagsHandlerTest {
 
     var profile = ArgumentCaptor.forClass(UserProfile.class);
     verify(userProfileRepository).save(profile.capture());
-    assertThat(profile.getValue().getLecturerProfile().getTags()).containsExactlyElementsOf(tags);
+    assertThat(profile.getValue().getTags()).containsExactlyElementsOf(tags);
   }
 
   private UserProfile createDummyLecturer(UUID userId) {
-    var profile = UserProfile.create(userId, "Xavier Tester");
+    var profile = UserProfile.create(userId, "Xavier Tester", "Lorem Ipsum");
     profile.createLecturerProfile(true, createDummyProfileInformation());
     return profile;
   }
@@ -54,7 +54,6 @@ public class SetLecturerTagsHandlerTest {
     return new LecturerProfileInformation(
         "affiliation-old",
         "subject-old",
-        "vita-old",
         List.of("publication-old"),
         "room-old",
         "consultationHour-old",

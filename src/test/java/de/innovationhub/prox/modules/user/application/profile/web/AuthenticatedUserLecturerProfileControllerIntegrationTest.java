@@ -123,12 +123,12 @@ class AuthenticatedUserLecturerProfileControllerIntegrationTest extends Abstract
         .then()
         .statusCode(200);
 
-    assertThat(userProfileRepository.findByUserId(authUserId).get().getLecturerProfile().getTags())
+    assertThat(userProfileRepository.findByUserId(authUserId).get().getTags())
         .containsExactlyInAnyOrderElementsOf(tags);
   }
 
   private UserProfile createDummyProfile() {
-    return UserProfile.create(authUserId, "Xavier Tester");
+    return UserProfile.create(authUserId, "Xavier Tester", "Lorem Ipsum");
   }
 
   private CreateLecturerRequestDto createLecturerRequestDto() {

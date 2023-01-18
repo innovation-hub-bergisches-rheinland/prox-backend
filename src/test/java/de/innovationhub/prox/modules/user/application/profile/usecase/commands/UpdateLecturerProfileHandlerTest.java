@@ -49,7 +49,6 @@ class UpdateLecturerProfileHandlerTest {
         .satisfies(lp -> {
           assertThat(lp.getAffiliation()).isEqualTo(request.profile().affiliation());
           assertThat(lp.getSubject()).isEqualTo(request.profile().subject());
-          assertThat(lp.getVita()).isEqualTo(request.profile().vita());
           assertThat(lp.getPublications()).containsExactlyInAnyOrderElementsOf(request.profile().publications());
           assertThat(lp.getRoom()).isEqualTo(request.profile().room());
           assertThat(lp.getConsultationHour()).isEqualTo(request.profile().consultationHour());
@@ -79,14 +78,13 @@ class UpdateLecturerProfileHandlerTest {
   }
 
   private UserProfile createDummyLecturer(UUID userId) {
-    return UserProfile.create(userId, "Xavier Tester");
+    return UserProfile.create(userId, "Xavier Tester", "Lorem Ipsum");
   }
 
   private LecturerProfileInformation createDummyProfileInformation() {
     return new LecturerProfileInformation(
         "affiliation-old",
         "subject-old",
-        "vita-old",
         List.of("publication-old"),
         "room-old",
         "consultationHour-old",

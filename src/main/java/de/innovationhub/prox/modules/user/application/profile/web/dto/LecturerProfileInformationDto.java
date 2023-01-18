@@ -7,7 +7,6 @@ import java.util.List;
 public record LecturerProfileInformationDto(
     String affiliation,
     String subject,
-    String vita,
     List<String> publications,
     String room,
     String consultationHour,

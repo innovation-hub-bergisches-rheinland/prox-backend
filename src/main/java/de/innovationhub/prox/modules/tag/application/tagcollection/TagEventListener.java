@@ -1,7 +1,7 @@
 package de.innovationhub.prox.modules.tag.application.tagcollection;
 
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
-import de.innovationhub.prox.modules.profile.contract.LecturerTaggedIntegrationEvent;
+import de.innovationhub.prox.modules.user.contract.user.UserProfileTaggedIntegrationEvent;
 import de.innovationhub.prox.modules.profile.contract.OrganizationTaggedIntegrationEvent;
 import de.innovationhub.prox.modules.project.contract.ProjectTaggedIntegrationEvent;
 import de.innovationhub.prox.modules.tag.application.tagcollection.usecase.SetTagCollectionHandler;
@@ -19,8 +19,8 @@ public class TagEventListener {
   }
 
   @EventListener
-  public void handleLecturerTagged(LecturerTaggedIntegrationEvent event) {
-    handler.handle(event.lecturerId(), event.tags());
+  public void handleUserProfileTagged(UserProfileTaggedIntegrationEvent event) {
+    handler.handle(event.profileId(), event.tags());
   }
 
   @EventListener

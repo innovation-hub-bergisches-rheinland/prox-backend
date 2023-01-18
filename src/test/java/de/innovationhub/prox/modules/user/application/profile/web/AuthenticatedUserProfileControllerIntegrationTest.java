@@ -87,7 +87,7 @@ class AuthenticatedUserProfileControllerIntegrationTest extends AbstractIntegrat
   @Test
   @WithMockUser(AUTH_USER_ID)
   void shouldCreateUserProfile() {
-    var request = new CreateUserProfileRequestDto("Xavier Tester");
+    var request = new CreateUserProfileRequestDto("Xavier Tester", "Lorem Ipsum");
 
     given()
         .accept(ContentType.JSON)
@@ -111,7 +111,7 @@ class AuthenticatedUserProfileControllerIntegrationTest extends AbstractIntegrat
     given()
         .accept(ContentType.JSON)
         .contentType(ContentType.JSON)
-        .body(new CreateUserProfileRequestDto("Xavier Tester Updated"))
+        .body(new CreateUserProfileRequestDto("Xavier Tester Updated", "Lorem Ipsum"))
         .when()
         .put("/user/profile")
         .then()
@@ -142,6 +142,6 @@ class AuthenticatedUserProfileControllerIntegrationTest extends AbstractIntegrat
   }
 
   private UserProfile createDummyProfile() {
-    return UserProfile.create(authUserId, "Xavier Tester");
+    return UserProfile.create(authUserId, "Xavier Tester", "Lorem Ipsum");
   }
 }

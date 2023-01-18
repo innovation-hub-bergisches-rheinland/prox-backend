@@ -46,13 +46,13 @@ public class AuthenticatedUserProfileController {
 
   @PostMapping(consumes = "application/json", produces = "application/json")
   public ResponseEntity<UserProfileDto> create(@RequestBody CreateUserProfileRequestDto requestDto, Authentication authentication) {
-    var up = createUserProfile.handle(extractUserId(authentication), requestDto.displayName());
+    var up = createUserProfile.handle(extractUserId(authentication), requestDto);
     return ResponseEntity.status(201).body(dtoMapper.toDtoUserProfile(up));
   }
 
   @PutMapping(consumes = "application/json", produces = "application/json")
   public ResponseEntity<UserProfileDto> update(@RequestBody CreateUserProfileRequestDto requestDto, Authentication authentication) {
-    var up = updateUserProfileHandler.handle(extractUserId(authentication), requestDto.displayName());
+    var up = updateUserProfileHandler.handle(extractUserId(authentication), requestDto);
     return ResponseEntity.ok(dtoMapper.toDtoUserProfile(up));
   }
 

@@ -51,6 +51,6 @@ class SetUserProfileAvatarHandlerTest {
   }
 
   private UserProfile createDummyUserProfile(UUID userId) {
-    return UserProfile.create(userId, "Xavier Tester");
+    return UserProfile.create(userId, "Xavier Tester", "Lorem Ipsum");
   }
 }

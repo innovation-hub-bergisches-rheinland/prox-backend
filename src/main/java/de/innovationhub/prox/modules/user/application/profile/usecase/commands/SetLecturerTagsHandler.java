@@ -18,8 +18,8 @@ public class SetLecturerTagsHandler {
       List<UUID> tags) {
     var lecturer = userProfileRepository.findByUserId(userId).orElseThrow();
 
-    lecturer.tagLecturerProfile(tags);
+    lecturer.tagProfile(tags);
     userProfileRepository.save(lecturer);
-    return List.copyOf(lecturer.getLecturerProfile().getTags());
+    return List.copyOf(lecturer.getTags());
   }
 }

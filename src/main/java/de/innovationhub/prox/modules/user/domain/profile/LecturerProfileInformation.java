@@ -21,9 +21,6 @@ public class LecturerProfileInformation {
   private String affiliation;
   private String subject;
 
-  @Column(columnDefinition = "TEXT")
-  private String vita;
-
   @Builder.Default
   @ElementCollection
   @Column(length = 1023)

@@ -60,7 +60,7 @@ class UserProfileControllerIntegrationTest extends AbstractIntegrationTest {
   }
 
   private UserProfile createDummyProfile() {
-    var up = UserProfile.create(UUID.randomUUID(), "Xavier Tester");
+    var up = UserProfile.create(UUID.randomUUID(), "Xavier Tester", "Lorem Ipsum");
     return up;
   }
 }

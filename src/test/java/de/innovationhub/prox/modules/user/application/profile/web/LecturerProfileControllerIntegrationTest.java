@@ -70,7 +70,7 @@ class LecturerProfileControllerIntegrationTest extends AbstractIntegrationTest {
     var lecturer = createDummyLecturer(true);
     userProfileRepository.save(lecturer);
     var lecturerThatDoesntSatisfyQuery = createDummyLecturer(true);
-    lecturerThatDoesntSatisfyQuery.update("Some other name");
+    lecturerThatDoesntSatisfyQuery.update("Some other name", "Lorem Ipsum");
     userProfileRepository.save(lecturerThatDoesntSatisfyQuery);
 
 
@@ -101,7 +101,7 @@ class LecturerProfileControllerIntegrationTest extends AbstractIntegrationTest {
   }
 
   private UserProfile createDummyLecturer(boolean visible) {
-    var up = UserProfile.create(UUID.randomUUID(), "Xavier Tester");
+    var up = UserProfile.create(UUID.randomUUID(), "Xavier Tester", "Lorem Ipsum");
     up.createLecturerProfile(visible, new LecturerProfileInformation());
     return up;
   }

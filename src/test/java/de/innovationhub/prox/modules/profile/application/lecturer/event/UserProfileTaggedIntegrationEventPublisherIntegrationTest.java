@@ -3,10 +3,9 @@ package de.innovationhub.prox.modules.profile.application.lecturer.event;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
-import de.innovationhub.prox.modules.profile.contract.LecturerTaggedIntegrationEvent;
+import de.innovationhub.prox.modules.user.contract.user.UserProfileTaggedIntegrationEvent;
 import de.innovationhub.prox.modules.tag.application.tag.event.TagCreatedIntegrationEventPublisher;
-import de.innovationhub.prox.modules.user.domain.profile.events.LecturerProfileTagged;
-import java.util.List;
+import de.innovationhub.prox.modules.user.domain.profile.events.UserProfileTagged;
 import java.util.Set;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,7 @@ import org.springframework.test.context.event.ApplicationEvents;
 import org.springframework.test.context.event.RecordApplicationEvents;
 
 @RecordApplicationEvents
-class LecturerTaggedIntegrationEventPublisherIntegrationTest extends AbstractIntegrationTest {
+class UserProfileTaggedIntegrationEventPublisherIntegrationTest extends AbstractIntegrationTest {
   @Autowired
   TagCreatedIntegrationEventPublisher tagCreatedIntegrationEventPublisher;
 
@@ -30,12 +29,13 @@ class LecturerTaggedIntegrationEventPublisherIntegrationTest extends AbstractInt
   @Test
   void shouldPublishEvent() {
     var tags = Set.of(UUID.randomUUID());
-    var event = new LecturerProfileTagged(UUID.randomUUID(), UUID.randomUUID(), tags);
+    var event = new UserProfileTagged(UUID.randomUUID(), tags);
     eventPublisher.publishEvent(event);
 
-    var events = applicationEvents.stream(LecturerTaggedIntegrationEvent.class).toList();
+    var events = applicationEvents.stream(UserProfileTaggedIntegrationEvent.class).toList();
     assertThat(events).hasSize(1).first()
-        .extracting(LecturerTaggedIntegrationEvent::lecturerId, LecturerTaggedIntegrationEvent::tags)
-        .containsExactly(event.lecturerProfileId(), event.tags());
+        .extracting(
+            UserProfileTaggedIntegrationEvent::profileId, UserProfileTaggedIntegrationEvent::tags)
+        .containsExactly(event.userProfileId(), event.tags());
   }
 }

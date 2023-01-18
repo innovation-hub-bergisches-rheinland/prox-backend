@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(name = "CreateUserProfileRequest")
 public record CreateUserProfileRequestDto(
-    String displayName
+    String displayName,
+    String vita
 ) {
 }

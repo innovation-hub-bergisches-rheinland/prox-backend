@@ -3,7 +3,7 @@ package de.innovationhub.prox.modules.tag.application.tagcollection;
 import static org.mockito.Mockito.verify;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
-import de.innovationhub.prox.modules.profile.contract.LecturerTaggedIntegrationEvent;
+import de.innovationhub.prox.modules.user.contract.user.UserProfileTaggedIntegrationEvent;
 import de.innovationhub.prox.modules.profile.contract.OrganizationTaggedIntegrationEvent;
 import de.innovationhub.prox.modules.project.contract.ProjectTaggedIntegrationEvent;
 import de.innovationhub.prox.modules.tag.application.tagcollection.usecase.SetTagCollectionHandler;
@@ -37,11 +37,11 @@ class TagEventListenerIntegrationTest extends AbstractIntegrationTest {
 
   @Test
   void shouldCreateNewTagCollectionOnLecturerTaggedEvent() {
-    var event = new LecturerTaggedIntegrationEvent(UUID.randomUUID(), List.of(UUID.randomUUID(), UUID.randomUUID()));
+    var event = new UserProfileTaggedIntegrationEvent(UUID.randomUUID(), List.of(UUID.randomUUID(), UUID.randomUUID()));
 
     eventPublisher.publishEvent(event);
 
-    verify(handler).handle(event.lecturerId(), event.tags());
+    verify(handler).handle(event.profileId(), event.tags());
   }
 
   @Test

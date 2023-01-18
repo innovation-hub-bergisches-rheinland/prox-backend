@@ -6,6 +6,7 @@ import java.util.UUID;
 public record UserProfileUpdated(
     UUID id,
     UUID userId,
-    String displayName
+    String displayName,
+    String vita
 ) implements DomainEvent {
 }

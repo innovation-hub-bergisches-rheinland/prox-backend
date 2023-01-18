@@ -6,8 +6,7 @@ import java.util.List;
 @Schema(name = "LecturerProfile")
 public record LecturerProfileDto(
     boolean visibleInPublicSearch,
-    LecturerProfileInformationDto profile,
-    List<TagDto> tags
+    LecturerProfileInformationDto profile
 ) {
 
 }

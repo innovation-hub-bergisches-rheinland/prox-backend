@@ -1,13 +1,13 @@
 package de.innovationhub.prox.modules.tag.application.tag.web;
 
+import de.innovationhub.prox.modules.tag.application.tag.dto.SynchronizeTagsRequest;
+import de.innovationhub.prox.modules.tag.application.tag.dto.SynchronizeTagsResponse;
+import de.innovationhub.prox.modules.tag.application.tag.dto.TagDto;
+import de.innovationhub.prox.modules.tag.application.tag.dto.TagDtoMapper;
 import de.innovationhub.prox.modules.tag.application.tag.usecase.commands.SynchronizeTagsHandler;
 import de.innovationhub.prox.modules.tag.application.tag.usecase.queries.FindCommonTagsHandler;
 import de.innovationhub.prox.modules.tag.application.tag.usecase.queries.FindMatchingTagsHandler;
 import de.innovationhub.prox.modules.tag.application.tag.usecase.queries.FindPopularTagsHandler;
-import de.innovationhub.prox.modules.tag.application.tag.web.dto.SynchronizeTagsRequest;
-import de.innovationhub.prox.modules.tag.application.tag.web.dto.SynchronizeTagsResponse;
-import de.innovationhub.prox.modules.tag.application.tag.web.dto.TagDto;
-import de.innovationhub.prox.modules.tag.application.tag.web.dto.TagDtoMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;

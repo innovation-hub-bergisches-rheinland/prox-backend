@@ -7,11 +7,11 @@ import static org.hamcrest.Matchers.hasSize;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.modules.organization.OrganizationFixtures;
-import de.innovationhub.prox.modules.organization.application.web.dto.AddMembershipRequestDto;
-import de.innovationhub.prox.modules.organization.application.web.dto.CreateOrganizationRequestDto;
-import de.innovationhub.prox.modules.organization.application.web.dto.CreateOrganizationRequestDto.CreateOrganizationProfileDto;
-import de.innovationhub.prox.modules.organization.application.web.dto.SetOrganizationTagsRequestDto;
-import de.innovationhub.prox.modules.organization.application.web.dto.UpdateMembershipRequestDto;
+import de.innovationhub.prox.modules.organization.application.dto.AddMembershipRequestDto;
+import de.innovationhub.prox.modules.organization.application.dto.CreateOrganizationRequestDto;
+import de.innovationhub.prox.modules.organization.application.dto.CreateOrganizationRequestDto.CreateOrganizationProfileDto;
+import de.innovationhub.prox.modules.organization.application.dto.SetOrganizationTagsRequestDto;
+import de.innovationhub.prox.modules.organization.application.dto.UpdateMembershipRequestDto;
 import de.innovationhub.prox.modules.organization.domain.OrganizationRepository;
 import de.innovationhub.prox.modules.organization.domain.OrganizationRole;
 import de.innovationhub.prox.modules.organization.domain.SocialMedia;

@@ -6,7 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import de.innovationhub.prox.modules.user.application.profile.web.dto.CreateUserProfileRequestDto;
+import de.innovationhub.prox.modules.user.application.profile.dto.CreateUserProfileRequestDto;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfile;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfileRepository;
 import java.util.Optional;

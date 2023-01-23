@@ -5,8 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
-import de.innovationhub.prox.modules.user.application.profile.web.dto.CreateUserProfileRequestDto;
-import de.innovationhub.prox.modules.user.application.profile.web.dto.SetTagsRequestDto;
+import de.innovationhub.prox.modules.user.application.profile.dto.CreateUserProfileRequestDto;
+import de.innovationhub.prox.modules.user.application.profile.dto.SetTagsRequestDto;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfile;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfileRepository;
 import io.restassured.http.ContentType;

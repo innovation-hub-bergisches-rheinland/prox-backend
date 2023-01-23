@@ -1,8 +1,8 @@
 package de.innovationhub.prox.modules.user.application.user.web;
 
+import de.innovationhub.prox.modules.user.application.user.dto.ProxUserDto;
+import de.innovationhub.prox.modules.user.application.user.dto.ProxUserMapper;
 import de.innovationhub.prox.modules.user.application.user.usecase.queries.SearchUserHandler;
-import de.innovationhub.prox.modules.user.application.user.web.dto.ProxUserDto;
-import de.innovationhub.prox.modules.user.application.user.web.dto.ProxUserMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;

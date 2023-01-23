@@ -1,9 +1,9 @@
 package de.innovationhub.prox.modules.user.application.profile.web;
 
+import de.innovationhub.prox.modules.user.application.profile.dto.UserProfileDto;
+import de.innovationhub.prox.modules.user.application.profile.dto.UserProfileDtoMapper;
 import de.innovationhub.prox.modules.user.application.profile.usecase.queries.FindAllLecturersHandler;
 import de.innovationhub.prox.modules.user.application.profile.usecase.queries.SearchLecturerHandler;
-import de.innovationhub.prox.modules.user.application.profile.web.dto.UserProfileDto;
-import de.innovationhub.prox.modules.user.application.profile.web.dto.UserProfileDtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

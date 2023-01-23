@@ -1,7 +1,7 @@
 package de.innovationhub.prox.modules.user.application.profile.usecase.commands;
 
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
-import de.innovationhub.prox.modules.user.application.profile.web.dto.CreateUserProfileRequestDto;
+import de.innovationhub.prox.modules.user.application.profile.dto.CreateUserProfileRequestDto;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfile;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfileRepository;
 import jakarta.transaction.Transactional;

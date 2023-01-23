@@ -1,9 +1,9 @@
 package de.innovationhub.prox.modules.project.application.project.usecase.commands;
 
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
-import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectRequest;
-import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectRequest.TimeBoxDto;
-import de.innovationhub.prox.modules.project.application.project.web.dto.CurriculumContextRequest;
+import de.innovationhub.prox.modules.project.application.project.dto.CreateProjectRequest;
+import de.innovationhub.prox.modules.project.application.project.dto.CreateProjectRequest.TimeBoxDto;
+import de.innovationhub.prox.modules.project.application.project.dto.CurriculumContextRequest;
 import de.innovationhub.prox.modules.project.domain.discipline.Discipline;
 import de.innovationhub.prox.modules.project.domain.discipline.DisciplineRepository;
 import de.innovationhub.prox.modules.project.domain.module.ModuleType;

@@ -1,5 +1,11 @@
 package de.innovationhub.prox.modules.project.application.project.web;
 
+import de.innovationhub.prox.modules.project.application.project.dto.ApplyCommitmentDto;
+import de.innovationhub.prox.modules.project.application.project.dto.CreateProjectRequest;
+import de.innovationhub.prox.modules.project.application.project.dto.ProjectDto;
+import de.innovationhub.prox.modules.project.application.project.dto.ProjectDtoAssembler;
+import de.innovationhub.prox.modules.project.application.project.dto.SetProjectStateRequestDto;
+import de.innovationhub.prox.modules.project.application.project.dto.SetProjectTagsRequestDto;
 import de.innovationhub.prox.modules.project.application.project.usecase.commands.ApplyCommitmentHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.commands.CreateProjectHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.commands.DeleteProjectByIdHandler;
@@ -12,12 +18,6 @@ import de.innovationhub.prox.modules.project.application.project.usecase.queries
 import de.innovationhub.prox.modules.project.application.project.usecase.queries.FindProjectsOfPartnerHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.queries.FindProjectsOfSupervisorHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.queries.SearchProjectHandler;
-import de.innovationhub.prox.modules.project.application.project.web.dto.ApplyCommitmentDto;
-import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectRequest;
-import de.innovationhub.prox.modules.project.application.project.web.dto.ProjectDto;
-import de.innovationhub.prox.modules.project.application.project.web.dto.ProjectDtoAssembler;
-import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectStateRequestDto;
-import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectTagsRequestDto;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

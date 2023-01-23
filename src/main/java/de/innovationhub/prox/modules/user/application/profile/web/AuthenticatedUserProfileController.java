@@ -1,15 +1,15 @@
 package de.innovationhub.prox.modules.user.application.profile.web;
 
+import de.innovationhub.prox.modules.user.application.profile.dto.CreateUserProfileRequestDto;
+import de.innovationhub.prox.modules.user.application.profile.dto.SetLecturerTagsResponseDto;
+import de.innovationhub.prox.modules.user.application.profile.dto.SetTagsRequestDto;
+import de.innovationhub.prox.modules.user.application.profile.dto.UserProfileDto;
+import de.innovationhub.prox.modules.user.application.profile.dto.UserProfileDtoMapper;
 import de.innovationhub.prox.modules.user.application.profile.usecase.commands.CreateUserProfileHandler;
-import de.innovationhub.prox.modules.user.application.profile.usecase.commands.SetUserProfileTagsHandler;
 import de.innovationhub.prox.modules.user.application.profile.usecase.commands.SetUserProfileAvatarHandler;
+import de.innovationhub.prox.modules.user.application.profile.usecase.commands.SetUserProfileTagsHandler;
 import de.innovationhub.prox.modules.user.application.profile.usecase.commands.UpdateUserProfileHandler;
 import de.innovationhub.prox.modules.user.application.profile.usecase.queries.FindUserProfileHandler;
-import de.innovationhub.prox.modules.user.application.profile.web.dto.CreateUserProfileRequestDto;
-import de.innovationhub.prox.modules.user.application.profile.web.dto.SetTagsRequestDto;
-import de.innovationhub.prox.modules.user.application.profile.web.dto.SetLecturerTagsResponseDto;
-import de.innovationhub.prox.modules.user.application.profile.web.dto.UserProfileDto;
-import de.innovationhub.prox.modules.user.application.profile.web.dto.UserProfileDtoMapper;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;

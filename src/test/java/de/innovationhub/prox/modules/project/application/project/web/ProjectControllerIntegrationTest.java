@@ -8,12 +8,12 @@ import static org.hamcrest.Matchers.is;
 
 import de.innovationhub.prox.modules.project.ProjectFixtures;
 import de.innovationhub.prox.modules.project.ProjectIntegrationTest;
-import de.innovationhub.prox.modules.project.application.project.web.dto.ApplyCommitmentDto;
-import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectRequest;
-import de.innovationhub.prox.modules.project.application.project.web.dto.CreateProjectRequest.TimeBoxDto;
-import de.innovationhub.prox.modules.project.application.project.web.dto.CurriculumContextRequest;
-import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectStateRequestDto;
-import de.innovationhub.prox.modules.project.application.project.web.dto.SetProjectTagsRequestDto;
+import de.innovationhub.prox.modules.project.application.project.dto.ApplyCommitmentDto;
+import de.innovationhub.prox.modules.project.application.project.dto.CreateProjectRequest;
+import de.innovationhub.prox.modules.project.application.project.dto.CreateProjectRequest.TimeBoxDto;
+import de.innovationhub.prox.modules.project.application.project.dto.CurriculumContextRequest;
+import de.innovationhub.prox.modules.project.application.project.dto.SetProjectStateRequestDto;
+import de.innovationhub.prox.modules.project.application.project.dto.SetProjectTagsRequestDto;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
 import de.innovationhub.prox.modules.project.domain.project.Supervisor;

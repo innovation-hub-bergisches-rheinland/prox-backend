@@ -8,7 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import de.innovationhub.prox.modules.organization.OrganizationFixtures;
-import de.innovationhub.prox.modules.organization.application.web.dto.UpdateMembershipRequestDto;
+import de.innovationhub.prox.modules.organization.application.dto.UpdateMembershipRequestDto;
 import de.innovationhub.prox.modules.organization.domain.Organization;
 import de.innovationhub.prox.modules.organization.domain.OrganizationRepository;
 import de.innovationhub.prox.modules.organization.domain.OrganizationRole;

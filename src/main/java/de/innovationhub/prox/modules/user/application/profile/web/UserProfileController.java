@@ -1,8 +1,8 @@
 package de.innovationhub.prox.modules.user.application.profile.web;
 
+import de.innovationhub.prox.modules.user.application.profile.dto.UserProfileDto;
+import de.innovationhub.prox.modules.user.application.profile.dto.UserProfileDtoMapper;
 import de.innovationhub.prox.modules.user.application.profile.usecase.queries.FindUserProfileHandler;
-import de.innovationhub.prox.modules.user.application.profile.web.dto.UserProfileDto;
-import de.innovationhub.prox.modules.user.application.profile.web.dto.UserProfileDtoMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;

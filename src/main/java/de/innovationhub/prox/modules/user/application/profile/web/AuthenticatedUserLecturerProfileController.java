@@ -1,13 +1,10 @@
 package de.innovationhub.prox.modules.user.application.profile.web;
 
+import de.innovationhub.prox.modules.user.application.profile.dto.CreateLecturerRequestDto;
+import de.innovationhub.prox.modules.user.application.profile.dto.UserProfileDto;
+import de.innovationhub.prox.modules.user.application.profile.dto.UserProfileDtoMapper;
 import de.innovationhub.prox.modules.user.application.profile.usecase.commands.CreateLecturerProfileHandler;
-import de.innovationhub.prox.modules.user.application.profile.usecase.commands.CreateUserProfileHandler;
-import de.innovationhub.prox.modules.user.application.profile.usecase.commands.SetUserProfileAvatarHandler;
 import de.innovationhub.prox.modules.user.application.profile.usecase.commands.UpdateLecturerProfileHandler;
-import de.innovationhub.prox.modules.user.application.profile.usecase.commands.UpdateUserProfileHandler;
-import de.innovationhub.prox.modules.user.application.profile.web.dto.CreateLecturerRequestDto;
-import de.innovationhub.prox.modules.user.application.profile.web.dto.UserProfileDto;
-import de.innovationhub.prox.modules.user.application.profile.web.dto.UserProfileDtoMapper;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.UUID;

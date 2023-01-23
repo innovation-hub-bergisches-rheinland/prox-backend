@@ -1,5 +1,14 @@
 package de.innovationhub.prox.modules.organization.application.web;
 
+import de.innovationhub.prox.modules.organization.application.dto.AddMembershipRequestDto;
+import de.innovationhub.prox.modules.organization.application.dto.CreateOrganizationRequestDto;
+import de.innovationhub.prox.modules.organization.application.dto.MembershipDto;
+import de.innovationhub.prox.modules.organization.application.dto.MembershipsResponseDto;
+import de.innovationhub.prox.modules.organization.application.dto.OrganizationDto;
+import de.innovationhub.prox.modules.organization.application.dto.OrganizationDtoAssembler;
+import de.innovationhub.prox.modules.organization.application.dto.SetOrganizationTagsRequestDto;
+import de.innovationhub.prox.modules.organization.application.dto.SetOrganizationTagsResponseDto;
+import de.innovationhub.prox.modules.organization.application.dto.UpdateMembershipRequestDto;
 import de.innovationhub.prox.modules.organization.application.usecase.commands.AddOrganizationMemberHandler;
 import de.innovationhub.prox.modules.organization.application.usecase.commands.CreateOrganizationHandler;
 import de.innovationhub.prox.modules.organization.application.usecase.commands.RemoveOrganizationMemberHandler;
@@ -11,15 +20,6 @@ import de.innovationhub.prox.modules.organization.application.usecase.queries.Fi
 import de.innovationhub.prox.modules.organization.application.usecase.queries.FindOrganizationHandler;
 import de.innovationhub.prox.modules.organization.application.usecase.queries.FindOrganizationMembershipsHandler;
 import de.innovationhub.prox.modules.organization.application.usecase.queries.SearchOrganizationHandler;
-import de.innovationhub.prox.modules.organization.application.web.dto.AddMembershipRequestDto;
-import de.innovationhub.prox.modules.organization.application.web.dto.CreateOrganizationRequestDto;
-import de.innovationhub.prox.modules.organization.application.web.dto.MembershipDto;
-import de.innovationhub.prox.modules.organization.application.web.dto.MembershipsResponseDto;
-import de.innovationhub.prox.modules.organization.application.web.dto.OrganizationDto;
-import de.innovationhub.prox.modules.organization.application.web.dto.OrganizationDtoAssembler;
-import de.innovationhub.prox.modules.organization.application.web.dto.SetOrganizationTagsRequestDto;
-import de.innovationhub.prox.modules.organization.application.web.dto.SetOrganizationTagsResponseDto;
-import de.innovationhub.prox.modules.organization.application.web.dto.UpdateMembershipRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;

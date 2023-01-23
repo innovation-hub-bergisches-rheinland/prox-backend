@@ -2,8 +2,8 @@ package de.innovationhub.prox.modules.organization.application.usecase.commands;
 
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.commons.core.ImpossibleException;
+import de.innovationhub.prox.modules.organization.application.dto.AddMembershipRequestDto;
 import de.innovationhub.prox.modules.organization.application.exception.OrganizationNotFoundException;
-import de.innovationhub.prox.modules.organization.application.web.dto.AddMembershipRequestDto;
 import de.innovationhub.prox.modules.organization.domain.Membership;
 import de.innovationhub.prox.modules.organization.domain.OrganizationRepository;
 import de.innovationhub.prox.modules.organization.domain.OrganizationRole;

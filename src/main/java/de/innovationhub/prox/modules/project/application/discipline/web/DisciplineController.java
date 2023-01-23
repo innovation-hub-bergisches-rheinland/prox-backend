@@ -1,8 +1,8 @@
 package de.innovationhub.prox.modules.project.application.discipline.web;
 
+import de.innovationhub.prox.modules.project.application.discipline.dto.DisciplineMapper;
+import de.innovationhub.prox.modules.project.application.discipline.dto.ReadDisciplineDto;
 import de.innovationhub.prox.modules.project.application.discipline.usecase.queries.FindAllDisciplinesHandler;
-import de.innovationhub.prox.modules.project.application.discipline.web.dto.DisciplineMapper;
-import de.innovationhub.prox.modules.project.application.discipline.web.dto.ReadDisciplineDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.http.ResponseEntity;

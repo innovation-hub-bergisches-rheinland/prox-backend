@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.star.application.usecase.commands;
+package de.innovationhub.prox.modules.star.application.usecase.queries;
 
 import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
 import de.innovationhub.prox.modules.star.domain.StarCollectionRepository;

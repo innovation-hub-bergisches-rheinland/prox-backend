@@ -1,8 +1,8 @@
 package de.innovationhub.prox.modules.star.application.web;
 
-import de.innovationhub.prox.modules.star.application.usecase.commands.CheckProjectStarHandler;
 import de.innovationhub.prox.modules.star.application.usecase.commands.StarProjectHandler;
 import de.innovationhub.prox.modules.star.application.usecase.commands.UnstarProjectHandler;
+import de.innovationhub.prox.modules.star.application.usecase.queries.CheckProjectStarHandler;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;

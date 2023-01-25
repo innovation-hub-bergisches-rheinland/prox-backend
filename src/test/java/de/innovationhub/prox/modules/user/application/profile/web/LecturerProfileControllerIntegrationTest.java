@@ -4,6 +4,7 @@ import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static org.hamcrest.Matchers.is;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
+import de.innovationhub.prox.modules.user.domain.profile.ContactInformation;
 import de.innovationhub.prox.modules.user.domain.profile.LecturerProfileInformation;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfile;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfileRepository;
@@ -70,7 +71,7 @@ class LecturerProfileControllerIntegrationTest extends AbstractIntegrationTest {
     var lecturer = createDummyLecturer(true);
     userProfileRepository.save(lecturer);
     var lecturerThatDoesntSatisfyQuery = createDummyLecturer(true);
-    lecturerThatDoesntSatisfyQuery.update("Some other name", "Lorem Ipsum");
+    lecturerThatDoesntSatisfyQuery.update("Some other name", "Lorem Ipsum", new ContactInformation("", "", ""));
     userProfileRepository.save(lecturerThatDoesntSatisfyQuery);
 
 
@@ -101,7 +102,7 @@ class LecturerProfileControllerIntegrationTest extends AbstractIntegrationTest {
   }
 
   private UserProfile createDummyLecturer(boolean visible) {
-    var up = UserProfile.create(UUID.randomUUID(), "Xavier Tester", "Lorem Ipsum");
+    var up = UserProfile.create(UUID.randomUUID(), "Xavier Tester", "Lorem Ipsum", new ContactInformation("Test", "Test", "Test"));
     up.createLecturerProfile(visible, new LecturerProfileInformation());
     return up;
   }

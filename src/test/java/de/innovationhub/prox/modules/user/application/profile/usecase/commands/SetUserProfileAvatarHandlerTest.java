@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import de.innovationhub.prox.infra.storage.StorageProvider;
+import de.innovationhub.prox.modules.user.domain.profile.ContactInformation;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfile;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfileRepository;
 import java.io.IOException;
@@ -51,6 +52,6 @@ class SetUserProfileAvatarHandlerTest {
   }
 
   private UserProfile createDummyUserProfile(UUID userId) {
-    return UserProfile.create(userId, "Xavier Tester", "Lorem Ipsum");
+    return UserProfile.create(userId, "Xavier Tester", "Lorem Ipsum", new ContactInformation("Test", "Test", "Test"));
   }
 }

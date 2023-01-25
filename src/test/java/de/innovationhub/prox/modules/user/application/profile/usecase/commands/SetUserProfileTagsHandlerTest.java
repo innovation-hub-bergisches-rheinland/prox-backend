@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import de.innovationhub.prox.modules.user.domain.profile.ContactInformation;
 import de.innovationhub.prox.modules.user.domain.profile.LecturerProfileInformation;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfile;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfileRepository;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 public class SetUserProfileTagsHandlerTest {
+
   UserProfileRepository userProfileRepository = mock(UserProfileRepository.class);
   SetUserProfileTagsHandler handler = new SetUserProfileTagsHandler(userProfileRepository);
 
@@ -45,7 +47,8 @@ public class SetUserProfileTagsHandlerTest {
   }
 
   private UserProfile createDummyLecturer(UUID userId) {
-    var profile = UserProfile.create(userId, "Xavier Tester", "Lorem Ipsum");
+    var profile = UserProfile.create(userId, "Xavier Tester", "Lorem Ipsum",
+        new ContactInformation("Test", "Test", "Test"));
     profile.createLecturerProfile(true, createDummyProfileInformation());
     return profile;
   }
@@ -57,9 +60,6 @@ public class SetUserProfileTagsHandlerTest {
         List.of("publication-old"),
         "room-old",
         "consultationHour-old",
-        "email-old",
-        "telephone-old",
-        "homepage-old",
         "collegePage-old"
     );
   }

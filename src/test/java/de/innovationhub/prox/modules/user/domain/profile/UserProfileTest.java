@@ -27,7 +27,7 @@ class UserProfileTest {
   @Test
   void shouldRegisterUpdateEvent() {
     var up = createDummyUserProfile();
-    up.update("Xavier Tester 2", "Lorem Ipsum 2");
+    up.update("Xavier Tester 2", "Lorem Ipsum 2", new ContactInformation("Test", "Test", "Test"));
     domainEventsContainOne(up, UserProfileUpdated.class);
   }
 
@@ -90,7 +90,7 @@ class UserProfileTest {
   }
 
   private UserProfile createDummyUserProfile() {
-    return UserProfile.create(UUID.randomUUID(), "Xavier Tester", "Lorem Ipsum");
+    return UserProfile.create(UUID.randomUUID(), "Xavier Tester", "Lorem Ipsum", new ContactInformation("Test", "Test", "Test"));
   }
 
   private LecturerProfileInformation createDummyLecturerProfileInfo() {

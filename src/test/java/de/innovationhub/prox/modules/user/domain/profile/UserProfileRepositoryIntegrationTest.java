@@ -54,7 +54,7 @@ class UserProfileRepositoryIntegrationTest extends AbstractIntegrationTest {
   }
 
   private UserProfile createDummyUserProfile() {
-    return UserProfile.create(UUID.randomUUID(), "Xavier Tester", "Lorem Ipsum");
+    return UserProfile.create(UUID.randomUUID(), "Xavier Tester", "Lorem Ipsum", new ContactInformation("Test", "Test", "Test"));
   }
 
   private UserProfile createDummyLecturer(boolean visibility) {

@@ -6,7 +6,9 @@ import static org.hamcrest.Matchers.is;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.modules.user.application.profile.dto.CreateUserProfileRequestDto;
+import de.innovationhub.prox.modules.user.application.profile.dto.CreateUserProfileRequestDto.ContactInformationRequestDto;
 import de.innovationhub.prox.modules.user.application.profile.dto.SetTagsRequestDto;
+import de.innovationhub.prox.modules.user.domain.profile.ContactInformation;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfile;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfileRepository;
 import io.restassured.http.ContentType;
@@ -91,7 +93,7 @@ class AuthenticatedUserProfileControllerIntegrationTest extends AbstractIntegrat
   @Test
   @WithMockUser(AUTH_USER_ID)
   void shouldCreateUserProfile() {
-    var request = new CreateUserProfileRequestDto("Xavier Tester", "Lorem Ipsum");
+    var request = new CreateUserProfileRequestDto("Xavier Tester", "Lorem Ipsum", new ContactInformationRequestDto("Test", "Test", "Test"));
 
     given()
         .accept(ContentType.JSON)
@@ -102,8 +104,18 @@ class AuthenticatedUserProfileControllerIntegrationTest extends AbstractIntegrat
         .then()
         .statusCode(201);
 
-    assertThat(userProfileRepository.findByUserId(authUserId).get().getDisplayName())
-        .isEqualTo("Xavier Tester");
+    var profile = userProfileRepository.findByUserId(authUserId).get();
+    assertThat(profile)
+        .satisfies(p -> {
+          assertThat(p.getDisplayName()).isEqualTo("Xavier Tester");
+          assertThat(p.getVita()).isEqualTo("Lorem Ipsum");
+          assertThat(p.getContactInformation())
+              .satisfies(ci -> {
+                assertThat(ci.getEmail()).isEqualTo("Test");
+                assertThat(ci.getHomepage()).isEqualTo("Test");
+                assertThat(ci.getTelephone()).isEqualTo("Test");
+              });
+        });
   }
 
   @Test
@@ -115,14 +127,26 @@ class AuthenticatedUserProfileControllerIntegrationTest extends AbstractIntegrat
     given()
         .accept(ContentType.JSON)
         .contentType(ContentType.JSON)
-        .body(new CreateUserProfileRequestDto("Xavier Tester Updated", "Lorem Ipsum"))
+        .body(new CreateUserProfileRequestDto("Xavier Tester Updated", "Lorem Ipsum Updated", new ContactInformationRequestDto("Test Updated", "Test Updated", "Test Updated")))
         .when()
         .put("/user/profile")
         .then()
         .statusCode(200);
 
-    assertThat(userProfileRepository.findByUserId(authUserId).get().getDisplayName())
-        .isEqualTo("Xavier Tester Updated");
+    var updatedProfile = userProfileRepository.findByUserId(authUserId).get();
+    assertThat(updatedProfile)
+        .satisfies(p -> {
+          assertThat(p.getDisplayName()).isEqualTo("Xavier Tester Updated");
+          assertThat(p.getVita()).isEqualTo("Lorem Ipsum Updated");
+          assertThat(p.getContactInformation())
+              .satisfies(ci -> {
+                assertThat(ci.getEmail()).isEqualTo("Test Updated");
+                assertThat(ci.getHomepage()).isEqualTo("Test Updated");
+                assertThat(ci.getTelephone()).isEqualTo("Test Updated");
+              });
+        });
+
+
   }
 
   @Test
@@ -168,6 +192,6 @@ class AuthenticatedUserProfileControllerIntegrationTest extends AbstractIntegrat
   }
 
   private UserProfile createDummyProfile() {
-    return UserProfile.create(authUserId, "Xavier Tester", "Lorem Ipsum");
+    return UserProfile.create(authUserId, "Xavier Tester", "Lorem Ipsum", new ContactInformation("Test", "Test", "Test"));
   }
 }

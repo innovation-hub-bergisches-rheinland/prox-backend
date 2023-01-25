@@ -30,9 +30,6 @@ public class LecturerProfileInformation {
   // Sprechstunde
   // TODO: maybe "office hours" is a better title
   private String consultationHour;
-  private String email;
-  private String telephone;
-  private String homepage;
 
   // The website of the university with personal information.
   // Some lecturers have filed most of their information there and don't wan't to duplicate it.

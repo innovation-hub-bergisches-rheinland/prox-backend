@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 import de.innovationhub.prox.modules.user.application.profile.UserProfileMapper;
 import de.innovationhub.prox.modules.user.application.profile.dto.CreateLecturerRequestDto;
 import de.innovationhub.prox.modules.user.application.profile.dto.CreateLecturerRequestDto.CreateLecturerProfileDto;
+import de.innovationhub.prox.modules.user.domain.profile.ContactInformation;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfile;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfileRepository;
 import java.util.List;
@@ -50,9 +51,6 @@ class CreateLecturerProfileHandlerTest {
           assertThat(lp.getPublications()).containsExactlyInAnyOrderElementsOf(request.profile().publications());
           assertThat(lp.getRoom()).isEqualTo(request.profile().room());
           assertThat(lp.getConsultationHour()).isEqualTo(request.profile().consultationHour());
-          assertThat(lp.getEmail()).isEqualTo(request.profile().email());
-          assertThat(lp.getTelephone()).isEqualTo(request.profile().telephone());
-          assertThat(lp.getHomepage()).isEqualTo(request.profile().homepage());
           assertThat(lp.getCollegePage()).isEqualTo(request.profile().collegePage());
         });
   }
@@ -66,9 +64,6 @@ class CreateLecturerProfileHandlerTest {
             List.of("publication"),
             "room",
             "consultationHour",
-            "email",
-            "telephone",
-            "homepage",
             "collegePage"
         ),
         false
@@ -76,6 +71,6 @@ class CreateLecturerProfileHandlerTest {
   }
 
   private UserProfile createDummyLecturer(UUID userId) {
-    return UserProfile.create(userId, "Xavier Tester", "Lorem Ipsum");
+    return UserProfile.create(userId, "Xavier Tester", "Lorem Ipsum", new ContactInformation("Test", "Test", "Test"));
   }
 }

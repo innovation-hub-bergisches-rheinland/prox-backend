@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.modules.user.application.profile.dto.CreateLecturerRequestDto;
 import de.innovationhub.prox.modules.user.application.profile.dto.CreateLecturerRequestDto.CreateLecturerProfileDto;
+import de.innovationhub.prox.modules.user.domain.profile.ContactInformation;
 import de.innovationhub.prox.modules.user.domain.profile.LecturerProfileInformation;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfile;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfileRepository;
@@ -104,7 +105,7 @@ class AuthenticatedUserLecturerProfileControllerIntegrationTest extends Abstract
   }
 
   private UserProfile createDummyProfile() {
-    return UserProfile.create(authUserId, "Xavier Tester", "Lorem Ipsum");
+    return UserProfile.create(authUserId, "Xavier Tester", "Lorem Ipsum", new ContactInformation("Test", "Test", "Test"));
   }
 
   private CreateLecturerRequestDto createLecturerRequestDto() {
@@ -116,9 +117,6 @@ class AuthenticatedUserLecturerProfileControllerIntegrationTest extends Abstract
             List.of("publication"),
             "room",
             "consultationHour",
-            "email",
-            "telephone",
-            "homepage",
             "collegePage"
         ), false
     );

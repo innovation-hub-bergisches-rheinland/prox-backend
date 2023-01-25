@@ -12,6 +12,7 @@ import de.innovationhub.prox.modules.user.domain.profile.exception.LecturerProfi
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
@@ -44,6 +45,9 @@ public class UserProfile extends AuditedAggregateRoot {
 
   private String avatarKey;
 
+  @Embedded
+  private ContactInformation contactInformation;
+
   @OneToOne(cascade = CascadeType.ALL)
   private LecturerProfile lecturerProfile;
 
@@ -53,26 +57,28 @@ public class UserProfile extends AuditedAggregateRoot {
   @ElementCollection
   private Set<UUID> tags = new HashSet<>();
 
-  protected UserProfile(UUID id, UUID userId, String displayName, String vita) {
+  protected UserProfile(UUID id, UUID userId, String displayName, String vita, ContactInformation contactInformation) {
     this.id = id;
     this.userId = userId;
     this.displayName = displayName;
     this.vita = vita;
+    this.contactInformation = contactInformation;
   }
 
-  public static UserProfile create(UUID userId, String displayName, String vita) {
+  public static UserProfile create(UUID userId, String displayName, String vita, ContactInformation contactInformation) {
     Objects.requireNonNull(userId);
     Objects.requireNonNull(displayName);
 
-    var profile = new UserProfile(UUID.randomUUID(), userId, displayName, vita);
-    profile.registerEvent(new UserProfileCreated(profile.id, profile.userId, profile.displayName, profile.vita));
+    var profile = new UserProfile(UUID.randomUUID(), userId, displayName, vita, contactInformation);
+    profile.registerEvent(new UserProfileCreated(profile.id, profile.userId, profile.displayName, profile.vita, profile.contactInformation));
     return profile;
   }
 
-  public void update(String displayName, String vita) {
+  public void update(String displayName, String vita, ContactInformation contactInformation) {
     this.displayName = displayName;
     this.vita = vita;
-    registerEvent(new UserProfileUpdated(id, this.userId, displayName, vita));
+    this.contactInformation = contactInformation;
+    registerEvent(new UserProfileUpdated(id, this.userId, displayName, vita, contactInformation));
   }
 
   public UUID getId() {

@@ -39,7 +39,7 @@ public interface UserProfileRepository extends JpaRepository<UserProfile, UUID> 
               WHERE (:query IS NULL OR
                         lower(p.displayName) LIKE lower(concat('%', :query, '%')) OR
                         lower(lp.profile.subject) LIKE lower(concat('%', :query, '%')) OR
-                        lower(lp.profile.email) LIKE lower(concat('%', :query, '%')))
+                        lower(p.contactInformation.email) LIKE lower(concat('%', :query, '%')))
                 AND lp.visibleInPublicSearch = true
               ORDER BY p.displayName ASC
       """)

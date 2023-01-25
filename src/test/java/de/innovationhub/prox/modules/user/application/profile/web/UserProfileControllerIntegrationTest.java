@@ -4,6 +4,7 @@ import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static org.hamcrest.Matchers.is;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
+import de.innovationhub.prox.modules.user.domain.profile.ContactInformation;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfile;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfileRepository;
 import io.restassured.http.ContentType;
@@ -60,7 +61,7 @@ class UserProfileControllerIntegrationTest extends AbstractIntegrationTest {
   }
 
   private UserProfile createDummyProfile() {
-    var up = UserProfile.create(UUID.randomUUID(), "Xavier Tester", "Lorem Ipsum");
+    var up = UserProfile.create(UUID.randomUUID(), "Xavier Tester", "Lorem Ipsum", new ContactInformation("Test", "Test", "Test"));
     return up;
   }
 }

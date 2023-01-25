@@ -10,9 +10,6 @@ public record LecturerProfileInformationDto(
     List<String> publications,
     String room,
     String consultationHour,
-    String email,
-    String telephone,
-    String homepage,
     String collegePage
 ) {
 }

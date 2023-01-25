@@ -12,6 +12,13 @@ public record UserProfileDto(
 
     String vita,
     LecturerProfileDto lecturerProfile,
+    ContactInformationDto contact,
     List<TagDto>tags
 ) {
+  public record ContactInformationDto(
+      String email,
+      String telephone,
+      String homepage
+  ) {
+  }
 }

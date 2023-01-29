@@ -1,4 +1,4 @@
-package de.innovationhub.prox.config;
+package de.innovationhub.prox.infra.keycloak;
 
 import static org.keycloak.OAuth2Constants.CLIENT_CREDENTIALS;
 
@@ -9,6 +9,7 @@ import org.keycloak.admin.client.resource.RealmResource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 
 @Configuration
 @RequiredArgsConstructor
@@ -40,5 +41,13 @@ public class KeycloakConfig {
   @Bean
   public RealmResource realmResource(Keycloak keycloak) {
     return keycloak.realm(realm);
+  }
+
+  @Bean
+  public JwtAuthenticationConverter jwtAuthenticationConverter() {
+    JwtAuthenticationConverter jwtConverter = new JwtAuthenticationConverter();
+    jwtConverter.setJwtGrantedAuthoritiesConverter(new KeycloakGrantedAuthoritiesConverter());
+    jwtConverter.setPrincipalClaimName("sub");
+    return jwtConverter;
   }
 }

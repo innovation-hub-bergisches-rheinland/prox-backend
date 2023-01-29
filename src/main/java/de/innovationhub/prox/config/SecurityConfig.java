@@ -1,5 +1,6 @@
 package de.innovationhub.prox.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -13,14 +14,10 @@ import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableMethodSecurity
+@RequiredArgsConstructor
 class SecurityConfig {
 
-  private JwtAuthenticationConverter jwtAuthenticationConverter() {
-    JwtAuthenticationConverter jwtConverter = new JwtAuthenticationConverter();
-    jwtConverter.setJwtGrantedAuthoritiesConverter(new KeycloakGrantedAuthoritiesConverter());
-    jwtConverter.setPrincipalClaimName("sub");
-    return jwtConverter;
-  }
+  private final JwtAuthenticationConverter jwtAuthenticationConverter;
 
   @Bean
   @Profile("unsecure")
@@ -51,7 +48,7 @@ class SecurityConfig {
         .anonymous()
         .disable()
         .oauth2ResourceServer(
-            oauth2 -> oauth2.jwt().jwtAuthenticationConverter(jwtAuthenticationConverter()))
+            oauth2 -> oauth2.jwt().jwtAuthenticationConverter(jwtAuthenticationConverter))
         .authorizeHttpRequests(
             registry ->
                 registry

@@ -1,7 +1,7 @@
-package de.innovationhub.prox.modules.user.application.user;
+package de.innovationhub.prox.infra.keycloak;
 
-import de.innovationhub.prox.config.CacheConfig;
 import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
+import de.innovationhub.prox.config.CacheConfig;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package de.innovationhub.prox.config;
+package de.innovationhub.prox.infra.keycloak;
 
 
 import java.util.Collection;

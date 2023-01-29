@@ -4,7 +4,7 @@ import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.organization.contract.OrganizationTaggedIntegrationEvent;
 import de.innovationhub.prox.modules.project.contract.ProjectTaggedIntegrationEvent;
 import de.innovationhub.prox.modules.tag.application.tagcollection.usecase.SetTagCollectionHandler;
-import de.innovationhub.prox.modules.user.contract.user.UserProfileTaggedIntegrationEvent;
+import de.innovationhub.prox.modules.user.contract.profile.UserProfileTaggedIntegrationEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 

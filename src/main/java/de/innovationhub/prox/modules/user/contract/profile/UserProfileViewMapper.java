@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.user.contract.lecturer;
+package de.innovationhub.prox.modules.user.contract.profile;
 
 import de.innovationhub.prox.modules.user.domain.profile.UserProfile;
 import java.util.List;

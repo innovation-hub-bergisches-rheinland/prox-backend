@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.user.contract.user;
+package de.innovationhub.prox.modules.user.contract.profile;
 
 import java.util.Collection;
 import java.util.UUID;

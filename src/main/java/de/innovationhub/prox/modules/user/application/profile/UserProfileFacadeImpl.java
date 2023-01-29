@@ -1,12 +1,12 @@
 package de.innovationhub.prox.modules.user.application.profile;
 
-import de.innovationhub.prox.config.CacheConfig;
 import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
+import de.innovationhub.prox.config.CacheConfig;
 import de.innovationhub.prox.modules.user.application.profile.usecase.queries.FindAllUserProfilesByIdsHandler;
 import de.innovationhub.prox.modules.user.application.profile.usecase.queries.FindUserProfileHandler;
-import de.innovationhub.prox.modules.user.contract.lecturer.UserProfileFacade;
-import de.innovationhub.prox.modules.user.contract.lecturer.UserProfileView;
-import de.innovationhub.prox.modules.user.contract.lecturer.UserProfileViewMapper;
+import de.innovationhub.prox.modules.user.contract.profile.UserProfileFacade;
+import de.innovationhub.prox.modules.user.contract.profile.UserProfileView;
+import de.innovationhub.prox.modules.user.contract.profile.UserProfileViewMapper;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

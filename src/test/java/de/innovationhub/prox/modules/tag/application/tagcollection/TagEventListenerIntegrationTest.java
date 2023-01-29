@@ -6,7 +6,7 @@ import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.modules.organization.contract.OrganizationTaggedIntegrationEvent;
 import de.innovationhub.prox.modules.project.contract.ProjectTaggedIntegrationEvent;
 import de.innovationhub.prox.modules.tag.application.tagcollection.usecase.SetTagCollectionHandler;
-import de.innovationhub.prox.modules.user.contract.user.UserProfileTaggedIntegrationEvent;
+import de.innovationhub.prox.modules.user.contract.profile.UserProfileTaggedIntegrationEvent;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;

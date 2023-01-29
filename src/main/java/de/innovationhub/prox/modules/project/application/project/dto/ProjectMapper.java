@@ -8,7 +8,7 @@ import de.innovationhub.prox.modules.project.application.project.dto.ProjectDto.
 import de.innovationhub.prox.modules.project.application.project.dto.ProjectDto.ReadSupervisorDto;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.ProjectStatus;
-import de.innovationhub.prox.modules.user.contract.lecturer.UserProfileView;
+import de.innovationhub.prox.modules.user.contract.profile.UserProfileView;
 import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

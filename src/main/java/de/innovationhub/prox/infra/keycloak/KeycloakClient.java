@@ -58,4 +58,20 @@ public class KeycloakClient {
     }
     return users;
   }
+
+  public void joinGroup(String userId, String groupName) {
+    var foundGroups = this.realmResource.groups().groups(groupName, true, 0, 1, true);
+    if (foundGroups.isEmpty()) {
+      throw new RuntimeException("Group %s not found".formatted(groupName));
+    }
+    if (foundGroups.size() > 1) {
+      throw new RuntimeException("Multiple %s groups found".formatted(groupName));
+    }
+
+    usersResource.get(userId).joinGroup(foundGroups.get(0).getId());
+  }
+
+  public void getGroups(String userId) {
+    this.usersResource.get(userId).groups();
+  }
 }

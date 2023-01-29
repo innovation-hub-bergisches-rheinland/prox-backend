@@ -18,16 +18,17 @@ public class CreateUserProfileHandler {
   private final UserProfileDtoMapper userProfileDtoMapper;
 
   @Transactional
-  public UserProfile handle(UUID userId, CreateUserProfileRequestDto request) {
+  public void handle(UUID userId, CreateUserProfileRequestDto request) {
     Objects.requireNonNull(userId);
     var exists = userProfileRepository.existsByUserId(userId);
-    if(exists) {
+    if (exists) {
       throw new RuntimeException("User profile already exists");
     }
 
     var contactInformation = userProfileDtoMapper.toContactInformation(request.contact());
-    var profile = UserProfile.create(userId, request.displayName(), request.vita(), contactInformation);
+    var profile = UserProfile.create(userId, request.displayName(), request.vita(),
+        contactInformation);
     userProfileRepository.save(profile);
-    return profile;
+    System.out.println("Created user profile");
   }
 }

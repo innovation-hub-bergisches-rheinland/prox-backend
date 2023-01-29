@@ -89,35 +89,6 @@ class AuthenticatedUserProfileControllerIntegrationTest extends AbstractIntegrat
         .statusCode(404);
   }
 
-
-  @Test
-  @WithMockUser(AUTH_USER_ID)
-  void shouldCreateUserProfile() {
-    var request = new CreateUserProfileRequestDto("Xavier Tester", "Lorem Ipsum", new ContactInformationRequestDto("Test", "Test", "Test"));
-
-    given()
-        .accept(ContentType.JSON)
-        .contentType(ContentType.JSON)
-        .body(request)
-        .when()
-        .post("/user/profile")
-        .then()
-        .statusCode(201);
-
-    var profile = userProfileRepository.findByUserId(authUserId).get();
-    assertThat(profile)
-        .satisfies(p -> {
-          assertThat(p.getDisplayName()).isEqualTo("Xavier Tester");
-          assertThat(p.getVita()).isEqualTo("Lorem Ipsum");
-          assertThat(p.getContactInformation())
-              .satisfies(ci -> {
-                assertThat(ci.getEmail()).isEqualTo("Test");
-                assertThat(ci.getHomepage()).isEqualTo("Test");
-                assertThat(ci.getTelephone()).isEqualTo("Test");
-              });
-        });
-  }
-
   @Test
   @WithMockUser(AUTH_USER_ID)
   void shouldUpdateUserProfile() {

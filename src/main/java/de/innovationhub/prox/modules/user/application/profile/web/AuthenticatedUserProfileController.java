@@ -5,7 +5,6 @@ import de.innovationhub.prox.modules.user.application.profile.dto.SetLecturerTag
 import de.innovationhub.prox.modules.user.application.profile.dto.SetTagsRequestDto;
 import de.innovationhub.prox.modules.user.application.profile.dto.UserProfileDto;
 import de.innovationhub.prox.modules.user.application.profile.dto.UserProfileDtoMapper;
-import de.innovationhub.prox.modules.user.application.profile.usecase.commands.CreateUserProfileHandler;
 import de.innovationhub.prox.modules.user.application.profile.usecase.commands.SetUserProfileAvatarHandler;
 import de.innovationhub.prox.modules.user.application.profile.usecase.commands.SetUserProfileTagsHandler;
 import de.innovationhub.prox.modules.user.application.profile.usecase.commands.UpdateUserProfileHandler;
@@ -33,7 +32,6 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @Tag(name = "User Profile", description = "Endpoints for managing user profiles")
 public class AuthenticatedUserProfileController {
-  private final CreateUserProfileHandler createUserProfile;
   private final FindUserProfileHandler findUserProfileHandler;
   private final UpdateUserProfileHandler updateUserProfileHandler;
   private final UserProfileDtoMapper dtoMapper;
@@ -46,12 +44,6 @@ public class AuthenticatedUserProfileController {
         .map(dtoMapper::toDtoUserProfile)
         .map(ResponseEntity::ok)
         .orElse(ResponseEntity.status(404).build());
-  }
-
-  @PostMapping(consumes = "application/json", produces = "application/json")
-  public ResponseEntity<UserProfileDto> create(@RequestBody CreateUserProfileRequestDto requestDto, Authentication authentication) {
-    var up = createUserProfile.handle(extractUserId(authentication), requestDto);
-    return ResponseEntity.status(201).body(dtoMapper.toDtoUserProfile(up));
   }
 
   @PutMapping(consumes = "application/json", produces = "application/json")

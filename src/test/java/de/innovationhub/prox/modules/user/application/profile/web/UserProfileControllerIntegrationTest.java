@@ -51,6 +51,21 @@ class UserProfileControllerIntegrationTest extends AbstractIntegrationTest {
   }
 
   @Test
+  void shouldSearchUser() {
+    var profile = createDummyProfile();
+    userProfileRepository.save(profile);
+
+    given()
+        .accept(ContentType.JSON)
+        .param("q", profile.getDisplayName())
+        .when()
+        .get("users/search")
+        .then()
+        .statusCode(200)
+        .body("content[0].userId", is(profile.getUserId().toString()));
+  }
+
+  @Test
   void shouldReturnNotFoundWhenNotFound() {
     given()
         .accept(ContentType.JSON)

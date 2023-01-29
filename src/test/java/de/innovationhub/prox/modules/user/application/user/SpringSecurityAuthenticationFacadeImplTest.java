@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.commons.exception.UnauthenticatedException;
-import de.innovationhub.prox.modules.user.domain.user.ProxUserAccountRepository;
 import java.util.Collection;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +21,6 @@ class SpringSecurityAuthenticationFacadeImplTest extends AbstractIntegrationTest
 
   @Autowired
   private SpringSecurityAuthenticationFacadeImpl authenticationFacade;
-
-  @Autowired
-  private ProxUserAccountRepository userRepository;
 
   @Test
   void shouldThrowWhenUnauthenticated() {

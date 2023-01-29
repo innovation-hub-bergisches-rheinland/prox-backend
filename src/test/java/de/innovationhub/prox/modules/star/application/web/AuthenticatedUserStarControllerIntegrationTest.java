@@ -7,7 +7,6 @@ import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.modules.project.application.project.event.StarIntegrationEventListeners;
 import de.innovationhub.prox.modules.star.domain.StarCollection;
 import de.innovationhub.prox.modules.star.domain.StarCollectionRepository;
-import de.innovationhub.prox.modules.user.domain.user.ProxUser;
 import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import jakarta.transaction.Transactional;
@@ -40,10 +39,6 @@ class AuthenticatedUserStarControllerIntegrationTest extends AbstractIntegration
   @BeforeEach
   void setUp() {
     RestAssuredMockMvc.standaloneSetup(() -> mockMvc);
-  }
-
-  private ProxUser createDummyUser(UUID id) {
-    return new ProxUser(id, "Xavier Tester", "xavier.tester@example.com");
   }
 
   @Test

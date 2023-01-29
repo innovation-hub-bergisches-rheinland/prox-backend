@@ -46,4 +46,16 @@ public interface UserProfileRepository extends JpaRepository<UserProfile, UUID> 
   Page<UserProfile> searchLecturers(
       @Param("query") String query,
       Pageable pageable);
+
+  @Query("""
+            SELECT DISTINCT p
+              FROM UserProfile p
+              WHERE (:query IS NULL OR
+                        lower(p.displayName) LIKE lower(concat('%', :query, '%')) OR
+                        lower(p.contactInformation.email) LIKE lower(concat('%', :query, '%')))
+              ORDER BY p.displayName ASC
+      """)
+  Page<UserProfile> search(
+      @Param("query") String query,
+      Pageable pageable);
 }

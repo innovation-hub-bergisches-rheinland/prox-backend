@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.user.application.user.exception;
+package de.innovationhub.prox.commons.exception;
 
 public class UnauthorizedAccessException extends RuntimeException {
   public UnauthorizedAccessException() {

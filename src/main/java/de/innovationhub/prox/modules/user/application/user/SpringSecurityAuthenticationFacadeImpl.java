@@ -1,9 +1,8 @@
 package de.innovationhub.prox.modules.user.application.user;
 
-import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.commons.exception.UnauthenticatedException;
+import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
-import de.innovationhub.prox.modules.user.domain.user.ProxUserAccountRepository;
 import io.micrometer.core.lang.Nullable;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +14,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @ApplicationComponent
 @Slf4j
 public class SpringSecurityAuthenticationFacadeImpl implements AuthenticationFacade {
-
-  private final ProxUserAccountRepository userRepository;
 
   @Override
   public UUID currentAuthenticatedId() {

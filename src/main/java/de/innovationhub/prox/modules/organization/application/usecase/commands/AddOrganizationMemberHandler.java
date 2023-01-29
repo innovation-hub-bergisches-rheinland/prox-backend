@@ -1,13 +1,13 @@
 package de.innovationhub.prox.modules.organization.application.usecase.commands;
 
-import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.commons.exception.ImpossibleException;
+import de.innovationhub.prox.commons.exception.UnauthorizedAccessException;
+import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.organization.application.dto.AddMembershipRequestDto;
 import de.innovationhub.prox.modules.organization.application.exception.OrganizationNotFoundException;
 import de.innovationhub.prox.modules.organization.domain.Membership;
 import de.innovationhub.prox.modules.organization.domain.OrganizationRepository;
 import de.innovationhub.prox.modules.organization.domain.OrganizationRole;
-import de.innovationhub.prox.modules.user.application.user.exception.UnauthorizedAccessException;
 import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;

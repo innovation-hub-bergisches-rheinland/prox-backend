@@ -1,12 +1,15 @@
 package de.innovationhub.prox.modules.tag.domain.tagcollection;
 
 import de.innovationhub.prox.commons.buildingblocks.AuditedAggregateRoot;
+import de.innovationhub.prox.config.PersistenceConfig;
 import de.innovationhub.prox.modules.tag.domain.tag.Tag;
 import de.innovationhub.prox.modules.tag.domain.tagcollection.events.TagCollectionCreated;
 import de.innovationhub.prox.modules.tag.domain.tagcollection.events.TagCollectionUpdated;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -20,12 +23,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
+@Table(schema = PersistenceConfig.TAG_SCHEMA)
 public class TagCollection extends AuditedAggregateRoot {
 
   @Id
   private UUID id;
 
   @ManyToMany
+  @JoinTable(schema = PersistenceConfig.TAG_SCHEMA)
   private List<Tag> tags = new ArrayList<>();
 
   public static TagCollection create(UUID id) {

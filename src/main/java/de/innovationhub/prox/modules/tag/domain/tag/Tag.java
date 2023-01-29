@@ -2,9 +2,11 @@ package de.innovationhub.prox.modules.tag.domain.tag;
 
 import de.innovationhub.prox.commons.Default;
 import de.innovationhub.prox.commons.buildingblocks.AuditedAggregateRoot;
+import de.innovationhub.prox.config.PersistenceConfig;
 import de.innovationhub.prox.modules.tag.domain.tag.events.TagCreated;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.util.Objects;
@@ -20,6 +22,7 @@ import org.hibernate.annotations.NaturalId;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Table(schema = PersistenceConfig.TAG_SCHEMA)
 public class Tag extends AuditedAggregateRoot {
 
   @Id

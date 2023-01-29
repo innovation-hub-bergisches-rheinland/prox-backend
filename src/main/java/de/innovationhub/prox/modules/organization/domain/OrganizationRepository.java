@@ -16,8 +16,8 @@ public interface OrganizationRepository extends JpaRepository<Organization, UUID
 
   @Query(nativeQuery = true, value = """
       SELECT DISTINCT o.*, ts_rank(document, q) AS rank
-        FROM organization o
-                 LEFT JOIN organization_tags ot ON o.id = ot.organization_id,
+        FROM prox_organization.organization o
+                 LEFT JOIN prox_organization.organization_tags ot ON o.id = ot.organization_id,
               to_tsvector('simple', concat_ws(' ', o.name, o.contact_email)) document,
               to_tsquery('simple', REGEXP_REPLACE(lower(:query), '\\s+', ':* & ', 'g')) q
         WHERE (:tagIds IS NULL OR ot.tags IN (:tagIds))

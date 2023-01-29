@@ -1,6 +1,7 @@
 package de.innovationhub.prox.modules.organization.domain;
 
 import de.innovationhub.prox.commons.buildingblocks.AuditedAggregateRoot;
+import de.innovationhub.prox.config.PersistenceConfig;
 import de.innovationhub.prox.modules.organization.domain.events.OrganizationCreated;
 import de.innovationhub.prox.modules.organization.domain.events.OrganizationLogoSet;
 import de.innovationhub.prox.modules.organization.domain.events.OrganizationMemberAdded;
@@ -10,11 +11,14 @@ import de.innovationhub.prox.modules.organization.domain.events.OrganizationProf
 import de.innovationhub.prox.modules.organization.domain.events.OrganizationRenamed;
 import de.innovationhub.prox.modules.organization.domain.events.OrganizationTagged;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -35,6 +39,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Table(schema = PersistenceConfig.ORGANIZATION_SCHEMA)
 public class Organization extends AuditedAggregateRoot {
 
   @Id
@@ -42,11 +47,14 @@ public class Organization extends AuditedAggregateRoot {
   private String name;
 
   @Embedded
+  @CollectionTable(schema = PersistenceConfig.ORGANIZATION_SCHEMA)
   private OrganizationProfile profile;
   @OneToMany(cascade = CascadeType.ALL)
+  @JoinTable(schema = PersistenceConfig.ORGANIZATION_SCHEMA)
   private List<Membership> members = new ArrayList<>();
 
   @ElementCollection
+  @CollectionTable(schema = PersistenceConfig.ORGANIZATION_SCHEMA)
   private Set<UUID> tags = new HashSet<>();
 
   private String logoKey;

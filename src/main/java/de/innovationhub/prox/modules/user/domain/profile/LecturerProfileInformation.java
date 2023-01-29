@@ -1,5 +1,7 @@
 package de.innovationhub.prox.modules.user.domain.profile;
 
+import de.innovationhub.prox.config.PersistenceConfig;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embeddable;
@@ -24,6 +26,7 @@ public class LecturerProfileInformation {
   @Builder.Default
   @ElementCollection
   @Column(length = 1023)
+  @CollectionTable(schema = PersistenceConfig.USER_SCHEMA)
   private List<String> publications = new ArrayList<>();
 
   private String room;

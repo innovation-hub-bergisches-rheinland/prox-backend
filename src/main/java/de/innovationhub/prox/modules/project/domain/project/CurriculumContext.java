@@ -1,10 +1,13 @@
 package de.innovationhub.prox.modules.project.domain.project;
 
+import de.innovationhub.prox.config.PersistenceConfig;
 import de.innovationhub.prox.modules.project.domain.discipline.Discipline;
 import de.innovationhub.prox.modules.project.domain.module.ModuleType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -20,6 +23,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Table(schema = PersistenceConfig.PROJECT_SCHEMA)
 public class CurriculumContext {
 
   public static final CurriculumContext EMPTY =
@@ -29,9 +33,11 @@ public class CurriculumContext {
   private UUID id = UUID.randomUUID();
 
   @ManyToMany
+  @JoinTable(schema = PersistenceConfig.PROJECT_SCHEMA)
   private List<Discipline> disciplines;
 
   @ManyToMany
+  @JoinTable(schema = PersistenceConfig.PROJECT_SCHEMA)
   private List<ModuleType> moduleTypes;
 
   public CurriculumContext(List<Discipline> disciplines, List<ModuleType> moduleTypes) {

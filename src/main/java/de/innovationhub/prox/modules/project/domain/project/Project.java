@@ -1,6 +1,7 @@
 package de.innovationhub.prox.modules.project.domain.project;
 
 import de.innovationhub.prox.commons.buildingblocks.AuditedAggregateRoot;
+import de.innovationhub.prox.config.PersistenceConfig;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectCreated;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectInterestStated;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectInterestUnstated;
@@ -9,12 +10,14 @@ import de.innovationhub.prox.modules.project.domain.project.events.ProjectStateU
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectTagged;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectUpdated;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -46,6 +49,7 @@ import org.springframework.lang.Nullable;
 @Builder(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Table(schema = PersistenceConfig.PROJECT_SCHEMA)
 public class Project extends AuditedAggregateRoot {
 
   @Id
@@ -80,22 +84,27 @@ public class Project extends AuditedAggregateRoot {
   @NotNull
   @Setter(AccessLevel.PROTECTED)
   @Embedded
+  @CollectionTable(schema = PersistenceConfig.PROJECT_SCHEMA)
   private ProjectStatus status;
 
   @Builder.Default
   @Embedded
+  @CollectionTable(schema = PersistenceConfig.PROJECT_SCHEMA)
   private TimeBox timeBox = null;
 
   @Builder.Default
   @ElementCollection
+  @CollectionTable(schema = PersistenceConfig.PROJECT_SCHEMA)
   private List<Supervisor> supervisors = new ArrayList<>();
 
   @ElementCollection
   @Builder.Default
+  @CollectionTable(schema = PersistenceConfig.PROJECT_SCHEMA)
   private Set<UUID> tags = new HashSet<>();
 
   @ElementCollection
   @Builder.Default
+  @CollectionTable(schema = PersistenceConfig.PROJECT_SCHEMA)
   private Set<InterestedUser> interestedUsers = new HashSet<>();
 
   public static Project create(

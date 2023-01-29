@@ -1,21 +1,24 @@
 package de.innovationhub.prox.modules.user.domain.profile;
 
 import de.innovationhub.prox.commons.buildingblocks.AuditedAggregateRoot;
+import de.innovationhub.prox.config.PersistenceConfig;
 import de.innovationhub.prox.modules.user.domain.profile.events.LecturerProfileCreated;
-import de.innovationhub.prox.modules.user.domain.profile.events.UserProfileTagged;
 import de.innovationhub.prox.modules.user.domain.profile.events.LecturerProfileUpdated;
 import de.innovationhub.prox.modules.user.domain.profile.events.UserProfileAvatarSet;
 import de.innovationhub.prox.modules.user.domain.profile.events.UserProfileCreated;
+import de.innovationhub.prox.modules.user.domain.profile.events.UserProfileTagged;
 import de.innovationhub.prox.modules.user.domain.profile.events.UserProfileUpdated;
 import de.innovationhub.prox.modules.user.domain.profile.exception.LecturerProfileAlreadyExistsException;
 import de.innovationhub.prox.modules.user.domain.profile.exception.LecturerProfileDoesNotExistException;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.HashSet;
@@ -31,6 +34,7 @@ import org.hibernate.annotations.NaturalId;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Table(schema = PersistenceConfig.USER_SCHEMA)
 public class UserProfile extends AuditedAggregateRoot {
 
   @Id
@@ -55,6 +59,7 @@ public class UserProfile extends AuditedAggregateRoot {
   private String vita;
 
   @ElementCollection
+  @CollectionTable(schema = PersistenceConfig.USER_SCHEMA)
   private Set<UUID> tags = new HashSet<>();
 
   protected UserProfile(UUID id, UUID userId, String displayName, String vita, ContactInformation contactInformation) {

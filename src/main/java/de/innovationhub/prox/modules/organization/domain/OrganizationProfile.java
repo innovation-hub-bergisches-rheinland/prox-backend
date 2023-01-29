@@ -1,5 +1,7 @@
 package de.innovationhub.prox.modules.organization.domain;
 
+import de.innovationhub.prox.config.PersistenceConfig;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embeddable;
@@ -47,5 +49,6 @@ public class OrganizationProfile {
 
   @Builder.Default
   @ElementCollection
+  @CollectionTable(schema = PersistenceConfig.ORGANIZATION_SCHEMA)
   private Map<SocialMedia, String> socialMediaHandles = new HashMap<>();
 }

@@ -17,13 +17,13 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
 
   @Query(nativeQuery = true, value = """
       SELECT DISTINCT p.*, ts_rank(document, q) AS rank
-        FROM project p
-                 LEFT JOIN curriculum_context cc on p.curriculum_context_id = cc.id
-                 LEFT JOIN curriculum_context_disciplines cd on cd.curriculum_context_id = cc.id
-                 LEFT JOIN discipline d on d.key = cd.disciplines_key
-                 LEFT JOIN curriculum_context_module_types cm on cm.curriculum_context_id = cc.id
-                 LEFT JOIN module_type m on m.key = cm.module_types_key
-                 LEFT JOIN project_tags pt on pt.project_id = p.id,
+        FROM prox_project.project p
+                 LEFT JOIN prox_project.curriculum_context cc on p.curriculum_context_id = cc.id
+                 LEFT JOIN prox_project.curriculum_context_disciplines cd on cd.curriculum_context_id = cc.id
+                 LEFT JOIN prox_project.discipline d on d.key = cd.disciplines_key
+                 LEFT JOIN prox_project.curriculum_context_module_types cm on cm.curriculum_context_id = cc.id
+                 LEFT JOIN prox_project.module_type m on m.key = cm.module_types_key
+                 LEFT JOIN prox_project.project_tags pt on pt.project_id = p.id,
               to_tsvector('simple', concat_ws(' ', p.title, p.summary, p.description, p.requirement)) document,
               to_tsquery('simple', REGEXP_REPLACE(lower(:query), '\\s+', ':* & ', 'g')) q
         WHERE (:#{#state == null} IS TRUE OR p.state = :#{#state != null ? #state.name() : ''})

@@ -1,9 +1,12 @@
 package de.innovationhub.prox.modules.user.domain.profile;
 
 import de.innovationhub.prox.commons.Default;
+import de.innovationhub.prox.config.PersistenceConfig;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -20,6 +23,7 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = false)
 @Entity
+@Table(schema = PersistenceConfig.USER_SCHEMA)
 public class LecturerProfile {
 
   @Id
@@ -29,6 +33,7 @@ public class LecturerProfile {
 
   // TODO: Might be a good idea add attributes directly here?
   @Embedded
+  @CollectionTable(schema = PersistenceConfig.USER_SCHEMA)
   private LecturerProfileInformation profile;
 
   @Default

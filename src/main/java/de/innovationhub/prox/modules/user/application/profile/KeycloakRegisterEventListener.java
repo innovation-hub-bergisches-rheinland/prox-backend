@@ -42,12 +42,12 @@ public class KeycloakRegisterEventListener {
     var lastName = event.getDetails().getOrDefault("last_name", "");
     // At the moment I don't feel very comfortable with the email as private information being
     // persisted by default. We might want to change this in the future.
-    // var email = event.getDetails().getOrDefault("email", "");
+    var email = event.getDetails().getOrDefault("email", "");
     var id = UUID.fromString(event.getUserId());
 
     var dto = new CreateUserProfileRequestDto(firstName + " " + lastName, "",
         new ContactInformationRequestDto(
-            null,
+            email,
             null,
             null
         ), false);

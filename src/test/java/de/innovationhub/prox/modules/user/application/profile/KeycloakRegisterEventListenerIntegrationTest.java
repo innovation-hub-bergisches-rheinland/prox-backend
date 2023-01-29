@@ -54,7 +54,7 @@ class KeycloakRegisterEventListenerIntegrationTest extends AbstractIntegrationTe
           .get()
           .extracting(UserProfile::getDisplayName)
           .isEqualTo("Xavier Tester");
-      // assertThat(userProfile.getContactInformation().getEmail()).isEqualTo(email);
+      assertThat(userProfile.get().getContactInformation().getEmail()).isEqualTo(email);
     });
   }
 }

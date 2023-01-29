@@ -38,7 +38,7 @@ class UpdateLecturerProfileHandlerTest {
   void shouldSaveLecturer() {
     UUID userId = UUID.randomUUID();
     var userProfile = createDummyLecturer(userId);
-    userProfile.createLecturerProfile(true, createDummyProfileInformation());
+    userProfile.createLecturerProfile(createDummyProfileInformation());
     when(userProfileRepository.findByUserId(userId)).thenReturn(Optional.of(userProfile));
 
     var request = createLecturerRequestDto();
@@ -68,14 +68,13 @@ class UpdateLecturerProfileHandlerTest {
             "room",
             "consultationHour",
             "collegePage"
-        ),
-        false
+        )
     );
   }
 
   private UserProfile createDummyLecturer(UUID userId) {
     return UserProfile.create(userId, "Xavier Tester", "Lorem Ipsum",
-        new ContactInformation("email", "telephone", "homepage"));
+        new ContactInformation("email", "telephone", "homepage"), true);
   }
 
   private LecturerProfileInformation createDummyProfileInformation() {

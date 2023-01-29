@@ -35,10 +35,13 @@ import org.hibernate.annotations.NaturalId;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(schema = PersistenceConfig.USER_SCHEMA)
+//@Where(clause = "visible_in_public_search = true")
 public class UserProfile extends AuditedAggregateRoot {
 
   @Id
   private UUID id;
+
+  private Boolean visibleInPublicSearch;
 
   @NotNull
   @NaturalId
@@ -62,27 +65,35 @@ public class UserProfile extends AuditedAggregateRoot {
   @CollectionTable(schema = PersistenceConfig.USER_SCHEMA)
   private Set<UUID> tags = new HashSet<>();
 
-  protected UserProfile(UUID id, UUID userId, String displayName, String vita, ContactInformation contactInformation) {
+  protected UserProfile(UUID id, UUID userId, String displayName, String vita,
+      ContactInformation contactInformation, boolean visibleInPublicSearch) {
     this.id = id;
     this.userId = userId;
     this.displayName = displayName;
     this.vita = vita;
     this.contactInformation = contactInformation;
+    this.visibleInPublicSearch = visibleInPublicSearch;
   }
 
-  public static UserProfile create(UUID userId, String displayName, String vita, ContactInformation contactInformation) {
+  public static UserProfile create(UUID userId, String displayName, String vita,
+      ContactInformation contactInformation, boolean visibleInPublicSearch) {
     Objects.requireNonNull(userId);
     Objects.requireNonNull(displayName);
 
-    var profile = new UserProfile(UUID.randomUUID(), userId, displayName, vita, contactInformation);
-    profile.registerEvent(new UserProfileCreated(profile.id, profile.userId, profile.displayName, profile.vita, profile.contactInformation));
+    var profile = new UserProfile(UUID.randomUUID(), userId, displayName, vita, contactInformation,
+        visibleInPublicSearch);
+    profile.registerEvent(
+        new UserProfileCreated(profile.id, profile.userId, profile.displayName, profile.vita,
+            profile.contactInformation));
     return profile;
   }
 
-  public void update(String displayName, String vita, ContactInformation contactInformation) {
+  public void update(String displayName, String vita, ContactInformation contactInformation,
+      boolean visibleInPublicSearch) {
     this.displayName = displayName;
     this.vita = vita;
     this.contactInformation = contactInformation;
+    this.visibleInPublicSearch = visibleInPublicSearch;
     registerEvent(new UserProfileUpdated(id, this.userId, displayName, vita, contactInformation));
   }
 
@@ -95,22 +106,19 @@ public class UserProfile extends AuditedAggregateRoot {
     this.registerEvent(new UserProfileAvatarSet(this.id, this.avatarKey));
   }
 
-  public void createLecturerProfile(Boolean visibleInPublicSearch,
-      LecturerProfileInformation lecturerProfile) {
+  public void createLecturerProfile(LecturerProfileInformation lecturerProfile) {
     if (this.lecturerProfile != null) {
       throw new LecturerProfileAlreadyExistsException("Lecturer profile already exists");
     }
-    this.lecturerProfile = new LecturerProfile(this.id, visibleInPublicSearch,
+    this.lecturerProfile = new LecturerProfile(this.id,
         lecturerProfile);
     this.registerEvent(new LecturerProfileCreated(this.id, this.lecturerProfile.getId()));
   }
 
-  public void updateLecturerProfile(Boolean visibleInPublicSearch,
-      LecturerProfileInformation lecturerProfile) {
+  public void updateLecturerProfile(LecturerProfileInformation lecturerProfile) {
     if (this.lecturerProfile == null) {
       throw new LecturerProfileDoesNotExistException("Cannot update non-existing lecturer profile");
     }
-    this.lecturerProfile.setVisibleInPublicSearch(visibleInPublicSearch);
     this.lecturerProfile.setProfile(lecturerProfile);
     this.registerEvent(new LecturerProfileUpdated(this.id, this.lecturerProfile.getId()));
   }

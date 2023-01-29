@@ -16,7 +16,7 @@ public interface UserProfileRepository extends JpaRepository<UserProfile, UUID> 
 
   Optional<UserProfile> findByUserId(UUID uuid);
 
-  @Query("SELECT p FROM UserProfile p JOIN p.lecturerProfile lp WHERE lp.visibleInPublicSearch = true")
+  @Query("SELECT p FROM UserProfile p JOIN p.lecturerProfile lp WHERE p.visibleInPublicSearch = true")
   Page<UserProfile> findAllLecturerProfiles(Pageable pageable);
 
   //  // TODO: Tag Search not working
@@ -40,7 +40,7 @@ public interface UserProfileRepository extends JpaRepository<UserProfile, UUID> 
                         lower(p.displayName) LIKE lower(concat('%', :query, '%')) OR
                         lower(lp.profile.subject) LIKE lower(concat('%', :query, '%')) OR
                         lower(p.contactInformation.email) LIKE lower(concat('%', :query, '%')))
-                AND lp.visibleInPublicSearch = true
+                AND p.visibleInPublicSearch = true
               ORDER BY p.displayName ASC
       """)
   Page<UserProfile> searchLecturers(
@@ -53,6 +53,7 @@ public interface UserProfileRepository extends JpaRepository<UserProfile, UUID> 
               WHERE (:query IS NULL OR
                         lower(p.displayName) LIKE lower(concat('%', :query, '%')) OR
                         lower(p.contactInformation.email) LIKE lower(concat('%', :query, '%')))
+              AND p.visibleInPublicSearch = true
               ORDER BY p.displayName ASC
       """)
   Page<UserProfile> search(

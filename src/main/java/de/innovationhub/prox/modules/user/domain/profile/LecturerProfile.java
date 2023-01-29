@@ -29,23 +29,16 @@ public class LecturerProfile {
   @Id
   private UUID id;
 
-  private Boolean visibleInPublicSearch;
-
   // TODO: Might be a good idea add attributes directly here?
   @Embedded
   @CollectionTable(schema = PersistenceConfig.USER_SCHEMA)
   private LecturerProfileInformation profile;
 
   @Default
-  public LecturerProfile(UUID id, Boolean visibleInPublicSearch,
+  public LecturerProfile(UUID id,
       LecturerProfileInformation profile) {
     this.id = id;
-    this.visibleInPublicSearch = visibleInPublicSearch;
     this.profile = profile;
-  }
-
-  void setVisibleInPublicSearch(Boolean visibleInPublicSearch) {
-    this.visibleInPublicSearch = visibleInPublicSearch;
   }
 
   void setProfile(LecturerProfileInformation profile) {

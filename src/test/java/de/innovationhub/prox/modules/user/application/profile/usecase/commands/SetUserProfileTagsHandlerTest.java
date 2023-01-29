@@ -48,8 +48,8 @@ public class SetUserProfileTagsHandlerTest {
 
   private UserProfile createDummyLecturer(UUID userId) {
     var profile = UserProfile.create(userId, "Xavier Tester", "Lorem Ipsum",
-        new ContactInformation("Test", "Test", "Test"));
-    profile.createLecturerProfile(true, createDummyProfileInformation());
+        new ContactInformation("Test", "Test", "Test"), true);
+    profile.createLecturerProfile(createDummyProfileInformation());
     return profile;
   }
 

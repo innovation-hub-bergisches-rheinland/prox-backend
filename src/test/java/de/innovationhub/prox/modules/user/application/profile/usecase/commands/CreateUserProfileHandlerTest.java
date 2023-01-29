@@ -28,8 +28,8 @@ class CreateUserProfileHandlerTest {
         .thenReturn(true);
 
     assertThatThrownBy(() -> handler.handle(userId,
-            new CreateUserProfileRequestDto("displayName", "Lorem Ipsum",
-                new ContactInformationRequestDto("Test", "Test", "Test"))))
+        new CreateUserProfileRequestDto("displayName", "Lorem Ipsum",
+            new ContactInformationRequestDto("Test", "Test", "Test"), true)))
         .isInstanceOf(RuntimeException.class);
 
     verify(userProfileRepository).existsByUserId(userId);
@@ -41,7 +41,7 @@ class CreateUserProfileHandlerTest {
     when(userProfileRepository.existsByUserId(userId)).thenReturn(false);
 
     var request = new CreateUserProfileRequestDto("Xavier Tester", "Lorem Ipsum",
-        new ContactInformationRequestDto("Test", "Test", "Test"));
+        new ContactInformationRequestDto("Test", "Test", "Test"), true);
     handler.handle(userId, request);
 
     var captor = ArgumentCaptor.forClass(UserProfile.class);

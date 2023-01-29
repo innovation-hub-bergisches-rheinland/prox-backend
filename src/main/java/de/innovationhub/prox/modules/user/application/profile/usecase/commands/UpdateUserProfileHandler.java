@@ -23,7 +23,8 @@ public class UpdateUserProfileHandler {
     var profile = userProfileRepository.findByUserId(userId).orElseThrow();
 
     var contactInformation = userProfileDtoMapper.toContactInformation(request.contact());
-    profile.update(request.displayName(), request.vita(), contactInformation);
+    profile.update(request.displayName(), request.vita(), contactInformation,
+        request.visibleInPublicSearch());
     userProfileRepository.save(profile);
     return profile;
   }

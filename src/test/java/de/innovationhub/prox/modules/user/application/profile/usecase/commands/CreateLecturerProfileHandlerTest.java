@@ -48,7 +48,8 @@ class CreateLecturerProfileHandlerTest {
         .satisfies(lp -> {
           assertThat(lp.getAffiliation()).isEqualTo(request.profile().affiliation());
           assertThat(lp.getSubject()).isEqualTo(request.profile().subject());
-          assertThat(lp.getPublications()).containsExactlyInAnyOrderElementsOf(request.profile().publications());
+          assertThat(lp.getPublications()).containsExactlyInAnyOrderElementsOf(
+              request.profile().publications());
           assertThat(lp.getRoom()).isEqualTo(request.profile().room());
           assertThat(lp.getConsultationHour()).isEqualTo(request.profile().consultationHour());
           assertThat(lp.getCollegePage()).isEqualTo(request.profile().collegePage());
@@ -65,12 +66,12 @@ class CreateLecturerProfileHandlerTest {
             "room",
             "consultationHour",
             "collegePage"
-        ),
-        false
+        )
     );
   }
 
   private UserProfile createDummyLecturer(UUID userId) {
-    return UserProfile.create(userId, "Xavier Tester", "Lorem Ipsum", new ContactInformation("Test", "Test", "Test"));
+    return UserProfile.create(userId, "Xavier Tester", "Lorem Ipsum",
+        new ContactInformation("Test", "Test", "Test"), true);
   }
 }

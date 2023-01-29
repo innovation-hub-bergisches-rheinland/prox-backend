@@ -27,7 +27,7 @@ public class CreateUserProfileHandler {
 
     var contactInformation = userProfileDtoMapper.toContactInformation(request.contact());
     var profile = UserProfile.create(userId, request.displayName(), request.vita(),
-        contactInformation);
+        contactInformation, request.visibleInPublicSearch());
     userProfileRepository.save(profile);
     System.out.println("Created user profile");
   }

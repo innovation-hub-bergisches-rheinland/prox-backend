@@ -50,7 +50,7 @@ public class KeycloakRegisterEventListener {
             null,
             null,
             null
-        ));
+        ), false);
     createUserProfile.handle(id, dto);
   }
 }

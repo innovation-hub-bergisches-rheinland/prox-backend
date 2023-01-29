@@ -19,16 +19,18 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 class SetUserProfileAvatarHandlerTest {
+
   StorageProvider storageProvider = mock(StorageProvider.class);
   UserProfileRepository userProfileRepository = mock(UserProfileRepository.class);
-  SetUserProfileAvatarHandler handler = new SetUserProfileAvatarHandler(storageProvider, userProfileRepository);
+  SetUserProfileAvatarHandler handler = new SetUserProfileAvatarHandler(storageProvider,
+      userProfileRepository);
 
   @Test
   void shouldThrowWhenUserProfileNotFound() {
     UUID userId = UUID.randomUUID();
     when(userProfileRepository.findByUserId(userId)).thenReturn(Optional.empty());
 
-    assertThrows(RuntimeException.class, () -> handler.handle(userId, new byte[] {}, ""));
+    assertThrows(RuntimeException.class, () -> handler.handle(userId, new byte[]{}, ""));
   }
 
   @Test
@@ -37,7 +39,7 @@ class SetUserProfileAvatarHandlerTest {
     var userProfile = createDummyUserProfile(userId);
     when(userProfileRepository.findByUserId(userId)).thenReturn(Optional.of(userProfile));
 
-    var content = new byte[] { 1, 2, 3 };
+    var content = new byte[]{1, 2, 3};
     var contentType = "image/test";
     handler.handle(userId, content, contentType);
 
@@ -52,6 +54,7 @@ class SetUserProfileAvatarHandlerTest {
   }
 
   private UserProfile createDummyUserProfile(UUID userId) {
-    return UserProfile.create(userId, "Xavier Tester", "Lorem Ipsum", new ContactInformation("Test", "Test", "Test"));
+    return UserProfile.create(userId, "Xavier Tester", "Lorem Ipsum",
+        new ContactInformation("Test", "Test", "Test"), true);
   }
 }

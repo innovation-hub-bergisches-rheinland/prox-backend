@@ -86,7 +86,7 @@ class AuthenticatedUserLecturerProfileControllerIntegrationTest extends Abstract
   void shouldUpdateLecturerProfile() {
     var profile = createDummyProfile();
     var lecturerProfile = new LecturerProfileInformation();
-    profile.createLecturerProfile(false, lecturerProfile);
+    profile.createLecturerProfile(lecturerProfile);
     userProfileRepository.save(profile);
 
     var request = createLecturerRequestDto();
@@ -105,7 +105,8 @@ class AuthenticatedUserLecturerProfileControllerIntegrationTest extends Abstract
   }
 
   private UserProfile createDummyProfile() {
-    return UserProfile.create(authUserId, "Xavier Tester", "Lorem Ipsum", new ContactInformation("Test", "Test", "Test"));
+    return UserProfile.create(authUserId, "Xavier Tester", "Lorem Ipsum",
+        new ContactInformation("Test", "Test", "Test"), true);
   }
 
   private CreateLecturerRequestDto createLecturerRequestDto() {
@@ -118,7 +119,7 @@ class AuthenticatedUserLecturerProfileControllerIntegrationTest extends Abstract
             "room",
             "consultationHour",
             "collegePage"
-        ), false
+        )
     );
   }
 }

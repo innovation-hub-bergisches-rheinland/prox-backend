@@ -6,7 +6,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public record CreateUserProfileRequestDto(
     String displayName,
     String vita,
-    ContactInformationRequestDto contact
+    ContactInformationRequestDto contact,
+    Boolean visibleInPublicSearch
 ) {
   public record ContactInformationRequestDto(
       String email,

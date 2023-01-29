@@ -24,7 +24,7 @@ public class UpdateLecturerProfileHandler {
     var profile = new LecturerProfileInformation();
     userProfileMapper.updateLecturerInformationFromDto(dto.profile(), profile);
 
-    lecturer.updateLecturerProfile(dto.visibleInPublicSearch(), profile);
+    lecturer.updateLecturerProfile(profile);
 
     return userProfileRepository.save(lecturer);
   }

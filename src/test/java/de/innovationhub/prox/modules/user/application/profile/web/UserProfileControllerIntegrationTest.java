@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @AutoConfigureMockMvc
 class UserProfileControllerIntegrationTest extends AbstractIntegrationTest {
+
   @Autowired
   MockMvc mockMvc;
 
@@ -76,7 +77,8 @@ class UserProfileControllerIntegrationTest extends AbstractIntegrationTest {
   }
 
   private UserProfile createDummyProfile() {
-    var up = UserProfile.create(UUID.randomUUID(), "Xavier Tester", "Lorem Ipsum", new ContactInformation("Test", "Test", "Test"));
+    var up = UserProfile.create(UUID.randomUUID(), "Xavier Tester", "Lorem Ipsum",
+        new ContactInformation("Test", "Test", "Test"), true);
     return up;
   }
 }

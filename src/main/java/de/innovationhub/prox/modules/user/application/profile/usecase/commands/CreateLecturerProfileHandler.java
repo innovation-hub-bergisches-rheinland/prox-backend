@@ -23,7 +23,7 @@ public class CreateLecturerProfileHandler {
 
     var profile = new LecturerProfileInformation();
     userProfileMapper.updateLecturerInformationFromDto(dto.profile(), profile);
-    lecturer.createLecturerProfile(dto.visibleInPublicSearch(), profile);
+    lecturer.createLecturerProfile(profile);
 
     return userProfileRepository.save(lecturer);
   }

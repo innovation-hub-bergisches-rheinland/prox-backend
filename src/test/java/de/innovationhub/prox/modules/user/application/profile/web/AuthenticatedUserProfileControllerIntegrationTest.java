@@ -32,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 @AutoConfigureMockMvc
 @Transactional
 class AuthenticatedUserProfileControllerIntegrationTest extends AbstractIntegrationTest {
+
   private static final String AUTH_USER_ID = "00000000-0000-0000-0000-000000000001";
   UUID authUserId = UUID.fromString(AUTH_USER_ID);
 
@@ -52,7 +53,8 @@ class AuthenticatedUserProfileControllerIntegrationTest extends AbstractIntegrat
   }
 
   @ParameterizedTest
-  @CsvSource(value = {"GET:user/profile", "POST:user/profile", "PUT:user/profile", "POST:user/profile/avatar", "PUT:user/profile/tags"}, delimiter = ':')
+  @CsvSource(value = {"GET:user/profile", "POST:user/profile", "PUT:user/profile",
+      "POST:user/profile/avatar", "PUT:user/profile/tags"}, delimiter = ':')
   void shouldReturnUnauthorizedWhenUnauthorized(String method, String path) {
     given()
         .accept(ContentType.JSON)
@@ -95,10 +97,9 @@ class AuthenticatedUserProfileControllerIntegrationTest extends AbstractIntegrat
     var profile = createDummyProfile();
     userProfileRepository.save(profile);
 
-    given()
-        .accept(ContentType.JSON)
-        .contentType(ContentType.JSON)
-        .body(new CreateUserProfileRequestDto("Xavier Tester Updated", "Lorem Ipsum Updated", new ContactInformationRequestDto("Test Updated", "Test Updated", "Test Updated")))
+    given().accept(ContentType.JSON).contentType(ContentType.JSON).body(
+            new CreateUserProfileRequestDto("Xavier Tester Updated", "Lorem Ipsum Updated",
+                new ContactInformationRequestDto("Test Updated", "Test Updated", "Test Updated"), true))
         .when()
         .put("/user/profile")
         .then()
@@ -163,6 +164,7 @@ class AuthenticatedUserProfileControllerIntegrationTest extends AbstractIntegrat
   }
 
   private UserProfile createDummyProfile() {
-    return UserProfile.create(authUserId, "Xavier Tester", "Lorem Ipsum", new ContactInformation("Test", "Test", "Test"));
+    return UserProfile.create(authUserId, "Xavier Tester", "Lorem Ipsum",
+        new ContactInformation("Test", "Test", "Test"), true);
   }
 }

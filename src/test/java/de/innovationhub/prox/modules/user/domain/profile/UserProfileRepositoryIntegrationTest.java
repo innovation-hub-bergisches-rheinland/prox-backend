@@ -30,6 +30,17 @@ class UserProfileRepositoryIntegrationTest extends AbstractIntegrationTest {
   }
 
   @Test
+  void shouldNotIncludeNotVisibleProfiles() {
+    var up = createDummyLecturer(false);
+    userProfileRepository.save(up);
+
+    var result = userProfileRepository.search(up.getDisplayName(), Pageable.unpaged());
+
+    assertThat(result)
+        .hasSize(0);
+  }
+
+  @Test
   void shouldNotIncludeNotVisibleLecturersInSearch() {
     var up = createDummyLecturer(false);
     userProfileRepository.save(up);
@@ -53,13 +64,27 @@ class UserProfileRepositoryIntegrationTest extends AbstractIntegrationTest {
         .satisfies(r -> assertThat(r.getId()).isEqualTo(up.getId()));
   }
 
-  private UserProfile createDummyUserProfile() {
-    return UserProfile.create(UUID.randomUUID(), "Xavier Tester", "Lorem Ipsum", new ContactInformation("Test", "Test", "Test"));
+  @Test
+  void shouldFindProfile() {
+    var up = createDummyLecturer(true);
+    userProfileRepository.save(up);
+
+    var result = userProfileRepository.search("Xavier Tester", Pageable.unpaged());
+
+    assertThat(result)
+        .hasSize(1)
+        .first()
+        .satisfies(r -> assertThat(r.getId()).isEqualTo(up.getId()));
+  }
+
+  private UserProfile createDummyUserProfile(boolean visibility) {
+    return UserProfile.create(UUID.randomUUID(), "Xavier Tester", "Lorem Ipsum",
+        new ContactInformation("Test", "Test", "Test"), visibility);
   }
 
   private UserProfile createDummyLecturer(boolean visibility) {
-    var up = createDummyUserProfile();
-    up.createLecturerProfile(visibility, createDummyLecturerProfileInfo());
+    var up = createDummyUserProfile(visibility);
+    up.createLecturerProfile(createDummyLecturerProfileInfo());
     return up;
   }
 

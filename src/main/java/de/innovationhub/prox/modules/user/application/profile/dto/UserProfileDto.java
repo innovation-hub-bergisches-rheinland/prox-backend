@@ -11,9 +11,10 @@ public record UserProfileDto(
     String avatarUrl,
 
     String vita,
+    boolean visibleInPublicSearch,
     LecturerProfileDto lecturerProfile,
     ContactInformationDto contact,
-    List<TagDto>tags
+    List<TagDto> tags
 ) {
   public record ContactInformationDto(
       String email,

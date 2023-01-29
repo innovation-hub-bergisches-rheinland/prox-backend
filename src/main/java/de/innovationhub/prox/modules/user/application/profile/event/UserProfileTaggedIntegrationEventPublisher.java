@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.user.application.profile.event;
 
-import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
+import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.user.contract.user.UserProfileTaggedIntegrationEvent;
 import de.innovationhub.prox.modules.user.domain.profile.events.UserProfileTagged;
 import lombok.RequiredArgsConstructor;

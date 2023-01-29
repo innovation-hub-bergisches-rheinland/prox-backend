@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.user.domain.profile.events;
 
-import de.innovationhub.prox.modules.commons.domain.DomainEvent;
+import de.innovationhub.prox.commons.buildingblocks.DomainEvent;
 import de.innovationhub.prox.modules.user.domain.profile.ContactInformation;
 import java.util.UUID;
 

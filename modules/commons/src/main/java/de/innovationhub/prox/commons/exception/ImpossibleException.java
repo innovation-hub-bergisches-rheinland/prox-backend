@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.commons.core;
+package de.innovationhub.prox.commons.exception;
 
 /**
  * A exception raised for cases where it is impossible to fail.

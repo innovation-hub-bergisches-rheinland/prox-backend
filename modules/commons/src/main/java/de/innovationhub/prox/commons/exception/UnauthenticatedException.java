@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.commons.application.exception;
+package de.innovationhub.prox.commons.exception;
 
 public class UnauthenticatedException extends RuntimeException {
 

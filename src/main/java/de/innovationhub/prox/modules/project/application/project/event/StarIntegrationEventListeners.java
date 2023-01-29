@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.project.application.project.event;
 
-import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
+import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.project.application.project.usecase.commands.UpdateInterestHandler;
 import de.innovationhub.prox.modules.star.contract.ProjectStarredIntegrationEvent;
 import de.innovationhub.prox.modules.star.contract.ProjectUnstarredIntegrationEvent;

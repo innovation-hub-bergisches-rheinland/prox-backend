@@ -1,13 +1,9 @@
 package de.innovationhub.prox.modules.user.domain.profile;
 
-import de.innovationhub.prox.Default;
-import jakarta.persistence.ElementCollection;
+import de.innovationhub.prox.commons.Default;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;

@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.user.application.profile.usecase.commands;
 
-import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
+import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfileRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;

@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.user.domain.user;
 
-import de.innovationhub.prox.modules.commons.domain.AuditedAggregateRoot;
+import de.innovationhub.prox.commons.buildingblocks.AuditedAggregateRoot;
 import java.util.UUID;
 import lombok.Getter;
 

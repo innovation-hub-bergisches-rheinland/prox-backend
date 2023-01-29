@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.project.domain.project;
 
-import de.innovationhub.prox.modules.commons.domain.AuditedAggregateRoot;
+import de.innovationhub.prox.commons.buildingblocks.AuditedAggregateRoot;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectCreated;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectInterestStated;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectInterestUnstated;

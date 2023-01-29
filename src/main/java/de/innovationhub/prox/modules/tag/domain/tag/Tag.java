@@ -1,7 +1,7 @@
 package de.innovationhub.prox.modules.tag.domain.tag;
 
-import de.innovationhub.prox.Default;
-import de.innovationhub.prox.modules.commons.domain.AuditedAggregateRoot;
+import de.innovationhub.prox.commons.Default;
+import de.innovationhub.prox.commons.buildingblocks.AuditedAggregateRoot;
 import de.innovationhub.prox.modules.tag.domain.tag.events.TagCreated;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

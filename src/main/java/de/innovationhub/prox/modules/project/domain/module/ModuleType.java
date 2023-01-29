@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.project.domain.module;
 
-import de.innovationhub.prox.modules.commons.domain.AuditedAggregateRoot;
+import de.innovationhub.prox.commons.buildingblocks.AuditedAggregateRoot;
 import de.innovationhub.prox.modules.project.domain.discipline.Discipline;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

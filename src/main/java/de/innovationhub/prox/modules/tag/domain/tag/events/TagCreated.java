@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.tag.domain.tag.events;
 
-import de.innovationhub.prox.modules.commons.domain.DomainEvent;
+import de.innovationhub.prox.commons.buildingblocks.DomainEvent;
 import de.innovationhub.prox.modules.tag.domain.tag.Tag;
 import java.util.UUID;
 

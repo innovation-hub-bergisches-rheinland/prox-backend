@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.star.domain;
 
-import de.innovationhub.prox.modules.commons.domain.AuditedAggregateRoot;
+import de.innovationhub.prox.commons.buildingblocks.AuditedAggregateRoot;
 import de.innovationhub.prox.modules.star.domain.event.ProjectStarred;
 import de.innovationhub.prox.modules.star.domain.event.ProjectUnstarred;
 import jakarta.persistence.ElementCollection;

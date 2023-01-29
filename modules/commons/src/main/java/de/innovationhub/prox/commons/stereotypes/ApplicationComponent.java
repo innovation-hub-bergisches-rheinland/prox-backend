@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.commons.application;
+package de.innovationhub.prox.commons.stereotypes;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

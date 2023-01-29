@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.commons.domain;
+package de.innovationhub.prox.commons.buildingblocks;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;

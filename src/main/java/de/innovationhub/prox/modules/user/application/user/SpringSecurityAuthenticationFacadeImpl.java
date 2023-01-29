@@ -1,7 +1,7 @@
 package de.innovationhub.prox.modules.user.application.user;
 
-import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
-import de.innovationhub.prox.modules.commons.application.exception.UnauthenticatedException;
+import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
+import de.innovationhub.prox.commons.exception.UnauthenticatedException;
 import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
 import de.innovationhub.prox.modules.user.domain.user.ProxUserAccountRepository;
 import io.micrometer.core.lang.Nullable;

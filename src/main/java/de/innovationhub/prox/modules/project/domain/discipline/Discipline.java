@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.project.domain.discipline;
 
-import de.innovationhub.prox.modules.commons.domain.AuditedAggregateRoot;
+import de.innovationhub.prox.commons.buildingblocks.AuditedAggregateRoot;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;

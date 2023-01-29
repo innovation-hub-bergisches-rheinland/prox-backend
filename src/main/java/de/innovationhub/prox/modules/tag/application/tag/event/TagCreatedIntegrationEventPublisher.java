@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.tag.application.tag.event;
 
-import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
+import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.tag.contract.TagCreatedIntegrationEvent;
 import de.innovationhub.prox.modules.tag.domain.tag.events.TagCreated;
 import lombok.RequiredArgsConstructor;

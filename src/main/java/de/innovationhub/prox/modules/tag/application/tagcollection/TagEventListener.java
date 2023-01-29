@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.tag.application.tagcollection;
 
-import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
+import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.organization.contract.OrganizationTaggedIntegrationEvent;
 import de.innovationhub.prox.modules.project.contract.ProjectTaggedIntegrationEvent;
 import de.innovationhub.prox.modules.tag.application.tagcollection.usecase.SetTagCollectionHandler;

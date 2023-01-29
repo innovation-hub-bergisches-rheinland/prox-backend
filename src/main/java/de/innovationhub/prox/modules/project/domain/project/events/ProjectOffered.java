@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.project.domain.project.events;
 
-import de.innovationhub.prox.modules.commons.domain.DomainEvent;
+import de.innovationhub.prox.commons.buildingblocks.DomainEvent;
 import de.innovationhub.prox.modules.project.domain.project.Supervisor;
 import java.util.List;
 import java.util.UUID;

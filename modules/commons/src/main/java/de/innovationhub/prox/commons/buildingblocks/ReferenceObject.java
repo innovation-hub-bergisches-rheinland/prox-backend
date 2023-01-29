@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.commons.domain;
+package de.innovationhub.prox.commons.buildingblocks;
 
 /**
  * Marker interface for a reference object.

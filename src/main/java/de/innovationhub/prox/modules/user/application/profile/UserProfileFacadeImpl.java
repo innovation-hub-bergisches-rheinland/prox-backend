@@ -1,7 +1,7 @@
 package de.innovationhub.prox.modules.user.application.profile;
 
 import de.innovationhub.prox.config.CacheConfig;
-import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
+import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.user.application.profile.usecase.queries.FindAllUserProfilesByIdsHandler;
 import de.innovationhub.prox.modules.user.application.profile.usecase.queries.FindUserProfileHandler;
 import de.innovationhub.prox.modules.user.contract.lecturer.UserProfileFacade;

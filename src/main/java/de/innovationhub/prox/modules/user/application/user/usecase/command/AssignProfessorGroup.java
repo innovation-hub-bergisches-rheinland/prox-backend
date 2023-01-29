@@ -1,7 +1,7 @@
 package de.innovationhub.prox.modules.user.application.user.usecase.command;
 
 import de.innovationhub.prox.config.KeycloakConfig;
-import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
+import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.admin.client.resource.RealmResource;

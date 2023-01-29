@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.organization.domain;
 
-import de.innovationhub.prox.modules.commons.domain.AuditedAggregateRoot;
+import de.innovationhub.prox.commons.buildingblocks.AuditedAggregateRoot;
 import de.innovationhub.prox.modules.organization.domain.events.OrganizationCreated;
 import de.innovationhub.prox.modules.organization.domain.events.OrganizationLogoSet;
 import de.innovationhub.prox.modules.organization.domain.events.OrganizationMemberAdded;

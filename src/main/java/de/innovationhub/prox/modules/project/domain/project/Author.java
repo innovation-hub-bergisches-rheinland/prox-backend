@@ -1,7 +1,7 @@
 package de.innovationhub.prox.modules.project.domain.project;
 
 
-import de.innovationhub.prox.modules.commons.domain.ReferenceObject;
+import de.innovationhub.prox.commons.buildingblocks.ReferenceObject;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;
 import java.util.Objects;

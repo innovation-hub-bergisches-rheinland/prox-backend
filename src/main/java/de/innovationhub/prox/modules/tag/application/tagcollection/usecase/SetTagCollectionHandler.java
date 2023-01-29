@@ -1,12 +1,10 @@
 package de.innovationhub.prox.modules.tag.application.tagcollection.usecase;
 
-import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
+import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.tag.domain.tag.TagRepository;
 import de.innovationhub.prox.modules.tag.domain.tagcollection.TagCollection;
 import de.innovationhub.prox.modules.tag.domain.tagcollection.TagCollectionRepository;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 import java.util.stream.StreamSupport;
 import lombok.RequiredArgsConstructor;

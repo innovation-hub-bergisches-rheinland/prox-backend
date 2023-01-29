@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.organization.application.usecase.queries;
 
-import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
+import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.organization.domain.Organization;
 import de.innovationhub.prox.modules.organization.domain.OrganizationRepository;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;

@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
-import de.innovationhub.prox.modules.commons.application.exception.UnauthenticatedException;
+import de.innovationhub.prox.commons.exception.UnauthenticatedException;
 import de.innovationhub.prox.modules.user.domain.user.ProxUserAccountRepository;
 import java.util.Collection;
 import org.junit.jupiter.api.Test;

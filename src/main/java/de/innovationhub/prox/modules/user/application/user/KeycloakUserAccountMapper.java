@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.user.application.user;
 
-import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
+import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.user.domain.user.ProxUser;
 import java.util.List;
 import java.util.Objects;

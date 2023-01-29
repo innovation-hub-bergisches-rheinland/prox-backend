@@ -1,4 +1,4 @@
-package de.innovationhub.prox;
+package de.innovationhub.prox.commons;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.organization.application.usecase.commands;
 
-import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
+import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.organization.application.dto.CreateOrganizationRequestDto;
 import de.innovationhub.prox.modules.organization.domain.Organization;
 import de.innovationhub.prox.modules.organization.domain.OrganizationProfile;

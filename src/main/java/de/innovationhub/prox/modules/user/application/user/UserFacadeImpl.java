@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.user.application.user;
 
-import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
+import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.user.application.profile.usecase.queries.FindUserProfileHandler;
 import de.innovationhub.prox.modules.user.application.user.usecase.queries.FindUserAccountByIdHandler;
 import de.innovationhub.prox.modules.user.contract.user.ProxUserView;

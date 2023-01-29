@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.star.application;
 
-import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
+import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.star.contract.ProjectStarredIntegrationEvent;
 import de.innovationhub.prox.modules.star.contract.ProjectUnstarredIntegrationEvent;
 import de.innovationhub.prox.modules.star.domain.event.ProjectStarred;

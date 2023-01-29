@@ -3,7 +3,7 @@ package de.innovationhub.prox.modules.user.domain.profile;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import de.innovationhub.prox.modules.commons.domain.DomainEvent;
+import de.innovationhub.prox.commons.buildingblocks.DomainEvent;
 import de.innovationhub.prox.modules.user.domain.profile.events.LecturerProfileCreated;
 import de.innovationhub.prox.modules.user.domain.profile.events.UserProfileTagged;
 import de.innovationhub.prox.modules.user.domain.profile.events.LecturerProfileUpdated;

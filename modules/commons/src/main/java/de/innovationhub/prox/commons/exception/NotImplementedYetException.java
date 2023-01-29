@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.commons.core;
+package de.innovationhub.prox.commons.exception;
 
 public class NotImplementedYetException extends UnsupportedOperationException {
   public NotImplementedYetException() {

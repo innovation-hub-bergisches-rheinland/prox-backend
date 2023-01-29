@@ -1,8 +1,8 @@
 package de.innovationhub.prox;
 
-import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
-import de.innovationhub.prox.modules.commons.domain.DomainComponent;
-import de.innovationhub.prox.modules.commons.infrastructure.InfrastructureComponent;
+import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
+import de.innovationhub.prox.commons.stereotypes.DomainComponent;
+import de.innovationhub.prox.commons.stereotypes.InfrastructureComponent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

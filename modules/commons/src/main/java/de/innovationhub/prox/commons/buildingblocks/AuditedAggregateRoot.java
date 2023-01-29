@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.commons.domain;
+package de.innovationhub.prox.commons.buildingblocks;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

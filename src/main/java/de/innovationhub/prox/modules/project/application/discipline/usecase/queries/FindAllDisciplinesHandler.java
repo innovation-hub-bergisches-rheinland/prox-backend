@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.project.application.discipline.usecase.queries;
 
-import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
+import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.project.domain.discipline.Discipline;
 import de.innovationhub.prox.modules.project.domain.discipline.DisciplineRepository;
 import java.util.List;

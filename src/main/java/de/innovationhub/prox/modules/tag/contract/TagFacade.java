@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.tag.contract;
 
-import de.innovationhub.prox.modules.commons.application.ApplicationComponent;
+import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;

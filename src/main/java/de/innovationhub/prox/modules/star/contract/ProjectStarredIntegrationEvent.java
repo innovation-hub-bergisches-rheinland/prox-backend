@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.star.contract;
 
-import de.innovationhub.prox.modules.commons.application.IntegrationEvent;
+import de.innovationhub.prox.commons.buildingblocks.IntegrationEvent;
 import java.util.UUID;
 
 public record ProjectStarredIntegrationEvent(

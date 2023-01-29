@@ -1,7 +1,7 @@
 package de.innovationhub.prox.modules.user.application.user;
 
-import de.innovationhub.prox.config.MessagingConfig;
 import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
+import de.innovationhub.prox.config.MessagingConfig;
 import de.innovationhub.prox.modules.user.application.user.usecase.command.AssignProfessorGroup;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ public class KeycloakVerifyEmailEventListener {
           key = MessagingConfig.VERIFY_EMAIL_KEY
       )
   })
-  public void handleGroupAdded(@Payload Event event) {
+  public void onVerifyEmailEvent(@Payload Event event) {
     if (event.getType() != EventType.VERIFY_EMAIL) {
       throw new RuntimeException("Invalid resource type received: " + event.getType());
     }

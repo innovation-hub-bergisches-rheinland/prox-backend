@@ -20,10 +20,6 @@ cloud:
 spring:
   application:
     name: prox-backend
-  data:
-    redis:
-      host: ${REDIS_HOST:redis}
-      port: ${REDIS_PORT:6379}
   datasource:
     password: ${DB_PASSWORD:prox-backend}
     url: jdbc:postgresql://prox-db:5432/postgres

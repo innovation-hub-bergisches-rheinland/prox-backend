@@ -12,13 +12,6 @@ services:
       - POSTGRES_PASSWORD=prox-backend
       - POSTGRES_DB=postgres
       - PGDATA=/var/lib/postgresql/data/pgdata
-  redis:
-    image: redis:7.0
-    ports:
-      - "6379:6379"
-    volumes:
-      - ./src/main/docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
-    command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
   rabbitmq:
     image: rabbitmq:3-management-alpine
     ports:

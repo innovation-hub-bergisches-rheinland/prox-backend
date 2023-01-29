@@ -7,10 +7,6 @@ cloud:
       endpoint: http://127.0.0.1:4566
     region: us-east-1
 spring:
-  data:
-    redis:
-      host: ${REDIS_HOST:127.0.0.1}
-      port: ${REDIS_PORT:6379}
   datasource:
     password: prox-backend
     url: jdbc:postgresql://127.0.0.1:5432/postgres

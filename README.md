@@ -4,19 +4,68 @@
 
 Backend service of the web-application [PROX](https://prox.aws.innovation-hub.de).
 
-## Architectural Decisions
+## Technical Documentation
 
-- References between modules do **always** use the ID
-  - References within a module **should** use direct references
-- Communication between modules **should** be done using Events. This is especially true for modifying actions.
-  - It is okay to rely on a synchronous message call for read-only actions. Use a Facade inside a contract module for that.
-- We accept coupling declarative persistence logic using **JPA in our domain model**
-- We make use of **use cases** to **prevent god services**
+### Architecture
+
+At the moment, the service is still being developed and some architectural decisions are still
+in progress. The following documentation is a first draft and will be updated.
+Some parts of the architecture might be subject to change but the general notion of it should
+remain the same.
+
+The architecture is meant to be as simple as possible. We do not want to
+over-engineer the application. However, it is challenging to find the right balance to simplicity.
+Therefore, we are likely to improve it over time and don't carve it in stone yet.
+
+We strive to build a structured/modular monolith application, which should be easy to understand,
+develop and deploy. We don't think a microservice architecture is necessary for this application
+and would add more complexity.
+
+A big notion of the architecture is to leverage DDD principles and **keep the domain model clean**.
+
+#### Modules
+
+- We try to **keep modules small** and **easy to understand** as possible
+  - Every module is layered in a consistent way. At the time of writing we have the following
+    layers:
+    - **Domain**: The domain model of the module
+    - **Contract**: The integration layer of the module. It contains interfaces and definition to
+      integrate with other modules
+    - **Application**: The application layer of the module
+- Each module represents a **bounded context** in the domain
+- A module **should** never issue a **command to another module**.
+  - If a module needs to modify another module, it should fire an event and the other module
+    should react to it.
+  - If a module needs to read data from another module, it should use a facade inside the contract
+    module of the other module.
+
+The following diagrams should give you a rough idea of the module structure.
+
+![Module Structure](doc/img/arch-modules.svg)
+![Command Integration](doc/img/arch-commands.svg)
+![Query Integration](doc/img/arch-queries.svg)
+
+#### Architectural Decisions
+
+- We use [Spring Boot](https://spring.io/projects/spring-boot) as the application framework
+- We accept coupling the persistence Logic to the domain model and
+  use [Spring Data JPA](https://spring.io/projects/spring-data-jpa) to persist the domain model
+- We avoid God-Services and use small, testable Use-Cases instead
+- References between Aggregates **should** always be referenced by Identity.
+- For internal events we use the internal event bus of the Spring Framework
+  - Internal events are events that we fired from inside PROX. They are not meant to be consumed
+    by external systems.
+- For external events we use [RabbitMQ](https://www.rabbitmq.com/) as the message broker.
+  - External events are events that are meant to be consumed by external systems or we consume them
+    from external systems.
 
 ## Release
 
-Realeasing a new version is done with the [gradle-release plugin](https://github.com/researchgate/gradle-release). 
+Realeasing a new version is done with
+the [gradle-release plugin](https://github.com/researchgate/gradle-release).
+
 ```sh
 ./gradlew release
 ```
+
 Note that the plugin will automatically create release commits and pushes your changes.

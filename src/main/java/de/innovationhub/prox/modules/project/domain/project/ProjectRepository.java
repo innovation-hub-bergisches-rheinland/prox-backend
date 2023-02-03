@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 public interface ProjectRepository extends JpaRepository<Project, UUID> {
 
   @Query(nativeQuery = true, value = """
-      SELECT DISTINCT p.*, ts_rank(document, q) AS rank
+      SELECT DISTINCT p.*, ts_rank(p.document, q) AS rank
         FROM prox_project.project p
                  LEFT JOIN prox_project.curriculum_context cc on p.curriculum_context_id = cc.id
                  LEFT JOIN prox_project.curriculum_context_disciplines cd on cd.curriculum_context_id = cc.id
@@ -24,14 +24,13 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
                  LEFT JOIN prox_project.curriculum_context_module_types cm on cm.curriculum_context_id = cc.id
                  LEFT JOIN prox_project.module_type m on m.key = cm.module_types_key
                  LEFT JOIN prox_project.project_tags pt on pt.project_id = p.id,
-              to_tsvector('simple', concat_ws(' ', p.title, p.summary, p.description, p.requirement)) document,
-              to_tsquery('simple', REGEXP_REPLACE(lower(:query), '\\s+', ':* & ', 'g')) q
+              to_tsquery(REGEXP_REPLACE(lower(:query), '\\s+', ':* & ', 'g')) q
         WHERE (:#{#state == null} IS TRUE OR p.state = :#{#state != null ? #state.name() : ''})
             AND (:disciplineKeys IS NULL OR d.key IN (:disciplineKeys))
             AND (:moduleTypeKeys IS NULL OR m.key IN (:moduleTypeKeys))
             AND (:tagIds IS NULL OR pt.tags IN (:tagIds))
             AND (:query <> '' IS NOT TRUE OR
-                  document @@ q
+                  p.document @@ q
               )
         ORDER BY rank DESC, modified_at DESC
       """)

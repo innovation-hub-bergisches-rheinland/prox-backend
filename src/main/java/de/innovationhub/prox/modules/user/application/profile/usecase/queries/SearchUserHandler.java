@@ -16,10 +16,6 @@ public class SearchUserHandler {
 
   public Page<UserProfile> handle(String searchQuery, Pageable pageable) {
     Objects.requireNonNull(searchQuery);
-    if (searchQuery.length() < 2) {
-      throw new IllegalArgumentException("Search query must be at least 2 characters long");
-    }
-
     return userProfileRepository.search(searchQuery, pageable);
   }
 }

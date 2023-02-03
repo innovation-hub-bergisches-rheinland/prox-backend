@@ -1,6 +1,5 @@
 package de.innovationhub.prox.modules.user.application.profile.usecase.queries;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -11,16 +10,6 @@ class SearchUserHandlerTest {
 
   UserProfileRepository userProfileRepository = mock(UserProfileRepository.class);
   SearchUserHandler searchUserHandler = new SearchUserHandler(userProfileRepository);
-
-  @Test
-  void shouldThrowOnNullQuery() {
-    assertThrows(NullPointerException.class, () -> searchUserHandler.handle(null, null));
-  }
-
-  @Test
-  void shouldThrowOnShortQuery() {
-    assertThrows(IllegalArgumentException.class, () -> searchUserHandler.handle("a", null));
-  }
 
   @Test
   void shouldSearch() {

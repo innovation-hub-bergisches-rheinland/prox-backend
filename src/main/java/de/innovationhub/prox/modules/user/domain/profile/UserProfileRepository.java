@@ -19,30 +19,18 @@ public interface UserProfileRepository extends JpaRepository<UserProfile, UUID> 
   @Query("SELECT p FROM UserProfile p JOIN p.lecturerProfile lp WHERE p.visibleInPublicSearch = true")
   Page<UserProfile> findAllLecturerProfiles(Pageable pageable);
 
-  //  // TODO: Tag Search not working
-//  @Query(nativeQuery = true, value = """
-//      SELECT DISTINCT up.*, ts_rank(document, q) AS rank
-//        FROM lecturer_profile l
-//                 LEFT JOIN user_profile up ON l.id = up.id
-//                 LEFT JOIN lecturer_profile_tags lt ON l.id = lt.lecturer_profile_id,
-//              to_tsvector('simple', concat_ws(' ', up.display_name, l.email, l.subject)) document,
-//              to_tsquery('simple', REGEXP_REPLACE(lower(:query), '\\s+', ':* & ', 'g')) q
-//        WHERE (:query <> '' IS NOT TRUE OR
-//                  document @@ q)
-//          AND l.visible_in_public_search = true
-//        ORDER BY rank DESC, up.display_name ASC
-//      """)
-  @Query("""
-            SELECT DISTINCT p
-              FROM UserProfile p
-                       JOIN p.lecturerProfile lp
-              WHERE (:query IS NULL OR
-                        lower(p.displayName) LIKE lower(concat('%', :query, '%')) OR
-                        lower(lp.profile.subject) LIKE lower(concat('%', :query, '%')) OR
-                        lower(p.contactInformation.email) LIKE lower(concat('%', :query, '%')))
-                AND p.visibleInPublicSearch = true
-              ORDER BY p.displayName ASC
-      """)
+  @Query(value = """
+      WITH input AS (
+          SELECT :query as query
+      )
+      SELECT DISTINCT up.*
+      FROM input, prox_user.user_profile up
+               INNER JOIN prox_user.lecturer_profile lp ON up.lecturer_profile_id = lp.id
+      WHERE (input.query <> '' IS NOT TRUE OR
+                word_similarity(input.query, up.display_name) > 0.5
+            )
+            and up.visible_in_public_search = true
+      """, nativeQuery = true)
   Page<UserProfile> searchLecturers(
       @Param("query") String query,
       Pageable pageable);

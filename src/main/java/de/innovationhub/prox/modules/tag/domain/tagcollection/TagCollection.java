@@ -2,13 +2,13 @@ package de.innovationhub.prox.modules.tag.domain.tagcollection;
 
 import de.innovationhub.prox.commons.buildingblocks.AuditedAggregateRoot;
 import de.innovationhub.prox.config.PersistenceConfig;
-import de.innovationhub.prox.modules.tag.domain.tag.Tag;
 import de.innovationhub.prox.modules.tag.domain.tagcollection.events.TagCollectionCreated;
 import de.innovationhub.prox.modules.tag.domain.tagcollection.events.TagCollectionUpdated;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,9 +29,9 @@ public class TagCollection extends AuditedAggregateRoot {
   @Id
   private UUID id;
 
-  @ManyToMany
-  @JoinTable(schema = PersistenceConfig.TAG_SCHEMA)
-  private List<Tag> tags = new ArrayList<>();
+  @ElementCollection(fetch = FetchType.EAGER)
+  @CollectionTable(schema = PersistenceConfig.TAG_SCHEMA)
+  private List<UUID> tags = new ArrayList<>();
 
   public static TagCollection create(UUID id) {
     var createdTagCollection = new TagCollection(id);
@@ -43,7 +43,7 @@ public class TagCollection extends AuditedAggregateRoot {
     this.id = id;
   }
 
-  public void setTags(Collection<Tag> tags) {
+  public void setTags(Collection<UUID> tags) {
     this.tags = new ArrayList<>(tags);
     this.registerEvent(TagCollectionUpdated.from(this));
   }

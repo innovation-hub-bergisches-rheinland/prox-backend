@@ -1,6 +1,7 @@
 package de.innovationhub.prox.modules.tag.application.tagcollection.usecase;
 
 import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
+import de.innovationhub.prox.modules.tag.domain.tag.Tag;
 import de.innovationhub.prox.modules.tag.domain.tag.TagRepository;
 import de.innovationhub.prox.modules.tag.domain.tagcollection.TagCollection;
 import de.innovationhub.prox.modules.tag.domain.tagcollection.TagCollectionRepository;
@@ -20,7 +21,7 @@ public class SetTagCollectionHandler {
         .orElse(TagCollection.create(id));
     var setTags = StreamSupport.stream(tagRepository.findAllById(tags).spliterator(), false)
         .toList();
-    tc.setTags(setTags);
+    tc.setTags(setTags.stream().map(Tag::getId).toList());
     tagCollectionRepository.save(tc);
   }
 }

@@ -68,7 +68,7 @@ class TagControllerIntegrationTest extends AbstractIntegrationTest {
 
     var tagCollectionTags = new ArrayList<>(givenTags);
     tagCollectionTags.addAll(possiblyRecommendedTags);
-    var tagCollection = createTagCollection(tagCollectionTags);
+    var tagCollection = createTagCollection(tagCollectionTags.stream().map(Tag::getId).toList());
 
     RestAssuredMockMvc.given()
         .param("tags", "tag1", "tag2")
@@ -89,7 +89,7 @@ class TagControllerIntegrationTest extends AbstractIntegrationTest {
 
     var tagCollectionTags = new ArrayList<>(givenTags);
     tagCollectionTags.addAll(possiblyRecommendedTags);
-    var tagCollection = createTagCollection(tagCollectionTags);
+    var tagCollection = createTagCollection(tagCollectionTags.stream().map(Tag::getId).toList());
 
     RestAssuredMockMvc.given()
         .param("tags", "tag1")
@@ -106,7 +106,7 @@ class TagControllerIntegrationTest extends AbstractIntegrationTest {
     var givenTags = createTags("tag1", "tag2");
 
     var tagCollectionTags = new ArrayList<>(givenTags);
-    var tagCollection = createTagCollection(tagCollectionTags);
+    var tagCollection = createTagCollection(tagCollectionTags.stream().map(Tag::getId).toList());
 
     RestAssuredMockMvc.given()
         .when()
@@ -178,7 +178,7 @@ class TagControllerIntegrationTest extends AbstractIntegrationTest {
     return tagList;
   }
 
-  private TagCollection createTagCollection(Collection<Tag> tags) {
+  private TagCollection createTagCollection(Collection<UUID> tags) {
     var tagCollection = TagCollection.create(UUID.randomUUID());
     tagCollection.setTags(tags);
     tagCollectionRepository.save(tagCollection);

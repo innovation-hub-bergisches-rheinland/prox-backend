@@ -11,7 +11,9 @@ import de.innovationhub.prox.modules.project.ModuleTypeFixtures;
 import de.innovationhub.prox.modules.project.application.project.dto.CreateProjectRequest;
 import de.innovationhub.prox.modules.project.application.project.dto.CreateProjectRequest.TimeBoxDto;
 import de.innovationhub.prox.modules.project.application.project.dto.CurriculumContextRequest;
+import de.innovationhub.prox.modules.project.domain.discipline.Discipline;
 import de.innovationhub.prox.modules.project.domain.discipline.DisciplineRepository;
+import de.innovationhub.prox.modules.project.domain.module.ModuleType;
 import de.innovationhub.prox.modules.project.domain.module.ModuleTypeRepository;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
@@ -68,9 +70,11 @@ class CreateProjectHandlerTest {
           assertThat(p.getSummary()).isEqualTo("Test");
           assertThat(p.getRequirement()).isEqualTo("Test");
           assertThat(p.getCurriculumContext().getModuleTypes())
-              .containsExactlyInAnyOrderElementsOf(ModuleTypeFixtures.ALL);
+              .containsExactlyInAnyOrderElementsOf(ModuleTypeFixtures.ALL.stream().map(
+                  ModuleType::getKey).toList());
           assertThat(p.getCurriculumContext().getDisciplines())
-              .containsExactlyInAnyOrderElementsOf(DisciplineFixtures.ALL);
+              .containsExactlyInAnyOrderElementsOf(
+                  DisciplineFixtures.ALL.stream().map(Discipline::getKey).toList());
           assertThat(p.getTimeBox().getStartDate()).isEqualTo(command.timeBox().start());
           assertThat(p.getTimeBox().getEndDate()).isEqualTo(command.timeBox().end());
           assertThat(p.getPartner().getOrganizationId()).isEqualTo(command.partnerId());

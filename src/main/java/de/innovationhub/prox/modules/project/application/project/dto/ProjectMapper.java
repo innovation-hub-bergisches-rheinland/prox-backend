@@ -2,10 +2,15 @@ package de.innovationhub.prox.modules.project.application.project.dto;
 
 import de.innovationhub.prox.modules.organization.contract.OrganizationView;
 import de.innovationhub.prox.modules.project.application.discipline.dto.DisciplineMapper;
+import de.innovationhub.prox.modules.project.application.discipline.dto.ReadDisciplineDto;
 import de.innovationhub.prox.modules.project.application.module.dto.ModuleTypeMapper;
+import de.innovationhub.prox.modules.project.application.module.dto.ReadModuleTypeDto;
 import de.innovationhub.prox.modules.project.application.project.dto.ProjectDto.AuthorDto;
+import de.innovationhub.prox.modules.project.application.project.dto.ProjectDto.ReadCurriculumContextDto;
 import de.innovationhub.prox.modules.project.application.project.dto.ProjectDto.ReadProjectStatusDto;
 import de.innovationhub.prox.modules.project.application.project.dto.ProjectDto.ReadSupervisorDto;
+import de.innovationhub.prox.modules.project.domain.discipline.Discipline;
+import de.innovationhub.prox.modules.project.domain.module.ModuleType;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.ProjectStatus;
 import de.innovationhub.prox.modules.user.contract.profile.UserProfileView;
@@ -27,7 +32,9 @@ interface ProjectMapper {
   @Mapping(target = "partner", source = "organizationView")
   @Mapping(target = "supervisors", source = "userProfileView")
   @Mapping(target = "author", source = "author")
-  ProjectDto toDto(Project project, List<UserProfileView> userProfileView,
+  @Mapping(target = "curriculumContext", expression = "java( toDto(disciplines, moduleTypes) )")
+  ProjectDto toDto(Project project, List<Discipline> disciplines, List<ModuleType> moduleTypes,
+      List<UserProfileView> userProfileView,
       OrganizationView organizationView, List<String> tags, ProjectPermissions permissions,
       UserProfileView author,
       ProjectMetrics metrics);
@@ -45,6 +52,31 @@ interface ProjectMapper {
     }
     return userProfileView.stream()
         .map(l -> new ReadSupervisorDto(l.id(), l.displayName()))
+        .toList();
+  }
+
+  default ReadCurriculumContextDto toDto(List<Discipline> disciplines,
+      List<ModuleType> moduleTypes) {
+    return new ReadCurriculumContextDto(toDisciplineDto(disciplines), toModuleTypeDto(moduleTypes));
+  }
+
+  default List<ReadDisciplineDto> toDisciplineDto(List<Discipline> disciplines) {
+    if (disciplines == null) {
+      return List.of();
+    }
+    return disciplines.stream()
+        .map(d -> new ReadDisciplineDto(d.getKey(), d.getName(), d.getCreatedAt(),
+            d.getModifiedAt()))
+        .toList();
+  }
+
+  default List<ReadModuleTypeDto> toModuleTypeDto(List<ModuleType> moduleTypes) {
+    if (moduleTypes == null) {
+      return List.of();
+    }
+    return moduleTypes.stream()
+        .map(d -> new ReadModuleTypeDto(d.getKey(), d.getName(), d.getCreatedAt(),
+            d.getModifiedAt()))
         .toList();
   }
 

@@ -7,7 +7,7 @@ public class ModuleTypeFixtures {
   public static final ModuleType BACHELOR_THESIS = new ModuleType(
       "BA",
       "Bachelor Thesis",
-      List.of(DisciplineFixtures.INF, DisciplineFixtures.ING)
+      List.of(DisciplineFixtures.INF.getKey(), DisciplineFixtures.ING.getKey())
   );
 
   public static final List<ModuleType> ALL = List.of(BACHELOR_THESIS);

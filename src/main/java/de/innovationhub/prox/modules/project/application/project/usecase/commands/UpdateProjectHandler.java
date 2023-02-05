@@ -65,6 +65,7 @@ public class UpdateProjectHandler {
       }
     }
 
-    return new CurriculumContext(disciplines, moduleTypes);
+    return new CurriculumContext(disciplines.stream().map(Discipline::getKey).toList(),
+        moduleTypes.stream().map(ModuleType::getKey).toList());
   }
 }

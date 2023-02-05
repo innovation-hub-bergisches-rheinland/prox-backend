@@ -32,8 +32,8 @@ public class ProjectFixtures {
         "Test",
         "Test",
         new CurriculumContext(
-            List.of(DisciplineFixtures.INF),
-            List.of(ModuleTypeFixtures.BACHELOR_THESIS)
+            List.of("INF"),
+            List.of("BA")
         ),
         new ProjectStatus(ProjectState.PROPOSED, Instant.now()),
         null,

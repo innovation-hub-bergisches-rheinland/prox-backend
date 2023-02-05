@@ -3,6 +3,10 @@ package de.innovationhub.prox.modules.project.application.project.dto;
 import de.innovationhub.prox.modules.organization.contract.OrganizationFacade;
 import de.innovationhub.prox.modules.organization.contract.OrganizationView;
 import de.innovationhub.prox.modules.project.application.ProjectPermissionEvaluator;
+import de.innovationhub.prox.modules.project.domain.discipline.Discipline;
+import de.innovationhub.prox.modules.project.domain.discipline.DisciplineRepository;
+import de.innovationhub.prox.modules.project.domain.module.ModuleType;
+import de.innovationhub.prox.modules.project.domain.module.ModuleTypeRepository;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.Supervisor;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
@@ -21,6 +25,8 @@ public class ProjectDtoAssembler {
   private final TagFacade tagFacade;
   private final OrganizationFacade organizationFacade;
   private final UserProfileFacade userProfileFacade;
+  private final ModuleTypeRepository moduleTypeRepository;
+  private final DisciplineRepository disciplineRepository;
   private final ProjectMapper projectMapper;
 
   // TODO: EXPERIMENTAL
@@ -53,7 +59,17 @@ public class ProjectDtoAssembler {
     var permissions = evaluatePermissions(project); // TODO
     var interest = evaluateInterest(project);
 
-    return projectMapper.toDto(project, supervisors, partnerOrg, tags, permissions, author,
+    List<Discipline> disciplines = List.of();
+    List<ModuleType> moduleTypes = List.of();
+    if (project.getCurriculumContext() != null) {
+      disciplines = disciplineRepository.findByKeyIn(
+          project.getCurriculumContext().getDisciplines());
+      moduleTypes = moduleTypeRepository.findByKeyIn(
+          project.getCurriculumContext().getModuleTypes());
+    }
+
+    return projectMapper.toDto(project, disciplines, moduleTypes, supervisors, partnerOrg, tags,
+        permissions, author,
         interest);
   }
 

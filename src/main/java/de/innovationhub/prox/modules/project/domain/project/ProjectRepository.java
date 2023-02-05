@@ -20,14 +20,12 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
         FROM prox_project.project p
                  LEFT JOIN prox_project.curriculum_context cc on p.curriculum_context_id = cc.id
                  LEFT JOIN prox_project.curriculum_context_disciplines cd on cd.curriculum_context_id = cc.id
-                 LEFT JOIN prox_project.discipline d on d.key = cd.disciplines_key
                  LEFT JOIN prox_project.curriculum_context_module_types cm on cm.curriculum_context_id = cc.id
-                 LEFT JOIN prox_project.module_type m on m.key = cm.module_types_key
                  LEFT JOIN prox_project.project_tags pt on pt.project_id = p.id,
               to_tsquery(REGEXP_REPLACE(lower(:query), '\\s+', ':* & ', 'g')) q
         WHERE (:#{#state == null} IS TRUE OR p.state = :#{#state != null ? #state.name() : ''})
-            AND (:disciplineKeys IS NULL OR d.key IN (:disciplineKeys))
-            AND (:moduleTypeKeys IS NULL OR m.key IN (:moduleTypeKeys))
+            AND (:disciplineKeys IS NULL OR cd.disciplines IN (:disciplineKeys))
+            AND (:moduleTypeKeys IS NULL OR cm.module_types IN (:moduleTypeKeys))
             AND (:tagIds IS NULL OR pt.tags IN (:tagIds))
             AND (:query <> '' IS NOT TRUE OR
                   p.document @@ q

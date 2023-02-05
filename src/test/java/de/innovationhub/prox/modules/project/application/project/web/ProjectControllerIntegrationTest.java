@@ -251,8 +251,8 @@ class ProjectControllerIntegrationTest extends ProjectIntegrationTest {
 
     given()
         .param("status", aProject.getStatus().getState())
-        .param("disciplineKeys", aProject.getCurriculumContext().getDisciplines().get(0).getKey())
-        .param("moduleTypeKeys", aProject.getCurriculumContext().getModuleTypes().get(0).getKey())
+        .param("disciplineKeys", aProject.getCurriculumContext().getDisciplines().get(0))
+        .param("moduleTypeKeys", aProject.getCurriculumContext().getModuleTypes().get(0))
         .param("text", aProject.getTitle())
         .when()
         .get("/projects/search/filter")

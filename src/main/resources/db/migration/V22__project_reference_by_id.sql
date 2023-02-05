@@ -1,0 +1,3 @@
+alter table prox_project.curriculum_context_disciplines rename column disciplines_key to disciplines;
+alter table prox_project.curriculum_context_module_types rename column module_types_key to module_types;
+alter table prox_project.module_type_disciplines rename column disciplines_key to disciplines;

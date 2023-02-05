@@ -1,12 +1,10 @@
 package de.innovationhub.prox.modules.project.domain.project;
 
 import de.innovationhub.prox.config.PersistenceConfig;
-import de.innovationhub.prox.modules.project.domain.discipline.Discipline;
-import de.innovationhub.prox.modules.project.domain.module.ModuleType;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,32 +30,16 @@ public class CurriculumContext {
   @Id
   private UUID id = UUID.randomUUID();
 
-  @ManyToMany
-  @JoinTable(schema = PersistenceConfig.PROJECT_SCHEMA)
-  private List<Discipline> disciplines;
+  @ElementCollection
+  @CollectionTable(schema = PersistenceConfig.PROJECT_SCHEMA)
+  private List<String> disciplines;
 
-  @ManyToMany
-  @JoinTable(schema = PersistenceConfig.PROJECT_SCHEMA)
-  private List<ModuleType> moduleTypes;
+  @ElementCollection
+  @CollectionTable(schema = PersistenceConfig.PROJECT_SCHEMA)
+  private List<String> moduleTypes;
 
-  public CurriculumContext(List<Discipline> disciplines, List<ModuleType> moduleTypes) {
+  public CurriculumContext(List<String> disciplines, List<String> moduleTypes) {
     this.disciplines = disciplines;
     this.moduleTypes = moduleTypes;
-  }
-
-  public void addDisciplines(Discipline... disciplines) {
-    this.disciplines.addAll(List.of(disciplines));
-  }
-
-  public void removeDisciplines(Discipline... disciplines) {
-    this.disciplines.removeAll(List.of(disciplines));
-  }
-
-  public void addModules(ModuleType... modules) {
-    this.moduleTypes.addAll(List.of(modules));
-  }
-
-  public void removeModules(ModuleType... modules) {
-    this.moduleTypes.removeAll(List.of(modules));
   }
 }

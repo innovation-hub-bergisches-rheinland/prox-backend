@@ -29,9 +29,8 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
             AND (:moduleTypeKeys IS NULL OR cm.module_types IN (:moduleTypeKeys))
             AND (:tagIds IS NULL OR pt.tags IN (:tagIds))
             AND (:query <> '' IS NOT TRUE OR
-                  p.document @@ q
+                  (p.document @@ q OR (:supervisorIds) IS NULL OR ps.lecturer_id IN (:supervisorIds)) 
               )
-            OR ps.lecturer_id IN (:supervisorIds)
         ORDER BY rank DESC, modified_at DESC
       """)
   Page<Project> filterProjects(

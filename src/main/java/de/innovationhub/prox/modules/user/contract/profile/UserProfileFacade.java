@@ -9,4 +9,6 @@ public interface UserProfileFacade {
   Optional<UserProfileView> getByUserId(UUID id);
 
   List<UserProfileView> findByUserId(List<UUID> ids);
+
+  List<UserProfileView> search(String query);
 }

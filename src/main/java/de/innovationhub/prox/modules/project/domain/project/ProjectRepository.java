@@ -21,7 +21,8 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
                  LEFT JOIN prox_project.curriculum_context cc on p.curriculum_context_id = cc.id
                  LEFT JOIN prox_project.curriculum_context_disciplines cd on cd.curriculum_context_id = cc.id
                  LEFT JOIN prox_project.curriculum_context_module_types cm on cm.curriculum_context_id = cc.id
-                 LEFT JOIN prox_project.project_tags pt on pt.project_id = p.id,
+                 LEFT JOIN prox_project.project_tags pt on pt.project_id = p.id
+                 LEFT JOIN prox_project.project_supervisors ps on ps.project_id = p.id,
               to_tsquery(REGEXP_REPLACE(lower(:query), '\\s+', ':* & ', 'g')) q
         WHERE (:state IS NULL OR p.state IN (:state))
             AND (:disciplineKeys IS NULL OR cd.disciplines IN (:disciplineKeys))
@@ -30,6 +31,7 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
             AND (:query <> '' IS NOT TRUE OR
                   p.document @@ q
               )
+            OR ps.lecturer_id IN (:supervisorIds)
         ORDER BY rank DESC, modified_at DESC
       """)
   Page<Project> filterProjects(
@@ -38,6 +40,7 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
       @Nullable @Param("moduleTypeKeys") Collection<String> moduleTypeKeys,
       @Nullable @Param("query") String query,
       @Nullable @Param("tagIds") Collection<UUID> tagIds,
+      @Nullable @Param("supervisorIds") Collection<UUID> supervisorIds,
       Pageable pageable);
 
 

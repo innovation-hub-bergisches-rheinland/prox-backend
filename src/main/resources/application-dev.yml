@@ -14,3 +14,7 @@ spring:
   rabbitmq:
     host: ${RABBITMQ_HOST:127.0.0.1}
     port: ${RABBITMQ_PORT:5672}
+logging:
+  level:
+    "org.hibernate.SQL": DEBUG
+    "org.hibernate.type.descriptor.sql.BasicBinder": TRACE

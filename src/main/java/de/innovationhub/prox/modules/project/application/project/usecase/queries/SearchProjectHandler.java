@@ -6,6 +6,9 @@ import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
 import de.innovationhub.prox.modules.tag.contract.TagView;
+import de.innovationhub.prox.modules.user.application.profile.UserProfileFacadeImpl;
+import de.innovationhub.prox.modules.user.contract.profile.UserProfileFacade;
+import de.innovationhub.prox.modules.user.contract.profile.UserProfileView;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -19,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 public class SearchProjectHandler {
   private final ProjectRepository projectRepository;
   private final TagFacade tagFacade;
+  private final UserProfileFacade userProfileFacade;
 
   public Page<Project> handle(
       Collection<ProjectState> status,
@@ -39,6 +43,12 @@ public class SearchProjectHandler {
       stateFiler = status.stream().map(ProjectState::name).toList();
     }
 
-    return projectRepository.filterProjects(stateFiler, specializationKeys, moduleTypeKeys, text, tagIds, pageable);
+    List<UUID> supervisorIds = new ArrayList<>();
+    var profileSearch = userProfileFacade.search(text);
+    if(profileSearch != null && !profileSearch.isEmpty()) {
+      supervisorIds = profileSearch.stream().map(UserProfileView::id).toList();
+    }
+
+    return projectRepository.filterProjects(stateFiler, specializationKeys, moduleTypeKeys, text, tagIds, supervisorIds, pageable);
   }
 }

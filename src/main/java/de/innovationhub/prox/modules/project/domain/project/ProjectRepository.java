@@ -23,7 +23,7 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
                  LEFT JOIN prox_project.curriculum_context_module_types cm on cm.curriculum_context_id = cc.id
                  LEFT JOIN prox_project.project_tags pt on pt.project_id = p.id,
               to_tsquery(REGEXP_REPLACE(lower(:query), '\\s+', ':* & ', 'g')) q
-        WHERE (:#{#state == null} IS TRUE OR p.state = :#{#state != null ? #state.name() : ''})
+        WHERE (:state IS NULL OR p.state IN (:state))
             AND (:disciplineKeys IS NULL OR cd.disciplines IN (:disciplineKeys))
             AND (:moduleTypeKeys IS NULL OR cm.module_types IN (:moduleTypeKeys))
             AND (:tagIds IS NULL OR pt.tags IN (:tagIds))
@@ -33,7 +33,7 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
         ORDER BY rank DESC, modified_at DESC
       """)
   Page<Project> filterProjects(
-      @Nullable ProjectState state,
+      @Nullable @Param("state") Collection<String> state,
       @Nullable @Param("disciplineKeys") Collection<String> disciplineKeys,
       @Nullable @Param("moduleTypeKeys") Collection<String> moduleTypeKeys,
       @Nullable @Param("query") String query,

@@ -20,7 +20,8 @@ public class SearchProjectHandler {
   private final ProjectRepository projectRepository;
   private final TagFacade tagFacade;
 
-  public Page<Project> handle(ProjectState status,
+  public Page<Project> handle(
+      Collection<ProjectState> status,
       Collection<String> specializationKeys,
       Collection<String> moduleTypeKeys,
       String text,
@@ -33,6 +34,11 @@ public class SearchProjectHandler {
       );
     }
 
-    return projectRepository.filterProjects(status, specializationKeys, moduleTypeKeys, text, tagIds, pageable);
+    List<String> stateFiler = null;
+    if(status != null) {
+      stateFiler = status.stream().map(ProjectState::name).toList();
+    }
+
+    return projectRepository.filterProjects(stateFiler, specializationKeys, moduleTypeKeys, text, tagIds, pageable);
   }
 }

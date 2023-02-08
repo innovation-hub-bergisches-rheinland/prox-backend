@@ -134,7 +134,7 @@ public class ProjectController {
 
   @GetMapping("search/filter")
   public ResponseEntity<Page<ProjectDto>> filter(
-      @RequestParam(name = "status", required = false) ProjectState status,
+      @RequestParam(name = "status", required = false, defaultValue = "") Collection<ProjectState> status,
       @RequestParam(name = "disciplineKeys", required = false, defaultValue = "") Collection<String> specializationKeys,
       @RequestParam(name = "moduleTypeKeys", required = false, defaultValue = "") Collection<String> moduleTypeKeys,
       @RequestParam(name = "text", required = false, defaultValue = "") String text,

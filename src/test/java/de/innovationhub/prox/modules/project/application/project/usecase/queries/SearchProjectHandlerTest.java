@@ -26,7 +26,7 @@ class SearchProjectHandlerTest {
 
   @Test
   void shouldCallRepository() {
-    var status = ProjectState.STALE;
+    var status = List.of(ProjectState.STALE);
     var keys = List.of("key");
     var modules = List.of("module");
     var text = "lol";
@@ -34,7 +34,7 @@ class SearchProjectHandlerTest {
 
     searchProjectHandler.handle(status, keys, modules, text, null, page);
 
-    verify(projectRepository).filterProjects(eq(status), eq(keys), eq(modules), eq(text), anyCollection(), eq(page));
+    verify(projectRepository).filterProjects(eq(List.of("STALE")), eq(keys), eq(modules), eq(text), anyCollection(), eq(page));
   }
 
   @Test

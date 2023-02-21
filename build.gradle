@@ -23,6 +23,7 @@ ext {
 
 springBoot {
     buildInfo()
+    mainClass = "de.innovationhub.prox.ProxApplication"
 }
 
 dependencies {

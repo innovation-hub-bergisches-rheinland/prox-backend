@@ -47,7 +47,7 @@ dependencies {
     implementation "org.flywaydb:flyway-core"
 
     implementation "org.keycloak:keycloak-server-spi-private:20.0.4"
-    implementation "org.keycloak:keycloak-admin-client:20.0.4"
+    implementation "org.keycloak:keycloak-admin-client:21.0.0"
     // AWS
     implementation "com.amazonaws:aws-java-sdk-s3:1.12.415"
 

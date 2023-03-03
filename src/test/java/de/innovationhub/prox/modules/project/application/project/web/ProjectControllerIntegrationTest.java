@@ -149,7 +149,7 @@ class ProjectControllerIntegrationTest extends ProjectIntegrationTest {
   }
 
   @Test
-  @WithMockUser(value = "00000000-0000-0000-0000-000000000001")
+  @WithMockUser(value = "00000000-0000-0000-0000-000000000001", roles = "professor")
   void shouldUpdateProject() {
     var aProject = ProjectFixtures.build_a_project();
     projectRepository.save(aProject);

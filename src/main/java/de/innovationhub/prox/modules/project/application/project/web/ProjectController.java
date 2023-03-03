@@ -22,6 +22,7 @@ import de.innovationhub.prox.modules.project.domain.project.ProjectState;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -95,8 +96,8 @@ public class ProjectController {
       @SecurityRequirement(name = "oidc")
   })
   public ResponseEntity<ProjectDto> update(@PathVariable("id") UUID id, @RequestBody
-  CreateProjectRequest updateProjectDto) {
-    var updatedProject = update.handle(id, updateProjectDto);
+  CreateProjectRequest updateProjectDto, HttpServletRequest request) {
+    var updatedProject = update.handle(id, updateProjectDto, request.isUserInRole("professor"));
     var dto = dtoAssembler.toDto(updatedProject);
     return ResponseEntity.ok(dto);
   }

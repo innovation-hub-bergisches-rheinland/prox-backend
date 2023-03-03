@@ -1,5 +1,6 @@
 package de.innovationhub.prox.modules.project.application.project.usecase.commands;
 
+import de.innovationhub.prox.commons.exception.UnauthorizedAccessException;
 import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.project.application.project.dto.CreateProjectRequest;
 import de.innovationhub.prox.modules.project.application.project.dto.CreateProjectRequest.TimeBoxDto;
@@ -17,6 +18,10 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 
 @ApplicationComponent
 @RequiredArgsConstructor
@@ -26,9 +31,13 @@ public class UpdateProjectHandler {
   private final DisciplineRepository disciplineRepository;
 
   @PreAuthorize("@projectPermissionEvaluator.hasPermission(#projectId, authentication)")
-  public Project handle(UUID projectId, CreateProjectRequest projectDto) {
+  public Project handle(UUID projectId, CreateProjectRequest projectDto, boolean isProfessor) {
     var project = projectRepository.findById(projectId)
         .orElseThrow(ProjectNotFoundException::new);
+
+    if(projectDto.supervisors() != null && !isProfessor) {
+      throw new UnauthorizedAccessException("Only professors can add supervisors to a project");
+    }
 
     var context = buildContext(projectDto.context());
     var timeBox = buildTimeBox(projectDto.timeBox());

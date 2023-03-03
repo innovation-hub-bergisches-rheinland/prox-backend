@@ -7,6 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import de.innovationhub.prox.commons.exception.UnauthorizedAccessException;
 import de.innovationhub.prox.modules.project.DisciplineFixtures;
 import de.innovationhub.prox.modules.project.ModuleTypeFixtures;
 import de.innovationhub.prox.modules.project.ProjectFixtures;
@@ -27,6 +28,7 @@ import java.util.Set;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 
 class UpdateProjectHandlerTest {
   ProjectRepository projectRepository = mock(ProjectRepository.class);
@@ -39,8 +41,33 @@ class UpdateProjectHandlerTest {
   void shouldThrowOnNotFound() {
     when(projectRepository.findById(any())).thenReturn(Optional.empty());
 
-    assertThatThrownBy(() -> createProjectHandler.handle(UUID.randomUUID(), null))
+    assertThatThrownBy(() -> createProjectHandler.handle(UUID.randomUUID(), null, true))
         .isInstanceOf(RuntimeException.class);
+  }
+
+  @Test
+  void shouldThrowOnUnauthorized() {
+    var project = ProjectFixtures.build_a_project();
+    when(projectRepository.findById(any())).thenReturn(Optional.of(project));
+    var command = new CreateProjectRequest(
+        "Test Project",
+        "Test",
+        "Test",
+        "Test",
+        new CurriculumContextRequest(
+            List.of("BA"),
+            List.of("ING", "INF")
+        ),
+        new TimeBoxDto(
+            LocalDate.now(),
+            LocalDate.now()
+        ),
+        UUID.randomUUID(),
+        Set.of(UUID.randomUUID())
+    );
+
+    assertThatThrownBy(() -> createProjectHandler.handle(project.getId(), command, false))
+        .isInstanceOf(UnauthorizedAccessException.class);
   }
 
   @Test
@@ -67,7 +94,7 @@ class UpdateProjectHandlerTest {
         Set.of(UUID.randomUUID())
     );
 
-    createProjectHandler.handle(project.getId(), command);
+    createProjectHandler.handle(project.getId(), command, true);
 
     var captor = ArgumentCaptor.forClass(Project.class);
     verify(projectRepository).save(captor.capture());

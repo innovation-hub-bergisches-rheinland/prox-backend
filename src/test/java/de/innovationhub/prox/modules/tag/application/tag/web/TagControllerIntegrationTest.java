@@ -58,7 +58,7 @@ class TagControllerIntegrationTest extends AbstractIntegrationTest {
         .statusCode(200)
         .body("id",
             containsInAnyOrder(tags.get(0).getId().toString(), tags.get(1).getId().toString()))
-        .body("tag", containsInAnyOrder(tags.get(0).getTagName(), tags.get(1).getTagName()));
+        .body("tagName", containsInAnyOrder(tags.get(0).getTagName(), tags.get(1).getTagName()));
   }
 
   @Test
@@ -78,7 +78,7 @@ class TagControllerIntegrationTest extends AbstractIntegrationTest {
         .statusCode(200)
         .body("id", containsInAnyOrder(
             possiblyRecommendedTags.stream().map(Tag::getId).map(UUID::toString).toArray()))
-        .body("tag",
+        .body("tagName",
             containsInAnyOrder(possiblyRecommendedTags.stream().map(Tag::getTagName).toArray()));
   }
 
@@ -115,7 +115,7 @@ class TagControllerIntegrationTest extends AbstractIntegrationTest {
         .statusCode(200)
         .body("id", containsInAnyOrder(
             givenTags.stream().map(Tag::getId).map(UUID::toString).toArray()))
-        .body("tag",
+        .body("tagName",
             containsInAnyOrder(givenTags.stream().map(Tag::getTagName).toArray()));
   }
 

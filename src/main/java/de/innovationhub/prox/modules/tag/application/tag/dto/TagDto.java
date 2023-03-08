@@ -7,7 +7,7 @@ import java.util.UUID;
 @Schema(name = "Tag", description = "A tag")
 public record TagDto(
     UUID id,
-    String tag,
+    String tagName,
     Instant createdAt,
     Instant modifiedAt
 ) {

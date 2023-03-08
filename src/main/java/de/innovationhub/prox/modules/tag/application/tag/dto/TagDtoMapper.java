@@ -11,7 +11,6 @@ public interface TagDtoMapper {
 
   TagDtoMapper INSTANCE = Mappers.getMapper(TagDtoMapper.class);
 
-  @Mapping(target = "tag", source = "tagName")
   TagDto toDto(Tag tag);
 
   List<TagDto> toDtoList(List<Tag> tags);

@@ -42,9 +42,12 @@ public class ProjectDtoAssembler {
           .orElse(new OrganizationView(orgId, null));
     }
 
-    List<String> tags = Collections.emptyList();
+    List<TagDto> tags = Collections.emptyList();
     if (project.getTags() != null) {
-      tags = tagFacade.getTagsAsString(project.getTags());
+      tags = tagFacade.getTags(project.getTags())
+          .stream()
+          .map(tag -> new TagDto(tag.id(), tag.tagName()))
+          .toList();
     }
 
     var supervisors = userProfileFacade.findByUserId(

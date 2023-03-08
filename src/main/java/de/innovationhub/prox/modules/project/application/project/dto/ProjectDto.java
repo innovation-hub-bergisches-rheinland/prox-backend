@@ -23,7 +23,7 @@ public record ProjectDto(
     ReadProjectStatusDto status,
     ReadTimeBoxDto timeBox,
     List<ReadSupervisorDto> supervisors,
-    List<String> tags,
+    List<TagDto> tags,
     @JsonProperty("_permissions")
     ProjectPermissions permissions,
     ProjectMetrics metrics,

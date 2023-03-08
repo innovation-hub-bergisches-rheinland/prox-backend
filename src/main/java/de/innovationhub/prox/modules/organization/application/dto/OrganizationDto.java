@@ -11,7 +11,7 @@ public record OrganizationDto(
     UUID id,
     String name,
     OrganizationProfileDto profile,
-    List<String> tags,
+    List<TagDto> tags,
     String logoUrl,
     @JsonProperty("_permissions")
     OrganizationPermissions permissions,

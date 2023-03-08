@@ -34,9 +34,12 @@ public class OrganizationDtoAssembler {
       logoUrl = storageProvider.buildUrl(organization.getLogoKey());
     }
 
-    List<String> tags = Collections.emptyList();
+    List<TagDto> tags = Collections.emptyList();
     if (organization.getTags() != null) {
-      tags = tagFacade.getTagsAsString(organization.getTags());
+      tags = tagFacade.getTags(organization.getTags())
+          .stream()
+          .map(tag -> new TagDto(tag.id(), tag.tagName()))
+          .toList();
     }
 
     var permissions = new OrganizationPermissions(

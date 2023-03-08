@@ -35,7 +35,7 @@ interface ProjectMapper {
   @Mapping(target = "curriculumContext", expression = "java( toDto(disciplines, moduleTypes) )")
   ProjectDto toDto(Project project, List<Discipline> disciplines, List<ModuleType> moduleTypes,
       List<UserProfileView> userProfileView,
-      OrganizationView organizationView, List<String> tags, ProjectPermissions permissions,
+      OrganizationView organizationView, List<TagDto> tags, ProjectPermissions permissions,
       UserProfileView author,
       ProjectMetrics metrics);
 

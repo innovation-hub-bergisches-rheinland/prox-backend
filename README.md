@@ -58,6 +58,18 @@ The following diagrams should give you a rough idea of the module structure.
 - For external events we use [RabbitMQ](https://www.rabbitmq.com/) as the message broker.
   - External events are events that are meant to be consumed by external systems or we consume them
     from external systems.
+- We copy data from our Identity Provider to our own database to avoid coupling to the Identity
+  Provider. We use [Keycloak](https://www.keycloak.org/) as the Identity Provider. Keycloak emits 
+  registration events to RabbitMQ. We consume these events and copy the data to our database.
+  This way we can use our own database as the source of truth for user data (Display Name, Email, ...)
+  and use Keycloak only for authentication. The approach might not scale well we could use one of 
+  the following approaches in the future, but for now it is good enough:
+  - [Extend Keycloak Data Schema](https://www.keycloak.org/docs/latest/server_development/index.html#_extensions_jpa) 
+    and use Keycloak as the source of truth
+  - Use custom user attributes in Keycloak and use Keycloak as the source of truth
+  - Drop Keycloak and use [Spring Security OAuth](https://spring.io/projects/spring-security-oauth)
+    instead. Not really preferred because we might need things like SAML or OpenID Connect, User 
+    Federation in the future.
 
 ## Release
 

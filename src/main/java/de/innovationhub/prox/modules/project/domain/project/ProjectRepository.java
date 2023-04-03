@@ -31,7 +31,7 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
             AND (:query <> '' IS NOT TRUE OR
                   (p.document @@ q OR (:supervisorIds) IS NULL OR ps.lecturer_id IN (:supervisorIds)) 
               )
-        ORDER BY rank DESC, modified_at DESC
+        ORDER BY rank DESC, created_at DESC
       """)
   Page<Project> filterProjects(
       @Nullable @Param("state") Collection<String> state,

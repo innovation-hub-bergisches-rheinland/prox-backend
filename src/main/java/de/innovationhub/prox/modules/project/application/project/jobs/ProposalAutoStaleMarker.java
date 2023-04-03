@@ -5,6 +5,7 @@ import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
 import java.time.Duration;
 import java.time.Instant;
+import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -33,6 +34,7 @@ public class ProposalAutoStaleMarker {
   }
 
   @Scheduled(cron = "${project.jobs.auto-mark-for-delete.cron:0 0 0 * * *}")
+  @Transactional
   void run() {
     var qualifyingTimestamp = Instant.now().minus(markForDeletionAfter);
     var proposalsToMark =

@@ -5,6 +5,7 @@ import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
 import jakarta.annotation.PostConstruct;
 import java.time.Instant;
+import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -30,6 +31,7 @@ public class ProposalAutoDelete {
   }
 
   @Scheduled(cron = "${project.jobs.auto-delete.cron:0 0 0 * * *}")
+  @Transactional
   void run() {
     var qualifyingTimestamp = Instant.now();
     var proposalsToDelete =

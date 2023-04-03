@@ -23,11 +23,12 @@ class FindCommonTagsHandlerTest {
   }
 
   @Test
-  void shouldThrowWhenTagsIsEmpty() {
+  void shouldReturnEmptyListWhenTagsIsEmpty() {
     List<String> list = List.of();
     var limit = 2;
 
-    assertThrows(IllegalArgumentException.class, () -> handler.handle(list, limit));
+    assertThat(handler.handle(list, limit))
+        .isEmpty();
   }
 
   @Test

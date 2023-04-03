@@ -19,7 +19,7 @@ public class FindCommonTagsHandler {
     Objects.requireNonNull(tags);
 
     if (tags.isEmpty()) {
-      throw new IllegalArgumentException("Must provide at least one tag");
+      return List.of();
     }
     if (limit <= 0) {
       throw new IllegalArgumentException("Limit must be greater than 0");

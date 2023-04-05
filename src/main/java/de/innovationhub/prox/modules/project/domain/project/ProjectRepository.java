@@ -23,7 +23,7 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
                  LEFT JOIN prox_project.curriculum_context_module_types cm on cm.curriculum_context_id = cc.id
                  LEFT JOIN prox_project.project_tags pt on pt.project_id = p.id
                  LEFT JOIN prox_project.project_supervisors ps on ps.project_id = p.id,
-              to_tsquery(REGEXP_REPLACE(lower(:query), '\\s+', ':* & ', 'g')) q
+              plainto_tsquery('german', :query) q
         WHERE (:state IS NULL OR p.state IN (:state))
             AND (:disciplineKeys IS NULL OR cd.disciplines IN (:disciplineKeys))
             AND (:moduleTypeKeys IS NULL OR cm.module_types IN (:moduleTypeKeys))

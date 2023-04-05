@@ -24,6 +24,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.IntStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -257,8 +258,28 @@ class ProjectControllerIntegrationTest extends ProjectIntegrationTest {
         .when()
         .get("/projects/search/filter")
         .then()
+        .log().all()
         .statusCode(200)
         .body("content", hasSize(1));
+  }
+
+  @Test
+  void shouldReturnCorrectPageSize() {
+    var projects = IntStream.range(0, 25)
+        .mapToObj(i -> ProjectFixtures.build_a_project())
+        .toList();
+    projectRepository.saveAll(projects);
+
+    given()
+        .param("size", 1)
+        .param("page", 0)
+        .when()
+        .get("/projects/search/filter")
+        .then()
+        .log().all()
+        .statusCode(200)
+        .body("totalPages", is(25))
+        .body("totalElements", is(25));
   }
 
   @Test

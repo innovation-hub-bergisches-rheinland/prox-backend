@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 public interface ProjectRepository extends JpaRepository<Project, UUID> {
 
   @Query(nativeQuery = true, value = """
-      SELECT DISTINCT p.*, ts_rank(p.document, q) AS rank
+      SELECT DISTINCT p.*
         FROM prox_project.project p
                  LEFT JOIN prox_project.curriculum_context cc on p.curriculum_context_id = cc.id
                  LEFT JOIN prox_project.curriculum_context_disciplines cd on cd.curriculum_context_id = cc.id
@@ -32,7 +32,7 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
                   -- If we have a query it might match on the document or the supervisor
                   (p.document @@ q OR (:supervisorIds) IS NULL OR ps.lecturer_id IN (:supervisorIds)) 
               )
-        ORDER BY rank DESC, created_at DESC
+        ORDER BY created_at DESC
       """)
   Page<Project> filterProjects(
       @Nullable @Param("state") Collection<String> state,

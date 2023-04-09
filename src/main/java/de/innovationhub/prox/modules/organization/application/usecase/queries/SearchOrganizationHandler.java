@@ -3,8 +3,8 @@ package de.innovationhub.prox.modules.organization.application.usecase.queries;
 import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.organization.domain.Organization;
 import de.innovationhub.prox.modules.organization.domain.OrganizationRepository;
+import de.innovationhub.prox.modules.tag.application.tag.dto.TagDto;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
-import de.innovationhub.prox.modules.tag.contract.TagView;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -27,7 +27,7 @@ public class SearchOrganizationHandler {
     List<UUID> tagIds = new ArrayList<>();
     if(tags != null) {
       tagIds.addAll(
-          tagFacade.getTagsByName(tags).stream().map(TagView::id).toList()
+          tagFacade.getTagsByName(tags).stream().map(TagDto::id).toList()
       );
     }
 

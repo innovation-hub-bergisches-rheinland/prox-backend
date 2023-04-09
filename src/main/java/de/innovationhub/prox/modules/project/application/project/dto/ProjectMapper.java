@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.project.application.project.dto;
 
-import de.innovationhub.prox.modules.organization.contract.OrganizationView;
+import de.innovationhub.prox.modules.organization.application.dto.OrganizationDto;
 import de.innovationhub.prox.modules.project.application.discipline.dto.DisciplineMapper;
 import de.innovationhub.prox.modules.project.application.discipline.dto.ReadDisciplineDto;
 import de.innovationhub.prox.modules.project.application.module.dto.ModuleTypeMapper;
@@ -13,7 +13,7 @@ import de.innovationhub.prox.modules.project.domain.discipline.Discipline;
 import de.innovationhub.prox.modules.project.domain.module.ModuleType;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.ProjectStatus;
-import de.innovationhub.prox.modules.user.contract.profile.UserProfileView;
+import de.innovationhub.prox.modules.user.application.profile.dto.UserProfileDto;
 import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -33,25 +33,28 @@ interface ProjectMapper {
   @Mapping(target = "supervisors", source = "userProfileView")
   @Mapping(target = "author", source = "author")
   @Mapping(target = "curriculumContext", expression = "java( toDto(disciplines, moduleTypes) )")
+  @Mapping(target = "createdAt", source = "project.createdAt")
+  @Mapping(target = "modifiedAt", source = "project.modifiedAt")
+  @Mapping(target = "permissions", source = "permissions")
   ProjectDto toDto(Project project, List<Discipline> disciplines, List<ModuleType> moduleTypes,
-      List<UserProfileView> userProfileView,
-      OrganizationView organizationView, List<TagDto> tags, ProjectPermissions permissions,
-      UserProfileView author,
+      List<UserProfileDto> userProfileView,
+      OrganizationDto organizationView, List<ProjectTagDto> tags, ProjectPermissions permissions,
+      UserProfileDto author,
       ProjectMetrics metrics);
 
-  default AuthorDto toSupervisors(UserProfileView author) {
+  default AuthorDto toSupervisors(UserProfileDto author) {
     if (author == null) {
       return null;
     }
-    return new AuthorDto(author.id(), author.displayName());
+    return new AuthorDto(author.userId(), author.displayName());
   }
 
-  default List<ReadSupervisorDto> toSupervisors(List<UserProfileView> userProfileView) {
+  default List<ReadSupervisorDto> toSupervisors(List<UserProfileDto> userProfileView) {
     if (userProfileView == null) {
       return List.of();
     }
     return userProfileView.stream()
-        .map(l -> new ReadSupervisorDto(l.id(), l.displayName()))
+        .map(l -> new ReadSupervisorDto(l.userId(), l.displayName()))
         .toList();
   }
 

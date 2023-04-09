@@ -2,7 +2,7 @@ package de.innovationhub.prox.modules.project.application.project.dto;
 
 import java.util.UUID;
 
-record TagDto(
+public record ProjectTagDto(
     UUID id,
     String tagName
 ) {}

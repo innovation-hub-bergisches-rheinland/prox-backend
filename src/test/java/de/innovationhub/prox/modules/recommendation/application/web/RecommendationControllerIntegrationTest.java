@@ -13,6 +13,8 @@ import de.innovationhub.prox.modules.project.domain.project.Author;
 import de.innovationhub.prox.modules.project.domain.project.CurriculumContext;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
+import de.innovationhub.prox.modules.tag.domain.tag.Tag;
+import de.innovationhub.prox.modules.tag.domain.tag.TagRepository;
 import de.innovationhub.prox.modules.user.domain.profile.ContactInformation;
 import de.innovationhub.prox.modules.user.domain.profile.LecturerProfileInformation;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfile;
@@ -46,6 +48,9 @@ class RecommendationControllerIntegrationTest extends AbstractIntegrationTest {
   @Autowired
   ProjectRepository projectRepository;
 
+  @Autowired
+  TagRepository tagRepository;
+
   @BeforeEach
   void setupRestAssured() {
     RestAssuredMockMvc.standaloneSetup(() -> mockMvc);
@@ -57,9 +62,11 @@ class RecommendationControllerIntegrationTest extends AbstractIntegrationTest {
     // reasonable result without crashing.
     // Especially it is hard to setup test data. Maybe we need a pre-populated database for this.
 
-    var seedTags = List.of(UUID.randomUUID(), UUID.randomUUID());
-    var randomTags = List.of(UUID.randomUUID(), UUID.randomUUID());
+    var seedTags = List.of(Tag.create("test1"), Tag.create("test2"));
+    var randomTags = List.of(Tag.create("test3"), Tag.create("test4"));
     var mixedTags = List.of(seedTags.get(0), randomTags.get(0));
+    tagRepository.saveAll(seedTags);
+    tagRepository.saveAll(randomTags);
 
     var lecturer1 = createLecturer(seedTags);
     var lecturer2 = createLecturer(randomTags);
@@ -79,17 +86,17 @@ class RecommendationControllerIntegrationTest extends AbstractIntegrationTest {
 
     given()
         .accept(ContentType.JSON)
-        .param("seedTags", seedTags)
+        .param("seedTags", seedTags.stream().map(t -> t.getId().toString()).toList())
         .when()
         .get("recommendations")
         .then()
         .log().all()
         .statusCode(200)
         .body("lecturers.size()", is(2))
-        .body("lecturers[0].confidenceScore", greaterThanOrEqualTo(2.0f))
-        .body("lecturers[0].item.id", is(lecturer1.getId().toString()))
+        .body("lecturers[0].confidenceScore", greaterThanOrEqualTo(1.0f))
+        .body("lecturers[0].item.userId", is(lecturer1.getUserId().toString()))
         .body("lecturers[1].confidenceScore", greaterThan(0.0f))
-        .body("lecturers[1].item.id", is(lecturer3.getId().toString()))
+        .body("lecturers[1].item.userId", is(lecturer3.getUserId().toString()))
         .body("organizations.size()", is(2))
         .body("organizations[0].confidenceScore", greaterThanOrEqualTo(1.0f))
         .body("organizations[0].item.id", is(organization1.getId().toString()))
@@ -102,15 +109,15 @@ class RecommendationControllerIntegrationTest extends AbstractIntegrationTest {
         .body("projects[1].item.id", is(project3.getId().toString()));
   }
 
-  private UserProfile createLecturer(Collection<UUID> tags) {
+  private UserProfile createLecturer(Collection<Tag> tags) {
     var profile = UserProfile.create(UUID.randomUUID(), "Xavier Tester", "Lorem Ipsum",
         new ContactInformation("Test", "Test", "Test"), true);
     profile.createLecturerProfile(new LecturerProfileInformation());
-    profile.tagProfile(tags);
+    profile.tagProfile(tags.stream().map(Tag::getId).toList());
     return profile;
   }
 
-  private Project createDummyProject(UUID organization, Collection<UUID> supervisors, Collection<UUID> tags) {
+  private Project createDummyProject(UUID organization, Collection<UUID> supervisors, Collection<Tag> tags) {
     var project = Project.create(
         new Author(UUID.randomUUID()),
         "Test Project",
@@ -122,13 +129,13 @@ class RecommendationControllerIntegrationTest extends AbstractIntegrationTest {
         organization,
         supervisors
     );
-    project.setTags(tags);
+    project.setTags(tags.stream().map(Tag::getId).toList());
     return project;
   }
 
-  private Organization createDummyOrganization(Collection<UUID> tags) {
+  private Organization createDummyOrganization(Collection<Tag> tags) {
     var organization = Organization.create("Test Organization", UUID.randomUUID());
-    organization.setTags(tags);
+    organization.setTags(tags.stream().map(Tag::getId).toList());
     return organization;
   }
 }

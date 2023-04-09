@@ -34,9 +34,9 @@ public abstract class UserProfileDtoMapper {
   public abstract LecturerProfileInformationDto toDtoLecturerProfileInformation(LecturerProfileInformation profileInformation);
 
   @Named("retrieveTags")
-  public List<TagDto> retrieveTags(Collection<UUID> tagIds) {
+  public List<UserProfileTagDto> retrieveTags(Collection<UUID> tagIds) {
     return tagFacade.getTags(tagIds)
-        .stream().map(tag -> new TagDto(tag.id(), tag.tagName()))
+        .stream().map(tag -> new UserProfileTagDto(tag.id(), tag.tagName()))
         .toList();
   }
 

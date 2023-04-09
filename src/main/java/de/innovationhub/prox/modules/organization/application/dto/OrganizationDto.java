@@ -11,10 +11,17 @@ public record OrganizationDto(
     UUID id,
     String name,
     OrganizationProfileDto profile,
-    List<TagDto> tags,
+    List<OrganizationTagDto> tags,
     String logoUrl,
     @JsonProperty("_permissions")
     OrganizationPermissions permissions,
     Instant createdAt,
     Instant modifiedAt
-) { }
+) {
+
+  public OrganizationDto(
+      UUID id
+  ) {
+    this(id, null, null, null, null, null, null, null);
+  }
+}

@@ -10,10 +10,14 @@ import static org.mockito.Mockito.when;
 
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
+import de.innovationhub.prox.modules.tag.application.tag.dto.TagDto;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
-import de.innovationhub.prox.modules.tag.contract.TagView;
+import de.innovationhub.prox.modules.user.application.profile.dto.LecturerProfileDto;
+import de.innovationhub.prox.modules.user.application.profile.dto.LecturerProfileInformationDto;
+import de.innovationhub.prox.modules.user.application.profile.dto.UserProfileDto;
+import de.innovationhub.prox.modules.user.application.profile.dto.UserProfileDto.ContactInformationDto;
 import de.innovationhub.prox.modules.user.contract.profile.UserProfileFacade;
-import de.innovationhub.prox.modules.user.contract.profile.UserProfileView;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -43,7 +47,7 @@ class SearchProjectHandlerTest {
   @Test
   void shouldCallRepositoryWithResolvedTags() {
     var givenTags = List.of(
-        new TagView(UUID.randomUUID(), "tag1")
+        new TagDto(UUID.randomUUID(), "tag1", Instant.now(), Instant.now())
     );
     when(tagFacade.getTagsByName(anyCollection())).thenReturn(givenTags);
 
@@ -57,7 +61,26 @@ class SearchProjectHandlerTest {
   @Test
   void shouldCallRepositoryWithResolvedProfiles() {
     var givenProfiles = List.of(
-        new UserProfileView(UUID.randomUUID(), "Xavier Tester", List.of())
+        new UserProfileDto(UUID.randomUUID(), "Xavier Tester",
+            null,
+            "",
+            true,
+            new LecturerProfileDto(
+                new LecturerProfileInformationDto(
+                    "Test",
+                    "Test",
+                    List.of(),
+                    "",
+                    "",
+                    ""
+                )
+            ),
+            new ContactInformationDto(
+                "",
+                "",
+                ""
+            ),
+            List.of())
     );
     var searchQuery = "test";
     when(userProfileFacade.search(eq(searchQuery))).thenReturn(givenProfiles);
@@ -66,6 +89,6 @@ class SearchProjectHandlerTest {
 
     ArgumentCaptor<List<UUID>> captor = ArgumentCaptor.forClass((Class) List.class);
     verify(projectRepository).filterProjects(any(), any(), any(), any(), anyCollection(), captor.capture(), any());
-    assertThat(captor.getValue()).containsExactly(givenProfiles.get(0).id());
+    assertThat(captor.getValue()).containsExactly(givenProfiles.get(0).userId());
   }
 }

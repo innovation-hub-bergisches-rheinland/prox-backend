@@ -5,8 +5,8 @@ import de.innovationhub.prox.modules.organization.application.OrganizationPermis
 import de.innovationhub.prox.modules.organization.domain.Membership;
 import de.innovationhub.prox.modules.organization.domain.Organization;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
+import de.innovationhub.prox.modules.user.application.profile.dto.UserProfileDto;
 import de.innovationhub.prox.modules.user.contract.profile.UserProfileFacade;
-import de.innovationhub.prox.modules.user.contract.profile.UserProfileView;
 import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
 import java.util.Collections;
 import java.util.List;
@@ -34,11 +34,11 @@ public class OrganizationDtoAssembler {
       logoUrl = storageProvider.buildUrl(organization.getLogoKey());
     }
 
-    List<TagDto> tags = Collections.emptyList();
+    List<OrganizationTagDto> tags = Collections.emptyList();
     if (organization.getTags() != null) {
       tags = tagFacade.getTags(organization.getTags())
           .stream()
-          .map(tag -> new TagDto(tag.id(), tag.tagName()))
+          .map(tag -> new OrganizationTagDto(tag.id(), tag.tagName()))
           .toList();
     }
 
@@ -53,7 +53,7 @@ public class OrganizationDtoAssembler {
     String name = null;
     try {
       var userView = userFacade.getByUserId(membership.getMemberId());
-      name = userView.map(UserProfileView::displayName).orElse(null);
+      name = userView.map(UserProfileDto::displayName).orElse(null);
     }
     catch (RuntimeException e) {
       log.error("Unable to fetch user displayName for user with id {}", membership.getMemberId(),

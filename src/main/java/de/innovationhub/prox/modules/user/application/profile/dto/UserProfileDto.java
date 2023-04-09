@@ -14,7 +14,7 @@ public record UserProfileDto(
     boolean visibleInPublicSearch,
     LecturerProfileDto lecturerProfile,
     ContactInformationDto contact,
-    List<TagDto> tags
+    List<UserProfileTagDto> tags
 ) {
   public record ContactInformationDto(
       String email,

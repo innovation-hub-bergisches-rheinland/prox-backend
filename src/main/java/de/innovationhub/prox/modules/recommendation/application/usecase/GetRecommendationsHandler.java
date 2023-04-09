@@ -1,12 +1,16 @@
 package de.innovationhub.prox.modules.recommendation.application.usecase;
 
 import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
+import de.innovationhub.prox.modules.organization.application.dto.OrganizationTagDto;
 import de.innovationhub.prox.modules.organization.contract.OrganizationFacade;
+import de.innovationhub.prox.modules.project.application.project.dto.ProjectDto;
+import de.innovationhub.prox.modules.project.application.project.dto.ProjectDto.ReadSupervisorDto;
+import de.innovationhub.prox.modules.project.application.project.dto.ProjectTagDto;
 import de.innovationhub.prox.modules.project.contract.ProjectFacade;
-import de.innovationhub.prox.modules.project.contract.ProjectView;
 import de.innovationhub.prox.modules.recommendation.domain.calc.JaccardIndexCalculator;
 import de.innovationhub.prox.modules.recommendation.application.dto.RecommendationRequest;
 import de.innovationhub.prox.modules.recommendation.application.dto.RecommendationResponse;
+import de.innovationhub.prox.modules.user.application.profile.dto.UserProfileTagDto;
 import de.innovationhub.prox.modules.user.contract.profile.UserProfileFacade;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,6 +42,7 @@ public class GetRecommendationsHandler {
         .stream()
         .filter(p -> p.supervisors() != null && !p.supervisors().isEmpty())
         .flatMap(p -> p.supervisors().stream())
+        .map(ReadSupervisorDto::id)
         .collect(Collectors.toSet());
     var supervisorsOfMatchingProjects = userProfileFacade.findLecturersByIds(projectSupervisorIds);
 
@@ -45,8 +50,8 @@ public class GetRecommendationsHandler {
     // 3.2. Get partners (organizations) of those projects
     var projectPartnerIds = matchingProjects
         .stream()
-        .map(ProjectView::partner)
-        .filter(Objects::nonNull)
+        .filter(p -> p.partner() != null)
+        .map(p -> p.partner().id())
         .collect(Collectors.toSet());
     var organizationsOfMatchingProjects = organizationFacade.findAllByIds(projectPartnerIds);
 
@@ -60,33 +65,38 @@ public class GetRecommendationsHandler {
     HashMap<UUID, Double> projectConfidenceScores = new HashMap<>();
 
     for (var supervisor : matchingSupervisors) {
-      var score = jaccardIndexCalculator.calculate(request.seedTags(), supervisor.tags());
-      lecturerConfidenceScores.put(supervisor.id(), score);
+      var score = jaccardIndexCalculator.calculate(request.seedTags(), supervisor.tags().stream().map(
+          UserProfileTagDto::id).toList());
+      lecturerConfidenceScores.put(supervisor.userId(), score);
     }
 
     for (var supervisor : supervisorsOfMatchingProjects) {
-      var score = jaccardIndexCalculator.calculate(request.seedTags(), supervisor.tags());
-      lecturerConfidenceScores.compute(supervisor.id(), (k,v) -> v == null ? score : v + score);
+      var score = jaccardIndexCalculator.calculate(request.seedTags(), supervisor.tags().stream().map(
+          UserProfileTagDto::id).toList());
+      lecturerConfidenceScores.compute(supervisor.userId(), (k,v) -> v == null ? score : v + score);
     }
 
     for (var organization : matchingOrganizations) {
-      var score = jaccardIndexCalculator.calculate(request.seedTags(), organization.tags());
+      var score = jaccardIndexCalculator.calculate(request.seedTags(), organization.tags().stream().map(
+          OrganizationTagDto::id).toList());
       organizationConfidenceScores.put(organization.id(), score);
     }
 
     for (var organization : organizationsOfMatchingProjects) {
-      var score = jaccardIndexCalculator.calculate(request.seedTags(), organization.tags());
+      var score = jaccardIndexCalculator.calculate(request.seedTags(), organization.tags().stream().map(
+          OrganizationTagDto::id).toList());
       organizationConfidenceScores.compute(organization.id(), (k,v) -> v == null ? score : v + score);
     }
 
     for (var project : matchingProjects) {
-      var score = jaccardIndexCalculator.calculate(request.seedTags(), project.tags());
+      var score = jaccardIndexCalculator.calculate(request.seedTags(), project.tags().stream().map(
+          ProjectTagDto::id).toList());
       projectConfidenceScores.put(project.id(), score);
     }
 
     // 5. Return the top results for each category together with the confidence score
     var topFiveLecturers = streamTopFive(lecturerConfidenceScores)
-        .map(e -> new RecommendationResponse.RecommendationResult<>(e.getValue(), userProfileFacade.get(e.getKey()).orElse(null)))
+        .map(e -> new RecommendationResponse.RecommendationResult<>(e.getValue(), userProfileFacade.getByUserId(e.getKey()).orElse(null)))
         .toList();
 
     var topFiveOrganizations = streamTopFive(organizationConfidenceScores)
@@ -101,6 +111,9 @@ public class GetRecommendationsHandler {
   }
 
   private <T> Stream<Entry<T, Double>> streamTopFive(Map<T, Double> map) {
-    return map.entrySet().stream().sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue())).limit(5);
+    return map.entrySet().stream()
+        .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue()))
+        .filter(e -> e.getValue() > 0.0)
+        .limit(5);
   }
 }

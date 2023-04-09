@@ -9,8 +9,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import de.innovationhub.prox.modules.organization.domain.OrganizationRepository;
+import de.innovationhub.prox.modules.tag.application.tag.dto.TagDto;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
-import de.innovationhub.prox.modules.tag.contract.TagView;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -36,7 +37,7 @@ class SearchOrganizationHandlerTest {
   @Test
   void shouldCallRepositoryWithResolvedTags() {
     var givenTags = List.of(
-        new TagView(UUID.randomUUID(), "tag1")
+        new TagDto(UUID.randomUUID(), "tag1", Instant.now(), Instant.now())
     );
     when(tagFacade.getTagsByName(anyCollection())).thenReturn(givenTags);
 

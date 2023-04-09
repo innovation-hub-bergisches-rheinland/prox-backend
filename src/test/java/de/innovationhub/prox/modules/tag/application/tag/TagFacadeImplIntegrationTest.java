@@ -3,7 +3,7 @@ package de.innovationhub.prox.modules.tag.application.tag;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
-import de.innovationhub.prox.modules.tag.contract.TagView;
+import de.innovationhub.prox.modules.tag.application.tag.dto.TagDto;
 import de.innovationhub.prox.modules.tag.domain.tag.Tag;
 import de.innovationhub.prox.modules.tag.domain.tag.TagRepository;
 import java.util.List;
@@ -43,7 +43,7 @@ class TagFacadeImplIntegrationTest extends AbstractIntegrationTest {
     var result = tagFacadeImpl.getTagsByName(List.of(tag1.getTagName(), tag2.getTagName()));
 
     assertThat(result)
-        .extracting(TagView::tagName)
+        .extracting(TagDto::tagName)
         .containsExactlyInAnyOrder("tag1", "tag2");
   }
 }

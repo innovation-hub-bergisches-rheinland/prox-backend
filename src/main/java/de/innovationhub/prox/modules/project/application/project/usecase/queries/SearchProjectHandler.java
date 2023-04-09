@@ -4,11 +4,10 @@ import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
+import de.innovationhub.prox.modules.tag.application.tag.dto.TagDto;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
-import de.innovationhub.prox.modules.tag.contract.TagView;
-import de.innovationhub.prox.modules.user.application.profile.UserProfileFacadeImpl;
+import de.innovationhub.prox.modules.user.application.profile.dto.UserProfileDto;
 import de.innovationhub.prox.modules.user.contract.profile.UserProfileFacade;
-import de.innovationhub.prox.modules.user.contract.profile.UserProfileView;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -34,7 +33,7 @@ public class SearchProjectHandler {
     List<UUID> tagIds = new ArrayList<>();
     if(tags != null) {
       tagIds.addAll(
-          tagFacade.getTagsByName(tags).stream().map(TagView::id).toList()
+          tagFacade.getTagsByName(tags).stream().map(TagDto::id).toList()
       );
     }
 
@@ -46,7 +45,7 @@ public class SearchProjectHandler {
     List<UUID> supervisorIds = new ArrayList<>();
     var profileSearch = userProfileFacade.search(text);
     if(profileSearch != null && !profileSearch.isEmpty()) {
-      supervisorIds = profileSearch.stream().map(UserProfileView::id).toList();
+      supervisorIds = profileSearch.stream().map(UserProfileDto::userId).toList();
     }
 
     return projectRepository.filterProjects(stateFiler, specializationKeys, moduleTypeKeys, text, tagIds, supervisorIds, pageable);

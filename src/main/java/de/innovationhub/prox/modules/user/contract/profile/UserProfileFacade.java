@@ -1,5 +1,6 @@
 package de.innovationhub.prox.modules.user.contract.profile;
 
+import de.innovationhub.prox.modules.user.application.profile.dto.UserProfileDto;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -7,12 +8,11 @@ import java.util.UUID;
 
 public interface UserProfileFacade {
 
-  Optional<UserProfileView> getByUserId(UUID id);
+  Optional<UserProfileDto> getByUserId(UUID id);
 
-  List<UserProfileView> findByUserId(List<UUID> ids);
-  Optional<UserProfileView> get(UUID id);
+  List<UserProfileDto> findByUserId(List<UUID> ids);
 
-  List<UserProfileView> search(String query);
-  List<UserProfileView> findLecturersWithAnyTags(List<UUID> tags);
-  List<UserProfileView> findLecturersByIds(Collection<UUID> ids);
+  List<UserProfileDto> search(String query);
+  List<UserProfileDto> findLecturersWithAnyTags(List<UUID> tags);
+  List<UserProfileDto> findLecturersByIds(Collection<UUID> ids);
 }

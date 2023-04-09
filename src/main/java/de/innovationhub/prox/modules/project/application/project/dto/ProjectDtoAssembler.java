@@ -1,7 +1,7 @@
 package de.innovationhub.prox.modules.project.application.project.dto;
 
+import de.innovationhub.prox.modules.organization.application.dto.OrganizationDto;
 import de.innovationhub.prox.modules.organization.contract.OrganizationFacade;
-import de.innovationhub.prox.modules.organization.contract.OrganizationView;
 import de.innovationhub.prox.modules.project.application.ProjectPermissionEvaluator;
 import de.innovationhub.prox.modules.project.domain.discipline.Discipline;
 import de.innovationhub.prox.modules.project.domain.discipline.DisciplineRepository;
@@ -34,19 +34,19 @@ public class ProjectDtoAssembler {
   private final AuthenticationFacade authenticationFacade;
 
   public ProjectDto toDto(Project project) {
-    OrganizationView partnerOrg = null;
+    OrganizationDto partnerOrg = null;
 
     if (project.getPartner() != null) {
       var orgId = project.getPartner().getOrganizationId();
       partnerOrg = organizationFacade.get(orgId)
-          .orElse(new OrganizationView(orgId, null, null));
+          .orElse(new OrganizationDto(orgId));
     }
 
-    List<TagDto> tags = Collections.emptyList();
+    List<ProjectTagDto> tags = Collections.emptyList();
     if (project.getTags() != null) {
       tags = tagFacade.getTags(project.getTags())
           .stream()
-          .map(tag -> new TagDto(tag.id(), tag.tagName()))
+          .map(tag -> new ProjectTagDto(tag.id(), tag.tagName()))
           .toList();
     }
 

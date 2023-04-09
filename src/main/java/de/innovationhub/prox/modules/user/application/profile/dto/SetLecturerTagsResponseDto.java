@@ -5,7 +5,7 @@ import java.util.List;
 
 @Schema(name = "SetLecturerTagsResponse")
 public record SetLecturerTagsResponseDto(
-    List<TagDto> tags
+    List<UserProfileTagDto> tags
 ) {
 
 }

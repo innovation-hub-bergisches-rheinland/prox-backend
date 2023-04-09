@@ -3,7 +3,7 @@ package de.innovationhub.prox.modules.organization.application.usecase.queries;
 import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.organization.domain.Organization;
 import de.innovationhub.prox.modules.organization.domain.OrganizationRepository;
-import de.innovationhub.prox.modules.tag.application.tag.dto.TagDto;
+import de.innovationhub.prox.modules.tag.contract.dto.TagDto;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
 import java.util.ArrayList;
 import java.util.Collection;

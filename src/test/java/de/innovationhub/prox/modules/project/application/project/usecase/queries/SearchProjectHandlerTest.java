@@ -10,12 +10,12 @@ import static org.mockito.Mockito.when;
 
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
-import de.innovationhub.prox.modules.tag.application.tag.dto.TagDto;
+import de.innovationhub.prox.modules.tag.contract.dto.TagDto;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
-import de.innovationhub.prox.modules.user.application.profile.dto.LecturerProfileDto;
+import de.innovationhub.prox.modules.user.contract.profile.dto.LecturerProfileDto;
 import de.innovationhub.prox.modules.user.application.profile.dto.LecturerProfileInformationDto;
-import de.innovationhub.prox.modules.user.application.profile.dto.UserProfileDto;
-import de.innovationhub.prox.modules.user.application.profile.dto.UserProfileDto.ContactInformationDto;
+import de.innovationhub.prox.modules.user.contract.profile.dto.UserProfileDto;
+import de.innovationhub.prox.modules.user.contract.profile.dto.UserProfileDto.ContactInformationDto;
 import de.innovationhub.prox.modules.user.contract.profile.UserProfileFacade;
 import java.time.Instant;
 import java.util.List;

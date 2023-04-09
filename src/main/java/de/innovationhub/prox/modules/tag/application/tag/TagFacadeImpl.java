@@ -2,7 +2,7 @@ package de.innovationhub.prox.modules.tag.application.tag;
 
 import de.innovationhub.prox.config.CacheConfig;
 import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
-import de.innovationhub.prox.modules.tag.application.tag.dto.TagDto;
+import de.innovationhub.prox.modules.tag.contract.dto.TagDto;
 import de.innovationhub.prox.modules.tag.application.tag.dto.TagDtoMapper;
 import de.innovationhub.prox.modules.tag.application.tag.usecase.queries.FindTagByIdsHandler;
 import de.innovationhub.prox.modules.tag.application.tag.usecase.queries.FindTagByNameHandler;

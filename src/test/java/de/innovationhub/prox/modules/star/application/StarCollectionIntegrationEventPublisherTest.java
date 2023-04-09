@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.modules.project.application.project.event.StarIntegrationEventListeners;
-import de.innovationhub.prox.modules.star.contract.ProjectStarredIntegrationEvent;
-import de.innovationhub.prox.modules.star.contract.ProjectUnstarredIntegrationEvent;
+import de.innovationhub.prox.modules.star.contract.event.ProjectStarredIntegrationEvent;
+import de.innovationhub.prox.modules.star.contract.event.ProjectUnstarredIntegrationEvent;
 import de.innovationhub.prox.modules.star.domain.StarCollection;
 import de.innovationhub.prox.modules.star.domain.StarCollectionRepository;
 import java.util.UUID;

@@ -3,11 +3,9 @@ package de.innovationhub.prox.modules.project.application.project.event;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
-import de.innovationhub.prox.modules.project.contract.ProjectTaggedIntegrationEvent;
+import de.innovationhub.prox.modules.project.contract.event.ProjectTaggedIntegrationEvent;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectTagged;
 import de.innovationhub.prox.modules.tag.application.tag.event.TagCreatedIntegrationEventPublisher;
-import de.innovationhub.prox.modules.tag.contract.TagCreatedIntegrationEvent;
-import de.innovationhub.prox.modules.tag.domain.tag.events.TagCreated;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;

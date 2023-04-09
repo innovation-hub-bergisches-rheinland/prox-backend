@@ -1,7 +1,7 @@
 package de.innovationhub.prox.modules.tag.contract;
 
 import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
-import de.innovationhub.prox.modules.tag.application.tag.dto.TagDto;
+import de.innovationhub.prox.modules.tag.contract.dto.TagDto;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;

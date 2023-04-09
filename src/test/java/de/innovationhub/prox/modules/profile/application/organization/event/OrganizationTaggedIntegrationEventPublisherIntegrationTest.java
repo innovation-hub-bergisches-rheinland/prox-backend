@@ -3,7 +3,7 @@ package de.innovationhub.prox.modules.profile.application.organization.event;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
-import de.innovationhub.prox.modules.organization.contract.OrganizationTaggedIntegrationEvent;
+import de.innovationhub.prox.modules.organization.contract.event.OrganizationTaggedIntegrationEvent;
 import de.innovationhub.prox.modules.organization.domain.events.OrganizationTagged;
 import de.innovationhub.prox.modules.tag.application.tag.event.TagCreatedIntegrationEventPublisher;
 import java.util.List;

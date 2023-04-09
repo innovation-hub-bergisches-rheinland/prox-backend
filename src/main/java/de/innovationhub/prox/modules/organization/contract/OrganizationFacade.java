@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.organization.contract;
 
-import de.innovationhub.prox.modules.organization.application.dto.OrganizationDto;
+import de.innovationhub.prox.modules.organization.contract.dto.OrganizationDto;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;

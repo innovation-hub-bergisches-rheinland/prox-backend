@@ -2,7 +2,7 @@ package de.innovationhub.prox.modules.organization.application;
 
 import de.innovationhub.prox.config.CacheConfig;
 import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
-import de.innovationhub.prox.modules.organization.application.dto.OrganizationDto;
+import de.innovationhub.prox.modules.organization.contract.dto.OrganizationDto;
 import de.innovationhub.prox.modules.organization.application.dto.OrganizationDtoAssembler;
 import de.innovationhub.prox.modules.organization.application.usecase.queries.FindAllByIdsHandler;
 import de.innovationhub.prox.modules.organization.application.usecase.queries.FindAllWithAnyTagsHandler;

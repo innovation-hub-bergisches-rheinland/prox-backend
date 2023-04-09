@@ -2,7 +2,7 @@ package de.innovationhub.prox.modules.tag.application.tag.web;
 
 import de.innovationhub.prox.modules.tag.application.tag.dto.SynchronizeTagsRequest;
 import de.innovationhub.prox.modules.tag.application.tag.dto.SynchronizeTagsResponse;
-import de.innovationhub.prox.modules.tag.application.tag.dto.TagDto;
+import de.innovationhub.prox.modules.tag.contract.dto.TagDto;
 import de.innovationhub.prox.modules.tag.application.tag.dto.TagDtoMapper;
 import de.innovationhub.prox.modules.tag.application.tag.usecase.commands.SynchronizeTagsHandler;
 import de.innovationhub.prox.modules.tag.application.tag.usecase.queries.FindCommonTagsHandler;

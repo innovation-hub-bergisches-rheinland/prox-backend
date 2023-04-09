@@ -2,9 +2,9 @@ package de.innovationhub.prox.modules.organization.application.web;
 
 import de.innovationhub.prox.modules.organization.application.dto.AddMembershipRequestDto;
 import de.innovationhub.prox.modules.organization.application.dto.CreateOrganizationRequestDto;
-import de.innovationhub.prox.modules.organization.application.dto.MembershipDto;
+import de.innovationhub.prox.modules.organization.contract.dto.MembershipDto;
 import de.innovationhub.prox.modules.organization.application.dto.MembershipsResponseDto;
-import de.innovationhub.prox.modules.organization.application.dto.OrganizationDto;
+import de.innovationhub.prox.modules.organization.contract.dto.OrganizationDto;
 import de.innovationhub.prox.modules.organization.application.dto.OrganizationDtoAssembler;
 import de.innovationhub.prox.modules.organization.application.dto.SetOrganizationTagsRequestDto;
 import de.innovationhub.prox.modules.organization.application.dto.SetOrganizationTagsResponseDto;

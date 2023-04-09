@@ -1,5 +1,9 @@
 package de.innovationhub.prox.modules.organization.application.dto;
 
+import de.innovationhub.prox.modules.organization.contract.dto.MembershipDto;
+import de.innovationhub.prox.modules.organization.contract.dto.OrganizationDto;
+import de.innovationhub.prox.modules.organization.contract.dto.OrganizationPermissions;
+import de.innovationhub.prox.modules.organization.contract.dto.OrganizationTagDto;
 import de.innovationhub.prox.modules.organization.domain.Membership;
 import de.innovationhub.prox.modules.organization.domain.Organization;
 import java.util.List;

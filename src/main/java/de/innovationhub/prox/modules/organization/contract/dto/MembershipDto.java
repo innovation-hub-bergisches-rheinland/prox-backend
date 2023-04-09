@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.organization.application.dto;
+package de.innovationhub.prox.modules.organization.contract.dto;
 
 import de.innovationhub.prox.modules.organization.domain.OrganizationRole;
 import io.swagger.v3.oas.annotations.media.Schema;

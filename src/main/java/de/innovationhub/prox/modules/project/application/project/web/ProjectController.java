@@ -2,7 +2,7 @@ package de.innovationhub.prox.modules.project.application.project.web;
 
 import de.innovationhub.prox.modules.project.application.project.dto.ApplyCommitmentDto;
 import de.innovationhub.prox.modules.project.application.project.dto.CreateProjectRequest;
-import de.innovationhub.prox.modules.project.application.project.dto.ProjectDto;
+import de.innovationhub.prox.modules.project.contract.dto.ProjectDto;
 import de.innovationhub.prox.modules.project.application.project.dto.ProjectDtoAssembler;
 import de.innovationhub.prox.modules.project.application.project.dto.SetProjectStateRequestDto;
 import de.innovationhub.prox.modules.project.application.project.dto.SetProjectTagsRequestDto;

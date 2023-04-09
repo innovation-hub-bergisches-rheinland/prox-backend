@@ -3,7 +3,7 @@ package de.innovationhub.prox.modules.tag.application.tag.event;
 import static org.assertj.core.api.Assertions.*;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
-import de.innovationhub.prox.modules.tag.contract.TagCreatedIntegrationEvent;
+import de.innovationhub.prox.modules.tag.contract.event.TagCreatedIntegrationEvent;
 import de.innovationhub.prox.modules.tag.domain.tag.events.TagCreated;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;

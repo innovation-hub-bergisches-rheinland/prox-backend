@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.user.contract.profile;
 
-import de.innovationhub.prox.modules.user.application.profile.dto.UserProfileDto;
+import de.innovationhub.prox.modules.user.contract.profile.dto.UserProfileDto;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;

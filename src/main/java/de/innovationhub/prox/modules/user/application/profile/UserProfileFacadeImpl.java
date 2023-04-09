@@ -2,7 +2,7 @@ package de.innovationhub.prox.modules.user.application.profile;
 
 import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.config.CacheConfig;
-import de.innovationhub.prox.modules.user.application.profile.dto.UserProfileDto;
+import de.innovationhub.prox.modules.user.contract.profile.dto.UserProfileDto;
 import de.innovationhub.prox.modules.user.application.profile.dto.UserProfileDtoMapper;
 import de.innovationhub.prox.modules.user.application.profile.usecase.queries.FindAllLecturersByIdsHandler;
 import de.innovationhub.prox.modules.user.application.profile.usecase.queries.FindAllUserProfilesByIdsHandler;

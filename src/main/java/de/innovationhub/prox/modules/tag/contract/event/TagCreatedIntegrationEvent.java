@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.tag.contract;
+package de.innovationhub.prox.modules.tag.contract.event;
 
 import java.util.UUID;
 

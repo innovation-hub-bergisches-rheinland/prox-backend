@@ -2,8 +2,8 @@ package de.innovationhub.prox.modules.project.application.project.event;
 
 import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.project.application.project.usecase.commands.UpdateInterestHandler;
-import de.innovationhub.prox.modules.star.contract.ProjectStarredIntegrationEvent;
-import de.innovationhub.prox.modules.star.contract.ProjectUnstarredIntegrationEvent;
+import de.innovationhub.prox.modules.star.contract.event.ProjectStarredIntegrationEvent;
+import de.innovationhub.prox.modules.star.contract.event.ProjectUnstarredIntegrationEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 

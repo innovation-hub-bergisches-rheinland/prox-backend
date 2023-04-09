@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.user.application.profile.web;
 
-import de.innovationhub.prox.modules.user.application.profile.dto.UserProfileDto;
+import de.innovationhub.prox.modules.user.contract.profile.dto.UserProfileDto;
 import de.innovationhub.prox.modules.user.application.profile.dto.UserProfileDtoMapper;
 import de.innovationhub.prox.modules.user.application.profile.usecase.queries.FindUserProfileHandler;
 import de.innovationhub.prox.modules.user.application.profile.usecase.queries.SearchUserHandler;

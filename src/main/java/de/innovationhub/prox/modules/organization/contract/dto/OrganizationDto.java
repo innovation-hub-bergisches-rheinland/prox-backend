@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.organization.application.dto;
+package de.innovationhub.prox.modules.organization.contract.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;

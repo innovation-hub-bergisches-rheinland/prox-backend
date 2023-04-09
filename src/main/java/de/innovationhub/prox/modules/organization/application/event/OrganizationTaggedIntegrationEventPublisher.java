@@ -1,7 +1,7 @@
 package de.innovationhub.prox.modules.organization.application.event;
 
 import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
-import de.innovationhub.prox.modules.organization.contract.OrganizationTaggedIntegrationEvent;
+import de.innovationhub.prox.modules.organization.contract.event.OrganizationTaggedIntegrationEvent;
 import de.innovationhub.prox.modules.organization.domain.events.OrganizationTagged;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;

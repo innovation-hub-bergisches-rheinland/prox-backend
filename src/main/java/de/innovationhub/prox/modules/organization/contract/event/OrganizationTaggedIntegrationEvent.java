@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.organization.contract;
+package de.innovationhub.prox.modules.organization.contract.event;
 
 import java.util.Collection;
 import java.util.UUID;

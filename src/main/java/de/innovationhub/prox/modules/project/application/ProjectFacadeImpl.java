@@ -1,7 +1,7 @@
 package de.innovationhub.prox.modules.project.application;
 
 import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
-import de.innovationhub.prox.modules.project.application.project.dto.ProjectDto;
+import de.innovationhub.prox.modules.project.contract.dto.ProjectDto;
 import de.innovationhub.prox.modules.project.application.project.dto.ProjectDtoAssembler;
 import de.innovationhub.prox.modules.project.application.project.usecase.queries.FindAllProjectsWithAnyTagsHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.queries.FindProjectByIdHandler;

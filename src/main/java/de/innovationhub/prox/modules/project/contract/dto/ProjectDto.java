@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.project.application.project.dto;
+package de.innovationhub.prox.modules.project.contract.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.innovationhub.prox.modules.project.application.discipline.dto.ReadDisciplineDto;

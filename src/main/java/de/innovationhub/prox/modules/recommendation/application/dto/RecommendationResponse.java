@@ -1,8 +1,8 @@
 package de.innovationhub.prox.modules.recommendation.application.dto;
 
-import de.innovationhub.prox.modules.organization.application.dto.OrganizationDto;
-import de.innovationhub.prox.modules.project.application.project.dto.ProjectDto;
-import de.innovationhub.prox.modules.user.application.profile.dto.UserProfileDto;
+import de.innovationhub.prox.modules.organization.contract.dto.OrganizationDto;
+import de.innovationhub.prox.modules.project.contract.dto.ProjectDto;
+import de.innovationhub.prox.modules.user.contract.profile.dto.UserProfileDto;
 import java.util.List;
 
 public record RecommendationResponse(

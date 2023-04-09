@@ -1,21 +1,19 @@
 package de.innovationhub.prox.modules.recommendation.application.usecase;
 
 import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
-import de.innovationhub.prox.modules.organization.application.dto.OrganizationTagDto;
+import de.innovationhub.prox.modules.organization.contract.dto.OrganizationTagDto;
 import de.innovationhub.prox.modules.organization.contract.OrganizationFacade;
-import de.innovationhub.prox.modules.project.application.project.dto.ProjectDto;
-import de.innovationhub.prox.modules.project.application.project.dto.ProjectDto.ReadSupervisorDto;
-import de.innovationhub.prox.modules.project.application.project.dto.ProjectTagDto;
+import de.innovationhub.prox.modules.project.contract.dto.ProjectDto.ReadSupervisorDto;
+import de.innovationhub.prox.modules.project.contract.dto.ProjectTagDto;
 import de.innovationhub.prox.modules.project.contract.ProjectFacade;
 import de.innovationhub.prox.modules.recommendation.domain.calc.JaccardIndexCalculator;
 import de.innovationhub.prox.modules.recommendation.application.dto.RecommendationRequest;
 import de.innovationhub.prox.modules.recommendation.application.dto.RecommendationResponse;
-import de.innovationhub.prox.modules.user.application.profile.dto.UserProfileTagDto;
+import de.innovationhub.prox.modules.user.contract.profile.dto.UserProfileTagDto;
 import de.innovationhub.prox.modules.user.contract.profile.UserProfileFacade;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

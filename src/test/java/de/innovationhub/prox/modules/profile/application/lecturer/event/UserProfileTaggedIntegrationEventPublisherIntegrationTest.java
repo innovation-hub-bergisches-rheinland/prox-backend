@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.modules.tag.application.tag.event.TagCreatedIntegrationEventPublisher;
-import de.innovationhub.prox.modules.user.contract.profile.UserProfileTaggedIntegrationEvent;
+import de.innovationhub.prox.modules.user.contract.profile.event.UserProfileTaggedIntegrationEvent;
 import de.innovationhub.prox.modules.user.domain.profile.events.UserProfileTagged;
 import java.util.Set;
 import java.util.UUID;

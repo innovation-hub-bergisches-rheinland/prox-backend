@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.user.application.profile.dto;
+package de.innovationhub.prox.modules.user.contract.profile.dto;
 
 import java.util.UUID;
 

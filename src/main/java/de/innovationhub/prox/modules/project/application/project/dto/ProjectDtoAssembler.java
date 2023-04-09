@@ -1,8 +1,12 @@
 package de.innovationhub.prox.modules.project.application.project.dto;
 
-import de.innovationhub.prox.modules.organization.application.dto.OrganizationDto;
+import de.innovationhub.prox.modules.organization.contract.dto.OrganizationDto;
 import de.innovationhub.prox.modules.organization.contract.OrganizationFacade;
 import de.innovationhub.prox.modules.project.application.ProjectPermissionEvaluator;
+import de.innovationhub.prox.modules.project.contract.dto.ProjectDto;
+import de.innovationhub.prox.modules.project.contract.dto.ProjectMetrics;
+import de.innovationhub.prox.modules.project.contract.dto.ProjectPermissions;
+import de.innovationhub.prox.modules.project.contract.dto.ProjectTagDto;
 import de.innovationhub.prox.modules.project.domain.discipline.Discipline;
 import de.innovationhub.prox.modules.project.domain.discipline.DisciplineRepository;
 import de.innovationhub.prox.modules.project.domain.module.ModuleType;

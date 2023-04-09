@@ -4,7 +4,7 @@ import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.organization.contract.OrganizationFacade;
 import de.innovationhub.prox.modules.project.contract.ProjectFacade;
 import de.innovationhub.prox.modules.project.contract.ProjectView;
-import de.innovationhub.prox.modules.recommendation.application.calc.OverlapCoefficientCalculator;
+import de.innovationhub.prox.modules.recommendation.application.calc.JaccardIndexCalculator;
 import de.innovationhub.prox.modules.recommendation.application.dto.RecommendationRequest;
 import de.innovationhub.prox.modules.recommendation.application.dto.RecommendationResponse;
 import de.innovationhub.prox.modules.user.contract.profile.UserProfileFacade;
@@ -23,7 +23,7 @@ public class GetRecommendationsHandler {
   private final UserProfileFacade userProfileFacade;
   private final OrganizationFacade organizationFacade;
   private final ProjectFacade projectFacade;
-  private final OverlapCoefficientCalculator overlapCoefficientCalculator = new OverlapCoefficientCalculator();
+  private final JaccardIndexCalculator jaccardIndexCalculator = new JaccardIndexCalculator();
 
   public RecommendationResponse handle(RecommendationRequest request) {
     // 1. Get all supervisors which match the seed tags
@@ -60,27 +60,27 @@ public class GetRecommendationsHandler {
     HashMap<UUID, Double> projectConfidenceScores = new HashMap<>();
 
     for (var supervisor : matchingSupervisors) {
-      var score = overlapCoefficientCalculator.calculate(request.seedTags(), supervisor.tags());
+      var score = jaccardIndexCalculator.calculate(request.seedTags(), supervisor.tags());
       lecturerConfidenceScores.put(supervisor.id(), score);
     }
 
     for (var supervisor : supervisorsOfMatchingProjects) {
-      var score = overlapCoefficientCalculator.calculate(request.seedTags(), supervisor.tags());
+      var score = jaccardIndexCalculator.calculate(request.seedTags(), supervisor.tags());
       lecturerConfidenceScores.compute(supervisor.id(), (k,v) -> v == null ? score : v + score);
     }
 
     for (var organization : matchingOrganizations) {
-      var score = overlapCoefficientCalculator.calculate(request.seedTags(), organization.tags());
+      var score = jaccardIndexCalculator.calculate(request.seedTags(), organization.tags());
       organizationConfidenceScores.put(organization.id(), score);
     }
 
     for (var organization : organizationsOfMatchingProjects) {
-      var score = overlapCoefficientCalculator.calculate(request.seedTags(), organization.tags());
+      var score = jaccardIndexCalculator.calculate(request.seedTags(), organization.tags());
       organizationConfidenceScores.compute(organization.id(), (k,v) -> v == null ? score : v + score);
     }
 
     for (var project : matchingProjects) {
-      var score = overlapCoefficientCalculator.calculate(request.seedTags(), project.tags());
+      var score = jaccardIndexCalculator.calculate(request.seedTags(), project.tags());
       projectConfidenceScores.put(project.id(), score);
     }
 

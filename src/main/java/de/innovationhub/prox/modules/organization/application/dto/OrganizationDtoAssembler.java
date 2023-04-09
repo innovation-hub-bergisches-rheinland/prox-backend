@@ -5,10 +5,10 @@ import de.innovationhub.prox.modules.organization.application.OrganizationPermis
 import de.innovationhub.prox.modules.organization.contract.dto.MembershipDto;
 import de.innovationhub.prox.modules.organization.contract.dto.OrganizationDto;
 import de.innovationhub.prox.modules.organization.contract.dto.OrganizationPermissions;
-import de.innovationhub.prox.modules.organization.contract.dto.OrganizationTagDto;
 import de.innovationhub.prox.modules.organization.domain.Membership;
 import de.innovationhub.prox.modules.organization.domain.Organization;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
+import de.innovationhub.prox.modules.tag.contract.dto.TagDto;
 import de.innovationhub.prox.modules.user.contract.profile.dto.UserProfileDto;
 import de.innovationhub.prox.modules.user.contract.profile.UserProfileFacade;
 import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
@@ -38,12 +38,9 @@ public class OrganizationDtoAssembler {
       logoUrl = storageProvider.buildUrl(organization.getLogoKey());
     }
 
-    List<OrganizationTagDto> tags = Collections.emptyList();
+    List<TagDto> tags = Collections.emptyList();
     if (organization.getTags() != null) {
-      tags = tagFacade.getTags(organization.getTags())
-          .stream()
-          .map(tag -> new OrganizationTagDto(tag.id(), tag.tagName()))
-          .toList();
+      tags = tagFacade.getTags(organization.getTags());
     }
 
     var permissions = new OrganizationPermissions(

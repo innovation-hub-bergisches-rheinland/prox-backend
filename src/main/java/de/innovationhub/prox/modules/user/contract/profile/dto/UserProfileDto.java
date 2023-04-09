@@ -1,5 +1,6 @@
 package de.innovationhub.prox.modules.user.contract.profile.dto;
 
+import de.innovationhub.prox.modules.tag.contract.dto.TagDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import java.util.UUID;
@@ -14,7 +15,7 @@ public record UserProfileDto(
     boolean visibleInPublicSearch,
     LecturerProfileDto lecturerProfile,
     ContactInformationDto contact,
-    List<UserProfileTagDto> tags
+    List<TagDto> tags
 ) {
   public record ContactInformationDto(
       String email,

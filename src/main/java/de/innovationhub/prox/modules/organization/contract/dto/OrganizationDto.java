@@ -1,6 +1,7 @@
 package de.innovationhub.prox.modules.organization.contract.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import de.innovationhub.prox.modules.tag.contract.dto.TagDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.Instant;
 import java.util.List;
@@ -11,7 +12,7 @@ public record OrganizationDto(
     UUID id,
     String name,
     OrganizationProfileDto profile,
-    List<OrganizationTagDto> tags,
+    List<TagDto> tags,
     String logoUrl,
     @JsonProperty("_permissions")
     OrganizationPermissions permissions,

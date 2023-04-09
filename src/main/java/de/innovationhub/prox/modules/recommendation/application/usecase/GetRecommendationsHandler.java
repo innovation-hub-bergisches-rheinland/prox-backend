@@ -1,15 +1,13 @@
 package de.innovationhub.prox.modules.recommendation.application.usecase;
 
 import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
-import de.innovationhub.prox.modules.organization.contract.dto.OrganizationTagDto;
 import de.innovationhub.prox.modules.organization.contract.OrganizationFacade;
 import de.innovationhub.prox.modules.project.contract.dto.ProjectDto.ReadSupervisorDto;
-import de.innovationhub.prox.modules.project.contract.dto.ProjectTagDto;
 import de.innovationhub.prox.modules.project.contract.ProjectFacade;
 import de.innovationhub.prox.modules.recommendation.domain.calc.JaccardIndexCalculator;
 import de.innovationhub.prox.modules.recommendation.application.dto.RecommendationRequest;
 import de.innovationhub.prox.modules.recommendation.application.dto.RecommendationResponse;
-import de.innovationhub.prox.modules.user.contract.profile.dto.UserProfileTagDto;
+import de.innovationhub.prox.modules.tag.contract.dto.TagDto;
 import de.innovationhub.prox.modules.user.contract.profile.UserProfileFacade;
 import java.util.HashMap;
 import java.util.Map;
@@ -64,31 +62,31 @@ public class GetRecommendationsHandler {
 
     for (var supervisor : matchingSupervisors) {
       var score = jaccardIndexCalculator.calculate(request.seedTags(), supervisor.tags().stream().map(
-          UserProfileTagDto::id).toList());
+          TagDto::id).toList());
       lecturerConfidenceScores.put(supervisor.userId(), score);
     }
 
     for (var supervisor : supervisorsOfMatchingProjects) {
       var score = jaccardIndexCalculator.calculate(request.seedTags(), supervisor.tags().stream().map(
-          UserProfileTagDto::id).toList());
+          TagDto::id).toList());
       lecturerConfidenceScores.compute(supervisor.userId(), (k,v) -> v == null ? score : v + score);
     }
 
     for (var organization : matchingOrganizations) {
       var score = jaccardIndexCalculator.calculate(request.seedTags(), organization.tags().stream().map(
-          OrganizationTagDto::id).toList());
+          TagDto::id).toList());
       organizationConfidenceScores.put(organization.id(), score);
     }
 
     for (var organization : organizationsOfMatchingProjects) {
       var score = jaccardIndexCalculator.calculate(request.seedTags(), organization.tags().stream().map(
-          OrganizationTagDto::id).toList());
+          TagDto::id).toList());
       organizationConfidenceScores.compute(organization.id(), (k,v) -> v == null ? score : v + score);
     }
 
     for (var project : matchingProjects) {
       var score = jaccardIndexCalculator.calculate(request.seedTags(), project.tags().stream().map(
-          ProjectTagDto::id).toList());
+          TagDto::id).toList());
       projectConfidenceScores.put(project.id(), score);
     }
 

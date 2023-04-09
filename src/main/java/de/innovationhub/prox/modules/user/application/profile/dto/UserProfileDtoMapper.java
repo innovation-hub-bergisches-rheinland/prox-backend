@@ -2,10 +2,10 @@ package de.innovationhub.prox.modules.user.application.profile.dto;
 
 import de.innovationhub.prox.infra.storage.StorageProvider;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
+import de.innovationhub.prox.modules.tag.contract.dto.TagDto;
 import de.innovationhub.prox.modules.user.application.profile.dto.CreateUserProfileRequestDto.ContactInformationRequestDto;
 import de.innovationhub.prox.modules.user.contract.profile.dto.LecturerProfileDto;
 import de.innovationhub.prox.modules.user.contract.profile.dto.UserProfileDto;
-import de.innovationhub.prox.modules.user.contract.profile.dto.UserProfileTagDto;
 import de.innovationhub.prox.modules.user.domain.profile.ContactInformation;
 import de.innovationhub.prox.modules.user.domain.profile.LecturerProfile;
 import de.innovationhub.prox.modules.user.domain.profile.LecturerProfileInformation;
@@ -37,10 +37,8 @@ public abstract class UserProfileDtoMapper {
   public abstract LecturerProfileInformationDto toDtoLecturerProfileInformation(LecturerProfileInformation profileInformation);
 
   @Named("retrieveTags")
-  public List<UserProfileTagDto> retrieveTags(Collection<UUID> tagIds) {
-    return tagFacade.getTags(tagIds)
-        .stream().map(tag -> new UserProfileTagDto(tag.id(), tag.tagName()))
-        .toList();
+  public List<TagDto> retrieveTags(Collection<UUID> tagIds) {
+    return tagFacade.getTags(tagIds);
   }
 
   @Named("retrieveAvatarUrl")

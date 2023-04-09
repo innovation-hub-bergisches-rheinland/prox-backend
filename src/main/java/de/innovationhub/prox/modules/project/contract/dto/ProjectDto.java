@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import de.innovationhub.prox.modules.project.application.discipline.dto.ReadDisciplineDto;
 import de.innovationhub.prox.modules.project.application.module.dto.ReadModuleTypeDto;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
+import de.innovationhub.prox.modules.tag.contract.dto.TagDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -23,7 +24,7 @@ public record ProjectDto(
     ReadProjectStatusDto status,
     ReadTimeBoxDto timeBox,
     List<ReadSupervisorDto> supervisors,
-    List<ProjectTagDto> tags,
+    List<TagDto> tags,
     @JsonProperty("_permissions")
     ProjectPermissions permissions,
     ProjectMetrics metrics,

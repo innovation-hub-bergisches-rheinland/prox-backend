@@ -12,11 +12,11 @@ import de.innovationhub.prox.modules.project.contract.dto.ProjectDto.ReadProject
 import de.innovationhub.prox.modules.project.contract.dto.ProjectDto.ReadSupervisorDto;
 import de.innovationhub.prox.modules.project.contract.dto.ProjectMetrics;
 import de.innovationhub.prox.modules.project.contract.dto.ProjectPermissions;
-import de.innovationhub.prox.modules.project.contract.dto.ProjectTagDto;
 import de.innovationhub.prox.modules.project.domain.discipline.Discipline;
 import de.innovationhub.prox.modules.project.domain.module.ModuleType;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.ProjectStatus;
+import de.innovationhub.prox.modules.tag.contract.dto.TagDto;
 import de.innovationhub.prox.modules.user.contract.profile.dto.UserProfileDto;
 import java.util.List;
 import org.mapstruct.Mapper;
@@ -42,7 +42,7 @@ interface ProjectMapper {
   @Mapping(target = "permissions", source = "permissions")
   ProjectDto toDto(Project project, List<Discipline> disciplines, List<ModuleType> moduleTypes,
       List<UserProfileDto> userProfileView,
-      OrganizationDto organizationView, List<ProjectTagDto> tags, ProjectPermissions permissions,
+      OrganizationDto organizationView, List<TagDto> tags, ProjectPermissions permissions,
       UserProfileDto author,
       ProjectMetrics metrics);
 

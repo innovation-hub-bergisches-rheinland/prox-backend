@@ -6,7 +6,6 @@ import de.innovationhub.prox.modules.project.application.ProjectPermissionEvalua
 import de.innovationhub.prox.modules.project.contract.dto.ProjectDto;
 import de.innovationhub.prox.modules.project.contract.dto.ProjectMetrics;
 import de.innovationhub.prox.modules.project.contract.dto.ProjectPermissions;
-import de.innovationhub.prox.modules.project.contract.dto.ProjectTagDto;
 import de.innovationhub.prox.modules.project.domain.discipline.Discipline;
 import de.innovationhub.prox.modules.project.domain.discipline.DisciplineRepository;
 import de.innovationhub.prox.modules.project.domain.module.ModuleType;
@@ -14,6 +13,7 @@ import de.innovationhub.prox.modules.project.domain.module.ModuleTypeRepository;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.Supervisor;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
+import de.innovationhub.prox.modules.tag.contract.dto.TagDto;
 import de.innovationhub.prox.modules.user.contract.profile.UserProfileFacade;
 import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
 import java.util.Collections;
@@ -46,12 +46,9 @@ public class ProjectDtoAssembler {
           .orElse(new OrganizationDto(orgId));
     }
 
-    List<ProjectTagDto> tags = Collections.emptyList();
+    List<TagDto> tags = Collections.emptyList();
     if (project.getTags() != null) {
-      tags = tagFacade.getTags(project.getTags())
-          .stream()
-          .map(tag -> new ProjectTagDto(tag.id(), tag.tagName()))
-          .toList();
+      tags = tagFacade.getTags(project.getTags());
     }
 
     var supervisors = userProfileFacade.findByUserId(

@@ -57,7 +57,7 @@ class SearchProjectHandlerTest {
   @Test
   void shouldCallRepositoryWithResolvedProfiles() {
     var givenProfiles = List.of(
-        new UserProfileView(UUID.randomUUID(), "Xavier Tester")
+        new UserProfileView(UUID.randomUUID(), "Xavier Tester", List.of())
     );
     var searchQuery = "test";
     when(userProfileFacade.search(eq(searchQuery))).thenReturn(givenProfiles);

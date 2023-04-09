@@ -89,17 +89,17 @@ class RecommendationControllerIntegrationTest extends AbstractIntegrationTest {
         .body("lecturers[0].confidenceScore", greaterThanOrEqualTo(2.0f))
         .body("lecturers[0].item.id", is(lecturer1.getId().toString()))
         .body("lecturers[1].confidenceScore", greaterThan(0.0f))
-        .body("lecturers[1].item.id", is(lecturer2.getId().toString()))
+        .body("lecturers[1].item.id", is(lecturer3.getId().toString()))
         .body("organizations.size()", is(2))
         .body("organizations[0].confidenceScore", greaterThanOrEqualTo(1.0f))
         .body("organizations[0].item.id", is(organization1.getId().toString()))
         .body("organizations[1].confidenceScore", greaterThan(0.0f))
-        .body("organizations[1].item.id", is(organization2.getId().toString()))
+        .body("organizations[1].item.id", is(organization3.getId().toString()))
         .body("projects.size()", is(2))
         .body("projects[0].confidenceScore", greaterThanOrEqualTo(1.0f))
         .body("projects[0].item.id", is(project1.getId().toString()))
         .body("projects[1].confidenceScore", greaterThan(0.0f))
-        .body("projects[1].item.id", is(project2.getId().toString()));
+        .body("projects[1].item.id", is(project3.getId().toString()));
   }
 
   private UserProfile createLecturer(Collection<UUID> tags) {

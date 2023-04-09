@@ -4,6 +4,7 @@ import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.config.CacheConfig;
 import de.innovationhub.prox.modules.user.application.profile.usecase.queries.FindAllLecturersByIdsHandler;
 import de.innovationhub.prox.modules.user.application.profile.usecase.queries.FindAllUserProfilesByIdsHandler;
+import de.innovationhub.prox.modules.user.application.profile.usecase.queries.FindByIdHandler;
 import de.innovationhub.prox.modules.user.application.profile.usecase.queries.FindLecturersWithAnyTagsHandler;
 import de.innovationhub.prox.modules.user.application.profile.usecase.queries.FindUserProfileHandler;
 import de.innovationhub.prox.modules.user.application.profile.usecase.queries.SearchUserHandler;
@@ -27,6 +28,7 @@ public class UserProfileFacadeImpl implements UserProfileFacade {
   private final SearchUserHandler searchUserHandler;
   private final FindLecturersWithAnyTagsHandler findLecturersWithAnyTagsHandler;
   private final FindAllLecturersByIdsHandler findAllLecturersByIdsHandler;
+  private final FindByIdHandler findByIdHandler;
   private final UserProfileViewMapper userProfileViewMapper;
 
   @Override
@@ -42,6 +44,12 @@ public class UserProfileFacadeImpl implements UserProfileFacade {
     return userProfileViewMapper.toViewList(
         findAllUserProfilesByIdsHandler.handle(ids)
     );
+  }
+
+  @Override
+  public Optional<UserProfileView> get(UUID id) {
+    return findByIdHandler.handle(id)
+        .map(userProfileViewMapper::toView);
   }
 
   @Override

@@ -86,7 +86,7 @@ public class GetRecommendationsHandler {
 
     // 5. Return the top results for each category together with the confidence score
     var topFiveLecturers = streamTopFive(lecturerConfidenceScores)
-        .map(e -> new RecommendationResponse.RecommendationResult<>(e.getValue(), userProfileFacade.getByUserId(e.getKey()).orElse(null)))
+        .map(e -> new RecommendationResponse.RecommendationResult<>(e.getValue(), userProfileFacade.get(e.getKey()).orElse(null)))
         .toList();
 
     var topFiveOrganizations = streamTopFive(organizationConfidenceScores)

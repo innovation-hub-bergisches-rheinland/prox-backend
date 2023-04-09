@@ -36,7 +36,7 @@ public class GetRecommendationsHandler {
     // 3.1. Get supervisors of those projects
     var projectSupervisorIds = matchingProjects
         .stream()
-        .filter(p -> p.supervisors() != null && p.supervisors().size() > 0)
+        .filter(p -> p.supervisors() != null && !p.supervisors().isEmpty())
         .flatMap(p -> p.supervisors().stream())
         .collect(Collectors.toSet());
     var supervisorsOfMatchingProjects = userProfileFacade.findLecturersByIds(projectSupervisorIds);

@@ -16,6 +16,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -61,7 +62,7 @@ public class UserProfile extends AuditedAggregateRoot {
   @Column(columnDefinition = "TEXT")
   private String vita;
 
-  @ElementCollection
+  @ElementCollection(fetch = FetchType.EAGER)
   @CollectionTable(schema = PersistenceConfig.USER_SCHEMA)
   private Set<UUID> tags = new HashSet<>();
 

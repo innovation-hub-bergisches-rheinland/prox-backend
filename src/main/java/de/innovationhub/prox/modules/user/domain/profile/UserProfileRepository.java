@@ -1,5 +1,7 @@
 package de.innovationhub.prox.modules.user.domain.profile;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
@@ -18,6 +20,12 @@ public interface UserProfileRepository extends JpaRepository<UserProfile, UUID> 
 
   @Query("SELECT p FROM UserProfile p JOIN p.lecturerProfile lp WHERE p.visibleInPublicSearch = true")
   Page<UserProfile> findAllLecturerProfiles(Pageable pageable);
+
+  @Query("SELECT p FROM UserProfile p JOIN p.lecturerProfile lp WHERE p.id IN (?1)")
+  Page<UserProfile> findAllLecturersByIds(Collection<UUID> ids, Pageable pageable);
+
+  @Query("SELECT p FROM UserProfile p JOIN p.lecturerProfile lp JOIN p.tags t WHERE p.visibleInPublicSearch = true AND t IN (?1)")
+  Page<UserProfile> findAllLecturersWithAnyTag(List<UUID> tags, Pageable pageable);
 
   @Query(value = """
       WITH input AS (

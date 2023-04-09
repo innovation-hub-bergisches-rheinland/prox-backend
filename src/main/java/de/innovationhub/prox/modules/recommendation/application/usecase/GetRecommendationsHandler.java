@@ -1,14 +1,42 @@
 package de.innovationhub.prox.modules.recommendation.application.usecase;
 
 import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
+import de.innovationhub.prox.modules.organization.contract.OrganizationFacade;
+import de.innovationhub.prox.modules.project.contract.ProjectFacade;
+import de.innovationhub.prox.modules.project.contract.ProjectView;
 import de.innovationhub.prox.modules.recommendation.application.dto.RecommendationRequest;
 import de.innovationhub.prox.modules.recommendation.application.dto.RecommendationResponse;
+import de.innovationhub.prox.modules.user.contract.profile.UserProfileFacade;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 
 @ApplicationComponent
 @RequiredArgsConstructor
 public class GetRecommendationsHandler {
+  private final UserProfileFacade userProfileFacade;
+  private final OrganizationFacade organizationFacade;
+  private final ProjectFacade projectFacade;
+
   public RecommendationResponse handle(RecommendationRequest request) {
+    var matchingSupervisors = userProfileFacade.findLecturersWithAnyTags(request.seedTags());
+    var matchingOrganizations = organizationFacade.findAllWithAnyTags(request.seedTags());
+    var matchingProjects = projectFacade.findAllWithAnyTags(request.seedTags());
+
+    var projectSupervisorIds = matchingProjects
+        .stream()
+        .filter(p -> p.supervisors() != null && p.supervisors().size() > 0)
+        .flatMap(p -> p.supervisors().stream())
+        .collect(Collectors.toSet());
+    var supervisorsOfMatchingProjects = userProfileFacade.findLecturersByIds(projectSupervisorIds);
+
+    var projectPartnerIds = matchingProjects
+        .stream()
+        .map(ProjectView::partner)
+        .filter(Objects::nonNull)
+        .collect(Collectors.toSet());
+    var organizationsOfMatchingProjects = organizationFacade.findAllByIds(projectPartnerIds);
+
     // TODO:
     // 1. Get all supervisors which match the seed tags
     // 2. Get all organizations which match the seed tags

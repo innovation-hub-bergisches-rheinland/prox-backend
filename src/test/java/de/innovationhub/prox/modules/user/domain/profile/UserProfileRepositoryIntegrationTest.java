@@ -3,6 +3,7 @@ package de.innovationhub.prox.modules.user.domain.profile;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
+import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -75,6 +76,19 @@ class UserProfileRepositoryIntegrationTest extends AbstractIntegrationTest {
         .hasSize(1)
         .first()
         .satisfies(r -> assertThat(r.getId()).isEqualTo(up.getId()));
+  }
+
+  @Test
+  void shouldFindLecturersWithTags() {
+    var up = createDummyLecturer(true);
+    var tags = List.of(UUID.randomUUID(), UUID.randomUUID());
+    up.tagProfile(tags);
+    userProfileRepository.save(up);
+
+    var result = userProfileRepository.findAllLecturersWithAnyTag(List.of(tags.get(0)), Pageable.unpaged());
+
+    assertThat(result)
+        .hasSize(1);
   }
 
   private UserProfile createDummyUserProfile(boolean visibility) {

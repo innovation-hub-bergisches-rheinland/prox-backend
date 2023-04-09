@@ -58,4 +58,7 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
 
   @Query("select p from Project p join p.supervisors s where s.lecturerId = ?1")
   Page<Project> findBySupervisor(UUID supervisorId, Pageable pageable);
+
+  @Query("select p from Project p join p.tags t where t in (?1)")
+  Page<Project> findAllWithAnyTags(Collection<UUID> tags, Pageable pageable);
 }

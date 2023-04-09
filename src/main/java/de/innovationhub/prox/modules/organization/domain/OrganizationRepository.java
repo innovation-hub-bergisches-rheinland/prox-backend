@@ -14,6 +14,9 @@ public interface OrganizationRepository extends JpaRepository<Organization, UUID
   @Query("select o from Organization o order by o.name asc")
   Page<Organization> findAll(Pageable pageable);
 
+  @Query("select o from Organization o join o.tags t where t in (?1)")
+  Page<Organization> findAllWithAnyTags(Collection<UUID> tagIds, Pageable pageable);
+
   @Query(nativeQuery = true, value = """
         WITH input AS (
             SELECT :query as query

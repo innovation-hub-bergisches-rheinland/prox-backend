@@ -39,7 +39,7 @@ public class ProjectDtoAssembler {
     if (project.getPartner() != null) {
       var orgId = project.getPartner().getOrganizationId();
       partnerOrg = organizationFacade.get(orgId)
-          .orElse(new OrganizationView(orgId, null));
+          .orElse(new OrganizationView(orgId, null, null));
     }
 
     List<TagDto> tags = Collections.emptyList();

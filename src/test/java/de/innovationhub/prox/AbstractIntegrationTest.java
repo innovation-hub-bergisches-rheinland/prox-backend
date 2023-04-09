@@ -33,9 +33,9 @@ public class AbstractIntegrationTest {
 
   @DynamicPropertySource
   static void setLocalStack(DynamicPropertyRegistry registry) {
-    registry.add("cloud.aws.credentials.accessKey", () -> localStack.getAccessKey());
-    registry.add("cloud.aws.credentials.secretKey", () -> localStack.getSecretKey());
-    registry.add("cloud.aws.region", () -> localStack.getRegion());
+    registry.add("cloud.aws.credentials.accessKey", localStack::getAccessKey);
+    registry.add("cloud.aws.credentials.secretKey", localStack::getSecretKey);
+    registry.add("cloud.aws.region", localStack::getRegion);
     registry.add("cloud.aws.s3.endpoint", () -> localStack.getEndpointOverride(Service.S3));
   }
 
@@ -49,8 +49,8 @@ public class AbstractIntegrationTest {
   @DynamicPropertySource
   static void setRabbitMQ(DynamicPropertyRegistry registry) {
     registry.add("spring.rabbitmq.host", () -> "localhost");
-    registry.add("spring.rabbitmq.port", () -> rabbitMQ.getAmqpPort());
-    registry.add("spring.rabbitmq.username", () -> rabbitMQ.getAdminUsername());
-    registry.add("spring.rabbitmq.password", () -> rabbitMQ.getAdminPassword());
+    registry.add("spring.rabbitmq.port", rabbitMQ::getAmqpPort);
+    registry.add("spring.rabbitmq.username", rabbitMQ::getAdminUsername);
+    registry.add("spring.rabbitmq.password", rabbitMQ::getAdminPassword);
   }
 }

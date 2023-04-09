@@ -1,7 +1,8 @@
-package de.innovationhub.prox.modules.recommendation.application.calc;
+package de.innovationhub.prox.modules.recommendation.domain.calc;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import de.innovationhub.prox.modules.recommendation.domain.calc.JaccardIndexCalculator;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 

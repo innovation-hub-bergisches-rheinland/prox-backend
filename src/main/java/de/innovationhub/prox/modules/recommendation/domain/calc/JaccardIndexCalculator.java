@@ -1,9 +1,9 @@
-package de.innovationhub.prox.modules.recommendation.application.calc;
+package de.innovationhub.prox.modules.recommendation.domain.calc;
 
 import java.util.Collection;
 import java.util.HashSet;
 
-public class OverlapCoefficientCalculator {
+public class JaccardIndexCalculator {
 
   public <T> double calculate(Collection<T> setA, Collection<T> setB) {
     if (setA.isEmpty() || setB.isEmpty()) {
@@ -18,6 +18,6 @@ public class OverlapCoefficientCalculator {
 
     sa.retainAll(sb);
     final var intersection = sa.size();
-    return (double) intersection / Math.min(saSize, sbSize);
+    return (double) intersection / (saSize + sbSize - intersection);
   }
 }

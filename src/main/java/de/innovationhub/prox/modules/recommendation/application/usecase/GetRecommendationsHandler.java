@@ -4,7 +4,7 @@ import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.organization.contract.OrganizationFacade;
 import de.innovationhub.prox.modules.project.contract.ProjectFacade;
 import de.innovationhub.prox.modules.project.contract.ProjectView;
-import de.innovationhub.prox.modules.recommendation.application.calc.JaccardIndexCalculator;
+import de.innovationhub.prox.modules.recommendation.domain.calc.JaccardIndexCalculator;
 import de.innovationhub.prox.modules.recommendation.application.dto.RecommendationRequest;
 import de.innovationhub.prox.modules.recommendation.application.dto.RecommendationResponse;
 import de.innovationhub.prox.modules.user.contract.profile.UserProfileFacade;

@@ -1,7 +1,20 @@
 create or replace function pg_temp.slugify(text) returns text as
 $$
-select lower(regexp_replace(regexp_replace(trim($1), '\s+', '-', 'g'), '-{2,}', '-', 'g'))
-$$ language sql IMMUTABLE;
+select regexp_replace(
+           regexp_replace(
+               regexp_replace(
+                   regexp_replace(
+                       regexp_replace(
+                           normalize(
+                               lower(
+                                   trim($1)
+                                 )
+                             ), '[\u0300-\u036f]', '', 'g'),
+                       '\s+', '-', 'g'),
+                   '-{2,}', '-', 'g'),
+               '^-', ''),
+           '-$', '')
+$$ language sql immutable;
 
 CREATE TEMPORARY TABLE tag_duplicates AS (SELECT id, pg_temp.slugify(tag_name) slugged, c
                                           FROM (SELECT *, COUNT(*) OVER (PARTITION BY pg_temp.slugify(tag_name)) AS c

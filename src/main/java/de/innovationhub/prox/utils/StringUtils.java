@@ -1,12 +1,20 @@
 package de.innovationhub.prox.utils;
 
+import java.text.Normalizer;
+
 public class StringUtils {
+
   public static String slugify(String input) {
-    return input.trim()
-        .toLowerCase()
+    return Normalizer.normalize(
+            input.trim().toLowerCase(), Normalizer.Form.NFD
+        )
+        .replaceAll("[\\u0300-\\u036f]", "")
         // replace spaces with dashes
         .replaceAll(" ", "-")
         // remove duplicate dashes
-        .replaceAll("-{2,}", "-");
+        .replaceAll("-{2,}", "-")
+        // Remove dashes in the beginning and at the end if any
+        .replaceAll("^-", "")
+        .replaceAll("-$", "");
   }
 }

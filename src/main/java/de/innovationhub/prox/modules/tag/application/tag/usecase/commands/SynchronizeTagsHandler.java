@@ -3,8 +3,6 @@ package de.innovationhub.prox.modules.tag.application.tag.usecase.commands;
 import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.tag.domain.tag.Tag;
 import de.innovationhub.prox.modules.tag.domain.tag.TagRepository;
-import de.innovationhub.prox.utils.StringUtils;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -24,12 +22,12 @@ public class SynchronizeTagsHandler {
     }
 
     List<Tag> tagElements = tags.stream().map(Tag::create).toList();
-    List<Tag> existingTags = this.tagRepository.findAllByTagNameInIgnoreCase(tags);
-    List<Tag> notExistingTags = tagElements.stream()
+    var tagNames = tagElements.stream().map(Tag::getTagName).toList();
+    List<Tag> existingTags = this.tagRepository.findAllByTagNameInIgnoreCase(tagNames);
+    List<Tag> createdTags = tagElements.stream()
         .filter(
             tag -> existingTags.stream().noneMatch(t -> t.isEquivalent(tag)))
         .toList();
-    List<Tag> createdTags = new ArrayList<>(notExistingTags);
     if (!createdTags.isEmpty()) {
       this.tagRepository.saveAll(createdTags);
     }

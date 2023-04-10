@@ -17,4 +17,8 @@ public class StringUtils {
         .replaceAll("^-", "")
         .replaceAll("-$", "");
   }
+
+  private StringUtils() {
+    throw new IllegalStateException("Utility class");
+  }
 }

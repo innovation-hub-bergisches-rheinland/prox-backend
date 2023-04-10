@@ -1,12 +1,14 @@
-package de.innovationhub.prox.infra.storage;
+package de.innovationhub.prox.infra.aws;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import java.io.ByteArrayInputStream;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Component;
 
 @Component
+@ConditionalOnBean({ AmazonS3Client.class })
 public class S3StorageProvider implements StorageProvider {
   private final AmazonS3Client s3;
   private final String bucket;

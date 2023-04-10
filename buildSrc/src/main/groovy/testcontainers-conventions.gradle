@@ -1,0 +1,14 @@
+ext {
+    set('testcontainersVersion', "1.17.4")
+}
+
+
+dependencies {
+    testImplementation 'org.testcontainers:junit-jupiter'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
+    }
+}

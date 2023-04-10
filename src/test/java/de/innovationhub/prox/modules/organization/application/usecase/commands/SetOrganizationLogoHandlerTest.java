@@ -9,7 +9,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import de.innovationhub.prox.infra.storage.StorageProvider;
+import de.innovationhub.prox.infra.aws.StorageProvider;
 import de.innovationhub.prox.modules.organization.OrganizationFixtures;
 import de.innovationhub.prox.modules.organization.domain.Organization;
 import de.innovationhub.prox.modules.organization.domain.OrganizationRepository;

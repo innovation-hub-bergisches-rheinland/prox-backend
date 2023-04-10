@@ -2,3 +2,4 @@ rootProject.name = "prox-backend"
 
 include('modules:commons')
 include('modules:infra-keycloak')
+include('modules:infra-aws')

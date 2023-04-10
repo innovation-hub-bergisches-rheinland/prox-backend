@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.user.application.profile.usecase.commands;
 
-import de.innovationhub.prox.infra.storage.StorageProvider;
+import de.innovationhub.prox.infra.aws.StorageProvider;
 import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfileRepository;
 import jakarta.transaction.Transactional;

@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.user.application.profile.dto;
 
-import de.innovationhub.prox.infra.storage.StorageProvider;
+import de.innovationhub.prox.infra.aws.StorageProvider;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
 import de.innovationhub.prox.modules.tag.contract.dto.TagDto;
 import de.innovationhub.prox.modules.user.application.profile.dto.CreateUserProfileRequestDto.ContactInformationRequestDto;

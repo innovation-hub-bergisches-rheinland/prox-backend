@@ -1,4 +1,4 @@
-package de.innovationhub.prox.infra.storage;
+package de.innovationhub.prox.infra.aws;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -7,11 +7,13 @@ import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RequiredArgsConstructor
+@ConditionalOnClass(AWSCredentials.class)
 public class AwsConfig {
   private final AwsConfigurationProperties config;
 
@@ -22,6 +24,7 @@ public class AwsConfig {
   }
 
   @Bean
+  @ConditionalOnClass(AmazonS3Client.class)
   public AmazonS3Client s3(AWSCredentials credentials) {
     return (AmazonS3Client) AmazonS3ClientBuilder
         .standard()

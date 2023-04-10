@@ -1,4 +1,4 @@
-package de.innovationhub.prox.infra.storage;
+package de.innovationhub.prox.infra.aws;
 
 import java.io.IOException;
 

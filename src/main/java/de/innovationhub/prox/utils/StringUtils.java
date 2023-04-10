@@ -12,10 +12,7 @@ public class StringUtils {
         // replace spaces with dashes
         .replaceAll("\\s+", "-")
         // remove duplicate dashes
-        .replaceAll("-{2,}", "-")
-        // Remove dashes in the beginning and at the end if any
-        .replaceAll("^-", "")
-        .replaceAll("-$", "");
+        .replaceAll("-{2,}", "-");
   }
 
   private StringUtils() {

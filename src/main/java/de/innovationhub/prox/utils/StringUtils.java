@@ -10,7 +10,7 @@ public class StringUtils {
         )
         .replaceAll("[\\u0300-\\u036f]", "")
         // replace spaces with dashes
-        .replaceAll(" ", "-")
+        .replaceAll("\\s+", "-")
         // remove duplicate dashes
         .replaceAll("-{2,}", "-")
         // Remove dashes in the beginning and at the end if any

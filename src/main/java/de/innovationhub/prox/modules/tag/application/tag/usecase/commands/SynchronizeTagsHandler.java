@@ -23,17 +23,13 @@ public class SynchronizeTagsHandler {
       return List.of();
     }
 
-    var sluggedTags = tags.stream().map(StringUtils::slugify).toList();
-
-    List<Tag> existingTags = this.tagRepository.findAllByTagNameInIgnoreCase(sluggedTags);
-    List<String> notExistingTags = sluggedTags.stream()
+    List<Tag> tagElements = tags.stream().map(Tag::create).toList();
+    List<Tag> existingTags = this.tagRepository.findAllByTagNameInIgnoreCase(tags);
+    List<Tag> notExistingTags = tagElements.stream()
         .filter(
-            strTag -> existingTags.stream().noneMatch(t -> t.getTagName().equalsIgnoreCase(strTag)))
+            tag -> existingTags.stream().noneMatch(t -> t.isEquivalent(tag)))
         .toList();
-    List<Tag> createdTags = new ArrayList<>();
-    for (var tag : notExistingTags) {
-      createdTags.add(Tag.create(tag));
-    }
+    List<Tag> createdTags = new ArrayList<>(notExistingTags);
     if (!createdTags.isEmpty()) {
       this.tagRepository.saveAll(createdTags);
     }

@@ -55,4 +55,8 @@ public class Tag extends AuditedAggregateRoot {
     this.id = id;
     this.tagName = StringUtils.slugify(tagName);
   }
+
+  public boolean isEquivalent(Tag other) {
+    return this.tagName.equals(other.tagName);
+  }
 }

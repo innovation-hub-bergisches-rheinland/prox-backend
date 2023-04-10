@@ -53,4 +53,17 @@ class SynchronizeTagsHandlerTest {
         .containsExactlyElementsOf(tagInput);
     verify(tagRepository, times(0)).saveAll(any());
   }
+
+  @Test
+  void shouldReturnSluggedTags() {
+    var givenTags = List.of(Tag.create("test-3"), Tag.create("test-4"));
+    when(tagRepository.findAllByTagNameInIgnoreCase(any())).thenReturn(givenTags);
+
+    var tagInput = List.of("test 3", "test-4");
+    var returnedTags = handler.handle(tagInput);
+
+    assertThat(returnedTags)
+        .containsExactlyElementsOf(givenTags);
+    verify(tagRepository, times(0)).saveAll(any());
+  }
 }

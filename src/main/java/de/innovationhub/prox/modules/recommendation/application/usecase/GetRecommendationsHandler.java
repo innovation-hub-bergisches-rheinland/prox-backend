@@ -1,6 +1,7 @@
 package de.innovationhub.prox.modules.recommendation.application.usecase;
 
 import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
+import de.innovationhub.prox.config.CacheConfig;
 import de.innovationhub.prox.modules.organization.contract.OrganizationFacade;
 import de.innovationhub.prox.modules.project.contract.dto.ProjectDto.ReadSupervisorDto;
 import de.innovationhub.prox.modules.project.contract.ProjectFacade;
@@ -16,6 +17,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 
 @ApplicationComponent
 @RequiredArgsConstructor
@@ -25,6 +27,7 @@ public class GetRecommendationsHandler {
   private final ProjectFacade projectFacade;
   private final JaccardIndexCalculator jaccardIndexCalculator = new JaccardIndexCalculator();
 
+  @Cacheable(CacheConfig.RECOMMENDATIONS)
   public RecommendationResponse handle(RecommendationRequest request) {
     // 1. Get all supervisors which match the seed tags
     // 2. Get all organizations which match the seed tags

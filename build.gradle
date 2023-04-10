@@ -28,6 +28,7 @@ springBoot {
 
 dependencies {
     implementation project(':modules:commons')
+    implementation project(':modules:infra-keycloak')
 
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
@@ -45,9 +46,6 @@ dependencies {
     implementation 'com.github.ben-manes.caffeine:caffeine'
 
     implementation "org.flywaydb:flyway-core"
-
-    implementation "org.keycloak:keycloak-server-spi-private:20.0.4"
-    implementation "org.keycloak:keycloak-admin-client:20.0.4"
     // AWS
     implementation "com.amazonaws:aws-java-sdk-s3:1.12.445"
 

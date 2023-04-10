@@ -1,7 +1,5 @@
 package de.innovationhub.prox.infra.keycloak;
 
-import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
-import de.innovationhub.prox.config.CacheConfig;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -10,8 +8,9 @@ import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Component;
 
-@ApplicationComponent
+@Component
 public class KeycloakClient {
   private final UsersResource usersResource;
   private final RealmResource realmResource;
@@ -21,7 +20,7 @@ public class KeycloakClient {
     this.realmResource = realmResource;
   }
 
-  @Cacheable(CacheConfig.USERS)
+  @Cacheable("keycloak-user")
   public Optional<UserRepresentation> getById(String id) {
     try {
       var userRepresentation = this.usersResource.get(id).toRepresentation();
@@ -38,12 +37,12 @@ public class KeycloakClient {
     return this.usersResource.count();
   }
 
-  @Cacheable(CacheConfig.USERS_SEARCH)
+  @Cacheable("keycloak-search")
   public List<UserRepresentation> search(String query) {
     return this.realmResource.users().search(query, 0, 100, true);
   }
 
-  @Cacheable(CacheConfig.USERS_ROLE)
+  @Cacheable("keycloak-users-in-role")
   public List<UserRepresentation> getAllInRole(String roleName) {
     var role = this.realmResource.roles().get(roleName);
     var paginationSize = 100;

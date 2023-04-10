@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SetUserProfileAvatarHandler {
 
-  private final static String AVATAR_FILE_PREFIX = "avatar-";
+  private final static String AVATAR_FILE_PREFIX = "img/avatar-";
 
   private final StorageProvider storage;
   private final UserProfileRepository userProfileRepository;

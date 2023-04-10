@@ -1,0 +1,2 @@
+update "prox_organization".organization set logo_key = 'img/' || logo_key where logo_key is not null and logo_key <> '';
+update "prox_user".user_profile set avatar_key = 'img/' || avatar_key where avatar_key is not null and avatar_key <> '';

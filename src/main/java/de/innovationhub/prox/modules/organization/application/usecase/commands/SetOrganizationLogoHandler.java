@@ -15,7 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 @ApplicationComponent
 @RequiredArgsConstructor
 public class SetOrganizationLogoHandler {
-  private static final String LOGO_FILE_PREFIX = "organization-logo-";
+  private static final String LOGO_FILE_PREFIX = "img/organization-logo-";
 
   private final StorageProvider storage;
   private final AuthenticationFacade authentication;

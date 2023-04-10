@@ -3,6 +3,7 @@ package de.innovationhub.prox.modules.tag.application.tag.usecase.queries;
 import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.tag.domain.tag.Tag;
 import de.innovationhub.prox.modules.tag.domain.tag.TagRepository;
+import de.innovationhub.prox.utils.StringUtils;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,6 @@ public class FindMatchingTagsHandler {
       return List.of();
     }
 
-    return tagRepository.findMatching(partialTag);
+    return tagRepository.findMatching(StringUtils.slugify(partialTag));
   }
 }

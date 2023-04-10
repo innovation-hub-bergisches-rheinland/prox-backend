@@ -3,6 +3,7 @@ package de.innovationhub.prox.modules.tag.application.tag.usecase.queries;
 import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.tag.domain.tag.Tag;
 import de.innovationhub.prox.modules.tag.domain.tagcollection.TagCollectionRepository;
+import de.innovationhub.prox.utils.StringUtils;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -26,6 +27,6 @@ public class FindCommonTagsHandler {
     }
 
     var pageRequest = PageRequest.of(0, limit);
-    return tagCollectionRepository.findCommonUsedTagsWith(tags, pageRequest);
+    return tagCollectionRepository.findCommonUsedTagsWith(tags.stream().map(StringUtils::slugify).toList(), pageRequest);
   }
 }

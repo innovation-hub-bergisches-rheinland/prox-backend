@@ -8,11 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 public interface TagRepository extends CrudRepository<Tag, UUID> {
-  Optional<Tag> getByTagName(String tag);
-
-  List<Tag> getByIdIn(Collection<UUID> ids);
-
-  boolean existsByTagName(String tag);
 
   List<Tag> findAllByTagNameInIgnoreCase(Collection<String> tags);
 

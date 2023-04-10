@@ -4,6 +4,7 @@ import de.innovationhub.prox.commons.Default;
 import de.innovationhub.prox.commons.buildingblocks.AuditedAggregateRoot;
 import de.innovationhub.prox.config.PersistenceConfig;
 import de.innovationhub.prox.modules.tag.domain.tag.events.TagCreated;
+import de.innovationhub.prox.utils.StringUtils;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -52,6 +53,6 @@ public class Tag extends AuditedAggregateRoot {
     }
 
     this.id = id;
-    this.tagName = tagName.toLowerCase();
+    this.tagName = StringUtils.slugify(tagName);
   }
 }

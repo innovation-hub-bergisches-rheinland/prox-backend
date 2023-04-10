@@ -3,6 +3,7 @@ package de.innovationhub.prox.modules.tag.application.tag.usecase.commands;
 import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.tag.domain.tag.Tag;
 import de.innovationhub.prox.modules.tag.domain.tag.TagRepository;
+import de.innovationhub.prox.utils.StringUtils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -22,8 +23,10 @@ public class SynchronizeTagsHandler {
       return List.of();
     }
 
-    List<Tag> existingTags = this.tagRepository.findAllByTagNameInIgnoreCase(tags);
-    List<String> notExistingTags = tags.stream()
+    var sluggedTags = tags.stream().map(StringUtils::slugify).toList();
+
+    List<Tag> existingTags = this.tagRepository.findAllByTagNameInIgnoreCase(sluggedTags);
+    List<String> notExistingTags = sluggedTags.stream()
         .filter(
             strTag -> existingTags.stream().noneMatch(t -> t.getTagName().equalsIgnoreCase(strTag)))
         .toList();

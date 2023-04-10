@@ -4,6 +4,7 @@ import de.innovationhub.prox.commons.Default;
 import de.innovationhub.prox.commons.buildingblocks.AuditedAggregateRoot;
 import de.innovationhub.prox.config.PersistenceConfig;
 import de.innovationhub.prox.modules.tag.domain.tag.events.TagCreated;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -32,6 +33,7 @@ public class Tag extends AuditedAggregateRoot {
   @Getter
   @NotBlank
   @Size(max = 128)
+  @Column(unique = true, nullable = false, length = 128)
   private String tagName;
 
   public static Tag create(String tag) {

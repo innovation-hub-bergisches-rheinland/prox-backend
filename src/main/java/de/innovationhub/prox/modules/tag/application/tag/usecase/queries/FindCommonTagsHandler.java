@@ -26,7 +26,8 @@ public class FindCommonTagsHandler {
       throw new IllegalArgumentException("Limit must be greater than 0");
     }
 
+    var tagNames = tags.stream().map(Tag::create).map(Tag::getTagName).toList();
     var pageRequest = PageRequest.of(0, limit);
-    return tagCollectionRepository.findCommonUsedTagsWith(tags.stream().map(StringUtils::slugify).toList(), pageRequest);
+    return tagCollectionRepository.findCommonUsedTagsWith(tagNames, pageRequest);
   }
 }

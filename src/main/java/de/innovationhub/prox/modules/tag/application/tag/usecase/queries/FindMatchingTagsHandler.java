@@ -21,6 +21,7 @@ public class FindMatchingTagsHandler {
       return List.of();
     }
 
-    return tagRepository.findMatching(StringUtils.slugify(partialTag));
+    var tag = Tag.create(partialTag);
+    return tagRepository.findMatching(tag.getTagName());
   }
 }

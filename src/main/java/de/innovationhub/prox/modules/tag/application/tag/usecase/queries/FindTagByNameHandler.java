@@ -15,13 +15,15 @@ public class FindTagByNameHandler {
 
   private final TagRepository tagRepository;
 
-  public List<Tag> handle(Collection<String> tagNames) {
-    Objects.requireNonNull(tagNames);
+  public List<Tag> handle(Collection<String> tags) {
+    Objects.requireNonNull(tags);
 
-    if (tagNames.isEmpty()) {
+    if (tags.isEmpty()) {
       return List.of();
     }
 
-    return tagRepository.findAllByTagNameInIgnoreCase(tagNames.stream().map(StringUtils::slugify).toList());
+    var tagNames = tags.stream().map(Tag::create).map(Tag::getTagName).toList();
+
+    return tagRepository.findAllByTagNameInIgnoreCase(tagNames);
   }
 }

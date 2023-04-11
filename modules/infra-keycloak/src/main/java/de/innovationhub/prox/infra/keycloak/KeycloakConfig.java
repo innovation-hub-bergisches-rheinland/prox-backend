@@ -14,7 +14,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 
 @Configuration
 @RequiredArgsConstructor
-@ConditionalOnClass(Keycloak.class)
+//@ConditionalOnClass(Keycloak.class)
 public class KeycloakConfig {
 
   public static final String PROFESSOR_GROUP = "professor";
@@ -46,7 +46,7 @@ public class KeycloakConfig {
   }
 
   @Bean
-  @ConditionalOnClass(JwtAuthenticationConverter.class)
+  //@ConditionalOnClass(JwtAuthenticationConverter.class)
   public JwtAuthenticationConverter jwtAuthenticationConverter() {
     JwtAuthenticationConverter jwtConverter = new JwtAuthenticationConverter();
     jwtConverter.setJwtGrantedAuthoritiesConverter(new KeycloakGrantedAuthoritiesConverter());

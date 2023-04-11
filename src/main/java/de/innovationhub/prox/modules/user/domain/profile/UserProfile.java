@@ -40,6 +40,7 @@ import org.hibernate.annotations.NaturalId;
 public class UserProfile extends AuditedAggregateRoot {
 
   @Id
+  @Getter(AccessLevel.NONE)
   private UUID id;
 
   private Boolean visibleInPublicSearch;
@@ -96,10 +97,6 @@ public class UserProfile extends AuditedAggregateRoot {
     this.contactInformation = contactInformation;
     this.visibleInPublicSearch = visibleInPublicSearch;
     registerEvent(new UserProfileUpdated(id, this.userId, displayName, vita, contactInformation));
-  }
-
-  public UUID getId() {
-    return id;
   }
 
   public void setAvatarKey(String avatarKey) {

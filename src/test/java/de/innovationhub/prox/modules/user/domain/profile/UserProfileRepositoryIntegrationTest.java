@@ -62,7 +62,7 @@ class UserProfileRepositoryIntegrationTest extends AbstractIntegrationTest {
     assertThat(result)
         .hasSize(1)
         .first()
-        .satisfies(r -> assertThat(r.getId()).isEqualTo(up.getId()));
+        .satisfies(r -> assertThat(r.getUserId()).isEqualTo(up.getUserId()));
   }
 
   @Test
@@ -75,7 +75,7 @@ class UserProfileRepositoryIntegrationTest extends AbstractIntegrationTest {
     assertThat(result)
         .hasSize(1)
         .first()
-        .satisfies(r -> assertThat(r.getId()).isEqualTo(up.getId()));
+        .satisfies(r -> assertThat(r.getUserId()).isEqualTo(up.getUserId()));
   }
 
   @Test

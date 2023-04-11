@@ -78,9 +78,9 @@ class RecommendationControllerIntegrationTest extends AbstractIntegrationTest {
     var organization3 = createDummyOrganization(mixedTags);
     organizationRepository.saveAll(List.of(organization1, organization2, organization3));
 
-    var project1 = createDummyProject(organization1.getId(), List.of(lecturer1.getId()), seedTags);
-    var project2 = createDummyProject(organization2.getId(), List.of(lecturer2.getId()), randomTags);
-    var project3 = createDummyProject(organization3.getId(), List.of(lecturer3.getId()), mixedTags);
+    var project1 = createDummyProject(organization1.getId(), List.of(lecturer1.getUserId()), seedTags);
+    var project2 = createDummyProject(organization2.getId(), List.of(lecturer2.getUserId()), randomTags);
+    var project3 = createDummyProject(organization3.getId(), List.of(lecturer3.getUserId()), mixedTags);
     projectRepository.saveAll(List.of(project1, project2, project3));
 
 

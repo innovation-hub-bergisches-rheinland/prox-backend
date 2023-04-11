@@ -21,7 +21,7 @@ public interface UserProfileRepository extends JpaRepository<UserProfile, UUID> 
   @Query("SELECT p FROM UserProfile p JOIN p.lecturerProfile lp WHERE p.visibleInPublicSearch = true")
   Page<UserProfile> findAllLecturerProfiles(Pageable pageable);
 
-  @Query("SELECT p FROM UserProfile p JOIN p.lecturerProfile lp WHERE p.id IN (?1)")
+  @Query("SELECT p FROM UserProfile p JOIN p.lecturerProfile lp WHERE p.userId IN (?1)")
   Page<UserProfile> findAllLecturersByIds(Collection<UUID> ids, Pageable pageable);
 
   @Query("SELECT p FROM UserProfile p JOIN p.lecturerProfile lp JOIN p.tags t WHERE p.visibleInPublicSearch = true AND t IN (?1)")

@@ -67,7 +67,7 @@ jobs:
 
       - name: Gradle test
         run: |
-          ./gradlew --stacktrace test --no-daemon
+          ./gradlew test --no-daemon --stacktrace -i
 
       - name: Upload Test Results
         uses: actions/upload-artifact@v3

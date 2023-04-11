@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RequiredArgsConstructor
-@ConditionalOnClass(AWSCredentials.class)
+//@ConditionalOnClass(AWSCredentials.class)
 public class AwsConfig {
   private final AwsConfigurationProperties config;
 
@@ -24,7 +24,7 @@ public class AwsConfig {
   }
 
   @Bean
-  @ConditionalOnClass(AmazonS3Client.class)
+  //@ConditionalOnClass(AmazonS3Client.class)
   public AmazonS3Client s3(AWSCredentials credentials) {
     return (AmazonS3Client) AmazonS3ClientBuilder
         .standard()

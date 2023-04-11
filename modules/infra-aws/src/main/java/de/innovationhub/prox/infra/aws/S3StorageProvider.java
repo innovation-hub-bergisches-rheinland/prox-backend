@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConditionalOnBean({ AmazonS3Client.class })
+//@ConditionalOnBean({ AmazonS3Client.class })
 public class S3StorageProvider implements StorageProvider {
   private final AmazonS3Client s3;
   private final String bucket;

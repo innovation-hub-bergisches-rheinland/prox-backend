@@ -70,8 +70,10 @@ public class GetRecommendationsHandler {
     }
 
     for (var supervisor : supervisorsOfMatchingProjects) {
-      var score = jaccardIndexCalculator.calculate(request.seedTags(), supervisor.tags().stream().map(
-          TagDto::id).toList());
+      // TODO: Maybe we should use the average of the scores of the projects instead of using a hardcoded value
+      // var score = jaccardIndexCalculator.calculate(request.seedTags(), supervisor.tags().stream().map(
+      //    TagDto::id).toList());
+      var score = 0.5;
       lecturerConfidenceScores.compute(supervisor.userId(), (k,v) -> v == null ? score : v + score);
     }
 
@@ -82,8 +84,10 @@ public class GetRecommendationsHandler {
     }
 
     for (var organization : organizationsOfMatchingProjects) {
-      var score = jaccardIndexCalculator.calculate(request.seedTags(), organization.tags().stream().map(
-          TagDto::id).toList());
+      // TODO: Maybe we should use the average of the scores of the projects instead of using a hardcoded value
+      // var score = jaccardIndexCalculator.calculate(request.seedTags(), organization.tags().stream().map(
+      //    TagDto::id).toList());
+      var score = 0.5;
       organizationConfidenceScores.compute(organization.id(), (k,v) -> v == null ? score : v + score);
     }
 

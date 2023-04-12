@@ -11,5 +11,11 @@ public record RecommendationResponse(
     List<RecommendationResult<ProjectDto>> projects
 ) {
   public record RecommendationResult<T>(Double confidenceScore, T item) {
+    public RecommendationResult(Double confidenceScore, T item) {
+      if(confidenceScore < 0) throw new IllegalArgumentException("Confidence score must be positive");
+
+      this.confidenceScore = Math.min(confidenceScore, 1);
+      this.item = item;
+    }
   }
 }

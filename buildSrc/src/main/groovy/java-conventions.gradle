@@ -28,5 +28,11 @@ dependencies {
 }
 
 test {
+    testLogging {
+        events "passed", "failed"
+        exceptionFormat "full"
+        showCauses true
+        showStackTraces true
+    }
     useJUnitPlatform()
 }

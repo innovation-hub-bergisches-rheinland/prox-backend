@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
+import java.util.stream.Stream;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -87,7 +88,6 @@ class GetRecommendationsHandlerTest {
   }
 
   @Test
-  @Disabled("TODO: Implement this")
   void shouldSortProjectsByDate() {
     var seedTags = Instancio.ofList(TagDto.class).size(2).create();
     var projects = Instancio.ofList(ProjectDto.class)

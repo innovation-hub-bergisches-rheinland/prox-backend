@@ -4,21 +4,27 @@ import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.config.CacheConfig;
 import de.innovationhub.prox.modules.organization.contract.OrganizationFacade;
 import de.innovationhub.prox.modules.project.contract.ProjectFacade;
+import de.innovationhub.prox.modules.project.contract.dto.ProjectDto;
+import de.innovationhub.prox.modules.project.domain.project.ProjectState;
 import de.innovationhub.prox.modules.recommendation.application.dto.RecommendationRequest;
 import de.innovationhub.prox.modules.recommendation.application.dto.RecommendationResponse;
+import de.innovationhub.prox.modules.recommendation.application.dto.RecommendationResponse.RecommendationResult;
 import de.innovationhub.prox.modules.recommendation.domain.calc.OverlapCoefficientCalculator;
 import de.innovationhub.prox.modules.tag.contract.dto.TagDto;
 import de.innovationhub.prox.modules.user.contract.profile.UserProfileFacade;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.util.comparator.Comparators;
 
 @ApplicationComponent
 @RequiredArgsConstructor
@@ -26,6 +32,9 @@ public class GetRecommendationsHandler {
 
   private static final double LECTURER_PROFILE_MATCH_BOOST_FACTOR = 2.5;
   private static final double ORGANISATION_PROFILE_MATCH_BOOST_FACTOR = 2.5;
+  private static final ProjectState[] PROJECT_STATE_FILTER = {
+      ProjectState.OFFERED, ProjectState.PROPOSED, ProjectState.RUNNING
+  };
 
 
   private final UserProfileFacade userProfileFacade;
@@ -85,25 +94,35 @@ public class GetRecommendationsHandler {
     }
 
     // 5. Return the top results for each category together with the confidence score
-    final var topFiveLecturers = streamTopFive(calculateAverage(lecturerConfidenceScores))
-        .map(e -> new RecommendationResponse.RecommendationResult<>(e.getValue(),
+    final var topFiveLecturers = pickResult(
+        calculateAverage(lecturerConfidenceScores),
+        e -> new RecommendationResponse.RecommendationResult<>(e.getValue(),
             userProfileFacade.getByUserId(e.getKey()).orElse(null)))
         .filter(e -> e.item() != null) // TODO: We should not have to do this
+        .sorted((e1, e2) -> e2.confidenceScore().compareTo(e1.confidenceScore()))
+        .limit(5)
         .toList();
 
-    final var topFiveOrganizations = streamTopFive(
-        calculateAverage(organizationConfidenceScores))
-        .map(e -> new RecommendationResponse.RecommendationResult<>(e.getValue(),
+    final var topFiveOrganizations = pickResult(
+        calculateAverage(organizationConfidenceScores),
+        e -> new RecommendationResponse.RecommendationResult<>(e.getValue(),
             organizationFacade.get(e.getKey()).orElse(null)))
         .filter(e -> e.item() != null) // TODO: We should not have to do this
+        .sorted((e1, e2) -> e2.confidenceScore().compareTo(e1.confidenceScore()))
+        .limit(5)
         .toList();
 
-    final var topFiveProjects = streamTopFive(
-        calculateAverage(projectConfidenceScores)
-    )
-        .map(e -> new RecommendationResponse.RecommendationResult<>(e.getValue(),
+    Comparator<RecommendationResult<ProjectDto>> projectComparator = Comparator.comparing(RecommendationResult::confidenceScore);
+    projectComparator = projectComparator.thenComparing(p -> p.item().createdAt()).reversed();
+
+    final var topFiveProjects = pickResult(
+        calculateAverage(projectConfidenceScores),
+        e -> new RecommendationResult<>(e.getValue(),
             projectFacade.get(e.getKey()).orElse(null)))
         .filter(e -> e.item() != null) // TODO: We should not have to do this
+        .filter(e -> Arrays.stream(PROJECT_STATE_FILTER).anyMatch(s -> s.equals(e.item().status().state())))
+        .sorted(projectComparator)
+        .limit(5)
         .toList();
 
     return new RecommendationResponse(topFiveLecturers, topFiveOrganizations, topFiveProjects);
@@ -129,6 +148,13 @@ public class GetRecommendationsHandler {
         .sorted(comparator)
         .filter(e -> e.getValue() > 0.0)
         .limit(5);
+  }
+
+  private <T> Stream<RecommendationResult<T>> pickResult(final Map<UUID, Double> map, final
+  Function<Entry<UUID, Double>, RecommendationResult<T>> mapFn) {
+    return map.entrySet().stream()
+        .filter(e -> e.getValue() > 0.0)
+        .map(mapFn);
   }
 
 }

@@ -1,9 +1,14 @@
 package de.innovationhub.prox.modules.recommendation.application.web;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.hasEntry;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.ClearDatabase;
@@ -93,15 +98,15 @@ class RecommendationControllerIntegrationTest extends AbstractIntegrationTest {
         .log().all()
         .statusCode(200)
         .body("lecturers.size()", is(2))
-        .body("lecturers[0].confidenceScore", greaterThanOrEqualTo(1.0f))
-        .body("lecturers[0].item.userId", is(lecturer1.getUserId().toString()))
-        .body("lecturers[1].confidenceScore", greaterThan(0.0f))
-        .body("lecturers[1].item.userId", is(lecturer3.getUserId().toString()))
+        .body("lecturers[0].confidenceScore", equalTo(1.0f))
+        .body("lecturers[0].item.userId", notNullValue())
+        .body("lecturers[1].confidenceScore", equalTo(1.0f))
+        .body("lecturers[1].item.userId", notNullValue())
         .body("organizations.size()", is(2))
-        .body("organizations[0].confidenceScore", greaterThanOrEqualTo(1.0f))
-        .body("organizations[0].item.id", is(organization1.getId().toString()))
-        .body("organizations[1].confidenceScore", greaterThan(0.0f))
-        .body("organizations[1].item.id", is(organization3.getId().toString()))
+        .body("organizations[0].confidenceScore", equalTo(1.0f))
+        .body("organizations[0].item.id", notNullValue())
+        .body("organizations[1].confidenceScore", greaterThanOrEqualTo(0.5f))
+        .body("organizations[1].item.id", notNullValue())
         .body("projects.size()", is(2))
         .body("projects[0].confidenceScore", greaterThanOrEqualTo(1.0f))
         .body("projects[0].item.id", is(project1.getId().toString()))

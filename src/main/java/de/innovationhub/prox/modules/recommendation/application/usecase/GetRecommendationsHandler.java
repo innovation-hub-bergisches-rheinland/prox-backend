@@ -24,7 +24,6 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.util.comparator.Comparators;
 
 @ApplicationComponent
 @RequiredArgsConstructor
@@ -94,7 +93,7 @@ public class GetRecommendationsHandler {
     }
 
     // 5. Return the top results for each category together with the confidence score
-    final var topFiveLecturers = pickResult(
+    final var topFiveLecturers = pickResults(
         calculateAverage(lecturerConfidenceScores),
         e -> new RecommendationResponse.RecommendationResult<>(e.getValue(),
             userProfileFacade.getByUserId(e.getKey()).orElse(null)))
@@ -103,7 +102,7 @@ public class GetRecommendationsHandler {
         .limit(5)
         .toList();
 
-    final var topFiveOrganizations = pickResult(
+    final var topFiveOrganizations = pickResults(
         calculateAverage(organizationConfidenceScores),
         e -> new RecommendationResponse.RecommendationResult<>(e.getValue(),
             organizationFacade.get(e.getKey()).orElse(null)))
@@ -115,7 +114,7 @@ public class GetRecommendationsHandler {
     Comparator<RecommendationResult<ProjectDto>> projectComparator = Comparator.comparing(RecommendationResult::confidenceScore);
     projectComparator = projectComparator.thenComparing(p -> p.item().createdAt()).reversed();
 
-    final var topFiveProjects = pickResult(
+    final var topFiveProjects = pickResults(
         calculateAverage(projectConfidenceScores),
         e -> new RecommendationResult<>(e.getValue(),
             projectFacade.get(e.getKey()).orElse(null)))
@@ -138,19 +137,7 @@ public class GetRecommendationsHandler {
     return average;
   }
 
-  private <T> Stream<Entry<T, Double>> streamTopFive(final Map<T, Double> map) {
-    return streamTopFive(map, (e1, e2) -> e2.getValue().compareTo(e1.getValue()));
-  }
-
-  private <T> Stream<Entry<T, Double>> streamTopFive(final Map<T, Double> map,
-      Comparator<Entry<T, Double>> comparator) {
-    return map.entrySet().stream()
-        .sorted(comparator)
-        .filter(e -> e.getValue() > 0.0)
-        .limit(5);
-  }
-
-  private <T> Stream<RecommendationResult<T>> pickResult(final Map<UUID, Double> map, final
+  private <T> Stream<RecommendationResult<T>> pickResults(final Map<UUID, Double> map, final
   Function<Entry<UUID, Double>, RecommendationResult<T>> mapFn) {
     return map.entrySet().stream()
         .filter(e -> e.getValue() > 0.0)

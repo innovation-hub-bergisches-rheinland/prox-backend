@@ -114,6 +114,42 @@ class RecommendationControllerIntegrationTest extends AbstractIntegrationTest {
         .body("projects[1].item.id", is(project3.getId().toString()));
   }
 
+  @Test
+  void shouldExcludeRecommendations() {
+    var seedTags = List.of(Tag.create("test1"), Tag.create("test2"));
+    tagRepository.saveAll(seedTags);
+
+    var lecturer1 = createLecturer(seedTags);
+    var lecturer2 = createLecturer(seedTags);
+    userProfileRepository.saveAll(List.of(lecturer1, lecturer2));
+
+    var organization1 = createDummyOrganization(seedTags);
+    var organization2 = createDummyOrganization(seedTags);
+    organizationRepository.saveAll(List.of(organization1, organization2));
+
+    var project1 = createDummyProject(organization1.getId(), List.of(lecturer1.getUserId()), seedTags);
+    var project2 = createDummyProject(organization2.getId(), List.of(lecturer2.getUserId()), seedTags);
+    projectRepository.saveAll(List.of(project1, project2));
+
+    var excludedIds = List.of(lecturer2.getUserId().toString(), organization2.getId().toString(), project2.getId().toString());
+
+    given()
+        .accept(ContentType.JSON)
+        .param("seedTags", seedTags.stream().map(t -> t.getId().toString()).toList())
+        .param("excludedIds", excludedIds)
+        .when()
+        .get("recommendations")
+        .then()
+        .log().all()
+        .statusCode(200)
+        .body("lecturers.size()", is(1))
+        .body("lecturers[0].item.userId", is(lecturer1.getUserId().toString()))
+        .body("organizations.size()", is(1))
+        .body("organizations[0].item.id", is(organization1.getId().toString()))
+        .body("projects.size()", is(1))
+        .body("projects[0].item.id", is(project1.getId().toString()));
+  }
+
   private UserProfile createLecturer(Collection<Tag> tags) {
     var profile = UserProfile.create(UUID.randomUUID(), "Xavier Tester", "Lorem Ipsum",
         new ContactInformation("Test", "Test", "Test"), true);

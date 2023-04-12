@@ -97,7 +97,7 @@ public class GetRecommendationsHandler {
         calculateAverage(lecturerConfidenceScores),
         e -> new RecommendationResponse.RecommendationResult<>(e.getValue(),
             userProfileFacade.getByUserId(e.getKey()).orElse(null)))
-        .filter(e -> e.item() != null) // TODO: We should not have to do this
+        .filter(e -> e.item() != null && request.excludedIds().stream().noneMatch(ex -> e.item().userId().equals(ex)))
         .sorted((e1, e2) -> e2.confidenceScore().compareTo(e1.confidenceScore()))
         .limit(5)
         .toList();
@@ -106,7 +106,7 @@ public class GetRecommendationsHandler {
         calculateAverage(organizationConfidenceScores),
         e -> new RecommendationResponse.RecommendationResult<>(e.getValue(),
             organizationFacade.get(e.getKey()).orElse(null)))
-        .filter(e -> e.item() != null) // TODO: We should not have to do this
+        .filter(e -> e.item() != null && request.excludedIds().stream().noneMatch(ex -> e.item().id().equals(ex)))
         .sorted((e1, e2) -> e2.confidenceScore().compareTo(e1.confidenceScore()))
         .limit(5)
         .toList();
@@ -118,7 +118,7 @@ public class GetRecommendationsHandler {
         calculateAverage(projectConfidenceScores),
         e -> new RecommendationResult<>(e.getValue(),
             projectFacade.get(e.getKey()).orElse(null)))
-        .filter(e -> e.item() != null) // TODO: We should not have to do this
+        .filter(e -> e.item() != null && request.excludedIds().stream().noneMatch(ex -> e.item().id().equals(ex)))
         .filter(e -> Arrays.stream(PROJECT_STATE_FILTER).anyMatch(s -> s.equals(e.item().status().state())))
         .sorted(projectComparator)
         .limit(5)

@@ -3,7 +3,11 @@ package de.innovationhub.prox.modules.recommendation.application.web;
 import de.innovationhub.prox.modules.recommendation.application.dto.RecommendationRequest;
 import de.innovationhub.prox.modules.recommendation.application.dto.RecommendationResponse;
 import de.innovationhub.prox.modules.recommendation.application.usecase.GetRecommendationsHandler;
+import java.util.List;
+import java.util.UUID;
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +23,15 @@ public class RecommendationController {
 
   @GetMapping
   public ResponseEntity<RecommendationResponse> getRecommendations(
-      @Valid final RecommendationRequest request
+      @NotNull
+      @NotEmpty
+      @RequestParam(required = true)
+      List<UUID> seedTags,
+      @NotNull
+      @RequestParam(required = false, defaultValue = "")
+      List<UUID> excludedIds
   ) {
+    var request = new RecommendationRequest(seedTags, excludedIds);
     return ResponseEntity.ok(getRecommendations.handle(request));
   }
 }

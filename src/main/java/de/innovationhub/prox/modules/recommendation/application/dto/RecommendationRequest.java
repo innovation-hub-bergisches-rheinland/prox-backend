@@ -6,9 +6,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 public record RecommendationRequest(
-    @NotNull
-    @NotEmpty
-    List<UUID> seedTags
+    List<UUID> seedTags,
+    List<UUID> excludedIds
 ) {
-
 }

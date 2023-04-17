@@ -35,7 +35,7 @@ public class ProposalAutoStaleMarker {
 
   @Scheduled(cron = "${project.jobs.auto-mark-for-delete.cron:0 0 0 * * *}")
   @Transactional
-  void run() {
+  public void run() {
     var qualifyingTimestamp = Instant.now().minus(markForDeletionAfter);
     var proposalsToMark =
         this.projectRepository.findWithStatusModifiedBefore(

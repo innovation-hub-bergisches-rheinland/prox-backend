@@ -34,7 +34,7 @@ public class ProposalAutoArchiver {
 
   @Scheduled(cron = "${project.jobs.auto-archive.cron:0 0 0 * * *}")
   @Transactional
-  void run() {
+  public void run() {
     var qualifyingTimestamp = Instant.now().minus(archiveAfter);
     var proposalsToArchive =
         this.projectRepository.findWithStatusModifiedBefore(

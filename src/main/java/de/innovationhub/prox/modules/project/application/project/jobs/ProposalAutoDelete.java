@@ -32,7 +32,7 @@ public class ProposalAutoDelete {
 
   @Scheduled(cron = "${project.jobs.auto-delete.cron:0 0 0 * * *}")
   @Transactional
-  void run() {
+  public void run() {
     var qualifyingTimestamp = Instant.now();
     var proposalsToDelete =
         this.projectRepository.findWithStatusModifiedBefore(

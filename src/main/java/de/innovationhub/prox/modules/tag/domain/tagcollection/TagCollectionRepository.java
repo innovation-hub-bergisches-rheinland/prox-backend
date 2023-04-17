@@ -14,7 +14,7 @@ public interface TagCollectionRepository extends JpaRepository<TagCollection, UU
   @Query("""
         select t from Tag t
         where t.id in (
-          select t1 from TagCollection tc
+          select t1.id from TagCollection tc
           join tc.tags t1
         )
         group by t.id
@@ -37,10 +37,10 @@ public interface TagCollectionRepository extends JpaRepository<TagCollection, UU
       select distinct t.*, count(t.id) as cnt from prox_tag.tag t
       where t.id in (
         select t2.id from prox_tag.tag_collection_tags tc1
-        join prox_tag.tag t2 on t2.id = tc1.tags
+        join prox_tag.tag t2 on t2.id = tc1.tags_id
         where tc1.tag_collection_id in (
           select tc.tag_collection_id from prox_tag.tag_collection_tags tc
-          join prox_tag.tag t3 on t3.id = tc.tags
+          join prox_tag.tag t3 on t3.id = tc.tags_id
           where t3.tag_name in ?1
         )
         and t2.tag_name not in ?1

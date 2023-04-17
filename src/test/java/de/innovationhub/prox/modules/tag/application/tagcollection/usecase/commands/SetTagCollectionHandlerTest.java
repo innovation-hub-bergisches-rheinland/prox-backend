@@ -2,10 +2,13 @@ package de.innovationhub.prox.modules.tag.application.tagcollection.usecase.comm
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.assertArg;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import de.innovationhub.prox.modules.tag.application.tagcollection.dto.TagCollectionDtoMapper;
 import de.innovationhub.prox.modules.tag.application.tagcollection.usecase.SetTagCollectionHandler;
 import de.innovationhub.prox.modules.tag.domain.tag.TagRepository;
 import de.innovationhub.prox.modules.tag.domain.tagcollection.TagCollection;
@@ -20,7 +23,7 @@ import org.mockito.ArgumentCaptor;
 class SetTagCollectionHandlerTest {
   TagCollectionRepository tagCollectionRepository = mock(TagCollectionRepository.class);
   TagRepository tagRepository = mock(TagRepository.class);
-  SetTagCollectionHandler handler = new SetTagCollectionHandler(tagCollectionRepository, tagRepository);
+  SetTagCollectionHandler handler = new SetTagCollectionHandler(tagCollectionRepository, tagRepository, TagCollectionDtoMapper.INSTANCE);
 
   @Test
   void shouldCreateTagCollection() {
@@ -28,9 +31,9 @@ class SetTagCollectionHandlerTest {
     when(tagCollectionRepository.findById(id)).thenReturn(Optional.empty());
     handler.handle(id, new ArrayList<>());
 
-    ArgumentCaptor<TagCollection> captor = ArgumentCaptor.forClass(TagCollection.class);
-    verify(tagCollectionRepository).save(captor.capture());
-    assertEquals(id, captor.getValue().getId());
+    verify(tagCollectionRepository).save(assertArg(tc -> {
+      assertThat(tc.getId()).isEqualTo(id);
+    }));
   }
 
   @Test
@@ -41,9 +44,8 @@ class SetTagCollectionHandlerTest {
     when(tagCollectionRepository.findById(id)).thenReturn(Optional.of(tagCollection));
     handler.handle(id, new ArrayList<>());
 
-    ArgumentCaptor<TagCollection> captor = ArgumentCaptor.forClass(TagCollection.class);
-    verify(tagCollectionRepository).save(captor.capture());
-    var captorValue = captor.getValue();
-    assertEquals(id, captorValue.getId());
+    verify(tagCollectionRepository).save(assertArg(tc -> {
+      assertThat(tc.getId()).isEqualTo(id);
+    }));
   }
 }

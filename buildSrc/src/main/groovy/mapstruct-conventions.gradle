@@ -8,7 +8,10 @@ compileJava {
             '-Amapstruct.suppressGeneratorTimestamp=true',
             '-Amapstruct.suppressGeneratorVersionInfoComment=true',
             '-Amapstruct.defaultComponentModel=spring',
-            '-Amapstruct.defaultInjectionStrategy=constructor',
+            // We stick to field injection for now, because constructor injection makes it
+            // difficult to use the generated mappers in tests.
+            // Mapstruct.getMappers() does not work properly with constructor injection.
+            //'-Amapstruct.defaultInjectionStrategy=constructor',
             '-Amapstruct.unmappedTargetPolicy=ERROR',
     ]
 }

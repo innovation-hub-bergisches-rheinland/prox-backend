@@ -1,6 +1,8 @@
 package de.innovationhub.prox.modules.tag.application.tagcollection.usecase;
 
 import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
+import de.innovationhub.prox.modules.tag.application.tagcollection.dto.TagCollectionDtoMapper;
+import de.innovationhub.prox.modules.tag.contract.dto.TagCollectionDto;
 import de.innovationhub.prox.modules.tag.domain.tag.Tag;
 import de.innovationhub.prox.modules.tag.domain.tag.TagRepository;
 import de.innovationhub.prox.modules.tag.domain.tagcollection.TagCollection;
@@ -15,13 +17,14 @@ import lombok.RequiredArgsConstructor;
 public class SetTagCollectionHandler {
   private final TagCollectionRepository tagCollectionRepository;
   private final TagRepository tagRepository;
+  private final TagCollectionDtoMapper dtoMapper;
 
-  public void handle(UUID id, Collection<UUID> tags) {
+  public TagCollectionDto handle(UUID id, Collection<UUID> tags) {
     var tc = tagCollectionRepository.findById(id)
         .orElse(TagCollection.create(id));
     var setTags = StreamSupport.stream(tagRepository.findAllById(tags).spliterator(), false)
         .toList();
-    tc.setTags(setTags.stream().map(Tag::getId).toList());
-    tagCollectionRepository.save(tc);
+    tc.setTags(setTags);
+    return dtoMapper.toDto(tagCollectionRepository.save(tc));
   }
 }

@@ -35,6 +35,7 @@ class SetTagCollectionHandlerIntegrationTest extends AbstractIntegrationTest {
 
     var tagCollection = tagCollectionRepository.findById(id).orElseThrow();
     assertThat(tagCollection.getTags())
+        .extracting(Tag::getId)
         .containsExactlyElementsOf(tagIds);
   }
 
@@ -57,6 +58,7 @@ class SetTagCollectionHandlerIntegrationTest extends AbstractIntegrationTest {
 
     // Only the saved one is applied, no exception is thrown
     assertThat(tagCollection.getTags())
+        .extracting(Tag::getId)
         .containsExactlyElementsOf(List.of(tag1.getId()));
   }
 }

@@ -6,7 +6,6 @@ import de.innovationhub.prox.modules.user.contract.profile.dto.UserProfileDto;
 import de.innovationhub.prox.modules.user.application.profile.dto.UserProfileDtoMapper;
 import de.innovationhub.prox.modules.user.application.profile.usecase.queries.FindAllLecturersByIdsHandler;
 import de.innovationhub.prox.modules.user.application.profile.usecase.queries.FindAllUserProfilesByIdsHandler;
-import de.innovationhub.prox.modules.user.application.profile.usecase.queries.FindLecturersWithAnyTagsHandler;
 import de.innovationhub.prox.modules.user.application.profile.usecase.queries.FindUserProfileHandler;
 import de.innovationhub.prox.modules.user.application.profile.usecase.queries.SearchUserHandler;
 import de.innovationhub.prox.modules.user.contract.profile.UserProfileFacade;
@@ -25,7 +24,6 @@ public class UserProfileFacadeImpl implements UserProfileFacade {
   private final FindUserProfileHandler findUserProfileHandler;
   private final FindAllUserProfilesByIdsHandler findAllUserProfilesByIdsHandler;
   private final SearchUserHandler searchUserHandler;
-  private final FindLecturersWithAnyTagsHandler findLecturersWithAnyTagsHandler;
   private final FindAllLecturersByIdsHandler findAllLecturersByIdsHandler;
   private final UserProfileDtoMapper userProfileDtoMapper;
 
@@ -49,13 +47,6 @@ public class UserProfileFacadeImpl implements UserProfileFacade {
   @Cacheable(CacheConfig.USER_PROFILE)
   public List<UserProfileDto> search(String query) {
     return searchUserHandler.handle(query, Pageable.unpaged())
-        .map(userProfileDtoMapper::toDtoUserProfile)
-        .toList();
-  }
-
-  @Override
-  public List<UserProfileDto> findLecturersWithAnyTags(List<UUID> tags) {
-    return findLecturersWithAnyTagsHandler.handle(tags)
         .map(userProfileDtoMapper::toDtoUserProfile)
         .toList();
   }

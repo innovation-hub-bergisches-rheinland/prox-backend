@@ -13,6 +13,5 @@ public interface UserProfileFacade {
   List<UserProfileDto> findByUserId(List<UUID> ids);
 
   List<UserProfileDto> search(String query);
-  List<UserProfileDto> findLecturersWithAnyTags(List<UUID> tags);
   List<UserProfileDto> findLecturersByIds(Collection<UUID> ids);
 }

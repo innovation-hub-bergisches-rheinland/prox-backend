@@ -7,16 +7,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 @ApplicationComponent
 @RequiredArgsConstructor
-public class FindAllProjectsWithAnyTagsHandler {
+public class FindAllProjectByIdsHandler {
   private final ProjectRepository projectRepository;
 
-  public List<Project> handle(Collection<UUID> tags) {
-    return projectRepository.findAllWithAnyTags(tags, Pageable.unpaged())
-        .stream().toList();
+  public List<Project> handle(Collection<UUID> ids) {
+    return projectRepository.findAllById(ids);
   }
 }

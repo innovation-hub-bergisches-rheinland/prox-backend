@@ -19,6 +19,8 @@ import de.innovationhub.prox.modules.project.domain.project.CurriculumContext;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.recommendation.application.dto.RecommendationRequest;
 import de.innovationhub.prox.modules.recommendation.application.dto.RecommendationResponse.RecommendationResult;
+import de.innovationhub.prox.modules.tag.contract.TagCollectionFacade;
+import de.innovationhub.prox.modules.tag.contract.dto.TagCollectionDto;
 import de.innovationhub.prox.modules.tag.contract.dto.TagDto;
 import de.innovationhub.prox.modules.tag.domain.tag.Tag;
 import de.innovationhub.prox.modules.user.contract.profile.UserProfileFacade;
@@ -39,10 +41,11 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 class GetRecommendationsHandlerTest {
+  TagCollectionFacade tagCollectionFacade = mock(TagCollectionFacade.class);
   UserProfileFacade userProfileFacade = mock(UserProfileFacade.class);
   OrganizationFacade organizationFacade = mock(OrganizationFacade.class);
   ProjectFacade projectFacade = mock(ProjectFacade.class);
-  GetRecommendationsHandler getRecommendationsHandler = new GetRecommendationsHandler(userProfileFacade, organizationFacade, projectFacade);
+  GetRecommendationsHandler getRecommendationsHandler = new GetRecommendationsHandler(tagCollectionFacade, userProfileFacade, organizationFacade, projectFacade);
 
   @Test
   void shouldNotHaveHigherScoreThanOne() {
@@ -50,15 +53,23 @@ class GetRecommendationsHandlerTest {
     var lecturer = Instancio.of(UserProfileDto.class)
         .supply(field(UserProfileDto::tags), () -> seedTags)
         .create();
-    when(userProfileFacade.findLecturersWithAnyTags(anyList())).thenReturn(List.of(lecturer));
-    when(userProfileFacade.getByUserId(lecturer.userId())).thenReturn(Optional.of(lecturer));
+
     // Let's create 100 Projects that are supervised by the lecturer
     var projects = Instancio.ofList(ProjectDto.class)
         .size(100)
         .supply(field(ProjectDto::supervisors), () -> List.of(new ReadSupervisorDto(lecturer.userId(), lecturer.displayName())))
         .supply(field(ProjectDto::tags), () -> seedTags)
         .create();
-    when(projectFacade.findAllWithAnyTags(anyList())).thenReturn(projects);
+
+    var tagCollections = Stream.concat(
+        Stream.of(lecturer.userId()),
+        projects.stream().map(ProjectDto::id)
+    ).map(id -> new TagCollectionDto(id, seedTags)).toList();
+
+    when(tagCollectionFacade.findWithAnyTag(anyList())).thenReturn(tagCollections);
+    when(userProfileFacade.findLecturersByIds(anyList())).thenReturn(List.of(lecturer));
+    when(userProfileFacade.getByUserId(lecturer.userId())).thenReturn(Optional.of(lecturer));
+    when(projectFacade.findAllByIds(anyList())).thenReturn(projects);
     when(projectFacade.get(any())).thenAnswer(invocation -> {
       var id = invocation.getArgument(0);
       return projects.stream().filter(p -> p.id().equals(id)).findFirst();
@@ -96,7 +107,7 @@ class GetRecommendationsHandlerTest {
         .create();
     // Shuffle the projects to ensure that they are not sorted by date (although Instancio does that)
     Collections.shuffle(projects);
-    when(projectFacade.findAllWithAnyTags(anyList())).thenReturn(projects);
+    when(projectFacade.findAllByIds(anyList())).thenReturn(projects);
     when(projectFacade.get(any())).thenAnswer(invocation -> {
       var id = invocation.getArgument(0);
       return projects.stream().filter(p -> p.id().equals(id)).findFirst();
@@ -109,35 +120,5 @@ class GetRecommendationsHandlerTest {
               .isNotEmpty()
               .isSortedAccordingTo((p1, p2) -> p2.item().createdAt().compareTo(p1.item().createdAt()));
         });
-  }
-
-  private UserProfile createLecturer(Collection<Tag> tags) {
-    var profile = UserProfile.create(UUID.randomUUID(), "Xavier Tester", "Lorem Ipsum",
-        new ContactInformation("Test", "Test", "Test"), true);
-    profile.createLecturerProfile(new LecturerProfileInformation());
-    profile.tagProfile(tags.stream().map(Tag::getId).toList());
-    return profile;
-  }
-
-  private Project createDummyProject(UUID organization, Collection<UUID> supervisors, Collection<Tag> tags) {
-    var project = Project.create(
-        new Author(UUID.randomUUID()),
-        "Test Project",
-        "Test Project",
-        "Test Project",
-        "Test Project",
-        CurriculumContext.EMPTY,
-        null,
-        organization,
-        supervisors
-    );
-    project.setTags(tags.stream().map(Tag::getId).toList());
-    return project;
-  }
-
-  private Organization createDummyOrganization(Collection<Tag> tags) {
-    var organization = Organization.create("Test Organization", UUID.randomUUID());
-    organization.setTags(tags.stream().map(Tag::getId).toList());
-    return organization;
   }
 }

@@ -20,6 +20,8 @@ import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
 import de.innovationhub.prox.modules.tag.domain.tag.Tag;
 import de.innovationhub.prox.modules.tag.domain.tag.TagRepository;
+import de.innovationhub.prox.modules.tag.domain.tagcollection.TagCollection;
+import de.innovationhub.prox.modules.tag.domain.tagcollection.TagCollectionRepository;
 import de.innovationhub.prox.modules.user.domain.profile.ContactInformation;
 import de.innovationhub.prox.modules.user.domain.profile.LecturerProfileInformation;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfile;
@@ -55,6 +57,9 @@ class RecommendationControllerIntegrationTest extends AbstractIntegrationTest {
 
   @Autowired
   TagRepository tagRepository;
+
+  @Autowired
+  TagCollectionRepository tagCollectionRepository;
 
   @BeforeEach
   void setupRestAssured() {
@@ -155,6 +160,11 @@ class RecommendationControllerIntegrationTest extends AbstractIntegrationTest {
         new ContactInformation("Test", "Test", "Test"), true);
     profile.createLecturerProfile(new LecturerProfileInformation());
     profile.tagProfile(tags.stream().map(Tag::getId).toList());
+
+    var tagCollection = TagCollection.create(profile.getUserId());
+    tagCollection.setTags(tags);
+    tagCollectionRepository.save(tagCollection);
+
     return profile;
   }
 
@@ -171,12 +181,22 @@ class RecommendationControllerIntegrationTest extends AbstractIntegrationTest {
         supervisors
     );
     project.setTags(tags.stream().map(Tag::getId).toList());
+
+    var tagCollection = TagCollection.create(project.getId());
+    tagCollection.setTags(tags);
+    tagCollectionRepository.save(tagCollection);
+
     return project;
   }
 
   private Organization createDummyOrganization(Collection<Tag> tags) {
     var organization = Organization.create("Test Organization", UUID.randomUUID());
     organization.setTags(tags.stream().map(Tag::getId).toList());
+
+    var tagCollection = TagCollection.create(organization.getId());
+    tagCollection.setTags(tags);
+    tagCollectionRepository.save(tagCollection);
+
     return organization;
   }
 }

@@ -10,6 +10,8 @@ import de.innovationhub.prox.modules.recommendation.application.dto.Recommendati
 import de.innovationhub.prox.modules.recommendation.application.dto.RecommendationResponse;
 import de.innovationhub.prox.modules.recommendation.application.dto.RecommendationResponse.RecommendationResult;
 import de.innovationhub.prox.modules.recommendation.domain.calc.OverlapCoefficientCalculator;
+import de.innovationhub.prox.modules.tag.contract.TagCollectionFacade;
+import de.innovationhub.prox.modules.tag.contract.dto.TagCollectionDto;
 import de.innovationhub.prox.modules.tag.contract.dto.TagDto;
 import de.innovationhub.prox.modules.user.contract.profile.UserProfileFacade;
 import java.util.Arrays;
@@ -35,7 +37,7 @@ public class GetRecommendationsHandler {
       ProjectState.OFFERED, ProjectState.PROPOSED, ProjectState.RUNNING
   };
 
-
+  private final TagCollectionFacade tagCollectionFacade;
   private final UserProfileFacade userProfileFacade;
   private final OrganizationFacade organizationFacade;
   private final ProjectFacade projectFacade;
@@ -43,12 +45,17 @@ public class GetRecommendationsHandler {
 
   @Cacheable(CacheConfig.RECOMMENDATIONS)
   public RecommendationResponse handle(final RecommendationRequest request) {
+    var tagCollections = tagCollectionFacade.findWithAnyTag(request.seedTags());
+    var idsFromTagCollections = tagCollections.stream()
+        .map(TagCollectionDto::id)
+        .toList();
+
     // 1. Get all supervisors which match the seed tags
     // 2. Get all organizations which match the seed tags
     // 3. Get all projects which match the seed tags
-    final var matchingSupervisors = userProfileFacade.findLecturersWithAnyTags(request.seedTags());
-    final var matchingOrganizations = organizationFacade.findAllWithAnyTags(request.seedTags());
-    final var matchingProjects = projectFacade.findAllWithAnyTags(request.seedTags());
+    final var matchingSupervisors = userProfileFacade.findByUserId(idsFromTagCollections);
+    final var matchingOrganizations = organizationFacade.findAllByIds(idsFromTagCollections);
+    final var matchingProjects = projectFacade.findAllByIds(idsFromTagCollections);
 
     // 4. Based on those results, calculate a confidence score for each supervisor, organization and project
     // 4.1 The overlap coefficent index can be used to calculate the confidence score for (1, 2, 3)

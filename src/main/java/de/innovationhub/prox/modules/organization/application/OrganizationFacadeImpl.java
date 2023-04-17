@@ -5,7 +5,6 @@ import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.organization.contract.dto.OrganizationDto;
 import de.innovationhub.prox.modules.organization.application.dto.OrganizationDtoAssembler;
 import de.innovationhub.prox.modules.organization.application.usecase.queries.FindAllByIdsHandler;
-import de.innovationhub.prox.modules.organization.application.usecase.queries.FindAllWithAnyTagsHandler;
 import de.innovationhub.prox.modules.organization.application.usecase.queries.FindOrganizationHandler;
 import de.innovationhub.prox.modules.organization.contract.OrganizationFacade;
 import java.util.Collection;
@@ -20,7 +19,6 @@ import org.springframework.cache.annotation.Cacheable;
 public class OrganizationFacadeImpl implements OrganizationFacade {
   private final OrganizationDtoAssembler organizationDtoAssembler;
   private final FindOrganizationHandler findOrganizationHandler;
-  private final FindAllWithAnyTagsHandler findAllWithAnyTagsHandler;
   private final FindAllByIdsHandler findAllByIdsHandler;
 
   @Override
@@ -28,14 +26,6 @@ public class OrganizationFacadeImpl implements OrganizationFacade {
   public Optional<OrganizationDto> get(UUID id) {
     return findOrganizationHandler.handle(id)
         .map(organizationDtoAssembler::toDto);
-  }
-
-  @Override
-  public List<OrganizationDto> findAllWithAnyTags(Collection<UUID> tags) {
-    return findAllWithAnyTagsHandler.handle(tags)
-        .stream()
-        .map(organizationDtoAssembler::toDto)
-        .toList();
   }
 
   @Override

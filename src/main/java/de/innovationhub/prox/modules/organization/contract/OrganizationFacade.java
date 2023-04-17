@@ -8,6 +8,5 @@ import java.util.UUID;
 
 public interface OrganizationFacade {
     Optional<OrganizationDto> get(UUID id);
-    List<OrganizationDto> findAllWithAnyTags(Collection<UUID> tags);
     List<OrganizationDto> findAllByIds(Collection<UUID> ids);
 }

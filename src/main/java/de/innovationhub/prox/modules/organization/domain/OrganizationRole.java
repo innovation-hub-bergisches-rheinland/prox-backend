@@ -4,7 +4,7 @@ public enum OrganizationRole {
   MEMBER(0),
   ADMIN(1);
 
-  private int priority;
+  private final int priority;
 
   OrganizationRole(int priority) {
     this.priority = priority;

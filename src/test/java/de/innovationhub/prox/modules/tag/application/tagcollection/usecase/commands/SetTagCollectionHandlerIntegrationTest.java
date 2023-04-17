@@ -3,7 +3,6 @@ package de.innovationhub.prox.modules.tag.application.tagcollection.usecase.comm
 import static org.assertj.core.api.Assertions.assertThat;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
-import de.innovationhub.prox.modules.tag.application.tagcollection.usecase.SetTagCollectionHandler;
 import de.innovationhub.prox.modules.tag.domain.tag.Tag;
 import de.innovationhub.prox.modules.tag.domain.tag.TagRepository;
 import de.innovationhub.prox.modules.tag.domain.tagcollection.TagCollectionRepository;

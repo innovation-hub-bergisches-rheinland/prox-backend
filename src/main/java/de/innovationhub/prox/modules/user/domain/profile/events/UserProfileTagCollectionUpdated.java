@@ -4,8 +4,8 @@ import de.innovationhub.prox.commons.buildingblocks.DomainEvent;
 import java.util.Set;
 import java.util.UUID;
 
-public record UserProfileTagged(
+public record UserProfileTagCollectionUpdated(
     UUID userProfileId,
-    Set<UUID> tags
+    UUID tagCollectionId
 ) implements DomainEvent {
 }

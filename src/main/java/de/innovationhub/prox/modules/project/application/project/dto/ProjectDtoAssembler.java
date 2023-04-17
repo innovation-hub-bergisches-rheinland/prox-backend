@@ -12,7 +12,9 @@ import de.innovationhub.prox.modules.project.domain.module.ModuleType;
 import de.innovationhub.prox.modules.project.domain.module.ModuleTypeRepository;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.Supervisor;
+import de.innovationhub.prox.modules.tag.contract.TagCollectionFacade;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
+import de.innovationhub.prox.modules.tag.contract.dto.TagCollectionDto;
 import de.innovationhub.prox.modules.tag.contract.dto.TagDto;
 import de.innovationhub.prox.modules.user.contract.profile.UserProfileFacade;
 import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
@@ -26,7 +28,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProjectDtoAssembler {
 
-  private final TagFacade tagFacade;
+  private final TagCollectionFacade tagCollectionFacade;
   private final OrganizationFacade organizationFacade;
   private final UserProfileFacade userProfileFacade;
   private final ModuleTypeRepository moduleTypeRepository;
@@ -46,10 +48,9 @@ public class ProjectDtoAssembler {
           .orElse(new OrganizationDto(orgId));
     }
 
-    List<TagDto> tags = Collections.emptyList();
-    if (project.getTags() != null) {
-      tags = tagFacade.getTags(project.getTags());
-    }
+    List<TagDto> tags = tagCollectionFacade.getTagCollection(project.getTagCollectionId())
+        .map(TagCollectionDto::tags)
+        .orElse(Collections.emptyList());
 
     var supervisors = userProfileFacade.findByUserId(
         project.getSupervisors()
@@ -85,7 +86,7 @@ public class ProjectDtoAssembler {
     var authentication = authenticationFacade.getAuthentication();
     var permissions = new ProjectPermissions(
         projectPermissionEvaluator.hasPermission(project, authentication),
-        authentication == null ? false : authentication.isAuthenticated()
+        authentication != null && authentication.isAuthenticated()
     );
 
     return permissions;

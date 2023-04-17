@@ -28,7 +28,7 @@ public class CurriculumContext {
       new CurriculumContext(new ArrayList<>(), new ArrayList<>());
 
   @Id
-  private UUID id = UUID.randomUUID();
+  private final UUID id = UUID.randomUUID();
 
   @ElementCollection
   @CollectionTable(schema = PersistenceConfig.PROJECT_SCHEMA)

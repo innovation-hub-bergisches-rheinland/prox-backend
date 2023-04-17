@@ -1,7 +1,9 @@
 package de.innovationhub.prox.modules.user.application.profile.dto;
 
 import de.innovationhub.prox.infra.aws.StorageProvider;
+import de.innovationhub.prox.modules.tag.contract.TagCollectionFacade;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
+import de.innovationhub.prox.modules.tag.contract.dto.TagCollectionDto;
 import de.innovationhub.prox.modules.tag.contract.dto.TagDto;
 import de.innovationhub.prox.modules.user.application.profile.dto.CreateUserProfileRequestDto.ContactInformationRequestDto;
 import de.innovationhub.prox.modules.user.contract.profile.dto.LecturerProfileDto;
@@ -24,21 +26,22 @@ public abstract class UserProfileDtoMapper {
   public static final UserProfileDtoMapper INSTANCE = Mappers.getMapper(UserProfileDtoMapper.class);
 
   @Autowired
-  private TagFacade tagFacade;
+  private TagCollectionFacade tagCollectionFacade;
   @Autowired
   private StorageProvider storageProvider;
 
 
   @Mapping(target = "avatarUrl", source = ".", qualifiedByName = "retrieveAvatarUrl")
-  @Mapping(target = "tags", source = "tags", qualifiedByName = "retrieveTags")
+  @Mapping(target = "tags", source = ".", qualifiedByName = "retrieveTags")
   @Mapping(target = "contact", source = "contactInformation")
   public abstract UserProfileDto toDtoUserProfile(UserProfile userProfile);
   public abstract LecturerProfileDto toDtoLecturerProfile(LecturerProfile profile);
   public abstract LecturerProfileInformationDto toDtoLecturerProfileInformation(LecturerProfileInformation profileInformation);
 
   @Named("retrieveTags")
-  public List<TagDto> retrieveTags(Collection<UUID> tagIds) {
-    return tagFacade.getTags(tagIds);
+  public List<TagDto> retrieveTags(UserProfile userProfile) {
+    return tagCollectionFacade.getTagCollection(userProfile.getTagCollectionId()).map(
+        TagCollectionDto::tags).orElse(List.of());
   }
 
   @Named("retrieveAvatarUrl")

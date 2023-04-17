@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.tag.application.tagcollection.usecase;
+package de.innovationhub.prox.modules.tag.application.tagcollection.usecase.commands;
 
 import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.tag.application.tagcollection.dto.TagCollectionDtoMapper;

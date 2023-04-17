@@ -17,6 +17,10 @@ import de.innovationhub.prox.modules.project.application.project.dto.SetProjectT
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
 import de.innovationhub.prox.modules.project.domain.project.Supervisor;
+import de.innovationhub.prox.modules.tag.contract.TagCollectionFacade;
+import de.innovationhub.prox.modules.tag.domain.tag.Tag;
+import de.innovationhub.prox.modules.tag.domain.tag.TagRepository;
+import de.innovationhub.prox.modules.tag.domain.tagcollection.TagCollectionRepository;
 import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import jakarta.transaction.Transactional;
@@ -43,6 +47,12 @@ class ProjectControllerIntegrationTest extends ProjectIntegrationTest {
 
   @Autowired
   ProjectRepository projectRepository;
+
+  @Autowired
+  TagRepository tagRepository;
+
+  @Autowired
+  TagCollectionRepository tagCollectionRepository;
 
   @BeforeEach
   void setUpMockMvc() {
@@ -318,8 +328,10 @@ class ProjectControllerIntegrationTest extends ProjectIntegrationTest {
     var project = ProjectFixtures.build_a_project();
     projectRepository.save(project);
 
-    var tags = List.of(UUID.randomUUID(), UUID.randomUUID());
-    var setTags = new SetProjectTagsRequestDto(tags);
+    var tags = List.of(Tag.create("Test1"), Tag.create("Test2"));
+    tagRepository.saveAll(tags);
+    var tagIds = tags.stream().map(Tag::getId).toList();
+    var setTags = new SetProjectTagsRequestDto(tagIds);
 
     given()
         .contentType(ContentType.JSON)
@@ -330,7 +342,9 @@ class ProjectControllerIntegrationTest extends ProjectIntegrationTest {
         .then()
         .status(HttpStatus.OK);
 
+
     var updatedProject = projectRepository.findById(project.getId()).get();
-    assertThat(updatedProject.getTags()).containsExactlyInAnyOrderElementsOf(tags);
+    var tagCollection = tagCollectionRepository.findById(updatedProject.getTagCollectionId()).get();
+    assertThat(tagCollection.getTags()).containsExactlyInAnyOrderElementsOf(tags);
   }
 }

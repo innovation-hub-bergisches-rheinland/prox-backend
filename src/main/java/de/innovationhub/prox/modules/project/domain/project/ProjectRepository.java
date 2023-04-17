@@ -21,13 +21,12 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
                  LEFT JOIN prox_project.curriculum_context cc on p.curriculum_context_id = cc.id
                  LEFT JOIN prox_project.curriculum_context_disciplines cd on cd.curriculum_context_id = cc.id
                  LEFT JOIN prox_project.curriculum_context_module_types cm on cm.curriculum_context_id = cc.id
-                 LEFT JOIN prox_project.project_tags pt on pt.project_id = p.id
                  LEFT JOIN prox_project.project_supervisors ps on ps.project_id = p.id,
               plainto_tsquery('german', :query) q
         WHERE (:state IS NULL OR p.state IN (:state))
             AND (:disciplineKeys IS NULL OR cd.disciplines IN (:disciplineKeys))
             AND (:moduleTypeKeys IS NULL OR cm.module_types IN (:moduleTypeKeys))
-            AND (:tagIds IS NULL OR pt.tags IN (:tagIds))
+            AND (:tagCollectionIds IS NULL OR p.tag_collection_id IN (:tagCollectionIds))
             AND (:query <> '' IS NOT TRUE OR
                   -- If we have a query it might match on the document or the supervisor
                   (p.document @@ q OR (:supervisorIds) IS NULL OR ps.lecturer_id IN (:supervisorIds)) 
@@ -39,7 +38,7 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
       @Nullable @Param("disciplineKeys") Collection<String> disciplineKeys,
       @Nullable @Param("moduleTypeKeys") Collection<String> moduleTypeKeys,
       @Nullable @Param("query") String query,
-      @Nullable @Param("tagIds") Collection<UUID> tagIds,
+      @Nullable @Param("tagCollectionIds") Collection<UUID> tagCollectionIds,
       @Nullable @Param("supervisorIds") Collection<UUID> supervisorIds,
       Pageable pageable);
 
@@ -58,7 +57,4 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
 
   @Query("select p from Project p join p.supervisors s where s.lecturerId = ?1")
   Page<Project> findBySupervisor(UUID supervisorId, Pageable pageable);
-
-  @Query("select p from Project p join p.tags t where t in (?1)")
-  Page<Project> findAllWithAnyTags(Collection<UUID> tags, Pageable pageable);
 }

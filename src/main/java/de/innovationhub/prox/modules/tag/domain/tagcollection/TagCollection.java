@@ -22,7 +22,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @Getter
 @Table(schema = PersistenceConfig.TAG_SCHEMA)
 public class TagCollection extends AuditedAggregateRoot {
@@ -35,13 +34,18 @@ public class TagCollection extends AuditedAggregateRoot {
   private List<Tag> tags = new ArrayList<>();
 
   public static TagCollection create(UUID id) {
-    var createdTagCollection = new TagCollection(id);
+    return create(id, new ArrayList<>());
+  }
+
+  public static TagCollection create(UUID id, Collection<Tag> tags) {
+    var createdTagCollection = new TagCollection(id, new ArrayList<>(tags));
     createdTagCollection.registerEvent(TagCollectionCreated.from(createdTagCollection));
     return createdTagCollection;
   }
 
-  public TagCollection(UUID id) {
+  public TagCollection(UUID id, List<Tag> tags) {
     this.id = id;
+    this.tags = tags;
   }
 
   public void setTags(Collection<Tag> tags) {

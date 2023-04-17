@@ -71,10 +71,10 @@ class RecommendationControllerIntegrationTest extends AbstractIntegrationTest {
     // It's a bit hard to test this, we just test that the endpoint is reachable and returns a
     // reasonable result without crashing.
     // Especially it is hard to setup test data. Maybe we need a pre-populated database for this.
-
     var seedTags = List.of(Tag.create("test1"), Tag.create("test2"));
     var randomTags = List.of(Tag.create("test3"), Tag.create("test4"));
     var mixedTags = List.of(seedTags.get(0), randomTags.get(0));
+
     tagRepository.saveAll(seedTags);
     tagRepository.saveAll(randomTags);
 
@@ -159,11 +159,11 @@ class RecommendationControllerIntegrationTest extends AbstractIntegrationTest {
     var profile = UserProfile.create(UUID.randomUUID(), "Xavier Tester", "Lorem Ipsum",
         new ContactInformation("Test", "Test", "Test"), true);
     profile.createLecturerProfile(new LecturerProfileInformation());
-    profile.tagProfile(tags.stream().map(Tag::getId).toList());
 
     var tagCollection = TagCollection.create(profile.getUserId());
     tagCollection.setTags(tags);
     tagCollectionRepository.save(tagCollection);
+    profile.setTagCollectionId(tagCollection.getId());
 
     return profile;
   }
@@ -180,22 +180,24 @@ class RecommendationControllerIntegrationTest extends AbstractIntegrationTest {
         organization,
         supervisors
     );
-    project.setTags(tags.stream().map(Tag::getId).toList());
 
     var tagCollection = TagCollection.create(project.getId());
     tagCollection.setTags(tags);
     tagCollectionRepository.save(tagCollection);
+
+    project.setTagCollection(tagCollection.getId());
 
     return project;
   }
 
   private Organization createDummyOrganization(Collection<Tag> tags) {
     var organization = Organization.create("Test Organization", UUID.randomUUID());
-    organization.setTags(tags.stream().map(Tag::getId).toList());
 
     var tagCollection = TagCollection.create(organization.getId());
     tagCollection.setTags(tags);
     tagCollectionRepository.save(tagCollection);
+
+    organization.setTagCollectionId(tagCollection.getId());
 
     return organization;
   }

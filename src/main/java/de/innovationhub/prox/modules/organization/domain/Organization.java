@@ -9,10 +9,9 @@ import de.innovationhub.prox.modules.organization.domain.events.OrganizationMemb
 import de.innovationhub.prox.modules.organization.domain.events.OrganizationMemberUpdated;
 import de.innovationhub.prox.modules.organization.domain.events.OrganizationProfileUpdated;
 import de.innovationhub.prox.modules.organization.domain.events.OrganizationRenamed;
-import de.innovationhub.prox.modules.organization.domain.events.OrganizationTagged;
+import de.innovationhub.prox.modules.organization.domain.events.OrganizationTagCollectionUpdated;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -20,12 +19,9 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -53,9 +49,7 @@ public class Organization extends AuditedAggregateRoot {
   @JoinTable(schema = PersistenceConfig.ORGANIZATION_SCHEMA)
   private List<Membership> members = new ArrayList<>();
 
-  @ElementCollection
-  @CollectionTable(schema = PersistenceConfig.ORGANIZATION_SCHEMA)
-  private Set<UUID> tags = new HashSet<>();
+  private UUID tagCollectionId;
 
   private String logoKey;
 
@@ -67,6 +61,7 @@ public class Organization extends AuditedAggregateRoot {
     this.id = id;
     this.name = name;
     this.members = new ArrayList<>(members);
+    this.tagCollectionId = id;
   }
 
   public static Organization create(String name, UUID founder) {
@@ -169,9 +164,17 @@ public class Organization extends AuditedAggregateRoot {
     return List.copyOf(members);
   }
 
-  public void setTags(Collection<UUID> tags) {
-    this.tags = new HashSet<>(tags);
-    this.registerEvent(new OrganizationTagged(this.id, this.tags));
+  public void setTagCollectionId(UUID tagCollectionId) {
+    if (tagCollectionId == null) {
+      throw new IllegalArgumentException("Tag collection id cannot be null");
+    }
+
+    if (tagCollectionId.equals(this.tagCollectionId)) {
+      return;
+    }
+
+    this.tagCollectionId = tagCollectionId;
+    this.registerEvent(new OrganizationTagCollectionUpdated(this.id, this.tagCollectionId));
   }
 
   public void setName(String name) {

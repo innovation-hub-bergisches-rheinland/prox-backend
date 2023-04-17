@@ -4,9 +4,9 @@ import de.innovationhub.prox.commons.buildingblocks.DomainEvent;
 import java.util.Collection;
 import java.util.UUID;
 
-public record ProjectTagged(
+public record ProjectTagCollectionUpdated(
     UUID projectId,
-    Collection<UUID> tags
+    UUID tagCollectionId
 ) implements DomainEvent {
 
 }

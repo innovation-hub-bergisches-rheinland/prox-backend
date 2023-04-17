@@ -8,7 +8,7 @@ import de.innovationhub.prox.modules.project.domain.project.events.ProjectIntere
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectInterestUnstated;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectOffered;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectStateUpdated;
-import de.innovationhub.prox.modules.project.domain.project.events.ProjectTagged;
+import de.innovationhub.prox.modules.project.domain.project.events.ProjectTagCollectionUpdated;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -95,18 +95,18 @@ class ProjectTest {
   @Test
   void shouldTagProject() {
     var project = createTestProject(ProjectState.PROPOSED);
-    var tags = List.of(UUID.randomUUID(), UUID.randomUUID());
+    var tagCollectionId = UUID.randomUUID();
 
-    project.setTags(tags);
+    project.setTagCollection(tagCollectionId);
 
-    assertThat(project.getTags()).containsExactlyInAnyOrderElementsOf(tags);
+    assertThat(project.getTagCollectionId()).isEqualTo(tagCollectionId);
     assertThat(project.getDomainEvents())
-        .filteredOn(event -> event instanceof ProjectTagged)
+        .filteredOn(event -> event instanceof ProjectTagCollectionUpdated)
         .hasSize(1)
         .first()
-        .isInstanceOfSatisfying(ProjectTagged.class, event -> {
+        .isInstanceOfSatisfying(ProjectTagCollectionUpdated.class, event -> {
           assertThat(event.projectId()).isEqualTo(project.getId());
-          assertThat(event.tags()).containsExactlyInAnyOrderElementsOf(tags);
+          assertThat(event.tagCollectionId()).isEqualTo(tagCollectionId);
         });
   }
 
@@ -147,23 +147,6 @@ class ProjectTest {
         });
   }
 
-  private Project createProjectWithSupervisors(Collection<Supervisor> supervisors) {
-    return new Project(
-        UUID.randomUUID(),
-        new Author(UUID.randomUUID()),
-        null,
-        "Test",
-        "Test",
-        "Test",
-        "Test",
-        null,
-        new ProjectStatus(ProjectState.PROPOSED, Instant.now()),
-        null,
-        new ArrayList<>(supervisors),
-        null,
-        new HashSet<>());
-  }
-
   private Project createTestProject(ProjectState state) {
     return new Project(
         UUID.randomUUID(),
@@ -176,8 +159,6 @@ class ProjectTest {
         null,
         new ProjectStatus(state, Instant.now()),
         null,
-        Collections.emptyList(),
-        null,
-        new HashSet<>());
+        Collections.emptyList());
   }
 }

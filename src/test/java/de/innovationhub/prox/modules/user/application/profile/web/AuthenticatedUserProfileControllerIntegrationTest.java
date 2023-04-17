@@ -5,6 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
+import de.innovationhub.prox.modules.tag.domain.tag.Tag;
+import de.innovationhub.prox.modules.tag.domain.tag.TagRepository;
+import de.innovationhub.prox.modules.tag.domain.tagcollection.TagCollection;
+import de.innovationhub.prox.modules.tag.domain.tagcollection.TagCollectionRepository;
 import de.innovationhub.prox.modules.user.application.profile.dto.CreateUserProfileRequestDto;
 import de.innovationhub.prox.modules.user.application.profile.dto.CreateUserProfileRequestDto.ContactInformationRequestDto;
 import de.innovationhub.prox.modules.user.application.profile.dto.SetTagsRequestDto;
@@ -16,6 +20,7 @@ import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,6 +46,12 @@ class AuthenticatedUserProfileControllerIntegrationTest extends AbstractIntegrat
 
   @Autowired
   UserProfileRepository userProfileRepository;
+
+  @Autowired
+  TagCollectionRepository tagCollectionRepository;
+
+  @Autowired
+  TagRepository tagRepository;
 
   @BeforeEach
   void setupRestAssured() {
@@ -147,8 +158,10 @@ class AuthenticatedUserProfileControllerIntegrationTest extends AbstractIntegrat
     var profile = createDummyProfile();
     userProfileRepository.save(profile);
 
-    var tags = List.of(UUID.randomUUID(), UUID.randomUUID());
-    var request = new SetTagsRequestDto(tags);
+    var tags = List.of(Tag.create("Test1"), Tag.create("Test2"));
+    tagRepository.saveAll(tags);
+    var tagIds = tags.stream().map(Tag::getId).toList();
+    var request = new SetTagsRequestDto(tagIds);
 
     given()
         .accept(ContentType.JSON)
@@ -159,8 +172,9 @@ class AuthenticatedUserProfileControllerIntegrationTest extends AbstractIntegrat
         .then()
         .statusCode(200);
 
-    assertThat(userProfileRepository.findByUserId(authUserId).get().getTags())
-        .containsExactlyInAnyOrderElementsOf(tags);
+    var savedProfile = userProfileRepository.findByUserId(authUserId).get();
+    var tagCollection = tagCollectionRepository.findById(savedProfile.getTagCollectionId()).get();
+    assertThat(tagCollection.getTags()).containsExactlyInAnyOrderElementsOf(tags);
   }
 
   private UserProfile createDummyProfile() {

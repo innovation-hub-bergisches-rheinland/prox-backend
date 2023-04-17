@@ -30,6 +30,15 @@ public interface TagCollectionRepository extends JpaRepository<TagCollection, UU
       """)
   List<TagCollection> findWithAnyTag(Collection<UUID> tags);
 
+  @Query("""
+        select tc from TagCollection tc
+        join tc.tags t1
+        where t1.id in :tags
+        group by tc.id
+        having count(tc.id) >= :size
+      """)
+  List<TagCollection> findWithAllTags(Collection<UUID> tags, int size);
+
 
   // I hate Hibernate, JPA and every ORM in the whole world. I can't get this query to work with
   // query expressions. Neither with JPQL nor with native SQL. I don't know why, but it just

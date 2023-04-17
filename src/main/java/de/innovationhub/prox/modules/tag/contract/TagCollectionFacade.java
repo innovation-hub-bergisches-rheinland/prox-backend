@@ -13,4 +13,5 @@ public interface TagCollectionFacade {
   Optional<TagCollectionDto> getTagCollection(UUID id);
   TagCollectionDto setTagCollection(UUID id, Collection<UUID> tags);
   List<TagCollectionDto> findWithAnyTag(Collection<UUID> tags);
+  List<TagCollectionDto> findWithAllTags(Collection<UUID> tags);
 }

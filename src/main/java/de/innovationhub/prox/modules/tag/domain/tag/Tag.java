@@ -14,6 +14,7 @@ import jakarta.validation.constraints.Size;
 import java.util.Objects;
 import java.util.UUID;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NaturalId;
@@ -25,6 +26,7 @@ import org.hibernate.annotations.NaturalId;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(schema = PersistenceConfig.TAG_SCHEMA)
+@EqualsAndHashCode
 public class Tag extends AuditedAggregateRoot {
 
   @Id

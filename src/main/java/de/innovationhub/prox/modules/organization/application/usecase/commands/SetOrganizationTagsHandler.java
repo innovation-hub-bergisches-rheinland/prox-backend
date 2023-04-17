@@ -5,9 +5,12 @@ import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.organization.application.exception.OrganizationNotFoundException;
 import de.innovationhub.prox.modules.organization.domain.OrganizationRepository;
 import de.innovationhub.prox.modules.organization.domain.OrganizationRole;
+import de.innovationhub.prox.modules.tag.contract.TagCollectionFacade;
+import de.innovationhub.prox.modules.tag.contract.dto.TagDto;
 import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
 import java.util.List;
 import java.util.UUID;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 
@@ -17,9 +20,11 @@ public class SetOrganizationTagsHandler {
 
   private final OrganizationRepository organizationRepository;
   private final AuthenticationFacade authenticationFacade;
+  private final TagCollectionFacade tagCollectionFacade;
 
+  @Transactional
   @PreAuthorize("@organizationPermissionEvaluator.hasPermission(#organizationId, authentication)")
-  public List<UUID> handle(UUID organizationId,
+  public List<TagDto> handle(UUID organizationId,
       List<UUID> tags) {
     var organization = organizationRepository.findById(organizationId)
         .orElseThrow(OrganizationNotFoundException::new);
@@ -29,8 +34,9 @@ public class SetOrganizationTagsHandler {
       throw new UnauthorizedAccessException();
     }
 
-    organization.setTags(tags);
+    var tagCollection = tagCollectionFacade.setTagCollection(organization.getTagCollectionId(), tags);
+    organization.setTagCollectionId(tagCollection.id());
     organizationRepository.save(organization);
-    return List.copyOf(organization.getTags());
+    return tagCollection.tags();
   }
 }

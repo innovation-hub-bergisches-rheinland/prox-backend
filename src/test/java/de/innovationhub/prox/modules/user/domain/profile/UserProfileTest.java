@@ -8,7 +8,7 @@ import de.innovationhub.prox.modules.user.domain.profile.events.LecturerProfileC
 import de.innovationhub.prox.modules.user.domain.profile.events.LecturerProfileUpdated;
 import de.innovationhub.prox.modules.user.domain.profile.events.UserProfileAvatarSet;
 import de.innovationhub.prox.modules.user.domain.profile.events.UserProfileCreated;
-import de.innovationhub.prox.modules.user.domain.profile.events.UserProfileTagged;
+import de.innovationhub.prox.modules.user.domain.profile.events.UserProfileTagCollectionUpdated;
 import de.innovationhub.prox.modules.user.domain.profile.events.UserProfileUpdated;
 import de.innovationhub.prox.modules.user.domain.profile.exception.LecturerProfileAlreadyExistsException;
 import de.innovationhub.prox.modules.user.domain.profile.exception.LecturerProfileDoesNotExistException;
@@ -79,9 +79,9 @@ class UserProfileTest {
     var up = createDummyUserProfile();
     up.createLecturerProfile(createDummyLecturerProfileInfo());
 
-    up.tagProfile(List.of());
+    up.setTagCollectionId(UUID.randomUUID());
 
-    domainEventsContainOne(up, UserProfileTagged.class);
+    domainEventsContainOne(up, UserProfileTagCollectionUpdated.class);
   }
 
   private void domainEventsContainOne(UserProfile up, Class<? extends DomainEvent> domainEvent) {

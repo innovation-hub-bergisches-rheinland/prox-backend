@@ -7,7 +7,9 @@ import de.innovationhub.prox.modules.organization.contract.dto.OrganizationDto;
 import de.innovationhub.prox.modules.organization.contract.dto.OrganizationPermissions;
 import de.innovationhub.prox.modules.organization.domain.Membership;
 import de.innovationhub.prox.modules.organization.domain.Organization;
+import de.innovationhub.prox.modules.tag.contract.TagCollectionFacade;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
+import de.innovationhub.prox.modules.tag.contract.dto.TagCollectionDto;
 import de.innovationhub.prox.modules.tag.contract.dto.TagDto;
 import de.innovationhub.prox.modules.user.contract.profile.dto.UserProfileDto;
 import de.innovationhub.prox.modules.user.contract.profile.UserProfileFacade;
@@ -22,7 +24,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class OrganizationDtoAssembler {
-  private final TagFacade tagFacade;
+  private final TagCollectionFacade tagCollectionFacade;
   private final StorageProvider storageProvider;
   private final OrganizationDtoMapper organizationDtoMapper;
   private final UserProfileFacade userFacade;
@@ -38,10 +40,9 @@ public class OrganizationDtoAssembler {
       logoUrl = storageProvider.buildUrl(organization.getLogoKey());
     }
 
-    List<TagDto> tags = Collections.emptyList();
-    if (organization.getTags() != null) {
-      tags = tagFacade.getTags(organization.getTags());
-    }
+    List<TagDto> tags = tagCollectionFacade.getTagCollection(organization.getTagCollectionId())
+        .map(TagCollectionDto::tags)
+        .orElse(Collections.emptyList());
 
     var permissions = new OrganizationPermissions(
         organizationPermissionEvaluator.hasPermission(organization, authenticationFacade.getAuthentication())

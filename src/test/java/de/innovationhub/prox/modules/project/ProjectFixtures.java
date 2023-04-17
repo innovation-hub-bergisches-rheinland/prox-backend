@@ -37,8 +37,6 @@ public class ProjectFixtures {
         ),
         new ProjectStatus(ProjectState.PROPOSED, Instant.now()),
         null,
-        Collections.emptyList(),
-        null,
-        new HashSet<>());
+        Collections.emptyList());
   }
 }

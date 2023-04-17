@@ -23,7 +23,7 @@ class TagCollectionTest {
 
   @Test
   void shouldRegisterTagCollectionUpdatedEventOnCreate() {
-    var tagCollection = new TagCollection(UUID.randomUUID());
+    var tagCollection = new TagCollection(UUID.randomUUID(), new ArrayList<>());
     tagCollection.setTags(new ArrayList<>());
     var domainEvents = tagCollection.getDomainEvents();
 

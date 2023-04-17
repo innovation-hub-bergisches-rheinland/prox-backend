@@ -57,7 +57,7 @@ public class AuthenticatedUserProfileController {
       @RequestBody SetTagsRequestDto tagsDto,
       Authentication authentication) {
     var result = setTags.handle(extractUserId(authentication), tagsDto.tags());
-    return ResponseEntity.ok(new SetLecturerTagsResponseDto(dtoMapper.retrieveTags(result)));
+    return ResponseEntity.ok(new SetLecturerTagsResponseDto(result));
   }
 
   @PostMapping(value = "avatar", consumes = "multipart/form-data")

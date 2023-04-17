@@ -6,29 +6,24 @@ import de.innovationhub.prox.modules.user.domain.profile.events.LecturerProfileC
 import de.innovationhub.prox.modules.user.domain.profile.events.LecturerProfileUpdated;
 import de.innovationhub.prox.modules.user.domain.profile.events.UserProfileAvatarSet;
 import de.innovationhub.prox.modules.user.domain.profile.events.UserProfileCreated;
-import de.innovationhub.prox.modules.user.domain.profile.events.UserProfileTagged;
+import de.innovationhub.prox.modules.user.domain.profile.events.UserProfileTagCollectionUpdated;
 import de.innovationhub.prox.modules.user.domain.profile.events.UserProfileUpdated;
 import de.innovationhub.prox.modules.user.domain.profile.exception.LecturerProfileAlreadyExistsException;
 import de.innovationhub.prox.modules.user.domain.profile.exception.LecturerProfileDoesNotExistException;
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.NaturalId;
 
 
@@ -63,9 +58,8 @@ public class UserProfile extends AuditedAggregateRoot {
   @Column(columnDefinition = "TEXT")
   private String vita;
 
-  @ElementCollection(fetch = FetchType.EAGER)
-  @CollectionTable(schema = PersistenceConfig.USER_SCHEMA)
-  private Set<UUID> tags = new HashSet<>();
+  @Setter(AccessLevel.NONE)
+  private UUID tagCollectionId;
 
   protected UserProfile(UUID id, UUID userId, String displayName, String vita,
       ContactInformation contactInformation, boolean visibleInPublicSearch) {
@@ -75,6 +69,7 @@ public class UserProfile extends AuditedAggregateRoot {
     this.vita = vita;
     this.contactInformation = contactInformation;
     this.visibleInPublicSearch = visibleInPublicSearch;
+    this.tagCollectionId = userId;
   }
 
   public static UserProfile create(UUID userId, String displayName, String vita,
@@ -121,8 +116,16 @@ public class UserProfile extends AuditedAggregateRoot {
     this.registerEvent(new LecturerProfileUpdated(this.id, this.lecturerProfile.getId()));
   }
 
-  public void tagProfile(Collection<UUID> tagIds) {
-    this.tags = new HashSet<>(tagIds);
-    this.registerEvent(new UserProfileTagged(this.id, this.getTags()));
+  public void setTagCollectionId(UUID tagCollectionId) {
+    if (tagCollectionId == null) {
+      throw new IllegalArgumentException("Tag collection id cannot be null");
+    }
+
+    if (tagCollectionId.equals(this.tagCollectionId)) {
+      return;
+    }
+
+    this.tagCollectionId = tagCollectionId;
+    this.registerEvent(new UserProfileTagCollectionUpdated(this.id, this.getTagCollectionId()));
   }
 }

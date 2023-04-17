@@ -7,7 +7,7 @@ import de.innovationhub.prox.modules.project.domain.project.events.ProjectIntere
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectInterestUnstated;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectOffered;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectStateUpdated;
-import de.innovationhub.prox.modules.project.domain.project.events.ProjectTagged;
+import de.innovationhub.prox.modules.project.domain.project.events.ProjectTagCollectionUpdated;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectUpdated;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
@@ -30,7 +30,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -45,15 +44,12 @@ import org.springframework.lang.Nullable;
 @ToString
 @Getter
 @Setter
-@AllArgsConstructor
-@Builder(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(schema = PersistenceConfig.PROJECT_SCHEMA)
 public class Project extends AuditedAggregateRoot {
 
   @Id
-  @Builder.Default
   private UUID id = UUID.randomUUID();
 
   @NotNull
@@ -87,23 +83,17 @@ public class Project extends AuditedAggregateRoot {
   @CollectionTable(schema = PersistenceConfig.PROJECT_SCHEMA)
   private ProjectStatus status;
 
-  @Builder.Default
   @Embedded
   @CollectionTable(schema = PersistenceConfig.PROJECT_SCHEMA)
   private TimeBox timeBox = null;
 
-  @Builder.Default
   @ElementCollection
   @CollectionTable(schema = PersistenceConfig.PROJECT_SCHEMA)
   private List<Supervisor> supervisors = new ArrayList<>();
 
-  @ElementCollection
-  @Builder.Default
-  @CollectionTable(schema = PersistenceConfig.PROJECT_SCHEMA)
-  private Set<UUID> tags = new HashSet<>();
+  private UUID tagCollectionId = this.id;
 
   @ElementCollection
-  @Builder.Default
   @CollectionTable(schema = PersistenceConfig.PROJECT_SCHEMA)
   private Set<InterestedUser> interestedUsers = new HashSet<>();
 
@@ -127,7 +117,7 @@ public class Project extends AuditedAggregateRoot {
     var project = new Project(UUID.randomUUID(),
         author, partner != null ? new Partner(partner) : null, title, summary, description, requirement, context,
         new ProjectStatus(state, Instant.now()), timeBox,
-        supervisorsList, null, new HashSet<>());
+        supervisorsList);
     project.registerEvent(new ProjectCreated(project.getId()));
     return project;
   }
@@ -152,6 +142,24 @@ public class Project extends AuditedAggregateRoot {
     this.setSupervisors(supervisors);
 
     this.registerEvent(new ProjectUpdated(this.getId()));
+  }
+
+  public Project(UUID id, Author author, Partner partner, String title, String summary,
+      String description, String requirement, CurriculumContext curriculumContext,
+      ProjectStatus status, TimeBox timeBox, List<Supervisor> supervisors) {
+    this.id = id;
+    this.author = author;
+    this.partner = partner;
+    this.title = title;
+    this.summary = summary;
+    this.description = description;
+    this.requirement = requirement;
+    this.curriculumContext = curriculumContext;
+    this.status = status;
+    this.timeBox = timeBox;
+    this.supervisors = supervisors;
+    this.tagCollectionId = id;
+    this.interestedUsers = new HashSet<>();
   }
 
   public void updateState(ProjectState state) {
@@ -182,9 +190,17 @@ public class Project extends AuditedAggregateRoot {
     this.supervisors = new ArrayList<>(supervisorList);
   }
 
-  public void setTags(Collection<UUID> tags) {
-    this.tags = new HashSet<>(tags);
-    this.registerEvent(new ProjectTagged(this.id, tags));
+  public void setTagCollection(UUID tagCollectionId) {
+    if (tagCollectionId == null) {
+      throw new IllegalArgumentException("Tag collection id must not be null");
+    }
+
+    if (tagCollectionId.equals(this.tagCollectionId)) {
+      return;
+    }
+
+    this.tagCollectionId = tagCollectionId;
+    this.registerEvent(new ProjectTagCollectionUpdated(this.id, tagCollectionId));
   }
 
   public void stateInterest(InterestedUser interestedUser) {

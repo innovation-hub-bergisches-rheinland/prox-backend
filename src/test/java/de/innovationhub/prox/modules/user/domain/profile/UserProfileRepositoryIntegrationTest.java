@@ -78,19 +78,6 @@ class UserProfileRepositoryIntegrationTest extends AbstractIntegrationTest {
         .satisfies(r -> assertThat(r.getUserId()).isEqualTo(up.getUserId()));
   }
 
-  @Test
-  void shouldFindLecturersWithTags() {
-    var up = createDummyLecturer(true);
-    var tags = List.of(UUID.randomUUID(), UUID.randomUUID());
-    up.tagProfile(tags);
-    userProfileRepository.save(up);
-
-    var result = userProfileRepository.findAllLecturersWithAnyTag(List.of(tags.get(0)), Pageable.unpaged());
-
-    assertThat(result)
-        .hasSize(1);
-  }
-
   private UserProfile createDummyUserProfile(boolean visibility) {
     return UserProfile.create(UUID.randomUUID(), "Xavier Tester", "Lorem Ipsum",
         new ContactInformation("Test", "Test", "Test"), visibility);

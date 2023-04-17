@@ -14,17 +14,13 @@ public interface OrganizationRepository extends JpaRepository<Organization, UUID
   @Query("select o from Organization o order by o.name asc")
   Page<Organization> findAll(Pageable pageable);
 
-  @Query("select o from Organization o join o.tags t where t in (?1)")
-  Page<Organization> findAllWithAnyTags(Collection<UUID> tagIds, Pageable pageable);
-
   @Query(nativeQuery = true, value = """
         WITH input AS (
             SELECT :query as query
         )
         SELECT DISTINCT o.*
         FROM input, prox_organization.organization o
-                 LEFT JOIN prox_organization.organization_tags ot ON o.id = ot.organization_id
-        WHERE (:tagIds IS NULL OR ot.tags IN (:tagIds))
+        WHERE (:tagCollections IS NULL OR o.tag_collection_id IN (:tagCollections))
           AND (input.query <> '' IS NOT TRUE OR
                   word_similarity(input.query, o.name) > 0.3
               )
@@ -32,6 +28,6 @@ public interface OrganizationRepository extends JpaRepository<Organization, UUID
       """)
   Page<Organization> search(
       @Param("query") String query,
-      @Param("tagIds") Collection<UUID> tagIds,
+      @Param("tagCollections") Collection<UUID> tagIds,
       Pageable pageable);
 }

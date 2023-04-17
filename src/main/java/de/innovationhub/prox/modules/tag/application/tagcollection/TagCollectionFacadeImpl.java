@@ -1,9 +1,10 @@
 package de.innovationhub.prox.modules.tag.application.tagcollection;
 
 import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
+import de.innovationhub.prox.modules.tag.application.tagcollection.usecase.queries.FindWithAllTagsHandler;
 import de.innovationhub.prox.modules.tag.application.tagcollection.usecase.queries.FindWithAnyTagHandler;
 import de.innovationhub.prox.modules.tag.application.tagcollection.usecase.queries.GetTagCollectionHandler;
-import de.innovationhub.prox.modules.tag.application.tagcollection.usecase.SetTagCollectionHandler;
+import de.innovationhub.prox.modules.tag.application.tagcollection.usecase.commands.SetTagCollectionHandler;
 import de.innovationhub.prox.modules.tag.contract.TagCollectionFacade;
 import de.innovationhub.prox.modules.tag.contract.dto.TagCollectionDto;
 import java.util.Collection;
@@ -18,6 +19,7 @@ public class TagCollectionFacadeImpl implements TagCollectionFacade {
   private final GetTagCollectionHandler getTagCollectionHandler;
   private final SetTagCollectionHandler setTagCollectionHandler;
   private final FindWithAnyTagHandler findWithAnyTagHandler;
+  private final FindWithAllTagsHandler findWithAllTagsHandler;
 
   @Override
   public Optional<TagCollectionDto> getTagCollection(UUID id) {
@@ -32,5 +34,10 @@ public class TagCollectionFacadeImpl implements TagCollectionFacade {
   @Override
   public List<TagCollectionDto> findWithAnyTag(Collection<UUID> tags) {
     return findWithAnyTagHandler.handle(tags);
+  }
+
+  @Override
+  public List<TagCollectionDto> findWithAllTags(Collection<UUID> tags) {
+    return findWithAllTagsHandler.handle(tags);
   }
 }

@@ -8,6 +8,6 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper
 public interface UserProfileMapper {
-  public static final UserProfileMapper INSTANCE = Mappers.getMapper(UserProfileMapper.class);
+  UserProfileMapper INSTANCE = Mappers.getMapper(UserProfileMapper.class);
   void updateLecturerInformationFromDto(CreateLecturerProfileDto dto, @MappingTarget LecturerProfileInformation information);
 }

@@ -15,6 +15,10 @@ import de.innovationhub.prox.modules.organization.application.dto.UpdateMembersh
 import de.innovationhub.prox.modules.organization.domain.OrganizationRepository;
 import de.innovationhub.prox.modules.organization.domain.OrganizationRole;
 import de.innovationhub.prox.modules.organization.domain.SocialMedia;
+import de.innovationhub.prox.modules.tag.domain.tag.Tag;
+import de.innovationhub.prox.modules.tag.domain.tag.TagRepository;
+import de.innovationhub.prox.modules.tag.domain.tagcollection.TagCollectionRepository;
+import de.innovationhub.prox.modules.user.application.profile.dto.SetTagsRequestDto;
 import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import jakarta.transaction.Transactional;
@@ -42,6 +46,12 @@ class OrganizationControllerIntegrationTest extends AbstractIntegrationTest {
 
   @Autowired
   OrganizationRepository organizationRepository;
+
+  @Autowired
+  TagCollectionRepository tagCollectionRepository;
+
+  @Autowired
+  TagRepository tagRepository;
 
   @BeforeEach
   void setupRestAssured() {
@@ -253,8 +263,11 @@ class OrganizationControllerIntegrationTest extends AbstractIntegrationTest {
     var org = OrganizationFixtures.ACME_LTD;
     organizationRepository.save(org);
 
-    var tags = List.of(UUID.randomUUID(), UUID.randomUUID());
-    var setTags = new SetOrganizationTagsRequestDto(tags);
+    var tags = List.of(Tag.create("Test1"), Tag.create("Test2"));
+    tagRepository.saveAll(tags);
+    var tagIds = tags.stream().map(Tag::getId).toList();
+
+    var setTags = new SetOrganizationTagsRequestDto(tagIds);
 
     given()
         .contentType(ContentType.JSON)
@@ -265,8 +278,9 @@ class OrganizationControllerIntegrationTest extends AbstractIntegrationTest {
         .then()
         .status(HttpStatus.OK);
 
-    var updatedOrg = organizationRepository.findById(org.getId()).orElseThrow();
-    assertThat(updatedOrg.getTags()).containsExactlyInAnyOrderElementsOf(tags);
+    var savedProfile = organizationRepository.findById(org.getId()).get();
+    var tagCollection = tagCollectionRepository.findById(savedProfile.getTagCollectionId()).get();
+    assertThat(tagCollection.getTags()).containsExactlyInAnyOrderElementsOf(tags);
   }
 
   @Test

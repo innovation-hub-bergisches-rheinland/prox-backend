@@ -26,7 +26,7 @@ public class ModuleType extends AuditedAggregateRoot {
   @CollectionTable(schema = PersistenceConfig.PROJECT_SCHEMA)
   private List<String> disciplines;
 
-  private boolean active = true;
+  private final boolean active = true;
 
   public ModuleType(String key, String name, List<String> disciplines) {
     this.key = key;

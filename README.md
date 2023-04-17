@@ -33,11 +33,14 @@ A big notion of the architecture is to leverage DDD principles and **keep the do
       integrate with other modules
     - **Application**: The application layer of the module
 - Each module represents a **bounded context** in the domain
-- A module **should** never issue a **command to another module**.
-  - If a module needs to modify another module, it should fire an event and the other module
-    should react to it.
+- A module **should** never issue a **command to another module**. It **should** prefer event mechanisms
+  - If a inter-module modification is required, it should fire an event and the other module should 
+    react to it.
   - If a module needs to read data from another module, it should use a facade inside the contract
     module of the other module.
+  - However, in some cases it might be necessary or pragmatic to issue a command to another module.
+    For example it is way more efficient to issue a command for updating the TagCollection instead
+    of making up a new event in every module which needs to be tested.
 
 The following diagrams should give you a rough idea of the module structure.
 

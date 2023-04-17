@@ -98,9 +98,7 @@ class SearchProjectHandlerTest {
 
     searchProjectHandler.handle(null, null, null, searchQuery, null, Pageable.unpaged());
 
-    ArgumentCaptor<List<UUID>> captor = ArgumentCaptor.forClass((Class) List.class);
     verify(projectRepository).filterProjects(any(), any(), any(), any(), anyCollection(),
-        captor.capture(), any());
-    assertThat(captor.getValue()).containsExactly(givenProfiles.get(0).userId());
+        assertArg(ids -> assertThat(ids).containsExactly(givenProfiles.get(0).userId())), any());
   }
 }

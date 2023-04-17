@@ -24,8 +24,7 @@ public class ProjectPermissionEvaluator {
 
     var optProject = projectRepository.findById(projectId);
     // It's better to deny than throwing an exception here
-    if(optProject.isEmpty()) return false;
+    return optProject.filter(project -> hasPermission(project, authentication)).isPresent();
 
-    return hasPermission(optProject.get(), authentication);
   }
 }

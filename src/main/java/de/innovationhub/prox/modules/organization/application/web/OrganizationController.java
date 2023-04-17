@@ -84,11 +84,7 @@ public class OrganizationController {
   ) {
     var dto = find.handle(id)
         .map(dtoAssembler::toDto);
-    if (dto.isEmpty()) {
-      return ResponseEntity.notFound().build();
-    }
-
-    return ResponseEntity.ok(dto.get());
+    return dto.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
   }
 
   @PutMapping("{id}")

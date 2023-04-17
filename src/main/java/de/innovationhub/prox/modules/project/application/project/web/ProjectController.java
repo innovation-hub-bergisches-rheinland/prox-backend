@@ -85,10 +85,8 @@ public class ProjectController {
   public ResponseEntity<ProjectDto> getById(@PathVariable("id") UUID id) {
     var projectDto = findById.handle(id)
         .map(dtoAssembler::toDto);
-    if (projectDto.isEmpty()) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
-    return ResponseEntity.ok(projectDto.get());
+    return projectDto.map(ResponseEntity::ok)
+        .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
   }
 
   @PutMapping(value = "{id}", consumes = "application/json", produces = "application/json")

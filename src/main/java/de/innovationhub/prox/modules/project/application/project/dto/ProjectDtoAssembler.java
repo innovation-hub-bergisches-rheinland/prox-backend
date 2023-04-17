@@ -84,18 +84,15 @@ public class ProjectDtoAssembler {
 
   public ProjectPermissions evaluatePermissions(Project project) {
     var authentication = authenticationFacade.getAuthentication();
-    var permissions = new ProjectPermissions(
+    return new ProjectPermissions(
         projectPermissionEvaluator.hasPermission(project, authentication),
         authentication != null && authentication.isAuthenticated()
     );
-
-    return permissions;
   }
 
   public ProjectMetrics evaluateInterest(Project project) {
-    var interest = new ProjectMetrics(
+    return new ProjectMetrics(
         project.getInterestedUsers().size()
     );
-    return interest;
   }
 }

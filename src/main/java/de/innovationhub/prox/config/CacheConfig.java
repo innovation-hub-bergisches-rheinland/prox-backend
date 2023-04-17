@@ -23,13 +23,4 @@ public class CacheConfig {
   public Caffeine caffeineConfig() {
     return Caffeine.newBuilder().expireAfterWrite(60, TimeUnit.MINUTES);
   }
-
-//  @Bean
-//  public CacheManager cacheManager(Caffeine caffeine) {
-//    CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
-//    caffeineCacheManager.setCaffeine(caffeine);
-//    caffeineCacheManager.setCacheNames(
-//        List.of(TAGS, ORGANIZATIONS, USER_PROFILE, RECOMMENDATIONS));
-//    return caffeineCacheManager;
-//  }
 }

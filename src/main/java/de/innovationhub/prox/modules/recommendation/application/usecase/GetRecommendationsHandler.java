@@ -53,7 +53,7 @@ public class GetRecommendationsHandler {
     // 1. Get all supervisors which match the seed tags
     // 2. Get all organizations which match the seed tags
     // 3. Get all projects which match the seed tags
-    final var matchingSupervisors = userProfileFacade.findByUserId(idsFromTagCollections);
+    final var matchingSupervisors = userProfileFacade.findLecturersByIds(idsFromTagCollections);
     final var matchingOrganizations = organizationFacade.findAllByIds(idsFromTagCollections);
     final var matchingProjects = projectFacade.findAllByIds(idsFromTagCollections);
 

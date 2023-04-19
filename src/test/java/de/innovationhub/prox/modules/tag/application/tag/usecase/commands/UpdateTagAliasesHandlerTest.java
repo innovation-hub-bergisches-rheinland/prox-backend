@@ -20,7 +20,7 @@ class UpdateTagAliasesHandlerTest {
   @Test
   void shouldUpdateTagAliases() {
     var tag = Tag.create("test");
-    var aliases = Set.of("test", "test 2");
+    var aliases = Set.of("test", "test-2");
     when(tagRepository.findById(tag.getId())).thenReturn(Optional.of(tag));
 
     handler.handle(tag.getId(), aliases);

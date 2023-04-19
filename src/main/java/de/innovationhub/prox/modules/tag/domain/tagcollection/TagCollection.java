@@ -10,6 +10,8 @@ import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,7 +31,7 @@ public class TagCollection extends AuditedAggregateRoot {
   @Id
   private UUID id;
 
-  @ElementCollection(fetch = FetchType.EAGER)
+  @ManyToMany(fetch = FetchType.EAGER)
   @CollectionTable(schema = PersistenceConfig.TAG_SCHEMA)
   private List<Tag> tags = new ArrayList<>();
 

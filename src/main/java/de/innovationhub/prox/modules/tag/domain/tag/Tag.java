@@ -4,14 +4,19 @@ import de.innovationhub.prox.commons.Default;
 import de.innovationhub.prox.commons.buildingblocks.AuditedAggregateRoot;
 import de.innovationhub.prox.config.PersistenceConfig;
 import de.innovationhub.prox.modules.tag.domain.tag.events.TagCreated;
+import de.innovationhub.prox.modules.tag.domain.tag.events.TagMerged;
 import de.innovationhub.prox.utils.StringUtils;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -26,7 +31,7 @@ import org.hibernate.annotations.NaturalId;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(schema = PersistenceConfig.TAG_SCHEMA)
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 public class Tag extends AuditedAggregateRoot {
 
   @Id
@@ -38,6 +43,11 @@ public class Tag extends AuditedAggregateRoot {
   @Size(max = 128)
   @Column(unique = true, nullable = false, length = 128)
   private String tagName;
+
+  @Getter
+  @ElementCollection
+  @CollectionTable(schema = PersistenceConfig.TAG_SCHEMA)
+  private Set<String> aliases = new HashSet<>();
 
   public static Tag create(String tag) {
     var createdTag = new Tag(UUID.randomUUID(), tag);
@@ -56,6 +66,22 @@ public class Tag extends AuditedAggregateRoot {
 
     this.id = id;
     this.tagName = StringUtils.slugify(tagName);
+  }
+
+  public void merge(Tag other) {
+    Objects.requireNonNull(other);
+
+    if (this.equals(other)) {
+      throw new IllegalArgumentException("Cannot merge tags with itself");
+    }
+
+    // If we merge tags that are equivalent, we don't need to add the other tag's aliases
+    if(!this.isEquivalent(other)) {
+      this.aliases.add(other.tagName);
+    }
+    // However, it is safe to add the other tag's aliases to this tag
+    this.aliases.addAll(other.aliases);
+    this.registerEvent(TagMerged.from(this, other));
   }
 
   public boolean isEquivalent(Tag other) {

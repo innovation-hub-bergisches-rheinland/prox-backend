@@ -17,6 +17,7 @@ import de.innovationhub.prox.modules.tag.contract.dto.TagDto;
 import de.innovationhub.prox.modules.tag.contract.TagFacade;
 import java.time.Instant;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -42,7 +43,7 @@ class SearchOrganizationHandlerTest {
   @Test
   void shouldCallRepositoryWithResolvedTags() {
     var givenTags = List.of(
-        new TagDto(UUID.randomUUID(), "tag1", Instant.now(), Instant.now())
+        new TagDto(UUID.randomUUID(), "tag1", Set.of(), Instant.now(), Instant.now())
     );
     var givenTagCollections = List.of(
         new TagCollectionDto(UUID.randomUUID(), givenTags)

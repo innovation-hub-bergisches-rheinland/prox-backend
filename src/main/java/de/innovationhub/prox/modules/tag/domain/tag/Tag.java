@@ -89,7 +89,11 @@ public class Tag extends AuditedAggregateRoot {
 
   public void updateAliases(Set<String> aliases) {
     Objects.requireNonNull(aliases);
-    this.aliases = new HashSet<>(aliases);
+
+    var sluggedAliases = aliases.stream()
+        .map(StringUtils::slugify)
+        .toList();
+    this.aliases = new HashSet<>(sluggedAliases);
   }
 
   public boolean isEquivalent(Tag other) {

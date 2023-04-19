@@ -8,7 +8,7 @@ import de.innovationhub.prox.modules.tag.domain.tag.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.util.Set;
 import java.util.UUID;
 

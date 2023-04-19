@@ -7,6 +7,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 public interface TagCollectionRepository extends JpaRepository<TagCollection, UUID> {
@@ -72,4 +73,17 @@ public interface TagCollectionRepository extends JpaRepository<TagCollection, UU
         .map(o -> new Tag((UUID) o[0], (String) o[1]))
         .collect(Collectors.toList());
   }
+
+  @Modifying
+  @Query(value = """
+      update prox_tag.tag_collection_tags set tags_id = ?2 where tags_id = ?1 and tag_collection_id not in (
+        select tc.tag_collection_id from prox_tag.tag_collection_tags tc
+        where tc.tags_id = ?2
+      );
+  """, nativeQuery = true)
+  void replaceAllTags(UUID tagToReplace, UUID tagToReplaceWith);
+
+  @Modifying
+  @Query(value = "delete from prox_tag.tag_collection_tags where tags_id = ?1", nativeQuery = true)
+  void deleteAllTags(UUID tagsToDelete);
 }

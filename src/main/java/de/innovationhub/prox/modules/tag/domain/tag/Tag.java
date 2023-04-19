@@ -23,6 +23,7 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.NaturalId;
 
 /**
@@ -33,6 +34,7 @@ import org.hibernate.annotations.NaturalId;
 @Getter
 @Table(schema = PersistenceConfig.TAG_SCHEMA)
 @EqualsAndHashCode(callSuper = false)
+@ToString
 public class Tag extends AuditedAggregateRoot {
 
   @Id

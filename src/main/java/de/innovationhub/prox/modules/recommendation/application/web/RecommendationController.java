@@ -5,9 +5,9 @@ import de.innovationhub.prox.modules.recommendation.application.dto.Recommendati
 import de.innovationhub.prox.modules.recommendation.application.usecase.GetRecommendationsHandler;
 import java.util.List;
 import java.util.UUID;
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

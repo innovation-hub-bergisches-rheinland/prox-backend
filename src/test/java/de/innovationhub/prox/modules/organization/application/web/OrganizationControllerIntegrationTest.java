@@ -58,11 +58,6 @@ class OrganizationControllerIntegrationTest extends AbstractIntegrationTest {
     RestAssuredMockMvc.standaloneSetup(() -> mockMvc);
   }
 
-  @AfterEach
-  void resetRestAssured() {
-    organizationRepository.deleteAll();
-  }
-
   @Test
   void shouldCreateOrganization() {
     var createOrgRequest = new CreateOrganizationRequestDto(

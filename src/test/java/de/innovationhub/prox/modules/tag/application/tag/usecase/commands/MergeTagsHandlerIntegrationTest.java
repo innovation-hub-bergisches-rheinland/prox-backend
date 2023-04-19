@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
+import de.innovationhub.prox.ClearDatabase;
 import de.innovationhub.prox.modules.tag.domain.tag.Tag;
 import de.innovationhub.prox.modules.tag.domain.tag.TagRepository;
 import de.innovationhub.prox.modules.tag.domain.tag.events.TagMerged;
@@ -37,12 +38,6 @@ class MergeTagsHandlerIntegrationTest extends AbstractIntegrationTest {
 
   @Autowired
   TagCollectionRepository tagCollectionRepository;
-
-  @AfterEach
-  void tearDown() {
-    tagCollectionRepository.deleteAll();
-    tagRepository.deleteAll();
-  }
 
   @Test
   @WithAnonymousUser

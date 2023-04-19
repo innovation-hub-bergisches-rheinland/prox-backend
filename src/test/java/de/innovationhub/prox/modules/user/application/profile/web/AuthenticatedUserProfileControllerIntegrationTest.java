@@ -58,11 +58,6 @@ class AuthenticatedUserProfileControllerIntegrationTest extends AbstractIntegrat
     RestAssuredMockMvc.standaloneSetup(() -> mockMvc);
   }
 
-  @AfterEach
-  void resetRestAssured() {
-    userProfileRepository.deleteAll();
-  }
-
   @ParameterizedTest
   @CsvSource(value = {"GET:user/profile", "POST:user/profile", "PUT:user/profile",
       "POST:user/profile/avatar", "PUT:user/profile/tags"}, delimiter = ':')

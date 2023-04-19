@@ -40,12 +40,6 @@ class TagControllerIntegrationTest extends AbstractIntegrationTest {
     RestAssuredMockMvc.standaloneSetup(() -> mockMvc);
   }
 
-  @AfterEach
-  void tearDown() {
-    tagCollectionRepository.deleteAll();
-    tagRepository.deleteAll();
-  }
-
   @Test
   void shouldReturnMatchingTags() {
     var tags = createTags("tag1", "tag2", "notmatching");

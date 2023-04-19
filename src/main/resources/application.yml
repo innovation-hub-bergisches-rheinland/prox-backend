@@ -46,3 +46,11 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: https://login.aws.innovation-hub.de/auth/realms/innovation-hub-bergisches-rheinland
+  flyway:
+    schemas:
+      - public
+      - prox_project
+      - prox_organization
+      - prox_star
+      - prox_tag
+      - prox_user

@@ -31,11 +31,6 @@ class UserProfileControllerIntegrationTest extends AbstractIntegrationTest {
     RestAssuredMockMvc.standaloneSetup(() -> mockMvc);
   }
 
-  @AfterEach
-  void resetRestAssured() {
-    userProfileRepository.deleteAll();
-  }
-
 
   @Test
   void shouldFindUser() {

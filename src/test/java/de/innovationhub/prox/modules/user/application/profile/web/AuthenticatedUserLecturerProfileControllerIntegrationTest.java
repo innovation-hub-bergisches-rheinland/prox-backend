@@ -42,11 +42,6 @@ class AuthenticatedUserLecturerProfileControllerIntegrationTest extends Abstract
     RestAssuredMockMvc.standaloneSetup(() -> mockMvc);
   }
 
-  @AfterEach
-  void resetRestAssured() {
-    userProfileRepository.deleteAll();
-  }
-
 
   @ParameterizedTest
   @WithMockUser(value = AUTH_USER_ID)

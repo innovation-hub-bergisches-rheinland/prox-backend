@@ -14,11 +14,6 @@ class UserProfileRepositoryIntegrationTest extends AbstractIntegrationTest {
   @Autowired
   UserProfileRepository userProfileRepository;
 
-  @AfterEach
-  void tearDown() {
-    userProfileRepository.deleteAll();
-  }
-
   @Test
   void shouldNotIncludeNotVisibleLecturers() {
     var up = createDummyLecturer(false);

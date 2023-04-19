@@ -12,6 +12,7 @@ import org.testcontainers.utility.DockerImageName;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@ClearDatabase
 public class AbstractIntegrationTest {
 
   static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15.1-alpine")

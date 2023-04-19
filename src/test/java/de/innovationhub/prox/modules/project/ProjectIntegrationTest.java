@@ -23,11 +23,4 @@ public abstract class ProjectIntegrationTest extends AbstractIntegrationTest {
     disciplineRepository.saveAll(DisciplineFixtures.ALL);
     moduleTypeRepository.saveAll(ModuleTypeFixtures.ALL);
   }
-
-  @AfterEach
-  void tearDown() {
-    projectRepository.deleteAll();
-    moduleTypeRepository.deleteAll();
-    disciplineRepository.deleteAll();
-  }
 }

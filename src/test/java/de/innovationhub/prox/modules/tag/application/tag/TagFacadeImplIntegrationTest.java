@@ -18,11 +18,6 @@ class TagFacadeImplIntegrationTest extends AbstractIntegrationTest {
   @Autowired
   TagFacadeImpl tagFacadeImpl;
 
-  @AfterEach
-  void tearDown() {
-    tagRepository.deleteAll();
-  }
-
   @Test
   void shouldFindTags() {
     var tag1 = Tag.create("tag1");

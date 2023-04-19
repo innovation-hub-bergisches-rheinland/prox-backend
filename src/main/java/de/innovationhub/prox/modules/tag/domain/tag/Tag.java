@@ -85,6 +85,11 @@ public class Tag extends AuditedAggregateRoot {
     this.registerEvent(TagMerged.from(this, other));
   }
 
+  public void updateAliases(Set<String> aliases) {
+    Objects.requireNonNull(aliases);
+    this.aliases = new HashSet<>(aliases);
+  }
+
   public boolean isEquivalent(Tag other) {
     return this.tagName.equals(other.tagName);
   }

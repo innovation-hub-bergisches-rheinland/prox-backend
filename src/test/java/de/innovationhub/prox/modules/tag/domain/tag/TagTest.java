@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import de.innovationhub.prox.modules.tag.domain.tag.events.TagCreated;
+import java.util.Set;
 import java.util.UUID;
 import de.innovationhub.prox.modules.tag.domain.tag.events.TagMerged;
 import org.junit.jupiter.api.Test;
@@ -71,5 +72,16 @@ class TagTest {
 
     assertThat(tag.getAliases())
         .containsExactlyInAnyOrder("test1", "test2");
+  }
+
+  @Test
+  void shouldUpdateAliases() {
+    var tag = Tag.create("test");
+    var aliases = Set.of("test1", "test2");
+
+    tag.updateAliases(aliases);
+
+    assertThat(tag.getAliases())
+        .containsExactlyInAnyOrderElementsOf(aliases);
   }
 }

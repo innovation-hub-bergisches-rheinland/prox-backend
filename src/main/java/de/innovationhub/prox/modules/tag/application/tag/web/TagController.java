@@ -13,6 +13,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,32 +38,35 @@ public class TagController {
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   @Operation(description = "Find tags that match a given input")
-  public ResponseEntity<List<TagDto>> findMatchingTags(@RequestParam("q") String partialTag) {
-    var result = findMatching.handle(partialTag);
-    var dto = dtoMapper.toDtoList(result);
+  public ResponseEntity<Page<TagDto>> findMatchingTags(
+      @RequestParam("q") String partialTag,
+      Pageable pageable
+  ) {
+    var result = findMatching.handle(partialTag, pageable)
+        .map(dtoMapper::toDto);
 
-    return ResponseEntity.ok(dto);
+    return ResponseEntity.ok(result);
   }
 
   @GetMapping(path = "recommendations", produces = MediaType.APPLICATION_JSON_VALUE)
   @Operation(description = "Retrieve recommendation for provided Tags")
-  public ResponseEntity<List<TagDto>> findRecommendations(
+  public ResponseEntity<Page<TagDto>> findRecommendations(
       @RequestParam("tags") List<String> inputTags,
-      @RequestParam(value = "limit", defaultValue = "10") int limit) {
-    var result = findCommon.handle(inputTags, limit);
-    var dto = dtoMapper.toDtoList(result);
+      Pageable pageable) {
+    var result = findCommon.handle(inputTags, pageable)
+        .map(dtoMapper::toDto);
 
-    return ResponseEntity.ok(dto);
+    return ResponseEntity.ok(result);
   }
 
   @GetMapping(path = "popular", produces = MediaType.APPLICATION_JSON_VALUE)
   @Operation(description = "Get the most popular tags")
-  public ResponseEntity<List<TagDto>> findPopular(
-      @RequestParam(value = "limit", defaultValue = "10") int limit) {
-    var result = findPopular.handle(limit);
-    var dto = dtoMapper.toDtoList(result);
+  public ResponseEntity<Page<TagDto>> findPopular(
+      Pageable pageable) {
+    var result = findPopular.handle(pageable)
+        .map(dtoMapper::toDto);
 
-    return ResponseEntity.ok(dto);
+    return ResponseEntity.ok(result);
   }
 
   @PostMapping(path = "synchronization", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)

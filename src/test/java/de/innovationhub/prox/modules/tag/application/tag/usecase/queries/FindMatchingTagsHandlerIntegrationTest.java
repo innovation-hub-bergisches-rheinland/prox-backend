@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 
 class FindMatchingTagsHandlerIntegrationTest extends AbstractIntegrationTest {
   @Autowired
@@ -27,7 +28,7 @@ class FindMatchingTagsHandlerIntegrationTest extends AbstractIntegrationTest {
     tag.updateAliases(Set.of("an-alias-of-test"));
     tagRepository.save(tag);
 
-    var result = findMatchingTagsHandler.handle("alias");
+    var result = findMatchingTagsHandler.handle("alias", Pageable.unpaged());
     assertThat(result)
         .hasSize(1)
         .first()

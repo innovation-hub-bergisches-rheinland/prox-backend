@@ -7,6 +7,9 @@ import de.innovationhub.prox.utils.StringUtils;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @ApplicationComponent
 @RequiredArgsConstructor
@@ -14,14 +17,14 @@ public class FindMatchingTagsHandler {
 
   private final TagRepository tagRepository;
 
-  public List<Tag> handle(String partialTag) {
+  public Page<Tag> handle(String partialTag, Pageable pageable) {
     Objects.requireNonNull(partialTag);
 
     if (partialTag.isBlank()) {
-      return List.of();
+      return Page.empty();
     }
 
     var tag = Tag.create(partialTag);
-    return tagRepository.findMatching(tag.getTagName());
+    return tagRepository.findMatching(tag.getTagName(), pageable);
   }
 }

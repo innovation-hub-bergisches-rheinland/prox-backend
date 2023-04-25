@@ -5,12 +5,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface TagCollectionRepository extends JpaRepository<TagCollection, UUID> {
+public interface TagCollectionRepository extends PagingAndSortingRepository<TagCollection, UUID>, JpaRepository<TagCollection, UUID> {
 
   @Query("""
         select t from Tag t
@@ -22,7 +24,7 @@ public interface TagCollectionRepository extends JpaRepository<TagCollection, UU
         having count(t.id) > 0
         order by count(t.id) desc
       """)
-  List<Tag> findPopularTags(Pageable pageable);
+  Page<Tag> findPopularTags(Pageable pageable);
 
   @Query("""
         select tc from TagCollection tc
@@ -66,12 +68,11 @@ public interface TagCollectionRepository extends JpaRepository<TagCollection, UU
       having count(t.id) > 0
       order by cnt desc
         """, nativeQuery = true)
-  List<Object[]> findCommonUsedTagsWithObj(Collection<String> givenTags, Pageable pageable);
+  Page<Object[]> findCommonUsedTagsWithObj(Collection<String> givenTags, Pageable pageable);
 
-  default List<Tag> findCommonUsedTagsWith(Collection<String> givenTags, Pageable pageable) {
-    return findCommonUsedTagsWithObj(givenTags, pageable).stream()
-        .map(o -> new Tag((UUID) o[0], (String) o[1]))
-        .collect(Collectors.toList());
+  default Page<Tag> findCommonUsedTagsWith(Collection<String> givenTags, Pageable pageable) {
+    return findCommonUsedTagsWithObj(givenTags, pageable)
+        .map(o -> new Tag((UUID) o[0], (String) o[1]));
   }
 
   @Modifying

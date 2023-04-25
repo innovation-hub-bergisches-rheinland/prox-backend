@@ -50,9 +50,9 @@ class TagControllerIntegrationTest extends AbstractIntegrationTest {
         .get("/tags")
         .then()
         .statusCode(200)
-        .body("id",
+        .body("content.id",
             containsInAnyOrder(tags.get(0).getId().toString(), tags.get(1).getId().toString()))
-        .body("tagName", containsInAnyOrder(tags.get(0).getTagName(), tags.get(1).getTagName()));
+        .body("content.tagName", containsInAnyOrder(tags.get(0).getTagName(), tags.get(1).getTagName()));
   }
 
   @Test
@@ -70,9 +70,9 @@ class TagControllerIntegrationTest extends AbstractIntegrationTest {
         .get("/tags/recommendations")
         .then()
         .statusCode(200)
-        .body("id", containsInAnyOrder(
+        .body("content.id", containsInAnyOrder(
             possiblyRecommendedTags.stream().map(Tag::getId).map(UUID::toString).toArray()))
-        .body("tagName",
+        .body("content.tagName",
             containsInAnyOrder(possiblyRecommendedTags.stream().map(Tag::getTagName).toArray()));
   }
 
@@ -87,12 +87,12 @@ class TagControllerIntegrationTest extends AbstractIntegrationTest {
 
     RestAssuredMockMvc.given()
         .param("tags", "tag1")
-        .param("limit", 1)
+        .param("size", 1)
         .when()
         .get("/tags/recommendations")
         .then()
         .statusCode(200)
-        .body(".", hasSize(1));
+        .body("content", hasSize(1));
   }
 
   @Test
@@ -107,9 +107,9 @@ class TagControllerIntegrationTest extends AbstractIntegrationTest {
         .get("/tags/popular")
         .then()
         .statusCode(200)
-        .body("id", containsInAnyOrder(
+        .body("content.id", containsInAnyOrder(
             givenTags.stream().map(Tag::getId).map(UUID::toString).toArray()))
-        .body("tagName",
+        .body("content.tagName",
             containsInAnyOrder(givenTags.stream().map(Tag::getTagName).toArray()));
   }
 

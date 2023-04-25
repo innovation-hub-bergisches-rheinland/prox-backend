@@ -10,6 +10,7 @@ import de.innovationhub.prox.modules.tag.domain.tag.TagRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.data.domain.Pageable;
 
 class FindMatchingTagsHandlerTest {
   TagRepository tagRepository = mock(TagRepository.class);
@@ -17,13 +18,13 @@ class FindMatchingTagsHandlerTest {
 
   @Test
   void shouldThrowOnNull() {
-    assertThrows(NullPointerException.class, () -> handler.handle(null));
+    assertThrows(NullPointerException.class, () -> handler.handle(null, Pageable.unpaged()));
   }
 
   @ParameterizedTest
   @ValueSource(strings = { "", " ", "  ", "\t\n" })
   void shouldReturnEmptyListOnBlankString(String blankString) {
-    var result = handler.handle(blankString);
+    var result = handler.handle(blankString, Pageable.unpaged());
 
     assertThat(result).isEmpty();
   }
@@ -31,8 +32,8 @@ class FindMatchingTagsHandlerTest {
   @Test
   void shouldCallRepository() {
     var partialTag = "test";
-    handler.handle(partialTag);
+    handler.handle(partialTag, Pageable.unpaged());
 
-    verify(tagRepository).findMatching(partialTag);
+    verify(tagRepository).findMatching(partialTag, Pageable.unpaged());
   }
 }

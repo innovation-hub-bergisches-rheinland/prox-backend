@@ -10,28 +10,15 @@ import de.innovationhub.prox.modules.tag.domain.tagcollection.TagCollectionRepos
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 class FindPopularTagsHandlerTest {
   TagCollectionRepository tagCollectionRepository = mock(TagCollectionRepository.class);
   FindPopularTagsHandler handler = new FindPopularTagsHandler(tagCollectionRepository);
 
   @Test
-  void shouldThrowWhenLimitIsZero() {
-    var limit = 0;
-
-    assertThrows(IllegalArgumentException.class, () -> handler.handle(limit));
-  }
-
-  @Test
   void shouldCallRepository() {
-    var limit = 2;
-
-    handler.handle(limit);
-    var captor = ArgumentCaptor.forClass(PageRequest.class);
-    verify(tagCollectionRepository).findPopularTags(captor.capture());
-    var pageRequest = captor.getValue();
-
-    assertThat(pageRequest.getPageNumber()).isZero();
-    assertThat(pageRequest.getPageSize()).isEqualTo(limit);
+    handler.handle(Pageable.unpaged());
+    verify(tagCollectionRepository).findPopularTags(Pageable.unpaged());
   }
 }

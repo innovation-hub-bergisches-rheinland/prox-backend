@@ -8,7 +8,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @RequiredArgsConstructor
 @ApplicationComponent
@@ -16,18 +18,14 @@ public class FindCommonTagsHandler {
 
   private final TagCollectionRepository tagCollectionRepository;
 
-  public List<Tag> handle(Collection<String> tags, int limit) {
+  public Page<Tag> handle(Collection<String> tags, Pageable pageable) {
     Objects.requireNonNull(tags);
 
     if (tags.isEmpty()) {
-      return List.of();
-    }
-    if (limit <= 0) {
-      throw new IllegalArgumentException("Limit must be greater than 0");
+      return Page.empty();
     }
 
     var tagNames = tags.stream().map(Tag::create).map(Tag::getTagName).toList();
-    var pageRequest = PageRequest.of(0, limit);
-    return tagCollectionRepository.findCommonUsedTagsWith(tagNames, pageRequest);
+    return tagCollectionRepository.findCommonUsedTagsWith(tagNames, pageable);
   }
 }

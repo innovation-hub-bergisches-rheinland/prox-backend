@@ -75,11 +75,13 @@ class TagTest {
   }
 
   @Test
-  void shouldUpdateAliases() {
+  void shouldUpdate() {
     var tag = Tag.create("test");
     var aliases = Set.of("test1", "test2");
 
-    tag.updateAliases(aliases);
+    tag.update("test 2", aliases);
+
+    assertThat(tag.getTagName()).isEqualTo("test-2");
 
     assertThat(tag.getAliases())
         .containsExactlyInAnyOrderElementsOf(aliases);

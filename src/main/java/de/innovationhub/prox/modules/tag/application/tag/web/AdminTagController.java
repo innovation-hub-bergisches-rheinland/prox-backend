@@ -1,9 +1,9 @@
 package de.innovationhub.prox.modules.tag.application.tag.web;
 
 import de.innovationhub.prox.modules.tag.application.tag.dto.MergeTagsRequest;
-import de.innovationhub.prox.modules.tag.application.tag.dto.UpdateTagAliasesRequest;
+import de.innovationhub.prox.modules.tag.application.tag.dto.UpdateTagRequest;
 import de.innovationhub.prox.modules.tag.application.tag.usecase.commands.MergeTagsHandler;
-import de.innovationhub.prox.modules.tag.application.tag.usecase.commands.UpdateTagAliasesHandler;
+import de.innovationhub.prox.modules.tag.application.tag.usecase.commands.UpdateTagHandler;
 import de.innovationhub.prox.modules.tag.contract.dto.TagDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @PreAuthorize("hasRole('admin')")
 public class AdminTagController {
   private final MergeTagsHandler mergeTagsHandler;
-  private final UpdateTagAliasesHandler updateTagAliasesHandler;
+  private final UpdateTagHandler updateTagHandler;
 
   @PostMapping(path = "{id}/merge", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<TagDto> mergeTag(
@@ -38,13 +38,12 @@ public class AdminTagController {
     return ResponseEntity.ok(result);
   }
 
-  @PutMapping(path = "{id}/aliases", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-  @Operation(description = "Retrieve recommendation for provided Tags")
+  @PutMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<TagDto> findRecommendations(
       @PathVariable("id") UUID id,
-      @Valid @RequestBody UpdateTagAliasesRequest updateTagAliasesRequest
+      @Valid @RequestBody UpdateTagRequest updateTagRequest
   ) {
-    var result = updateTagAliasesHandler.handle(id, updateTagAliasesRequest.aliases());
+    var result = updateTagHandler.handle(id, updateTagRequest);
     return ResponseEntity.ok(result);
   }
 }

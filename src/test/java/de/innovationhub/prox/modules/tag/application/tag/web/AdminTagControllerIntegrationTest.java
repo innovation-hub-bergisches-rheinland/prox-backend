@@ -7,20 +7,15 @@ import static org.hamcrest.Matchers.is;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.modules.tag.application.tag.dto.MergeTagsRequest;
-import de.innovationhub.prox.modules.tag.application.tag.dto.SynchronizeTagsRequest;
-import de.innovationhub.prox.modules.tag.application.tag.dto.UpdateTagAliasesRequest;
+import de.innovationhub.prox.modules.tag.application.tag.dto.UpdateTagRequest;
 import de.innovationhub.prox.modules.tag.domain.tag.Tag;
 import de.innovationhub.prox.modules.tag.domain.tag.TagRepository;
-import de.innovationhub.prox.modules.tag.domain.tagcollection.TagCollection;
 import de.innovationhub.prox.modules.tag.domain.tagcollection.TagCollectionRepository;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
-import io.swagger.v3.oas.annotations.Parameter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import lombok.With;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -83,20 +78,22 @@ class AdminTagControllerIntegrationTest extends AbstractIntegrationTest {
 
   @Test
   @WithMockUser(roles = "admin")
-  void shouldUpdateAliases() {
+  void shouldUpdateTag() {
     var tags = createTags("tag1");
     var tagToMerge = tags.get(0);
+    String updatedName = "testo ergo sum";
     var aliases = Set.of("tag2", "tag3");
 
     RestAssuredMockMvc.given()
-        .body(new UpdateTagAliasesRequest(aliases))
+        .body(new UpdateTagRequest(updatedName, aliases))
         .accept("application/json")
         .contentType("application/json")
         .when()
-        .put("/tags/{id}/aliases", tagToMerge.getId())
+        .put("/tags/{id}", tagToMerge.getId())
         .then()
         .statusCode(200)
         .body("id", is(tagToMerge.getId().toString()))
+        .body("tagName", is("testo-ergo-sum"))
         .body("aliases", containsInAnyOrder(aliases.toArray()));
   }
 

@@ -40,7 +40,7 @@ public class Tag extends AuditedAggregateRoot {
   @Id
   private UUID id;
 
-  @NaturalId
+  //@NaturalId
   @Getter
   @NotBlank
   @Size(max = 128)
@@ -87,9 +87,11 @@ public class Tag extends AuditedAggregateRoot {
     this.registerEvent(TagMerged.from(this, other));
   }
 
-  public void updateAliases(Set<String> aliases) {
+  public void update(String name, Set<String> aliases) {
+    Objects.requireNonNull(name);
     Objects.requireNonNull(aliases);
 
+    this.tagName = StringUtils.slugify(name);
     var sluggedAliases = aliases.stream()
         .map(StringUtils::slugify)
         .toList();

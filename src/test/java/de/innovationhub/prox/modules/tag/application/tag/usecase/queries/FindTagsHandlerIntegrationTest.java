@@ -23,7 +23,7 @@ class FindTagsHandlerIntegrationTest extends AbstractIntegrationTest {
   @Test
   void shouldFindByAlias() {
     var tag = Tag.create("test");
-    tag.updateAliases(Set.of("an-alias-of-test"));
+    tag.update("test", Set.of("an-alias-of-test"));
     tagRepository.save(tag);
 
     var result = findTagsHandler.handle("alias", Pageable.unpaged());

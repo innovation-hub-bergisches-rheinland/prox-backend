@@ -6,11 +6,12 @@ import de.innovationhub.prox.modules.tag.contract.dto.TagDto;
 import de.innovationhub.prox.modules.tag.application.tag.dto.TagDtoMapper;
 import de.innovationhub.prox.modules.tag.application.tag.usecase.commands.SynchronizeTagsHandler;
 import de.innovationhub.prox.modules.tag.application.tag.usecase.queries.FindCommonTagsHandler;
-import de.innovationhub.prox.modules.tag.application.tag.usecase.queries.FindMatchingTagsHandler;
+import de.innovationhub.prox.modules.tag.application.tag.usecase.queries.FindTagsHandler;
 import de.innovationhub.prox.modules.tag.application.tag.usecase.queries.FindPopularTagsHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Nullable;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -30,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Tag", description = "Tag API")
 public class TagController {
 
-  private final FindMatchingTagsHandler findMatching;
+  private final FindTagsHandler findMatching;
   private final FindCommonTagsHandler findCommon;
   private final FindPopularTagsHandler findPopular;
   private final SynchronizeTagsHandler synchronize;
@@ -39,7 +40,7 @@ public class TagController {
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   @Operation(description = "Find tags that match a given input")
   public ResponseEntity<Page<TagDto>> findMatchingTags(
-      @RequestParam("q") String partialTag,
+      @RequestParam(value = "q", required = false) @Nullable String partialTag,
       Pageable pageable
   ) {
     var result = findMatching.handle(partialTag, pageable)

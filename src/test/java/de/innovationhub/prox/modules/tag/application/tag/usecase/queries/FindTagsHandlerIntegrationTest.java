@@ -10,17 +10,15 @@ import de.innovationhub.prox.modules.tag.domain.tag.Tag;
 import de.innovationhub.prox.modules.tag.domain.tag.TagRepository;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 
-class FindMatchingTagsHandlerIntegrationTest extends AbstractIntegrationTest {
+class FindTagsHandlerIntegrationTest extends AbstractIntegrationTest {
   @Autowired
   TagRepository tagRepository;
 
   @Autowired
-  FindMatchingTagsHandler findMatchingTagsHandler;
+  FindTagsHandler findTagsHandler;
 
   @Test
   void shouldFindByAlias() {
@@ -28,7 +26,7 @@ class FindMatchingTagsHandlerIntegrationTest extends AbstractIntegrationTest {
     tag.updateAliases(Set.of("an-alias-of-test"));
     tagRepository.save(tag);
 
-    var result = findMatchingTagsHandler.handle("alias", Pageable.unpaged());
+    var result = findTagsHandler.handle("alias", Pageable.unpaged());
     assertThat(result)
         .hasSize(1)
         .first()

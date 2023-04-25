@@ -41,6 +41,19 @@ class TagControllerIntegrationTest extends AbstractIntegrationTest {
   }
 
   @Test
+  void shouldReturnAllTags() {
+    var tags = createTags("tag1", "tag2", "notmatching");
+
+    RestAssuredMockMvc.given()
+        .when()
+        .get("/tags")
+        .then()
+        .statusCode(200)
+        .body("content.id",
+            containsInAnyOrder(tags.stream().map(t -> t.getId().toString()).toArray()));
+  }
+
+  @Test
   void shouldReturnMatchingTags() {
     var tags = createTags("tag1", "tag2", "notmatching");
 

@@ -1,6 +1,7 @@
 package de.innovationhub.prox.modules.tag.application.tag.web;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
 
@@ -124,6 +125,22 @@ class TagControllerIntegrationTest extends AbstractIntegrationTest {
             givenTags.stream().map(Tag::getId).map(UUID::toString).toArray()))
         .body("content.tagName",
             containsInAnyOrder(givenTags.stream().map(Tag::getTagName).toArray()));
+  }
+
+  @Test
+  void shouldReturnTagUsageCount() {
+    var tags = createTags("tag1");
+
+    var tagCollectionTags = new ArrayList<>(tags);
+    createTagCollection(tagCollectionTags);
+
+    RestAssuredMockMvc.given()
+        .when()
+        .get("/tags")
+        .then()
+        .statusCode(200)
+        .body("content.id", contains(tags.get(0).getId().toString()))
+        .body("content.count", contains(1));
   }
 
   @Test

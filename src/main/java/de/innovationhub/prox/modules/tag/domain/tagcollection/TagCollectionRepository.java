@@ -26,6 +26,9 @@ public interface TagCollectionRepository extends PagingAndSortingRepository<TagC
       """)
   Page<Tag> findPopularTags(Pageable pageable);
 
+  @Query("select count(t.id) from TagCollection tc join tc.tags t where t.id = ?1")
+  long countTagUsage(UUID tag);
+
   @Query("""
         select tc from TagCollection tc
         join tc.tags t1

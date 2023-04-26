@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 class MergeTagsHandlerTest {
   TagRepository tagRepository = mock(TagRepository.class);
   TagCollectionRepository tagCollectionRepository = mock(TagCollectionRepository.class);
-  TagDtoMapper tagDtoMapper = TagDtoMapper.INSTANCE;
+  TagDtoMapper tagDtoMapper = mock(TagDtoMapper.class);
   MergeTagsHandler handler = new MergeTagsHandler(tagRepository, tagCollectionRepository, tagDtoMapper);
 
 

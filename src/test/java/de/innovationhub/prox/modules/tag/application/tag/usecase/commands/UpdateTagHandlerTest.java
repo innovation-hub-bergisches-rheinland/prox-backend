@@ -14,7 +14,7 @@ import static org.mockito.Mockito.*;
 
 class UpdateTagHandlerTest {
   TagRepository tagRepository = mock(TagRepository.class);
-  TagDtoMapper tagDtoMapper = TagDtoMapper.INSTANCE;
+  TagDtoMapper tagDtoMapper = mock(TagDtoMapper.class);
   UpdateTagHandler handler = new UpdateTagHandler(tagRepository, tagDtoMapper);
 
 

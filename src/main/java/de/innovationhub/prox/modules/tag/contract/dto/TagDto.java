@@ -10,6 +10,7 @@ public record TagDto(
     UUID id,
     String tagName,
     Set<String> aliases,
+    long count,
     Instant createdAt,
     Instant modifiedAt
 ) {

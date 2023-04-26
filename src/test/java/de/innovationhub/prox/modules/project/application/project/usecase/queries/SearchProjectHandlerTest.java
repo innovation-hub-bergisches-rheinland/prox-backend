@@ -55,7 +55,7 @@ class SearchProjectHandlerTest {
   @Test
   void shouldCallRepositoryWithResolvedTags() {
     var givenTags = List.of(
-        new TagDto(UUID.randomUUID(), "tag1", Set.of(), Instant.now(), Instant.now())
+        new TagDto(UUID.randomUUID(), "tag1", Set.of(), 1, Instant.now(), Instant.now())
     );
     var givenTagCollections = List.of(
         new TagCollectionDto(UUID.randomUUID(), givenTags)

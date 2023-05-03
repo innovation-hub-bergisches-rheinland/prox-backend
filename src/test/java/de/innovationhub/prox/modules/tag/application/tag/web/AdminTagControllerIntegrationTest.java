@@ -10,8 +10,10 @@ import de.innovationhub.prox.modules.tag.application.tag.dto.MergeTagsRequest;
 import de.innovationhub.prox.modules.tag.application.tag.dto.UpdateTagRequest;
 import de.innovationhub.prox.modules.tag.domain.tag.Tag;
 import de.innovationhub.prox.modules.tag.domain.tag.TagRepository;
+import de.innovationhub.prox.modules.tag.domain.tagcollection.TagCollection;
 import de.innovationhub.prox.modules.tag.domain.tagcollection.TagCollectionRepository;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import io.restassured.module.mockmvc.response.ValidatableMockMvcResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -45,7 +47,8 @@ class AdminTagControllerIntegrationTest extends AbstractIntegrationTest {
   @ParameterizedTest
   @CsvSource({
       "PUT, /tags/{id}/aliases",
-      "POST, /tags/{id}/merge"
+      "POST, /tags/{id}/merge",
+      "DELETE, /tags/{id}"
   })
   @WithMockUser
   void shouldReturnUnauthorized(String method, String path) {
@@ -79,6 +82,28 @@ class AdminTagControllerIntegrationTest extends AbstractIntegrationTest {
   @Test
   @WithMockUser(roles = "admin")
   void shouldUpdateTag() {
+    var tags = createTags("tag1");
+    var tagCollection = TagCollection.create(UUID.randomUUID(), tags);
+    this.tagCollectionRepository.save(tagCollection);
+
+    Tag tagToDelete = tags.get(0);
+    RestAssuredMockMvc.given()
+        .accept("application/json")
+        .when()
+        .delete("/tags/{id}", tagToDelete.getId())
+        .then()
+        .statusCode(204);
+
+    assertThat(this.tagRepository.findById(tagToDelete.getId())).isEmpty();
+    assertThat(this.tagCollectionRepository.findById(tagCollection.getId()))
+        .isNotEmpty()
+        .get()
+        .satisfies(tc -> assertThat(tc.getTags()).hasSize(0));
+  }
+
+  @Test
+  @WithMockUser(roles = "admin")
+  void shouldDeleteTag() {
     var tags = createTags("tag1");
     var tagToMerge = tags.get(0);
     String updatedName = "testo ergo sum";

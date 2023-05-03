@@ -20,7 +20,7 @@ class DeleteTagHandlerTest {
   TagRepository tagRepository = mock(TagRepository.class);
   TagCollectionRepository tagCollectionRepository = mock(TagCollectionRepository.class);
   DeleteTagHandler handler = new DeleteTagHandler(tagRepository, tagCollectionRepository);
-  
+
   @Test
   void shouldDelete() {
     var tag = Tag.create("test");

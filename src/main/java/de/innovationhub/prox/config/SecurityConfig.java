@@ -78,6 +78,8 @@ class SecurityConfig {
                     .hasRole("admin")
                     .requestMatchers(HttpMethod.PUT, "/tags/*/aliases")
                     .hasRole("admin")
+                    .requestMatchers(HttpMethod.DELETE, "/tags/**")
+                    .hasRole("admin")
                     .requestMatchers("/projects/**", "/tags/**", "/organizations/**")
                     .authenticated()
                     .requestMatchers(HttpMethod.OPTIONS)

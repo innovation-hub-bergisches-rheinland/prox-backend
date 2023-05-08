@@ -59,7 +59,7 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
 
     testImplementation 'org.awaitility:awaitility:4.2.0'
-    testImplementation 'org.instancio:instancio-junit:2.14.0'
+    testImplementation 'org.instancio:instancio-junit:2.15.0'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.amqp:spring-rabbit-test'
     testImplementation 'org.springframework.security:spring-security-test'

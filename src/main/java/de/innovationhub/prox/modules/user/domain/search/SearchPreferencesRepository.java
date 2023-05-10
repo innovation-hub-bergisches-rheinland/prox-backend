@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SearchPreferencesRepository extends JpaRepository<SearchPreferences, UUID> {
   Optional<SearchPreferences> findByUserId(UUID userId);
+  boolean existsByUserId(UUID userId);
 }

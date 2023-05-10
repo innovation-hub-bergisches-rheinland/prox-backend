@@ -2,9 +2,9 @@ package de.innovationhub.prox.modules.project.application.project.dto;
 
 import de.innovationhub.prox.modules.organization.contract.dto.OrganizationDto;
 import de.innovationhub.prox.modules.project.application.discipline.dto.DisciplineMapper;
-import de.innovationhub.prox.modules.project.application.discipline.dto.ReadDisciplineDto;
+import de.innovationhub.prox.modules.project.contract.dto.DisciplineDto;
 import de.innovationhub.prox.modules.project.application.module.dto.ModuleTypeMapper;
-import de.innovationhub.prox.modules.project.application.module.dto.ReadModuleTypeDto;
+import de.innovationhub.prox.modules.project.contract.dto.ModuleTypeDto;
 import de.innovationhub.prox.modules.project.contract.dto.ProjectDto;
 import de.innovationhub.prox.modules.project.contract.dto.ProjectDto.AuthorDto;
 import de.innovationhub.prox.modules.project.contract.dto.ProjectDto.ReadCurriculumContextDto;
@@ -67,22 +67,22 @@ interface ProjectMapper {
     return new ReadCurriculumContextDto(toDisciplineDto(disciplines), toModuleTypeDto(moduleTypes));
   }
 
-  default List<ReadDisciplineDto> toDisciplineDto(List<Discipline> disciplines) {
+  default List<DisciplineDto> toDisciplineDto(List<Discipline> disciplines) {
     if (disciplines == null) {
       return List.of();
     }
     return disciplines.stream()
-        .map(d -> new ReadDisciplineDto(d.getKey(), d.getName(), d.getCreatedAt(),
+        .map(d -> new DisciplineDto(d.getKey(), d.getName(), d.getCreatedAt(),
             d.getModifiedAt()))
         .toList();
   }
 
-  default List<ReadModuleTypeDto> toModuleTypeDto(List<ModuleType> moduleTypes) {
+  default List<ModuleTypeDto> toModuleTypeDto(List<ModuleType> moduleTypes) {
     if (moduleTypes == null) {
       return List.of();
     }
     return moduleTypes.stream()
-        .map(d -> new ReadModuleTypeDto(d.getKey(), d.getName(), d.getCreatedAt(),
+        .map(d -> new ModuleTypeDto(d.getKey(), d.getName(), d.getCreatedAt(),
             d.getModifiedAt()))
         .toList();
   }

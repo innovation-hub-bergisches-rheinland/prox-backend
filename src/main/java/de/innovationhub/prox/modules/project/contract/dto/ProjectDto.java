@@ -1,8 +1,6 @@
 package de.innovationhub.prox.modules.project.contract.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import de.innovationhub.prox.modules.project.application.discipline.dto.ReadDisciplineDto;
-import de.innovationhub.prox.modules.project.application.module.dto.ReadModuleTypeDto;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
 import de.innovationhub.prox.modules.tag.contract.dto.TagDto;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -39,8 +37,8 @@ public record ProjectDto(
 
   @Schema(name = "CurriculumContext")
   public record ReadCurriculumContextDto(
-      List<ReadDisciplineDto> disciplines,
-      List<ReadModuleTypeDto> moduleTypes
+      List<DisciplineDto> disciplines,
+      List<ModuleTypeDto> moduleTypes
   ) {
 
   }

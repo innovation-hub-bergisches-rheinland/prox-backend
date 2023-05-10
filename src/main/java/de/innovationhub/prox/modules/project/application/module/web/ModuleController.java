@@ -1,7 +1,7 @@
 package de.innovationhub.prox.modules.project.application.module.web;
 
 import de.innovationhub.prox.modules.project.application.module.dto.ModuleTypeMapper;
-import de.innovationhub.prox.modules.project.application.module.dto.ReadModuleTypeDto;
+import de.innovationhub.prox.modules.project.contract.dto.ModuleTypeDto;
 import de.innovationhub.prox.modules.project.application.module.usecase.queries.FindAllModulesHandler;
 import de.innovationhub.prox.modules.project.application.module.usecase.queries.FindModulesByDisciplinesHandler;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,7 +29,7 @@ public class ModuleController {
   }
 
   @GetMapping
-  public ResponseEntity<List<ReadModuleTypeDto>> getAll() {
+  public ResponseEntity<List<ModuleTypeDto>> getAll() {
     return ResponseEntity.ok(
         moduleTypeMapper.toDtoList(
             findAllModulesHandler.handle()
@@ -38,7 +38,7 @@ public class ModuleController {
   }
 
   @GetMapping("search/findByDisciplines")
-  public ResponseEntity<List<ReadModuleTypeDto>> findByDisciplines(
+  public ResponseEntity<List<ModuleTypeDto>> findByDisciplines(
       @RequestParam("keys") List<String> disciplineKeys) {
     return ResponseEntity.ok(
         moduleTypeMapper.toDtoList(

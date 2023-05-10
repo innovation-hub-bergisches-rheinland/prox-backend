@@ -5,10 +5,13 @@ import de.innovationhub.prox.config.PersistenceConfig;
 import de.innovationhub.prox.modules.user.domain.search.events.SearchPreferencesCreated;
 import de.innovationhub.prox.modules.user.domain.search.events.SearchPreferencesUpdated;
 import jakarta.annotation.Nullable;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.Objects;
 import java.util.UUID;
@@ -27,13 +30,13 @@ public class SearchPreferences extends AuditedAggregateRoot {
   @Column(unique = true, updatable = false, nullable = false)
   private UUID userId;
 
-  @Embedded
+  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   private ProjectSearch projectSearch = new ProjectSearch();
 
-  @Embedded
+  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   private OrganizationSearch organizationSearch = new OrganizationSearch();
 
-  @Embedded
+  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   private LecturerSearch lecturerSearch = new LecturerSearch();
 
   private UUID tagCollectionId;

@@ -1,8 +1,8 @@
-package de.innovationhub.prox.modules.project.application.discipline.dto;
+package de.innovationhub.prox.modules.project.contract.dto;
 
 import java.time.Instant;
 
-public record ReadDisciplineDto(
+public record DisciplineDto(
     String key,
     String name,
     Instant createdAt,

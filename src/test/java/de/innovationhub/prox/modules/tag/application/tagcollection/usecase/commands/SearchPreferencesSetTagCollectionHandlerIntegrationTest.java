@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Transactional
-class SetTagCollectionHandlerIntegrationTest extends AbstractIntegrationTest {
+class SearchPreferencesSetTagCollectionHandlerIntegrationTest extends AbstractIntegrationTest {
   @Autowired
   SetTagCollectionHandler setTagCollectionHandler;
 

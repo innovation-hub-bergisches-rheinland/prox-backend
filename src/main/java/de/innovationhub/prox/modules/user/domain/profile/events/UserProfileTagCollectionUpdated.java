@@ -6,6 +6,7 @@ import java.util.UUID;
 
 public record UserProfileTagCollectionUpdated(
     UUID userProfileId,
+    UUID userId,
     UUID tagCollectionId
 ) implements DomainEvent {
 }

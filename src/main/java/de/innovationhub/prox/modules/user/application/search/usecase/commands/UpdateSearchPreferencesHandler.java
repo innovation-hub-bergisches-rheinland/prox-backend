@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class UpdateSearchPreferencesHandler {
   private final SearchPreferencesRepository searchPreferencesRepository;
   private final SearchPreferencesDtoMapper searchPreferencesDtoMapper;
-  private final TagCollectionFacade tagCollectionFacade;
 
   @Transactional
   public SearchPreferencesDto handle(UUID userId, CreateSearchPreferencesRequest request) {
@@ -30,10 +29,7 @@ public class UpdateSearchPreferencesHandler {
     var searchPreferences = searchPreferencesRepository.findByUserId(userId)
         .orElseThrow(() -> new IllegalArgumentException("Search preferences does not exist for user"));
 
-    var tc = tagCollectionFacade.setTagCollection(UUID.randomUUID(), request.tags());
-
     searchPreferences.update(
-        tc.id(),
         new ProjectSearch(
             request.projectSearch().enabled(),
             request.projectSearch().moduleTypes(),

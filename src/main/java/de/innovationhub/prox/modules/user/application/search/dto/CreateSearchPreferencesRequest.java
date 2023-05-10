@@ -1,14 +1,12 @@
 package de.innovationhub.prox.modules.user.application.search.dto;
 
-import de.innovationhub.prox.modules.user.domain.search.ProjectSearch;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 public record CreateSearchPreferencesRequest(
-    List<UUID> tags,
+    // Let's not set the tags manually, but instead use the tag collection of the user profile
+    // List<UUID> tags,
     @NotNull ProjectSearchRequest projectSearch,
     @NotNull OrganizationSearchRequest organizationSearch,
     @NotNull LecturerSearchRequest lecturerSearch

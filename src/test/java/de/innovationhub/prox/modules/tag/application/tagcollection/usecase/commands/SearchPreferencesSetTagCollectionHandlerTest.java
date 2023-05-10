@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
-class SetTagCollectionHandlerTest {
+class SearchPreferencesSetTagCollectionHandlerTest {
   TagCollectionRepository tagCollectionRepository = mock(TagCollectionRepository.class);
   TagRepository tagRepository = mock(TagRepository.class);
   SetTagCollectionHandler handler = new SetTagCollectionHandler(tagCollectionRepository, tagRepository, TagCollectionDtoMapper.INSTANCE);

@@ -55,6 +55,9 @@ public abstract class SearchPreferencesDtoMapper {
 
   @Named("retrieveTags")
   public List<TagDto> retrieveTags(SearchPreferences searchPreferences) {
+    if(searchPreferences == null || searchPreferences.getTagCollectionId() == null) {
+      return List.of();
+    }
     return tagCollectionFacade.getTagCollection(searchPreferences.getTagCollectionId()).map(
         TagCollectionDto::tags).orElse(List.of());
   }

@@ -3,6 +3,7 @@ package de.innovationhub.prox.modules.user.domain.search;
 import de.innovationhub.prox.commons.buildingblocks.AuditedAggregateRoot;
 import de.innovationhub.prox.config.PersistenceConfig;
 import de.innovationhub.prox.modules.user.domain.search.events.SearchPreferencesCreated;
+import de.innovationhub.prox.modules.user.domain.search.events.SearchPreferencesTagCollectionUpdated;
 import de.innovationhub.prox.modules.user.domain.search.events.SearchPreferencesUpdated;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.CascadeType;
@@ -43,7 +44,6 @@ public class SearchPreferences extends AuditedAggregateRoot {
 
   public static SearchPreferences create(
       UUID userId,
-      @Nullable UUID tagCollectionId,
       ProjectSearch projectSearch,
       OrganizationSearch organizationSearch,
       LecturerSearch lecturerSearch
@@ -56,7 +56,6 @@ public class SearchPreferences extends AuditedAggregateRoot {
     SearchPreferences searchPreferences = new SearchPreferences();
     searchPreferences.id = UUID.randomUUID();
     searchPreferences.userId = userId;
-    searchPreferences.tagCollectionId = tagCollectionId;
     searchPreferences.projectSearch = projectSearch;
     searchPreferences.organizationSearch = organizationSearch;
     searchPreferences.lecturerSearch = lecturerSearch;
@@ -65,7 +64,6 @@ public class SearchPreferences extends AuditedAggregateRoot {
   }
 
   public void update(
-      @Nullable UUID tagCollectionId,
       ProjectSearch projectSearch,
       OrganizationSearch organizationSearch,
       LecturerSearch lecturerSearch
@@ -74,10 +72,17 @@ public class SearchPreferences extends AuditedAggregateRoot {
     Objects.requireNonNull(organizationSearch);
     Objects.requireNonNull(lecturerSearch);
 
-    this.tagCollectionId = tagCollectionId;
     this.projectSearch = projectSearch;
     this.organizationSearch = organizationSearch;
     this.lecturerSearch = lecturerSearch;
     this.registerEvent(new SearchPreferencesUpdated(this.getId(), this.getUserId()));
+  }
+
+  public void setTagCollection(
+      UUID tagCollectionId
+  ) {
+    Objects.requireNonNull(tagCollectionId);
+    this.tagCollectionId = tagCollectionId;
+    this.registerEvent(new SearchPreferencesTagCollectionUpdated(this.getId(), this.getUserId()));
   }
 }

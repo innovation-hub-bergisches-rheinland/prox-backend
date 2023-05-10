@@ -126,6 +126,6 @@ public class UserProfile extends AuditedAggregateRoot {
     }
 
     this.tagCollectionId = tagCollectionId;
-    this.registerEvent(new UserProfileTagCollectionUpdated(this.id, this.getTagCollectionId()));
+    this.registerEvent(new UserProfileTagCollectionUpdated(this.id, this.userId, this.getTagCollectionId()));
   }
 }

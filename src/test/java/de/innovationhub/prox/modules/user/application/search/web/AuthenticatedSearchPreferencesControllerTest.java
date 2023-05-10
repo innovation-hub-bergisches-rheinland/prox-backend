@@ -56,7 +56,6 @@ class AuthenticatedSearchPreferencesControllerTest extends AbstractIntegrationTe
   void shouldReturnSearchPreferences() {
     var searchPreferences = SearchPreferences.create(
         authUserId,
-        UUID.randomUUID(),
         new ProjectSearch(true, Set.of("A"), Set.of("B")),
         new OrganizationSearch(false),
         new LecturerSearch(true)
@@ -95,7 +94,6 @@ class AuthenticatedSearchPreferencesControllerTest extends AbstractIntegrationTe
     var searchPreferences = searchPreferencesRepository.findByUserId(authUserId).orElseThrow();
     assertThat(searchPreferences).satisfies(sp -> {
       assertThat(sp.getUserId()).isEqualTo(authUserId);
-      assertThat(sp.getTagCollectionId()).isNotNull();
       assertThat(sp.getProjectSearch().getEnabled()).isEqualTo(searchPreferences.getProjectSearch().getEnabled());
       assertThat(sp.getProjectSearch().getDisciplines()).containsExactlyInAnyOrderElementsOf(searchPreferences.getProjectSearch().getDisciplines());
       assertThat(sp.getProjectSearch().getModuleTypes()).containsExactlyInAnyOrderElementsOf(searchPreferences.getProjectSearch().getModuleTypes());
@@ -109,7 +107,6 @@ class AuthenticatedSearchPreferencesControllerTest extends AbstractIntegrationTe
   void shouldUpdateSearchPreferences() {
     var searchPreferences = SearchPreferences.create(
         authUserId,
-        UUID.randomUUID(),
         new ProjectSearch(true, Set.of("A"), Set.of("B")),
         new OrganizationSearch(false),
         new LecturerSearch(true)
@@ -131,7 +128,6 @@ class AuthenticatedSearchPreferencesControllerTest extends AbstractIntegrationTe
     var foundSearchPreferences = searchPreferencesRepository.findByUserId(authUserId).orElseThrow();
     assertThat(foundSearchPreferences).satisfies(sp -> {
       assertThat(sp.getUserId()).isEqualTo(authUserId);
-      assertThat(sp.getTagCollectionId()).isNotNull();
       assertThat(sp.getProjectSearch().getEnabled()).isEqualTo(foundSearchPreferences.getProjectSearch().getEnabled());
       assertThat(sp.getProjectSearch().getDisciplines()).containsExactlyInAnyOrderElementsOf(foundSearchPreferences.getProjectSearch().getDisciplines());
       assertThat(sp.getProjectSearch().getModuleTypes()).containsExactlyInAnyOrderElementsOf(foundSearchPreferences.getProjectSearch().getModuleTypes());

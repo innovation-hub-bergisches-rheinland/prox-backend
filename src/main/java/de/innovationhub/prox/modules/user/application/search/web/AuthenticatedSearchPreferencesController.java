@@ -1,5 +1,7 @@
 package de.innovationhub.prox.modules.user.application.search.web;
 
+import static de.innovationhub.prox.utils.SecurityUtils.extractUserId;
+
 import de.innovationhub.prox.modules.user.application.search.dto.CreateSearchPreferencesRequest;
 import de.innovationhub.prox.modules.user.application.search.usecase.commands.CreateSearchPreferencesHandler;
 import de.innovationhub.prox.modules.user.application.search.usecase.commands.UpdateSearchPreferencesHandler;
@@ -52,9 +54,5 @@ public class AuthenticatedSearchPreferencesController {
   ) {
     var dto = updateSearchPreferencesHandler.handle(extractUserId(authentication), request);
     return ResponseEntity.status(200).body(dto);
-  }
-
-  private UUID extractUserId(Authentication authentication) {
-    return UUID.fromString(authentication.getName());
   }
 }

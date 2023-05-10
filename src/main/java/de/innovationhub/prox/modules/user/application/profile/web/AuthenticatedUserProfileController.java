@@ -1,5 +1,7 @@
 package de.innovationhub.prox.modules.user.application.profile.web;
 
+import static de.innovationhub.prox.utils.SecurityUtils.extractUserId;
+
 import de.innovationhub.prox.modules.user.application.profile.dto.CreateUserProfileRequestDto;
 import de.innovationhub.prox.modules.user.application.profile.dto.SetLecturerTagsResponseDto;
 import de.innovationhub.prox.modules.user.application.profile.dto.SetTagsRequestDto;
@@ -74,9 +76,5 @@ public class AuthenticatedUserProfileController {
     }
     setAvatar.handle(extractUserId(authentication), multipartFile.getBytes(), contentType);
     return ResponseEntity.noContent().build();
-  }
-
-  private UUID extractUserId(Authentication authentication) {
-    return UUID.fromString(authentication.getName());
   }
 }

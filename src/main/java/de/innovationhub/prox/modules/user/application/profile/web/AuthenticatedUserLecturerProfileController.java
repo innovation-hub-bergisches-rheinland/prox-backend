@@ -1,5 +1,7 @@
 package de.innovationhub.prox.modules.user.application.profile.web;
 
+import static de.innovationhub.prox.utils.SecurityUtils.extractUserId;
+
 import de.innovationhub.prox.modules.user.application.profile.dto.CreateLecturerRequestDto;
 import de.innovationhub.prox.modules.user.contract.profile.dto.UserProfileDto;
 import de.innovationhub.prox.modules.user.application.profile.dto.UserProfileDtoMapper;
@@ -41,9 +43,5 @@ public class AuthenticatedUserLecturerProfileController {
       Authentication authentication) {
     var result = updateLecturerProfile.handle(extractUserId(authentication), requestDto);
     return ResponseEntity.ok(dtoMapper.toDtoUserProfile(result));
-  }
-
-  private UUID extractUserId(Authentication authentication) {
-    return UUID.fromString(authentication.getName());
   }
 }

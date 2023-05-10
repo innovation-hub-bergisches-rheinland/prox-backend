@@ -1,6 +1,8 @@
 package de.innovationhub.prox.modules.user.application.search.usecase.commands;
 
 import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
+import de.innovationhub.prox.modules.tag.contract.TagCollectionFacade;
+import de.innovationhub.prox.modules.tag.contract.TagFacade;
 import de.innovationhub.prox.modules.user.application.search.dto.CreateSearchPreferencesRequest;
 import de.innovationhub.prox.modules.user.application.search.dto.SearchPreferencesDtoMapper;
 import de.innovationhub.prox.modules.user.contract.search.dto.SearchPreferencesDto;
@@ -19,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CreateSearchPreferencesHandler {
   private final SearchPreferencesRepository searchPreferencesRepository;
   private final SearchPreferencesDtoMapper searchPreferencesDtoMapper;
+  private final TagCollectionFacade tagCollectionFacade;
 
   @Transactional
   public SearchPreferencesDto handle(UUID userId, CreateSearchPreferencesRequest request) {
@@ -29,9 +32,11 @@ public class CreateSearchPreferencesHandler {
       throw new IllegalArgumentException("Search preferences already exist for user");
     }
 
+    var tc = tagCollectionFacade.setTagCollection(UUID.randomUUID(), request.tags());
+
     var searchPreferences = SearchPreferences.create(
         userId,
-        request.tagCollectionId(),
+        tc.id(),
         new ProjectSearch(
             request.projectSearch().enabled(),
             request.projectSearch().moduleTypes(),

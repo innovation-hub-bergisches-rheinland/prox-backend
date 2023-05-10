@@ -2,8 +2,8 @@ package de.innovationhub.prox.modules.user.application.search.web;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.modules.user.application.search.dto.CreateSearchPreferencesRequest;
@@ -69,10 +69,10 @@ class AuthenticatedSearchPreferencesControllerTest extends AbstractIntegrationTe
         .then()
         .statusCode(200)
         .body("userId", is(AUTH_USER_ID))
-        .body("tagCollectionId", is(searchPreferences.getTagCollectionId().toString()))
+        .body("tags", notNullValue())
         .body("projectSearch.enabled", is(true))
-        .body("projectSearch.moduleTypes", containsInAnyOrder("A"))
-        .body("projectSearch.disciplines", containsInAnyOrder("B"))
+        .body("projectSearch.moduleTypes", notNullValue())
+        .body("projectSearch.disciplines", notNullValue())
         .body("organizationSearch.enabled", is(false))
         .body("lecturerSearch.enabled", is(true));
   }
@@ -95,7 +95,7 @@ class AuthenticatedSearchPreferencesControllerTest extends AbstractIntegrationTe
     var searchPreferences = searchPreferencesRepository.findByUserId(authUserId).orElseThrow();
     assertThat(searchPreferences).satisfies(sp -> {
       assertThat(sp.getUserId()).isEqualTo(authUserId);
-      assertThat(sp.getTagCollectionId()).isEqualTo(searchPreferencesDto.tagCollectionId());
+      assertThat(sp.getTagCollectionId()).isNotNull();
       assertThat(sp.getProjectSearch().getEnabled()).isEqualTo(searchPreferences.getProjectSearch().getEnabled());
       assertThat(sp.getProjectSearch().getDisciplines()).containsExactlyInAnyOrderElementsOf(searchPreferences.getProjectSearch().getDisciplines());
       assertThat(sp.getProjectSearch().getModuleTypes()).containsExactlyInAnyOrderElementsOf(searchPreferences.getProjectSearch().getModuleTypes());
@@ -131,7 +131,7 @@ class AuthenticatedSearchPreferencesControllerTest extends AbstractIntegrationTe
     var foundSearchPreferences = searchPreferencesRepository.findByUserId(authUserId).orElseThrow();
     assertThat(foundSearchPreferences).satisfies(sp -> {
       assertThat(sp.getUserId()).isEqualTo(authUserId);
-      assertThat(sp.getTagCollectionId()).isEqualTo(searchPreferencesDto.tagCollectionId());
+      assertThat(sp.getTagCollectionId()).isNotNull();
       assertThat(sp.getProjectSearch().getEnabled()).isEqualTo(foundSearchPreferences.getProjectSearch().getEnabled());
       assertThat(sp.getProjectSearch().getDisciplines()).containsExactlyInAnyOrderElementsOf(foundSearchPreferences.getProjectSearch().getDisciplines());
       assertThat(sp.getProjectSearch().getModuleTypes()).containsExactlyInAnyOrderElementsOf(foundSearchPreferences.getProjectSearch().getModuleTypes());

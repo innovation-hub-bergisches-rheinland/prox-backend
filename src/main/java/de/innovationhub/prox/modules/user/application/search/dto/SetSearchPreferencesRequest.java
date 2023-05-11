@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.Set;
 
-public record CreateSearchPreferencesRequest(
+public record SetSearchPreferencesRequest(
     // Let's not set the tags manually, but instead use the tag collection of the user profile
     // List<UUID> tags,
     @NotNull ProjectSearchRequest projectSearch,

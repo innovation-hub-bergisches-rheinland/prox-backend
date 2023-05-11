@@ -6,7 +6,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
-import de.innovationhub.prox.modules.user.application.search.dto.CreateSearchPreferencesRequest;
+import de.innovationhub.prox.modules.user.application.search.dto.SetSearchPreferencesRequest;
 import de.innovationhub.prox.modules.user.domain.search.LecturerSearch;
 import de.innovationhub.prox.modules.user.domain.search.OrganizationSearch;
 import de.innovationhub.prox.modules.user.domain.search.ProjectSearch;
@@ -79,16 +79,16 @@ class AuthenticatedSearchPreferencesControllerTest extends AbstractIntegrationTe
   @Test
   @WithMockUser(username = AUTH_USER_ID)
   void shouldCreateSearchPreferences() {
-    var searchPreferencesDto = Instancio.of(CreateSearchPreferencesRequest.class).create();
+    var searchPreferencesDto = Instancio.of(SetSearchPreferencesRequest.class).create();
 
     given()
         .body(searchPreferencesDto)
         .contentType("application/json")
         .accept("application/json")
         .when()
-        .post("/user/search")
+        .put("/user/search")
         .then()
-        .statusCode(201)
+        .statusCode(200)
         .body("userId", is(AUTH_USER_ID));
 
     var searchPreferences = searchPreferencesRepository.findByUserId(authUserId).orElseThrow();
@@ -113,7 +113,7 @@ class AuthenticatedSearchPreferencesControllerTest extends AbstractIntegrationTe
     );
     searchPreferencesRepository.save(searchPreferences);
 
-    var searchPreferencesDto = Instancio.of(CreateSearchPreferencesRequest.class).create();
+    var searchPreferencesDto = Instancio.of(SetSearchPreferencesRequest.class).create();
 
     given()
         .body(searchPreferencesDto)

@@ -45,6 +45,7 @@ public class GetRecommendationsHandler {
 
   @Cacheable(CacheConfig.RECOMMENDATIONS)
   public RecommendationResponse handle(final RecommendationRequest request) {
+    var limit = request.limit();
     var tagCollections = tagCollectionFacade.findWithAnyTag(request.seedTags());
     var idsFromTagCollections = tagCollections.stream()
         .map(TagCollectionDto::id)
@@ -100,38 +101,38 @@ public class GetRecommendationsHandler {
     }
 
     // 5. Return the top results for each category together with the confidence score
-    final var topFiveLecturers = pickResults(
+    final var topLecturers = pickResults(
         calculateAverage(lecturerConfidenceScores),
         e -> new RecommendationResponse.RecommendationResult<>(e.getValue(),
             userProfileFacade.getByUserId(e.getKey()).orElse(null)))
         .filter(e -> e.item() != null && request.excludedIds().stream().noneMatch(ex -> e.item().userId().equals(ex)))
         .sorted((e1, e2) -> e2.confidenceScore().compareTo(e1.confidenceScore()))
-        .limit(5)
+        .limit(limit)
         .toList();
 
-    final var topFiveOrganizations = pickResults(
+    final var topOrganizations = pickResults(
         calculateAverage(organizationConfidenceScores),
         e -> new RecommendationResponse.RecommendationResult<>(e.getValue(),
             organizationFacade.get(e.getKey()).orElse(null)))
         .filter(e -> e.item() != null && request.excludedIds().stream().noneMatch(ex -> e.item().id().equals(ex)))
         .sorted((e1, e2) -> e2.confidenceScore().compareTo(e1.confidenceScore()))
-        .limit(5)
+        .limit(limit)
         .toList();
 
     Comparator<RecommendationResult<ProjectDto>> projectComparator = Comparator.comparing(RecommendationResult::confidenceScore);
     projectComparator = projectComparator.thenComparing(p -> p.item().createdAt()).reversed();
 
-    final var topFiveProjects = pickResults(
+    final var topProjects = pickResults(
         calculateAverage(projectConfidenceScores),
         e -> new RecommendationResult<>(e.getValue(),
             projectFacade.get(e.getKey()).orElse(null)))
         .filter(e -> e.item() != null && request.excludedIds().stream().noneMatch(ex -> e.item().id().equals(ex)))
         .filter(e -> Arrays.stream(PROJECT_STATE_FILTER).anyMatch(s -> s.equals(e.item().status().state())))
         .sorted(projectComparator)
-        .limit(5)
+        .limit(limit)
         .toList();
 
-    return new RecommendationResponse(topFiveLecturers, topFiveOrganizations, topFiveProjects);
+    return new RecommendationResponse(topLecturers, topOrganizations, topProjects);
   }
 
   private HashMap<UUID, Double> calculateAverage(final MultiValuedMap<UUID, Double> map) {

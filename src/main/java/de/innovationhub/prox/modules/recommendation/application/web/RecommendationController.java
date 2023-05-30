@@ -3,6 +3,7 @@ package de.innovationhub.prox.modules.recommendation.application.web;
 import de.innovationhub.prox.modules.recommendation.application.dto.RecommendationRequest;
 import de.innovationhub.prox.modules.recommendation.application.dto.RecommendationResponse;
 import de.innovationhub.prox.modules.recommendation.application.usecase.GetRecommendationsHandler;
+import jakarta.validation.constraints.Min;
 import java.util.List;
 import java.util.UUID;
 import jakarta.validation.Valid;
@@ -29,9 +30,11 @@ public class RecommendationController {
       List<UUID> seedTags,
       @NotNull
       @RequestParam(required = false, defaultValue = "")
-      List<UUID> excludedIds
+      List<UUID> excludedIds,
+      @RequestParam(required = false, defaultValue = "5")
+      Integer limit
   ) {
-    var request = new RecommendationRequest(seedTags, excludedIds);
+    var request = new RecommendationRequest(seedTags, excludedIds, limit);
     return ResponseEntity.ok(getRecommendations.handle(request));
   }
 }

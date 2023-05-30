@@ -77,7 +77,7 @@ class GetRecommendationsHandlerTest {
     when(userProfileFacade.findLecturersByIds(argThat(ids -> ids.contains(lecturer.userId())))).thenReturn(List.of(lecturer));
 
     var tagIds = seedTags.stream().map(TagDto::id).toList();
-    assertThat(getRecommendationsHandler.handle(new RecommendationRequest(tagIds, List.of())))
+    assertThat(getRecommendationsHandler.handle(new RecommendationRequest(tagIds, List.of(), 3)))
         .satisfies(r -> {
           assertThat(r.lecturers())
               .hasSizeGreaterThanOrEqualTo(1)
@@ -114,7 +114,7 @@ class GetRecommendationsHandlerTest {
     });
 
     var tagIds = seedTags.stream().map(TagDto::id).toList();
-    assertThat(getRecommendationsHandler.handle(new RecommendationRequest(tagIds, List.of())))
+    assertThat(getRecommendationsHandler.handle(new RecommendationRequest(tagIds, List.of(), 10)))
         .satisfies(r -> {
           assertThat(r.projects())
               .isNotEmpty()

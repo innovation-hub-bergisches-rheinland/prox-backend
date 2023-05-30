@@ -110,7 +110,7 @@ class RecommendationControllerIntegrationTest extends AbstractIntegrationTest {
         .body("organizations.size()", is(2))
         .body("organizations[0].confidenceScore", equalTo(1.0f))
         .body("organizations[0].item.id", notNullValue())
-        .body("organizations[1].confidenceScore", greaterThanOrEqualTo(0.5f))
+        .body("organizations[1].confidenceScore", greaterThanOrEqualTo(0.875f))
         .body("organizations[1].item.id", notNullValue())
         .body("projects.size()", is(2))
         .body("projects[0].confidenceScore", greaterThanOrEqualTo(1.0f))

@@ -23,8 +23,6 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.collections4.MultiValuedMap;
-import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.springframework.cache.annotation.Cacheable;
 
 @ApplicationComponent
@@ -33,6 +31,7 @@ public class GetRecommendationsHandler {
 
   private static final double LECTURER_PROFILE_MATCH_BOOST_FACTOR = 2.5;
   private static final double ORGANISATION_PROFILE_MATCH_BOOST_FACTOR = 2.5;
+  private static final double PROJECT_MATCH_BOOST_FACTOR = 1;
   private static final ProjectState[] PROJECT_STATE_FILTER = {
       ProjectState.OFFERED, ProjectState.PROPOSED, ProjectState.RUNNING
   };
@@ -61,48 +60,45 @@ public class GetRecommendationsHandler {
     // 4. Based on those results, calculate a confidence score for each supervisor, organization and project
     // 4.1 The overlap coefficent index can be used to calculate the confidence score for (1, 2, 3)
     //     Another option is to simply count the number of matching tags
-    final MultiValuedMap<UUID, Double> lecturerConfidenceScores = new ArrayListValuedHashMap<>();
-    final MultiValuedMap<UUID, Double> organizationConfidenceScores = new ArrayListValuedHashMap<>();
-    final MultiValuedMap<UUID, Double> projectConfidenceScores = new ArrayListValuedHashMap<>();
+    final Map<UUID, Double> lecturerConfidenceScoreSum = new HashMap<>();
+    final Map<UUID, Double> organizationConfidenceScoreSum = new HashMap<>();
+    final Map<UUID, Double> projectConfidenceScoreSum = new HashMap<>();
 
     for (var supervisor : matchingSupervisors) {
-      final var score = overlapCoefficientCalculator.calculate(request.seedTags(),
+      final var score = LECTURER_PROFILE_MATCH_BOOST_FACTOR * overlapCoefficientCalculator.calculate(request.seedTags(),
           supervisor.tags().stream().map(
               TagDto::id).toList());
-      lecturerConfidenceScores.put(supervisor.userId(),
-          LECTURER_PROFILE_MATCH_BOOST_FACTOR * score);
+      addConfidenceScore(lecturerConfidenceScoreSum, supervisor.userId(), score);
     }
 
     for (var organization : matchingOrganizations) {
-      final var score = overlapCoefficientCalculator.calculate(request.seedTags(),
+      final var score = ORGANISATION_PROFILE_MATCH_BOOST_FACTOR * overlapCoefficientCalculator.calculate(request.seedTags(),
           organization.tags().stream().map(
               TagDto::id).toList());
-      organizationConfidenceScores.put(organization.id(),
-          ORGANISATION_PROFILE_MATCH_BOOST_FACTOR * score);
+      addConfidenceScore(organizationConfidenceScoreSum, organization.id(), score);
     }
 
     for (var project : matchingProjects) {
-      final var projectScore = overlapCoefficientCalculator.calculate(request.seedTags(),
+      final var projectScore = PROJECT_MATCH_BOOST_FACTOR * overlapCoefficientCalculator.calculate(request.seedTags(),
           project.tags().stream().map(
               TagDto::id).toList());
-      projectConfidenceScores.put(project.id(), projectScore);
+      addConfidenceScore(projectConfidenceScoreSum, project.id(), projectScore);
 
       var supervisors = project.supervisors();
-      if (supervisors != null) {
+      if (projectScore > 0.0 && supervisors != null) {
         for (var supervisor : supervisors) {
-          lecturerConfidenceScores.put(supervisor.id(), projectScore);
+          addConfidenceScore(lecturerConfidenceScoreSum, supervisor.id(), projectScore, 2.0);
         }
       }
 
       var partner = project.partner();
-      if (partner != null) {
-        organizationConfidenceScores.put(partner.id(), projectScore);
+      if (projectScore > 0.0 && partner != null) {
+        addConfidenceScore(organizationConfidenceScoreSum, partner.id(), projectScore, 2.0);
       }
     }
 
     // 5. Return the top results for each category together with the confidence score
-    final var topLecturers = pickResults(
-        calculateAverage(lecturerConfidenceScores),
+    final var topLecturers = pickResults(lecturerConfidenceScoreSum,
         e -> new RecommendationResponse.RecommendationResult<>(e.getValue(),
             userProfileFacade.getByUserId(e.getKey()).orElse(null)))
         .filter(e -> e.item() != null && request.excludedIds().stream().noneMatch(ex -> e.item().userId().equals(ex)))
@@ -110,8 +106,7 @@ public class GetRecommendationsHandler {
         .limit(limit)
         .toList();
 
-    final var topOrganizations = pickResults(
-        calculateAverage(organizationConfidenceScores),
+    final var topOrganizations = pickResults(organizationConfidenceScoreSum,
         e -> new RecommendationResponse.RecommendationResult<>(e.getValue(),
             organizationFacade.get(e.getKey()).orElse(null)))
         .filter(e -> e.item() != null && request.excludedIds().stream().noneMatch(ex -> e.item().id().equals(ex)))
@@ -122,8 +117,7 @@ public class GetRecommendationsHandler {
     Comparator<RecommendationResult<ProjectDto>> projectComparator = Comparator.comparing(RecommendationResult::confidenceScore);
     projectComparator = projectComparator.thenComparing(p -> p.item().createdAt()).reversed();
 
-    final var topProjects = pickResults(
-        calculateAverage(projectConfidenceScores),
+    final var topProjects = pickResults(projectConfidenceScoreSum,
         e -> new RecommendationResult<>(e.getValue(),
             projectFacade.get(e.getKey()).orElse(null)))
         .filter(e -> e.item() != null && request.excludedIds().stream().noneMatch(ex -> e.item().id().equals(ex)))
@@ -135,14 +129,17 @@ public class GetRecommendationsHandler {
     return new RecommendationResponse(topLecturers, topOrganizations, topProjects);
   }
 
-  private HashMap<UUID, Double> calculateAverage(final MultiValuedMap<UUID, Double> map) {
-    final var average = new HashMap<UUID, Double>();
-    for (var entry : map.asMap().entrySet()) {
-      final var sum = entry.getValue().stream().reduce(0.0, Double::sum);
-      final var calculatedAverage = sum / entry.getValue().size();
-      average.put(entry.getKey(), calculatedAverage);
-    }
-    return average;
+  private void addConfidenceScore(final Map<UUID, Double> map, final UUID id, final double score) {
+    addConfidenceScore(map, id, score, 1.0);
+  }
+
+  private void addConfidenceScore(final Map<UUID, Double> map, final UUID id, final double score, final double divisor) {
+    map.compute(id, (key, value) -> {
+      if (value == null) {
+        return score;
+      }
+      return (value + score) / divisor;
+    });
   }
 
   private <T> Stream<RecommendationResult<T>> pickResults(final Map<UUID, Double> map, final

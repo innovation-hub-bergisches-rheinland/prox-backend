@@ -1,7 +1,6 @@
 package de.innovationhub.prox.modules.recommendation.domain;
 
 import de.innovationhub.prox.modules.recommendation.domain.calc.OverlapCoefficientCalculator;
-import de.innovationhub.prox.modules.tag.contract.dto.TagDto;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

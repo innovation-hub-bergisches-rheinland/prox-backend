@@ -29,8 +29,10 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
@@ -82,19 +84,13 @@ public class GetRecommendationsHandler {
 
     // 5. Return the top results for each category together with the confidence score
     final var topLecturers = pickResults(confidenceScoreCalculator.getLecturerConfidenceScores(),
-        e -> new RecommendationResponse.RecommendationResult<>(e.getValue(),
-            userProfileFacade.getByUserId(e.getKey()).orElse(null)))
-        .filter(e -> e.item() != null && request.excludedIds().stream()
-            .noneMatch(ex -> e.item().userId().equals(ex)))
+        userProfileFacade::getByUserId, UserProfileDto::userId, request.excludedIds())
         .sorted((e1, e2) -> e2.confidenceScore().compareTo(e1.confidenceScore()))
         .limit(limit)
         .toList();
 
     final var topOrganizations = pickResults(confidenceScoreCalculator.getOrganizationConfidenceScores(),
-        e -> new RecommendationResponse.RecommendationResult<>(e.getValue(),
-            organizationFacade.get(e.getKey()).orElse(null)))
-        .filter(e -> e.item() != null && request.excludedIds().stream()
-            .noneMatch(ex -> e.item().id().equals(ex)))
+        organizationFacade::get, OrganizationDto::id, request.excludedIds())
         .sorted((e1, e2) -> e2.confidenceScore().compareTo(e1.confidenceScore()))
         .limit(limit)
         .toList();
@@ -104,12 +100,8 @@ public class GetRecommendationsHandler {
     projectComparator = projectComparator.thenComparing(p -> p.item().createdAt()).reversed();
 
     final var topProjects = pickResults(confidenceScoreCalculator.getProjectConfidenceScores(),
-        e -> new RecommendationResult<>(e.getValue(),
-            projectFacade.get(e.getKey()).orElse(null)))
-        .filter(e -> e.item() != null && request.excludedIds().stream()
-            .noneMatch(ex -> e.item().id().equals(ex)))
-        .filter(e -> Arrays.stream(PROJECT_STATE_FILTER)
-            .anyMatch(s -> s.equals(e.item().status().state())))
+        projectFacade::get, ProjectDto::id, request.excludedIds())
+        .filter(e -> Arrays.stream(PROJECT_STATE_FILTER).anyMatch(s -> s.equals(e.item().status().state())))
         .sorted(projectComparator)
         .limit(limit)
         .toList();
@@ -117,11 +109,16 @@ public class GetRecommendationsHandler {
     return new RecommendationResponse(topLecturers, topOrganizations, topProjects);
   }
 
-  private <T> Stream<RecommendationResult<T>> pickResults(final Map<UUID, Double> map, final
-  Function<Entry<UUID, Double>, RecommendationResult<T>> mapFn) {
+  private <T> Stream<RecommendationResult<T>> pickResults(
+      final Map<UUID, Double> map,
+      final Function<UUID, Optional<T>> mapFn,
+      final Function<T, UUID> idExtractor,
+      final List<UUID> excludedIds) {
     return map.entrySet().stream()
         .filter(e -> e.getValue() > 0.0)
-        .map(mapFn);
+        .map(e -> new RecommendationResult<>(e.getValue(), mapFn.apply(e.getKey()).orElse(null)))
+        .filter(e -> e.item() != null)
+        .filter(e -> excludedIds.stream().noneMatch(ex -> ex.equals(idExtractor.apply(e.item()))));
   }
 
 }

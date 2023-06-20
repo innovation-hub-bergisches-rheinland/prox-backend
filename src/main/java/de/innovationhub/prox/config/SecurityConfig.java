@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
@@ -22,12 +23,9 @@ class SecurityConfig {
   @Bean
   @Profile("unsecure")
   public SecurityFilterChain unsecureSecurityFilterChain(HttpSecurity http) throws Exception {
-    http
-        .cors()
-        .and()
-        .csrf().disable()
-        .authorizeHttpRequests()
-        .anyRequest().permitAll();
+    http.cors(AbstractHttpConfigurer::disable)
+        .csrf(AbstractHttpConfigurer::disable)
+        .authorizeHttpRequests(registry -> registry.anyRequest().permitAll());
 
     return http.build();
   }
@@ -35,20 +33,15 @@ class SecurityConfig {
   @Bean
   @Primary
   public SecurityFilterChain configure(HttpSecurity http) throws Exception {
-    http.cors()
-        .configurationSource(request -> {
-              var cors = new CorsConfiguration().applyPermitDefaultValues();
-              cors.addAllowedMethod("*");
-              return cors;
-            }
-        )
-        .and()
-        .csrf()
-        .disable()
-        .anonymous()
-        .disable()
+    http.cors(cors -> cors.configurationSource(request -> {
+          var corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
+          corsConfiguration.addAllowedMethod("*");
+          return corsConfiguration;
+        }))
+        .csrf(AbstractHttpConfigurer::disable)
+        .anonymous(AbstractHttpConfigurer::disable)
         .oauth2ResourceServer(
-            oauth2 -> oauth2.jwt().jwtAuthenticationConverter(jwtAuthenticationConverter))
+            oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter)))
         .authorizeHttpRequests(
             registry ->
                 registry

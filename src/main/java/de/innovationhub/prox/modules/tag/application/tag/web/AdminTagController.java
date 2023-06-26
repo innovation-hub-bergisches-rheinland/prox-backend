@@ -1,13 +1,17 @@
 package de.innovationhub.prox.modules.tag.application.tag.web;
 
 import de.innovationhub.prox.modules.tag.application.tag.dto.MergeTagsRequest;
+import de.innovationhub.prox.modules.tag.application.tag.dto.SplitTagRequest;
+import de.innovationhub.prox.modules.tag.application.tag.dto.SplitTagResponse;
 import de.innovationhub.prox.modules.tag.application.tag.dto.UpdateTagRequest;
 import de.innovationhub.prox.modules.tag.application.tag.usecase.commands.DeleteTagHandler;
 import de.innovationhub.prox.modules.tag.application.tag.usecase.commands.MergeTagsHandler;
+import de.innovationhub.prox.modules.tag.application.tag.usecase.commands.SplitTagsHandler;
 import de.innovationhub.prox.modules.tag.application.tag.usecase.commands.UpdateTagHandler;
 import de.innovationhub.prox.modules.tag.contract.dto.TagDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -30,6 +34,7 @@ public class AdminTagController {
   private final MergeTagsHandler mergeTagsHandler;
   private final UpdateTagHandler updateTagHandler;
   private final DeleteTagHandler deleteTagHandler;
+  private final SplitTagsHandler splitTagsHandler;
 
   @PostMapping(path = "{id}/merge", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<TagDto> mergeTag(
@@ -38,6 +43,15 @@ public class AdminTagController {
   ) {
     var result = mergeTagsHandler.handle(id, mergeTagsRequest.mergeInto());
     return ResponseEntity.ok(result);
+  }
+
+  @PostMapping(path = "{id}/split", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<SplitTagResponse> splitTag(
+      @PathVariable("id") UUID id,
+      @Valid @RequestBody SplitTagRequest splitTagRequest
+  ) {
+    var result = splitTagsHandler.handle(id, splitTagRequest.splitInto());
+    return ResponseEntity.ok(new SplitTagResponse(result));
   }
 
   @PutMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)

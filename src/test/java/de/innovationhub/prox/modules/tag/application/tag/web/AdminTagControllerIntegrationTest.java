@@ -1,12 +1,14 @@
 package de.innovationhub.prox.modules.tag.application.tag.web;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
 import de.innovationhub.prox.modules.tag.application.tag.dto.MergeTagsRequest;
+import de.innovationhub.prox.modules.tag.application.tag.dto.SplitTagRequest;
 import de.innovationhub.prox.modules.tag.application.tag.dto.UpdateTagRequest;
 import de.innovationhub.prox.modules.tag.domain.tag.Tag;
 import de.innovationhub.prox.modules.tag.domain.tag.TagRepository;
@@ -48,6 +50,7 @@ class AdminTagControllerIntegrationTest extends AbstractIntegrationTest {
   @CsvSource({
       "PUT, /tags/{id}/aliases",
       "POST, /tags/{id}/merge",
+      "POST, /tags/{id}/split",
       "DELETE, /tags/{id}"
   })
   @WithMockUser
@@ -77,6 +80,25 @@ class AdminTagControllerIntegrationTest extends AbstractIntegrationTest {
         .statusCode(200)
         .body("id", is(tagToMergeInto.getId().toString()))
         .body("aliases", containsInAnyOrder("tag1"));
+  }
+
+  @Test
+  @WithMockUser(roles = "admin")
+  void shouldSplitTags() {
+    var tags = createTags("Low-Code / No-Code");
+    var tagToSplit = tags.get(0);
+    var splitInto = List.of("Low-Code", "No-Code");
+
+    RestAssuredMockMvc.given()
+        .body(new SplitTagRequest(splitInto))
+        .accept("application/json")
+        .contentType("application/json")
+        .when()
+        .post("/tags/{id}/split", tagToSplit.getId())
+        .then()
+        .statusCode(200)
+        .body("splittedTags.id", hasSize(2))
+        .body("splittedTags.tagName", containsInAnyOrder("low-code", "no-code"));
   }
 
   @Test

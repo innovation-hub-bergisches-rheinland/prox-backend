@@ -69,6 +69,8 @@ class SecurityConfig {
                     .permitAll()
                     .requestMatchers(HttpMethod.POST, "/tags/*/merge")
                     .hasRole("admin")
+                    .requestMatchers(HttpMethod.POST, "/tags/*/split")
+                    .hasRole("admin")
                     .requestMatchers(HttpMethod.PUT, "/tags/*/aliases")
                     .hasRole("admin")
                     .requestMatchers(HttpMethod.DELETE, "/tags/**")

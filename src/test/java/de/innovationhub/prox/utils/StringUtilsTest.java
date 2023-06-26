@@ -14,5 +14,7 @@ class StringUtilsTest {
     assertEquals("test", StringUtils.slugify("test "));
     assertEquals("test-test", StringUtils.slugify("test test"));
     assertEquals("test-test", StringUtils.slugify("test   test"));
+    assertEquals("c#", StringUtils.slugify("C#"));
+    assertEquals("c++", StringUtils.slugify("C++"));
   }
 }

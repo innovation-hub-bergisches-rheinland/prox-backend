@@ -8,6 +8,7 @@ import de.innovationhub.prox.modules.tag.domain.tag.TagRepository;
 import de.innovationhub.prox.modules.tag.domain.tagcollection.TagCollection;
 import de.innovationhub.prox.modules.tag.domain.tagcollection.TagCollectionRepository;
 import jakarta.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -31,29 +32,17 @@ public class SplitTagsHandler {
         .filter(t -> existingSplittedTags.stream().noneMatch(t1 -> t1.getTagName().equalsIgnoreCase(t)))
         .map(Tag::create)
         .toList();
-    var allTags = Stream.concat(existingSplittedTags.stream(), newlyTags.stream()).toList();
+    var allTags = Stream.concat(existingSplittedTags.stream(), newlyTags.stream()).collect(
+        Collectors.toSet());
 
     tagRepository.saveAll(newlyTags);
 
     var relevantTagCollections = tagCollectionRepository.findWithAnyTag(List.of(tagIdToSplit));
     for (TagCollection tagCollection : relevantTagCollections) {
-      var tags = tagCollection.getTags()
-          .stream()
-          .filter(t -> !t.getId().equals(tagIdToSplit))
-          .toList();
-      var newTags = mergeTagLists(tags, allTags);
-      tagCollection.setTags(newTags);
+      tagCollection.splitTag(tagToSplit, allTags);
     }
     tagCollectionRepository.saveAll(relevantTagCollections);
-    tagCollectionRepository.deleteAllTags(tagToSplit.getId());
     tagRepository.delete(tagToSplit);
-    return tagDtoMapper.toDtoList(allTags);
-  }
-
-  private List<Tag> mergeTagLists(List<Tag> tagList1, List<Tag> tagList2) {
-    return Stream.concat(tagList1.stream(), tagList2.stream())
-        .collect(Collectors.toSet())
-        .stream()
-        .toList();
+    return tagDtoMapper.toDtoList(new ArrayList<>(allTags));
   }
 }

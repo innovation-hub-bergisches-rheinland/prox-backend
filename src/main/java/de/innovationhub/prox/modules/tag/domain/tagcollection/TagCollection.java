@@ -5,6 +5,7 @@ import de.innovationhub.prox.config.PersistenceConfig;
 import de.innovationhub.prox.modules.tag.domain.tag.Tag;
 import de.innovationhub.prox.modules.tag.domain.tagcollection.events.TagCollectionCreated;
 import de.innovationhub.prox.modules.tag.domain.tagcollection.events.TagCollectionUpdated;
+import de.innovationhub.prox.modules.tag.domain.tagcollection.events.TagSplitted;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -16,6 +17,8 @@ import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -53,5 +56,17 @@ public class TagCollection extends AuditedAggregateRoot {
   public void setTags(Collection<Tag> tags) {
     this.tags = new ArrayList<>(tags);
     this.registerEvent(TagCollectionUpdated.from(this));
+  }
+
+  public void splitTag(Tag tagToSplit, Set<Tag> splittedTags) {
+    Objects.requireNonNull(tagToSplit);
+    Objects.requireNonNull(splittedTags);
+
+    if (!tags.contains(tagToSplit)) throw new RuntimeException("Tag is not present in TagCollection");
+    if (splittedTags.size() < 2) throw new RuntimeException("Must have at least two splits");
+
+    this.tags.remove(tagToSplit);
+    this.tags.addAll(splittedTags);
+    this.registerEvent(new TagSplitted(this.getId(), tagToSplit, splittedTags));
   }
 }

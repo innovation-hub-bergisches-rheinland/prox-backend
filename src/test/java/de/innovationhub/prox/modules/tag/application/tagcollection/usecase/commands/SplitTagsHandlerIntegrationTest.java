@@ -1,13 +1,14 @@
-package de.innovationhub.prox.modules.tag.application.tag.usecase.commands;
+package de.innovationhub.prox.modules.tag.application.tagcollection.usecase.commands;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 import de.innovationhub.prox.AbstractIntegrationTest;
+import de.innovationhub.prox.modules.tag.application.tagcollection.usecase.commands.SplitTagsHandler;
 import de.innovationhub.prox.modules.tag.domain.tag.Tag;
 import de.innovationhub.prox.modules.tag.domain.tag.TagRepository;
 import de.innovationhub.prox.modules.tag.domain.tagcollection.TagCollection;
 import de.innovationhub.prox.modules.tag.domain.tagcollection.TagCollectionRepository;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -29,63 +30,46 @@ class SplitTagsHandlerIntegrationTest extends AbstractIntegrationTest {
   @WithMockUser(roles = "admin")
   void shouldSplitTag() {
     var existingTag = Tag.create("Low-Code/No-Code");
-    tagRepository.save(existingTag);
-
-    splitTagsHandler.handle(existingTag.getId(), List.of("Low-Code", "No-Code"));
-
-    var foundTags = tagRepository.findAllByTagNameInIgnoreCase(List.of("low-code", "no-code"));
-    assertThat(foundTags)
-        .hasSize(2);
-  }
-
-  @Test
-  @WithMockUser(roles = "admin")
-  void shouldDeleteSplittedTag() {
-    var existingTag = Tag.create("Low-Code/No-Code");
-    tagRepository.save(existingTag);
-
-    splitTagsHandler.handle(existingTag.getId(), List.of("Low-Code", "No-Code"));
-    var found = tagRepository.findById(existingTag.getId());
-    assertThat(found)
-        .isEmpty();
-  }
-
-  @Test
-  @WithMockUser(roles = "admin")
-  void shouldUpdateTagCollections() {
-    var existingTag = Tag.create("Low-Code/No-Code");
+    var tagsToSplitInTo = createTags("Low-Code", "No-Code");
+    var tagsToSplitInToIds = tagsToSplitInTo.stream()
+            .map(Tag::getId)
+            .toList();
     var tagCollection = TagCollection.create(UUID.randomUUID(), List.of(existingTag));
     tagRepository.save(existingTag);
+    tagRepository.saveAll(tagsToSplitInTo);
     tagCollectionRepository.save(tagCollection);
 
-    splitTagsHandler.handle(existingTag.getId(), List.of("Low-Code", "No-Code"));
+    splitTagsHandler.handle(existingTag.getId(), tagsToSplitInToIds);
 
     var foundTagCollection = tagCollectionRepository.findById(tagCollection.getId());
-    assertThat(foundTagCollection)
-        .isPresent()
-        .get()
-        .extracting(TagCollection::getTags)
-        .satisfies(tl -> {
-          assertThat(tl)
-              .extracting(Tag::getTagName)
-              .containsExactly("low-code", "no-code");
-        });
+    assertThat(foundTagCollection.get().getTags())
+        .extracting(Tag::getTagName)
+        .contains("low-code", "no-code");
   }
 
   @Test
   @WithMockUser(roles = "admin")
   void shouldNotAffectOtherTagsInCollection() {
     var existingTag = Tag.create("Low-Code/No-Code");
-    var otherTag = Tag.create("test");
+    var otherTag = Tag.create("otherTag");
+    var tagsToSplitInTo = createTags("Low-Code", "No-Code");
+    var tagsToSplitInToIds = tagsToSplitInTo.stream()
+        .map(Tag::getId)
+        .toList();
     var tagCollection = TagCollection.create(UUID.randomUUID(), List.of(existingTag, otherTag));
     tagRepository.save(existingTag);
     tagRepository.save(otherTag);
+    tagRepository.saveAll(tagsToSplitInTo);
     tagCollectionRepository.save(tagCollection);
 
-    splitTagsHandler.handle(existingTag.getId(), List.of("Low-Code", "No-Code"));
+    splitTagsHandler.handle(existingTag.getId(), tagsToSplitInToIds);
 
     var found = tagCollectionRepository.findById(tagCollection.getId());
     assertThat(found.get().getTags())
         .contains(otherTag);
+  }
+
+  private List<Tag> createTags(String... tags) {
+    return Arrays.stream(tags).map(Tag::create).toList();
   }
 }

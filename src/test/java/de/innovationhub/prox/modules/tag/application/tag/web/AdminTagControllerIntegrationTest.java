@@ -87,10 +87,11 @@ class AdminTagControllerIntegrationTest extends AbstractIntegrationTest {
   void shouldSplitTags() {
     var tags = createTags("Low-Code / No-Code");
     var tagToSplit = tags.get(0);
-    var splitInto = List.of("Low-Code", "No-Code");
+    var splitInto = createTags("Low-Code", "No-Code");
+    var splitIntoIds = splitInto.stream().map(Tag::getId).toList();
 
     RestAssuredMockMvc.given()
-        .body(new SplitTagRequest(splitInto))
+        .body(new SplitTagRequest(splitIntoIds))
         .accept("application/json")
         .contentType("application/json")
         .when()

@@ -15,25 +15,16 @@ import de.innovationhub.prox.modules.recommendation.domain.ConfidenceScoreCalcul
 import de.innovationhub.prox.modules.recommendation.domain.LecturerRecommendation;
 import de.innovationhub.prox.modules.recommendation.domain.OrganizationRecommendation;
 import de.innovationhub.prox.modules.recommendation.domain.ProjectRecommendation;
-import de.innovationhub.prox.modules.recommendation.domain.calc.OverlapCoefficientCalculator;
 import de.innovationhub.prox.modules.tag.contract.TagCollectionFacade;
 import de.innovationhub.prox.modules.tag.contract.dto.TagCollectionDto;
 import de.innovationhub.prox.modules.tag.contract.dto.TagDto;
 import de.innovationhub.prox.modules.user.contract.profile.UserProfileFacade;
-import de.innovationhub.prox.modules.user.contract.profile.dto.LecturerProfileDto;
 import de.innovationhub.prox.modules.user.contract.profile.dto.UserProfileDto;
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -53,7 +44,6 @@ public class GetRecommendationsHandler {
   private final UserProfileFacade userProfileFacade;
   private final OrganizationFacade organizationFacade;
   private final ProjectFacade projectFacade;
-  private final OverlapCoefficientCalculator overlapCoefficientCalculator = new OverlapCoefficientCalculator();
 
   @Cacheable(CacheConfig.RECOMMENDATIONS)
   public RecommendationResponse handle(final RecommendationRequest request) {
@@ -67,10 +57,12 @@ public class GetRecommendationsHandler {
     // 2. Get all organizations which match the seed tags
     // 3. Get all projects which match the seed tags
     final var matchingSupervisors = userProfileFacade.findLecturersByIds(idsFromTagCollections)
-        .stream().map(l -> new LecturerRecommendation(l.userId(), l.tags().stream().map(TagDto::id).collect(
+        .stream()
+        .map(l -> new LecturerRecommendation(l.userId(), l.tags().stream().map(TagDto::id).collect(
             Collectors.toSet()))).toList();
     final var matchingOrganizations = organizationFacade.findAllByIds(idsFromTagCollections)
-        .stream().map(o -> new OrganizationRecommendation(o.id(), o.tags().stream().map(TagDto::id).collect(
+        .stream()
+        .map(o -> new OrganizationRecommendation(o.id(), o.tags().stream().map(TagDto::id).collect(
             Collectors.toSet()))).toList();
     final var matchingProjects = projectFacade.findAllByIds(idsFromTagCollections)
         .stream().map(p -> new ProjectRecommendation(p.id(), p.supervisors().stream().map(
@@ -89,7 +81,8 @@ public class GetRecommendationsHandler {
         .limit(limit)
         .toList();
 
-    final var topOrganizations = pickResults(confidenceScoreCalculator.getOrganizationConfidenceScores(),
+    final var topOrganizations = pickResults(
+        confidenceScoreCalculator.getOrganizationConfidenceScores(),
         organizationFacade::get, OrganizationDto::id, request.excludedIds())
         .sorted((e1, e2) -> e2.confidenceScore().compareTo(e1.confidenceScore()))
         .limit(limit)
@@ -101,7 +94,8 @@ public class GetRecommendationsHandler {
 
     final var topProjects = pickResults(confidenceScoreCalculator.getProjectConfidenceScores(),
         projectFacade::get, ProjectDto::id, request.excludedIds())
-        .filter(e -> Arrays.stream(PROJECT_STATE_FILTER).anyMatch(s -> s.equals(e.item().status().state())))
+        .filter(e -> Arrays.stream(PROJECT_STATE_FILTER)
+            .anyMatch(s -> s.equals(e.item().status().state())))
         .sorted(projectComparator)
         .limit(limit)
         .toList();

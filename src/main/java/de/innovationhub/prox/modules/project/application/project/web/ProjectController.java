@@ -2,7 +2,6 @@ package de.innovationhub.prox.modules.project.application.project.web;
 
 import de.innovationhub.prox.modules.project.application.project.dto.ApplyCommitmentDto;
 import de.innovationhub.prox.modules.project.application.project.dto.CreateProjectRequest;
-import de.innovationhub.prox.modules.project.contract.dto.ProjectDto;
 import de.innovationhub.prox.modules.project.application.project.dto.ProjectDtoAssembler;
 import de.innovationhub.prox.modules.project.application.project.dto.SetProjectStateRequestDto;
 import de.innovationhub.prox.modules.project.application.project.dto.SetProjectTagsRequestDto;
@@ -11,14 +10,16 @@ import de.innovationhub.prox.modules.project.application.project.usecase.command
 import de.innovationhub.prox.modules.project.application.project.usecase.commands.DeleteProjectByIdHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.commands.SetProjectTagsHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.commands.SetStateHandler;
-import de.innovationhub.prox.modules.project.application.project.usecase.commands.UpdateInterestHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.commands.UpdateProjectHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.queries.FindAllProjectsHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.queries.FindProjectByIdHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.queries.FindProjectsOfPartnerHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.queries.FindProjectsOfSupervisorHandler;
+import de.innovationhub.prox.modules.project.application.project.usecase.queries.GetProjectRecommendationsHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.queries.SearchProjectHandler;
+import de.innovationhub.prox.modules.project.contract.dto.ProjectDto;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
+import de.innovationhub.prox.modules.recommendation.contract.RecommendationResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -58,7 +59,7 @@ public class ProjectController {
   private final FindProjectsOfPartnerHandler findByPartner;
   private final FindProjectsOfSupervisorHandler findBySupervisor;
   private final SetStateHandler setState;
-  private final UpdateInterestHandler updateInterest;
+  private final GetProjectRecommendationsHandler getProjectRecommendationsHandler;
 
   private final ProjectDtoAssembler dtoAssembler;
 
@@ -100,6 +101,12 @@ public class ProjectController {
     return ResponseEntity.ok(dto);
   }
 
+  @GetMapping(value = "{id}/recommendations", produces = "application/json")
+  public ResponseEntity<RecommendationResponse> getRecommendation(@PathVariable("id") UUID id) {
+    var recommendations = getProjectRecommendationsHandler.handle(id);
+    return ResponseEntity.ok(recommendations);
+  }
+
   @PostMapping(value = "{id}/status", consumes = "application/json", produces = "application/json")
   @Operation(security = {
       @SecurityRequirement(name = "oidc")
@@ -116,7 +123,8 @@ public class ProjectController {
       @SecurityRequirement(name = "oidc")
   })
   @PreAuthorize("@projectPermissionEvaluator.hasPermission(#id, authentication)")
-  public ResponseEntity<ProjectDto> commitment(@PathVariable("id") UUID id, @RequestBody ApplyCommitmentDto applyCommitmentDto) {
+  public ResponseEntity<ProjectDto> commitment(@PathVariable("id") UUID id,
+      @RequestBody ApplyCommitmentDto applyCommitmentDto) {
     var updatedProject = setSupervisors.handle(id, applyCommitmentDto.supervisorId());
     var dto = dtoAssembler.toDto(updatedProject);
     return ResponseEntity.ok(dto);

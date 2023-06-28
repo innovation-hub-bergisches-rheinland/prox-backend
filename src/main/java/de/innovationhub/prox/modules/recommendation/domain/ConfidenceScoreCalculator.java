@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class ConfidenceScoreCalculator {
+
   private static final double LECTURER_PROFILE_MATCH_BOOST_FACTOR = 2.5;
   private static final double ORGANISATION_PROFILE_MATCH_BOOST_FACTOR = 2.5;
   private static final double PROJECT_MATCH_BOOST_FACTOR = 1;
@@ -22,9 +23,12 @@ public class ConfidenceScoreCalculator {
   Map<UUID, Double> organizationConfidenceScores = null;
   Map<UUID, Double> projectConfidenceScores = null;
 
-  public ConfidenceScoreCalculator(List<ProjectRecommendation> projectRecommendations,
+  public ConfidenceScoreCalculator(
+      List<ProjectRecommendation> projectRecommendations,
       List<LecturerRecommendation> lecturerRecommendations,
-      List<OrganizationRecommendation> organizationRecommendations, List<UUID> seedTags) {
+      List<OrganizationRecommendation> organizationRecommendations,
+      List<UUID> seedTags
+  ) {
     this.projectRecommendations = projectRecommendations;
     this.lecturerRecommendations = lecturerRecommendations;
     this.organizationRecommendations = organizationRecommendations;
@@ -32,21 +36,21 @@ public class ConfidenceScoreCalculator {
   }
 
   public Map<UUID, Double> getLecturerConfidenceScores() {
-    if(lecturerConfidenceScores == null) {
+    if (lecturerConfidenceScores == null) {
       calculateLecturerConfidenceScores();
     }
     return Map.copyOf(lecturerConfidenceScores);
   }
 
   public Map<UUID, Double> getOrganizationConfidenceScores() {
-    if(organizationConfidenceScores == null) {
+    if (organizationConfidenceScores == null) {
       calculateOrganizationConfidenceScores();
     }
     return Map.copyOf(organizationConfidenceScores);
   }
 
   public Map<UUID, Double> getProjectConfidenceScores() {
-    if(projectConfidenceScores == null) {
+    if (projectConfidenceScores == null) {
       calculateProjectConfidenceScores();
     }
     return Map.copyOf(projectConfidenceScores);
@@ -56,17 +60,19 @@ public class ConfidenceScoreCalculator {
     this.lecturerConfidenceScores = new HashMap<>();
     for (var supervisor : this.lecturerRecommendations) {
       final var score =
-          LECTURER_PROFILE_MATCH_BOOST_FACTOR * overlapCoefficientCalculator.calculate(seedTags, supervisor.tags());
+          LECTURER_PROFILE_MATCH_BOOST_FACTOR * overlapCoefficientCalculator.calculate(seedTags,
+              supervisor.tags());
       addConfidenceScore(this.lecturerConfidenceScores, supervisor.id(), score, 1);
     }
 
     var projectScores = this.getProjectConfidenceScores();
-    if(projectScores == null || projectScores.isEmpty()) {
+    if (projectScores == null || projectScores.isEmpty()) {
       return;
     }
 
     for (var entry : projectScores.entrySet()) {
-      var project = projectRecommendations.stream().filter(p -> p.id().equals(entry.getKey())).findFirst()
+      var project = projectRecommendations.stream().filter(p -> p.id().equals(entry.getKey()))
+          .findFirst()
           .orElse(null);
       if (project == null) {
         continue;
@@ -86,17 +92,19 @@ public class ConfidenceScoreCalculator {
     this.organizationConfidenceScores = new HashMap<>();
     for (var org : this.organizationRecommendations) {
       final var score =
-          ORGANISATION_PROFILE_MATCH_BOOST_FACTOR * overlapCoefficientCalculator.calculate(seedTags, org.tags());
+          ORGANISATION_PROFILE_MATCH_BOOST_FACTOR * overlapCoefficientCalculator.calculate(seedTags,
+              org.tags());
       addConfidenceScore(this.organizationConfidenceScores, org.id(), score, 1);
     }
 
     var projectScores = this.getProjectConfidenceScores();
-    if(projectScores == null || projectScores.isEmpty()) {
+    if (projectScores == null || projectScores.isEmpty()) {
       return;
     }
 
     for (var entry : projectScores.entrySet()) {
-      var project = projectRecommendations.stream().filter(p -> p.id().equals(entry.getKey())).findFirst()
+      var project = projectRecommendations.stream().filter(p -> p.id().equals(entry.getKey()))
+          .findFirst()
           .orElse(null);
       if (project == null) {
         continue;
@@ -115,7 +123,8 @@ public class ConfidenceScoreCalculator {
     this.projectConfidenceScores = new HashMap<>();
     for (var project : this.projectRecommendations) {
       final var score =
-          PROJECT_MATCH_BOOST_FACTOR * overlapCoefficientCalculator.calculate(seedTags, project.tags());
+          PROJECT_MATCH_BOOST_FACTOR * overlapCoefficientCalculator.calculate(seedTags,
+              project.tags());
       addConfidenceScore(this.projectConfidenceScores, project.id(), score, 1);
     }
   }

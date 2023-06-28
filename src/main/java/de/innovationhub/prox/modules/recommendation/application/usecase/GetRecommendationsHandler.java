@@ -8,9 +8,9 @@ import de.innovationhub.prox.modules.project.contract.ProjectFacade;
 import de.innovationhub.prox.modules.project.contract.dto.ProjectDto;
 import de.innovationhub.prox.modules.project.contract.dto.ProjectDto.ReadSupervisorDto;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
-import de.innovationhub.prox.modules.recommendation.application.dto.RecommendationRequest;
-import de.innovationhub.prox.modules.recommendation.application.dto.RecommendationResponse;
-import de.innovationhub.prox.modules.recommendation.application.dto.RecommendationResponse.RecommendationResult;
+import de.innovationhub.prox.modules.recommendation.contract.RecommendationRequest;
+import de.innovationhub.prox.modules.recommendation.contract.RecommendationResponse;
+import de.innovationhub.prox.modules.recommendation.contract.RecommendationResponse.RecommendationResult;
 import de.innovationhub.prox.modules.recommendation.domain.ConfidenceScoreCalculator;
 import de.innovationhub.prox.modules.recommendation.domain.LecturerRecommendation;
 import de.innovationhub.prox.modules.recommendation.domain.OrganizationRecommendation;
@@ -20,6 +20,7 @@ import de.innovationhub.prox.modules.tag.contract.dto.TagCollectionDto;
 import de.innovationhub.prox.modules.tag.contract.dto.TagDto;
 import de.innovationhub.prox.modules.user.contract.profile.UserProfileFacade;
 import de.innovationhub.prox.modules.user.contract.profile.dto.UserProfileDto;
+import jakarta.transaction.Transactional;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -46,6 +47,7 @@ public class GetRecommendationsHandler {
   private final ProjectFacade projectFacade;
 
   @Cacheable(CacheConfig.RECOMMENDATIONS)
+  @Transactional
   public RecommendationResponse handle(final RecommendationRequest request) {
     var limit = request.limit();
     var tagCollections = tagCollectionFacade.findWithAnyTag(request.seedTags());
@@ -65,10 +67,12 @@ public class GetRecommendationsHandler {
         .map(o -> new OrganizationRecommendation(o.id(), o.tags().stream().map(TagDto::id).collect(
             Collectors.toSet()))).toList();
     final var matchingProjects = projectFacade.findAllByIds(idsFromTagCollections)
-        .stream().map(p -> new ProjectRecommendation(p.id(), p.supervisors().stream().map(
-            ReadSupervisorDto::id).collect(
-            Collectors.toSet()), p.partner().id(), p.tags().stream().map(TagDto::id).collect(
-            Collectors.toSet()))).toList();
+        .stream()
+        .map(p -> new ProjectRecommendation(p.id(),
+            p.supervisors().stream().map(ReadSupervisorDto::id)
+                .collect(Collectors.toSet()), p.partner() != null ? p.partner().id() : null,
+            p.tags().stream().map(TagDto::id).collect(
+                Collectors.toSet()))).toList();
 
     // 4. Based on those results, calculate a confidence score for each supervisor, organization and project
     final var confidenceScoreCalculator = new ConfidenceScoreCalculator(

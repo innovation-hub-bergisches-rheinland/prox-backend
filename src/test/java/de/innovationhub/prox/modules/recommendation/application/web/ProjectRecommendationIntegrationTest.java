@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.project.application.project.web;
+package de.innovationhub.prox.modules.recommendation.application.web;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 

@@ -15,11 +15,10 @@ import de.innovationhub.prox.modules.project.application.project.usecase.queries
 import de.innovationhub.prox.modules.project.application.project.usecase.queries.FindProjectByIdHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.queries.FindProjectsOfPartnerHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.queries.FindProjectsOfSupervisorHandler;
-import de.innovationhub.prox.modules.project.application.project.usecase.queries.GetProjectRecommendationsHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.queries.SearchProjectHandler;
 import de.innovationhub.prox.modules.project.contract.dto.ProjectDto;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
-import de.innovationhub.prox.modules.recommendation.contract.RecommendationResponse;
+import de.innovationhub.prox.modules.recommendation.application.usecase.GetProjectRecommendationsHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -99,12 +98,6 @@ public class ProjectController {
     var updatedProject = update.handle(id, updateProjectDto, request.isUserInRole("professor"));
     var dto = dtoAssembler.toDto(updatedProject);
     return ResponseEntity.ok(dto);
-  }
-
-  @GetMapping(value = "{id}/recommendations", produces = "application/json")
-  public ResponseEntity<RecommendationResponse> getRecommendation(@PathVariable("id") UUID id) {
-    var recommendations = getProjectRecommendationsHandler.handle(id);
-    return ResponseEntity.ok(recommendations);
   }
 
   @PostMapping(value = "{id}/status", consumes = "application/json", produces = "application/json")

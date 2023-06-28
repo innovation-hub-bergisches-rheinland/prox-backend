@@ -8,9 +8,9 @@ import de.innovationhub.prox.modules.project.contract.ProjectFacade;
 import de.innovationhub.prox.modules.project.contract.dto.ProjectDto;
 import de.innovationhub.prox.modules.project.contract.dto.ProjectDto.ReadSupervisorDto;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
-import de.innovationhub.prox.modules.recommendation.contract.RecommendationRequest;
-import de.innovationhub.prox.modules.recommendation.contract.RecommendationResponse;
-import de.innovationhub.prox.modules.recommendation.contract.RecommendationResponse.RecommendationResult;
+import de.innovationhub.prox.modules.recommendation.application.dto.RecommendationRequest;
+import de.innovationhub.prox.modules.recommendation.application.dto.RecommendationResponse;
+import de.innovationhub.prox.modules.recommendation.application.dto.RecommendationResponse.RecommendationResult;
 import de.innovationhub.prox.modules.recommendation.domain.ConfidenceScoreCalculator;
 import de.innovationhub.prox.modules.recommendation.domain.LecturerRecommendation;
 import de.innovationhub.prox.modules.recommendation.domain.OrganizationRecommendation;
@@ -35,7 +35,7 @@ import org.springframework.cache.annotation.Cacheable;
 
 @ApplicationComponent
 @RequiredArgsConstructor
-public class GetRecommendationsHandler {
+class GetRecommendationsHandler {
 
   private static final ProjectState[] PROJECT_STATE_FILTER = {
       ProjectState.OFFERED, ProjectState.PROPOSED, ProjectState.RUNNING

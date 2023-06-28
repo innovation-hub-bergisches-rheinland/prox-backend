@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.recommendation.contract;
+package de.innovationhub.prox.modules.recommendation.application.dto;
 
 import de.innovationhub.prox.modules.organization.contract.dto.OrganizationDto;
 import de.innovationhub.prox.modules.project.contract.dto.ProjectDto;

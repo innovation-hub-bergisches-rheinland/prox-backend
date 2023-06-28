@@ -1,4 +1,4 @@
-package de.innovationhub.prox.modules.recommendation.contract;
+package de.innovationhub.prox.modules.recommendation.application.dto;
 
 import jakarta.validation.constraints.Min;
 import java.util.List;

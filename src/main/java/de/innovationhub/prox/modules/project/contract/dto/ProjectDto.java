@@ -25,15 +25,17 @@ public record ProjectDto(
     List<TagDto> tags,
     @JsonProperty("_permissions")
     ProjectPermissions permissions,
-    ProjectMetrics metrics,
     Instant createdAt,
     Instant modifiedAt
 ) {
+
   @Schema(name = "Author")
   public record AuthorDto(
       UUID userId,
       String name
-  ) {}
+  ) {
+
+  }
 
   @Schema(name = "CurriculumContext")
   public record ReadCurriculumContextDto(

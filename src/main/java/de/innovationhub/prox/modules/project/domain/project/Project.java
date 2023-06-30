@@ -3,8 +3,6 @@ package de.innovationhub.prox.modules.project.domain.project;
 import de.innovationhub.prox.commons.buildingblocks.AuditedAggregateRoot;
 import de.innovationhub.prox.config.PersistenceConfig;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectCreated;
-import de.innovationhub.prox.modules.project.domain.project.events.ProjectInterestStated;
-import de.innovationhub.prox.modules.project.domain.project.events.ProjectInterestUnstated;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectOffered;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectStateUpdated;
 import de.innovationhub.prox.modules.project.domain.project.events.ProjectTagCollectionUpdated;
@@ -24,13 +22,10 @@ import jakarta.validation.constraints.Size;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -93,9 +88,22 @@ public class Project extends AuditedAggregateRoot {
 
   private UUID tagCollectionId = this.id;
 
-  @ElementCollection
-  @CollectionTable(schema = PersistenceConfig.PROJECT_SCHEMA)
-  private Set<InterestedUser> interestedUsers = new HashSet<>();
+  public Project(UUID id, Author author, Partner partner, String title, String summary,
+      String description, String requirement, CurriculumContext curriculumContext,
+      ProjectStatus status, TimeBox timeBox, List<Supervisor> supervisors) {
+    this.id = id;
+    this.author = author;
+    this.partner = partner;
+    this.title = title;
+    this.summary = summary;
+    this.description = description;
+    this.requirement = requirement;
+    this.curriculumContext = curriculumContext;
+    this.status = status;
+    this.timeBox = timeBox;
+    this.supervisors = supervisors;
+    this.tagCollectionId = id;
+  }
 
   public static Project create(
       Author author,
@@ -115,7 +123,8 @@ public class Project extends AuditedAggregateRoot {
         .toList();
 
     var project = new Project(UUID.randomUUID(),
-        author, partner != null ? new Partner(partner) : null, title, summary, description, requirement, context,
+        author, partner != null ? new Partner(partner) : null, title, summary, description,
+        requirement, context,
         new ProjectStatus(state, Instant.now()), timeBox,
         supervisorsList);
     project.registerEvent(new ProjectCreated(project.getId()));
@@ -144,35 +153,17 @@ public class Project extends AuditedAggregateRoot {
     this.registerEvent(new ProjectUpdated(this.getId()));
   }
 
-  public Project(UUID id, Author author, Partner partner, String title, String summary,
-      String description, String requirement, CurriculumContext curriculumContext,
-      ProjectStatus status, TimeBox timeBox, List<Supervisor> supervisors) {
-    this.id = id;
-    this.author = author;
-    this.partner = partner;
-    this.title = title;
-    this.summary = summary;
-    this.description = description;
-    this.requirement = requirement;
-    this.curriculumContext = curriculumContext;
-    this.status = status;
-    this.timeBox = timeBox;
-    this.supervisors = supervisors;
-    this.tagCollectionId = id;
-    this.interestedUsers = new HashSet<>();
-  }
-
   public void updateState(ProjectState state) {
     this.status.updateState(state);
     this.registerEvent(new ProjectStateUpdated(this.getId(), state));
   }
 
   public void applyCommitment(UUID supervisorId) {
-    if(!this.status.acceptsCommitment()) {
+    if (!this.status.acceptsCommitment()) {
       throw new IllegalStateException("Project cannot accept commitment");
     }
 
-    if(!this.supervisors.isEmpty()) {
+    if (!this.supervisors.isEmpty()) {
       throw new IllegalStateException("Project already has a supervisor");
     }
 
@@ -201,23 +192,5 @@ public class Project extends AuditedAggregateRoot {
 
     this.tagCollectionId = tagCollectionId;
     this.registerEvent(new ProjectTagCollectionUpdated(this.id, tagCollectionId));
-  }
-
-  public void stateInterest(InterestedUser interestedUser) {
-    if (this.interestedUsers.contains(interestedUser)) {
-      return;
-    }
-
-    this.interestedUsers.add(interestedUser);
-    this.registerEvent(new ProjectInterestStated(this.id, interestedUser));
-  }
-
-  public void unstateInterest(InterestedUser userId) {
-    if (!this.interestedUsers.contains(userId)) {
-      return;
-    }
-
-    this.interestedUsers.remove(userId);
-    this.registerEvent(new ProjectInterestUnstated(this.id, userId));
   }
 }

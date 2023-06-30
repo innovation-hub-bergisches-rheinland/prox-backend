@@ -2,15 +2,14 @@ package de.innovationhub.prox.modules.project.application.project.dto;
 
 import de.innovationhub.prox.modules.organization.contract.dto.OrganizationDto;
 import de.innovationhub.prox.modules.project.application.discipline.dto.DisciplineMapper;
-import de.innovationhub.prox.modules.project.contract.dto.DisciplineDto;
 import de.innovationhub.prox.modules.project.application.module.dto.ModuleTypeMapper;
+import de.innovationhub.prox.modules.project.contract.dto.DisciplineDto;
 import de.innovationhub.prox.modules.project.contract.dto.ModuleTypeDto;
 import de.innovationhub.prox.modules.project.contract.dto.ProjectDto;
 import de.innovationhub.prox.modules.project.contract.dto.ProjectDto.AuthorDto;
 import de.innovationhub.prox.modules.project.contract.dto.ProjectDto.ReadCurriculumContextDto;
 import de.innovationhub.prox.modules.project.contract.dto.ProjectDto.ReadProjectStatusDto;
 import de.innovationhub.prox.modules.project.contract.dto.ProjectDto.ReadSupervisorDto;
-import de.innovationhub.prox.modules.project.contract.dto.ProjectMetrics;
 import de.innovationhub.prox.modules.project.contract.dto.ProjectPermissions;
 import de.innovationhub.prox.modules.project.domain.discipline.Discipline;
 import de.innovationhub.prox.modules.project.domain.module.ModuleType;
@@ -43,8 +42,7 @@ interface ProjectMapper {
   ProjectDto toDto(Project project, List<Discipline> disciplines, List<ModuleType> moduleTypes,
       List<UserProfileDto> userProfileView,
       OrganizationDto organizationView, List<TagDto> tags, ProjectPermissions permissions,
-      UserProfileDto author,
-      ProjectMetrics metrics);
+      UserProfileDto author);
 
   default AuthorDto toSupervisors(UserProfileDto author) {
     if (author == null) {

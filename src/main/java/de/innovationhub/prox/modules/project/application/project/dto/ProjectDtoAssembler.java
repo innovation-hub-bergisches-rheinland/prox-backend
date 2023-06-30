@@ -1,10 +1,9 @@
 package de.innovationhub.prox.modules.project.application.project.dto;
 
-import de.innovationhub.prox.modules.organization.contract.dto.OrganizationDto;
 import de.innovationhub.prox.modules.organization.contract.OrganizationFacade;
+import de.innovationhub.prox.modules.organization.contract.dto.OrganizationDto;
 import de.innovationhub.prox.modules.project.application.ProjectPermissionEvaluator;
 import de.innovationhub.prox.modules.project.contract.dto.ProjectDto;
-import de.innovationhub.prox.modules.project.contract.dto.ProjectMetrics;
 import de.innovationhub.prox.modules.project.contract.dto.ProjectPermissions;
 import de.innovationhub.prox.modules.project.domain.discipline.Discipline;
 import de.innovationhub.prox.modules.project.domain.discipline.DisciplineRepository;
@@ -13,7 +12,6 @@ import de.innovationhub.prox.modules.project.domain.module.ModuleTypeRepository;
 import de.innovationhub.prox.modules.project.domain.project.Project;
 import de.innovationhub.prox.modules.project.domain.project.Supervisor;
 import de.innovationhub.prox.modules.tag.contract.TagCollectionFacade;
-import de.innovationhub.prox.modules.tag.contract.TagFacade;
 import de.innovationhub.prox.modules.tag.contract.dto.TagCollectionDto;
 import de.innovationhub.prox.modules.tag.contract.dto.TagDto;
 import de.innovationhub.prox.modules.user.contract.profile.UserProfileFacade;
@@ -62,7 +60,6 @@ public class ProjectDtoAssembler {
     var author = userProfileFacade.getByUserId(project.getAuthor().getUserId()).orElse(null);
 
     var permissions = evaluatePermissions(project); // TODO
-    var interest = evaluateInterest(project);
 
     List<Discipline> disciplines = List.of();
     List<ModuleType> moduleTypes = List.of();
@@ -74,8 +71,7 @@ public class ProjectDtoAssembler {
     }
 
     return projectMapper.toDto(project, disciplines, moduleTypes, supervisors, partnerOrg, tags,
-        permissions, author,
-        interest);
+        permissions, author);
   }
 
   public Page<ProjectDto> toDto(Page<Project> projects) {
@@ -85,14 +81,7 @@ public class ProjectDtoAssembler {
   public ProjectPermissions evaluatePermissions(Project project) {
     var authentication = authenticationFacade.getAuthentication();
     return new ProjectPermissions(
-        projectPermissionEvaluator.hasPermission(project, authentication),
-        authentication != null && authentication.isAuthenticated()
-    );
-  }
-
-  public ProjectMetrics evaluateInterest(Project project) {
-    return new ProjectMetrics(
-        project.getInterestedUsers().size()
+        projectPermissionEvaluator.hasPermission(project, authentication)
     );
   }
 }

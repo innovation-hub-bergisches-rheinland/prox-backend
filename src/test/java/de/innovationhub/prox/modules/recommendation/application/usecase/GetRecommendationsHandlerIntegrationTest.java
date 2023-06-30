@@ -21,6 +21,7 @@ import de.innovationhub.prox.modules.user.domain.profile.UserProfileRepository;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -43,6 +44,15 @@ class GetRecommendationsHandlerIntegrationTest extends AbstractIntegrationTest {
 
   @Autowired
   TagCollectionRepository tagCollectionRepository;
+
+  @BeforeEach
+  void setup() {
+    this.userProfileRepository.deleteAll();
+    this.organizationRepository.deleteAll();
+    this.projectRepository.deleteAll();
+    this.tagRepository.deleteAll();
+    this.tagCollectionRepository.deleteAll();
+  }
 
   @Test
   void shouldGetRecommendations() {

@@ -1,6 +1,6 @@
 package de.innovationhub.prox.modules.recommendation.domain;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 import java.util.HashSet;
 import java.util.List;
@@ -9,29 +9,29 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 class ConfidenceScoreCalculatorTest {
-
   List<UUID> seedTags = List.of(UUID.randomUUID(), UUID.randomUUID());
   List<UUID> mixedTags = List.of(seedTags.get(0), UUID.randomUUID());
   List<UUID> randomTags = List.of(UUID.randomUUID(), UUID.randomUUID());
-  List<OrganizationRecommendation> givenOrganizations = List.of(
-      new OrganizationRecommendation(UUID.randomUUID(), new HashSet<>(seedTags)),
-      new OrganizationRecommendation(UUID.randomUUID(), new HashSet<>(mixedTags)),
-      new OrganizationRecommendation(UUID.randomUUID(), new HashSet<>(randomTags))
-  );
   UUID supervisorId = UUID.randomUUID();
+
   List<ProjectRecommendation> givenProjects = List.of(
-      new ProjectRecommendation(UUID.randomUUID(), Set.of(supervisorId), UUID.randomUUID(),
-          new HashSet<>(seedTags)),
-      new ProjectRecommendation(UUID.randomUUID(), Set.of(UUID.randomUUID()), UUID.randomUUID(),
-          new HashSet<>(mixedTags)),
-      new ProjectRecommendation(UUID.randomUUID(), Set.of(UUID.randomUUID()), UUID.randomUUID(),
-          new HashSet<>(randomTags))
+      new ProjectRecommendation(UUID.randomUUID(), Set.of(supervisorId), UUID.randomUUID(), new HashSet<>(seedTags)),
+      new ProjectRecommendation(UUID.randomUUID(), Set.of(UUID.randomUUID()), UUID.randomUUID(), new HashSet<>(mixedTags)),
+      new ProjectRecommendation(UUID.randomUUID(), Set.of(UUID.randomUUID()), UUID.randomUUID(), new HashSet<>(randomTags))
   );
+
   List<LecturerRecommendation> givenLecturers = List.of(
       new LecturerRecommendation(supervisorId, new HashSet<>(seedTags)),
       new LecturerRecommendation(UUID.randomUUID(), new HashSet<>(mixedTags)),
       new LecturerRecommendation(UUID.randomUUID(), new HashSet<>(randomTags))
   );
+
+  List<OrganizationRecommendation> givenOrganizations = List.of(
+      new OrganizationRecommendation(UUID.randomUUID(), new HashSet<>(seedTags)),
+      new OrganizationRecommendation(UUID.randomUUID(), new HashSet<>(mixedTags)),
+      new OrganizationRecommendation(UUID.randomUUID(), new HashSet<>(randomTags))
+  );
+
   ConfidenceScoreCalculator confidenceScoreCalculator = new ConfidenceScoreCalculator(
       givenProjects,
       givenLecturers,

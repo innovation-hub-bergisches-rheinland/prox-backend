@@ -75,12 +75,8 @@ class GetRecommendationsHandler {
                 Collectors.toSet()))).toList();
 
     // 4. Based on those results, calculate a confidence score for each supervisor, organization and project
-    final var confidenceScoreCalculator = ConfidenceScoreCalculator.builder()
-        .withSeedTags(request.seedTags())
-        .withSeedLecturers(matchingSupervisors)
-        .withSeedOrganizations(matchingOrganizations)
-        .withSeedProjects(matchingProjects)
-        .build();
+    final var confidenceScoreCalculator = new ConfidenceScoreCalculator(
+        matchingProjects, matchingSupervisors, matchingOrganizations, request.seedTags());
 
     // 5. Return the top results for each category together with the confidence score
     final var topLecturers = pickResults(confidenceScoreCalculator.getLecturerConfidenceScores(),
@@ -92,6 +88,8 @@ class GetRecommendationsHandler {
     final var topOrganizations = pickResults(
         confidenceScoreCalculator.getOrganizationConfidenceScores(),
         organizationFacade::get, OrganizationDto::id, request.excludedIds())
+        .sorted((e1, e2) -> e2.confidenceScore().compareTo(e1.confidenceScore()))
+        .limit(limit)
         .toList();
 
     Comparator<RecommendationResult<ProjectDto>> projectComparator = Comparator.comparing(

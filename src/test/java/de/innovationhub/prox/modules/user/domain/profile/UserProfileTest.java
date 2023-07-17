@@ -12,7 +12,6 @@ import de.innovationhub.prox.modules.user.domain.profile.events.UserProfileTagCo
 import de.innovationhub.prox.modules.user.domain.profile.events.UserProfileUpdated;
 import de.innovationhub.prox.modules.user.domain.profile.exception.LecturerProfileAlreadyExistsException;
 import de.innovationhub.prox.modules.user.domain.profile.exception.LecturerProfileDoesNotExistException;
-import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 

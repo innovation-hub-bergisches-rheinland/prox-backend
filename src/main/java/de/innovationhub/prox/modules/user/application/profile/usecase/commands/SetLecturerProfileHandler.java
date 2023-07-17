@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 @ApplicationComponent
 @RequiredArgsConstructor
-public class UpdateLecturerProfileHandler {
+public class SetLecturerProfileHandler {
 
   private final UserProfileRepository userProfileRepository;
   private final UserProfileMapper userProfileMapper;
@@ -20,11 +20,16 @@ public class UpdateLecturerProfileHandler {
   @Transactional
   public UserProfile handle(UUID userId, CreateLecturerRequestDto dto) {
     var lecturer = this.userProfileRepository.findByUserId(userId).orElseThrow();
-    
+
     var profile = new LecturerProfileInformation();
     userProfileMapper.updateLecturerInformationFromDto(dto.profile(), profile);
 
-    lecturer.updateLecturerProfile(profile);
+    var currentProfile = lecturer.getLecturerProfile();
+    if (currentProfile == null) {
+      lecturer.createLecturerProfile(profile);
+    } else {
+      lecturer.updateLecturerProfile(profile);
+    }
 
     return userProfileRepository.save(lecturer);
   }

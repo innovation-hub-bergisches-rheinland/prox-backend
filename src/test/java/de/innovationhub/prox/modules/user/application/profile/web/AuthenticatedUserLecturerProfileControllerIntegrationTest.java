@@ -14,7 +14,6 @@ import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import java.util.List;
 import java.util.UUID;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -28,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 @AutoConfigureMockMvc
 @Transactional
 class AuthenticatedUserLecturerProfileControllerIntegrationTest extends AbstractIntegrationTest {
+
   private static final String AUTH_USER_ID = "00000000-0000-0000-0000-000000000001";
   UUID authUserId = UUID.fromString(AUTH_USER_ID);
 
@@ -45,7 +45,7 @@ class AuthenticatedUserLecturerProfileControllerIntegrationTest extends Abstract
 
   @ParameterizedTest
   @WithMockUser(value = AUTH_USER_ID)
-  @CsvSource(value = {"POST:user/profile/lecturer", "PUT:user/profile/lecturer"}, delimiter = ':')
+  @CsvSource(value = {"PUT:user/profile/lecturer"}, delimiter = ':')
   void shouldReturnForbiddenWhenNotInRole(String method, String path) {
     given()
         .accept(ContentType.JSON)
@@ -68,9 +68,9 @@ class AuthenticatedUserLecturerProfileControllerIntegrationTest extends Abstract
         .contentType(ContentType.JSON)
         .body(request)
         .when()
-        .post("/user/profile/lecturer")
+        .put("/user/profile/lecturer")
         .then()
-        .statusCode(201);
+        .statusCode(200);
 
     assertThat(userProfileRepository.findByUserId(authUserId).get().getLecturerProfile())
         .isNotNull();
@@ -95,7 +95,8 @@ class AuthenticatedUserLecturerProfileControllerIntegrationTest extends Abstract
         .then()
         .statusCode(200);
 
-    assertThat(userProfileRepository.findByUserId(authUserId).get().getLecturerProfile().getProfile())
+    assertThat(
+        userProfileRepository.findByUserId(authUserId).get().getLecturerProfile().getProfile())
         .isNotEqualTo(lecturerProfile);
   }
 

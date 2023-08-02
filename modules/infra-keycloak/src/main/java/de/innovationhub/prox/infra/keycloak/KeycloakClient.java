@@ -1,9 +1,9 @@
 package de.innovationhub.prox.infra.keycloak;
 
+import jakarta.ws.rs.ProcessingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import javax.ws.rs.ProcessingException;
 import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.UserRepresentation;
@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class KeycloakClient {
+
   private final UsersResource usersResource;
   private final RealmResource realmResource;
 
@@ -26,7 +27,7 @@ public class KeycloakClient {
       var userRepresentation = this.usersResource.get(id).toRepresentation();
       return Optional.of(userRepresentation);
     } catch (ProcessingException e) {
-      if (e.getCause() instanceof javax.ws.rs.NotFoundException) {
+      if (e.getCause() instanceof jakarta.ws.rs.NotFoundException) {
         return Optional.empty();
       }
       throw e;

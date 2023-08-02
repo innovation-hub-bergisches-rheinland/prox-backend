@@ -57,8 +57,6 @@ class SecurityConfig {
                         "/organizations/**",
                         "/lecturers/**", "/disciplines/**", "/moduleTypes/**", "/users/**")
                     .permitAll()
-                    .requestMatchers(HttpMethod.GET, "/users/search")
-                    .authenticated()
                     .requestMatchers("/user/profile/lecturer/**")
                     .hasRole("professor")
                     .requestMatchers("/user/**")

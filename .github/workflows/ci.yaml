@@ -3,10 +3,10 @@ name: CI
 on:
   # Run on every pull request
   pull_request:
-    branches: [ main ]
-    types: [ opened, synchronize, reopened ]
+    branches: [main]
+    types: [opened, synchronize, reopened]
   push:
-    branches: [ main ]
+    branches: [main]
 
 env:
   JAVA_VERSION: 17
@@ -32,7 +32,7 @@ jobs:
     name: Build
 
     runs-on: ubuntu-latest
-    needs: [ validation ]
+    needs: [validation]
 
     steps:
       - name: Check out repo
@@ -52,7 +52,7 @@ jobs:
   test:
 
     runs-on: ubuntu-latest
-    needs: [ validation ]
+    needs: [validation]
 
     steps:
       - name: Check out repo
@@ -68,6 +68,15 @@ jobs:
       - name: Gradle test
         run: |
           ./gradlew test --no-daemon --stacktrace --info
+
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: JUnit Tests
+          path: 'test/*.xml'
+          reporter: java-junit
+          fail-on-error: true
 
       - name: Upload Test Results
         uses: actions/upload-artifact@v3
@@ -86,7 +95,7 @@ jobs:
   auto-merge:
     runs-on: ubuntu-latest
     
-    needs: [ test ]
+    needs: [test]
 
     if: ${{ github.event_name == 'pull_request' && github.event.pull_request.user.login == 'dependabot[bot]' }}
 
@@ -109,7 +118,7 @@ jobs:
     name: Build Docker Image
 
     runs-on: ubuntu-latest
-    needs: [ assemble, test ]
+    needs: [assemble, test]
 
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
 

@@ -5,14 +5,16 @@ import de.innovationhub.prox.modules.project.application.discipline.dto.Discipli
 import de.innovationhub.prox.modules.project.application.discipline.usecase.queries.FindDisciplinesByKeyInHandler;
 import de.innovationhub.prox.modules.project.application.module.dto.ModuleTypeMapper;
 import de.innovationhub.prox.modules.project.application.module.usecase.queries.FindModuleTypesByKeyInHandler;
+import de.innovationhub.prox.modules.project.application.project.dto.ProjectDtoAssembler;
+import de.innovationhub.prox.modules.project.application.project.usecase.queries.CountMatchingProjectsHandler;
 import de.innovationhub.prox.modules.project.application.project.usecase.queries.FindAllProjectByIdsHandler;
+import de.innovationhub.prox.modules.project.application.project.usecase.queries.FindProjectByIdHandler;
+import de.innovationhub.prox.modules.project.contract.ProjectFacade;
 import de.innovationhub.prox.modules.project.contract.dto.DisciplineDto;
 import de.innovationhub.prox.modules.project.contract.dto.ModuleTypeDto;
 import de.innovationhub.prox.modules.project.contract.dto.ProjectDto;
-import de.innovationhub.prox.modules.project.application.project.dto.ProjectDtoAssembler;
-import de.innovationhub.prox.modules.project.application.project.usecase.queries.FindProjectByIdHandler;
-import de.innovationhub.prox.modules.project.contract.ProjectFacade;
-import de.innovationhub.prox.modules.project.domain.module.ModuleTypeRepository;
+import de.innovationhub.prox.modules.project.domain.project.ProjectState;
+import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -22,11 +24,13 @@ import lombok.RequiredArgsConstructor;
 @ApplicationComponent
 @RequiredArgsConstructor
 public class ProjectFacadeImpl implements ProjectFacade {
+
   private final FindAllProjectByIdsHandler findAllProjectByIdsHandler;
   private final FindProjectByIdHandler findProjectByIdHandler;
   private final ProjectDtoAssembler projectDtoAssembler;
   private final FindDisciplinesByKeyInHandler findDisciplinesByKeyInHandler;
   private final FindModuleTypesByKeyInHandler findModuleTypesByKeyInHandler;
+  private final CountMatchingProjectsHandler countMatchingProjectsHandler;
   private final DisciplineMapper disciplineMapper;
   private final ModuleTypeMapper moduleTypeMapper;
 
@@ -58,5 +62,13 @@ public class ProjectFacadeImpl implements ProjectFacade {
         .stream()
         .map(moduleTypeMapper::toDto)
         .toList();
+  }
+
+  @Override
+  public int countProjects(Collection<ProjectState> status, Collection<String> specializationKeys,
+      Collection<String> moduleTypeKeys, String text, Collection<UUID> tagIds,
+      Instant modifiedSince) {
+    return countMatchingProjectsHandler.handle(status, specializationKeys, moduleTypeKeys, text,
+        tagIds, modifiedSince);
   }
 }

@@ -31,6 +31,7 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
                   -- If we have a query it might match on the document or the supervisor
                   (p.document @@ q OR (:supervisorIds) IS NULL OR ps.lecturer_id IN (:supervisorIds)) 
               )
+            AND ( cast(:modifiedSince as timestamp) IS NULL OR p.modified_at > cast(:modifiedSince as timestamp))
         ORDER BY created_at DESC
       """)
   Page<Project> filterProjects(
@@ -40,7 +41,20 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
       @Nullable @Param("query") String query,
       @Nullable @Param("tagCollectionIds") Collection<UUID> tagCollectionIds,
       @Nullable @Param("supervisorIds") Collection<UUID> supervisorIds,
+      @Nullable @Param("modifiedSince") Instant modifiedSince,
       Pageable pageable);
+
+  default Page<Project> filterProjects(
+      @Nullable @Param("state") Collection<String> state,
+      @Nullable @Param("disciplineKeys") Collection<String> disciplineKeys,
+      @Nullable @Param("moduleTypeKeys") Collection<String> moduleTypeKeys,
+      @Nullable @Param("query") String query,
+      @Nullable @Param("tagCollectionIds") Collection<UUID> tagCollectionIds,
+      @Nullable @Param("supervisorIds") Collection<UUID> supervisorIds,
+      Pageable pageable) {
+    return filterProjects(state, disciplineKeys, moduleTypeKeys, query, tagCollectionIds,
+        supervisorIds, null, pageable);
+  }
 
 
   @Query("select p from Project p where p.status.state = ?1 and p.status.updatedAt <= ?2")

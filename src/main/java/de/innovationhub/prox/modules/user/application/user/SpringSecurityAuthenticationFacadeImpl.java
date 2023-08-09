@@ -3,8 +3,8 @@ package de.innovationhub.prox.modules.user.application.user;
 import de.innovationhub.prox.commons.exception.UnauthenticatedException;
 import de.innovationhub.prox.commons.stereotypes.ApplicationComponent;
 import de.innovationhub.prox.modules.user.contract.user.AuthenticationFacade;
-import java.util.UUID;
 import jakarta.annotation.Nullable;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -39,5 +39,15 @@ public class SpringSecurityAuthenticationFacadeImpl implements AuthenticationFac
     }
 
     return auth;
+  }
+
+  @Override
+  public boolean isAuthenticated() {
+    var auth = getAuthentication();
+    if (auth == null) {
+      return false;
+    }
+
+    return getAuthentication().isAuthenticated();
   }
 }

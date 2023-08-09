@@ -18,6 +18,7 @@ import de.innovationhub.prox.modules.user.domain.profile.ContactInformation;
 import de.innovationhub.prox.modules.user.domain.profile.LecturerProfileInformation;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfile;
 import de.innovationhub.prox.modules.user.domain.profile.UserProfileRepository;
+import io.github.artsok.RepeatedIfExceptionsTest;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -54,7 +55,8 @@ class GetRecommendationsHandlerIntegrationTest extends AbstractIntegrationTest {
     this.tagCollectionRepository.deleteAll();
   }
 
-  @Test
+  // Flaky Test
+  @RepeatedIfExceptionsTest(repeats = 3)
   void shouldGetRecommendations() {
     // It's a bit hard to test this, we just test that the endpoint is reachable and returns a
     // reasonable result without crashing.

@@ -69,6 +69,7 @@ dependencies {
     testImplementation 'org.testcontainers:postgresql'
     testImplementation 'org.testcontainers:rabbitmq'
     testImplementation 'org.testcontainers:localstack'
+    testImplementation 'io.github.artsok:rerunner-jupiter:2.1.6'
     testRuntimeOnly 'com.h2database:h2'
 
     modules {

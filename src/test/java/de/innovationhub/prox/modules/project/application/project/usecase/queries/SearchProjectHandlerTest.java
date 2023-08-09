@@ -9,23 +9,24 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import de.innovationhub.prox.modules.project.contract.event.ProjectSearched;
 import de.innovationhub.prox.modules.project.domain.project.ProjectRepository;
 import de.innovationhub.prox.modules.project.domain.project.ProjectState;
 import de.innovationhub.prox.modules.tag.contract.TagCollectionFacade;
+import de.innovationhub.prox.modules.tag.contract.TagFacade;
 import de.innovationhub.prox.modules.tag.contract.dto.TagCollectionDto;
 import de.innovationhub.prox.modules.tag.contract.dto.TagDto;
-import de.innovationhub.prox.modules.tag.contract.TagFacade;
-import de.innovationhub.prox.modules.user.contract.profile.dto.LecturerProfileDto;
 import de.innovationhub.prox.modules.user.application.profile.dto.LecturerProfileInformationDto;
+import de.innovationhub.prox.modules.user.contract.profile.UserProfileFacade;
+import de.innovationhub.prox.modules.user.contract.profile.dto.LecturerProfileDto;
 import de.innovationhub.prox.modules.user.contract.profile.dto.UserProfileDto;
 import de.innovationhub.prox.modules.user.contract.profile.dto.UserProfileDto.ContactInformationDto;
-import de.innovationhub.prox.modules.user.contract.profile.UserProfileFacade;
 import java.time.Instant;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
@@ -35,8 +36,9 @@ class SearchProjectHandlerTest {
   TagFacade tagFacade = mock(TagFacade.class);
   UserProfileFacade userProfileFacade = mock(UserProfileFacade.class);
   TagCollectionFacade tagCollectionFacade = mock(TagCollectionFacade.class);
+  ApplicationEventPublisher eventPublisher = mock(ApplicationEventPublisher.class);
   SearchProjectHandler searchProjectHandler = new SearchProjectHandler(projectRepository, tagFacade,
-      userProfileFacade, tagCollectionFacade);
+      userProfileFacade, tagCollectionFacade, eventPublisher);
 
   @Test
   void shouldCallRepository() {
@@ -50,6 +52,19 @@ class SearchProjectHandlerTest {
 
     verify(projectRepository).filterProjects(eq(List.of("STALE")), eq(keys), eq(modules), eq(text),
         anyCollection(), anyCollection(), eq(page));
+  }
+
+  @Test
+  void shouldPublishEvent() {
+    var status = List.of(ProjectState.STALE);
+    var keys = List.of("key");
+    var modules = List.of("module");
+    var text = "lol";
+    var page = PageRequest.of(0, 10);
+
+    searchProjectHandler.handle(status, keys, modules, text, null, page);
+
+    verify(eventPublisher).publishEvent(any(ProjectSearched.class));
   }
 
   @Test
@@ -67,7 +82,8 @@ class SearchProjectHandlerTest {
     searchProjectHandler.handle(null, null, null, null, List.of("tag1"), Pageable.unpaged());
 
     verify(projectRepository).filterProjects(any(), any(), any(), any(),
-        assertArg(ids -> assertThat(ids).containsExactlyElementsOf(givenTagCollectionIds)), any(), any());
+        assertArg(ids -> assertThat(ids).containsExactlyElementsOf(givenTagCollectionIds)), any(),
+        any());
   }
 
   @Test

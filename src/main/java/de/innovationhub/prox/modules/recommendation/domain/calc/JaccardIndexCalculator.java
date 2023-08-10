@@ -2,11 +2,13 @@ package de.innovationhub.prox.modules.recommendation.domain.calc;
 
 import java.util.Collection;
 import java.util.HashSet;
+import javax.annotation.Nullable;
 
 public class JaccardIndexCalculator {
 
-  public <T> double calculate(Collection<T> setA, Collection<T> setB) {
-    if (setA.isEmpty() || setB.isEmpty()) {
+  public <T> double calculate(@Nullable final Collection<T> setA,
+      @Nullable final Collection<T> setB) {
+    if (setA == null || setB == null || setA.isEmpty() || setB.isEmpty()) {
       return 0.0;
     }
 

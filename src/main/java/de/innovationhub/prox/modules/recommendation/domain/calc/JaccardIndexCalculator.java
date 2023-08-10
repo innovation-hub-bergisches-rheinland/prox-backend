@@ -1,8 +1,8 @@
 package de.innovationhub.prox.modules.recommendation.domain.calc;
 
+import jakarta.annotation.Nullable;
 import java.util.Collection;
 import java.util.HashSet;
-import javax.annotation.Nullable;
 
 public class JaccardIndexCalculator {
 

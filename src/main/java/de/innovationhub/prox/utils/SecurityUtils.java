@@ -5,8 +5,13 @@ import java.util.UUID;
 import org.springframework.security.core.Authentication;
 
 public class SecurityUtils {
+
+  private SecurityUtils() {
+    throw new IllegalStateException("Utility class");
+  }
+
   public static UUID extractUserId(Authentication authentication) {
-    if(!authentication.isAuthenticated()) {
+    if (!authentication.isAuthenticated()) {
       throw new UnauthenticatedException();
     }
     return UUID.fromString(authentication.getName());

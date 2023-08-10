@@ -8,6 +8,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.RabbitMQContainer;
 import org.testcontainers.containers.localstack.LocalStackContainer;
 import org.testcontainers.containers.localstack.LocalStackContainer.Service;
+import org.testcontainers.lifecycle.Startables;
 import org.testcontainers.utility.DockerImageName;
 
 @SpringBootTest
@@ -27,9 +28,11 @@ public class AbstractIntegrationTest {
   static RabbitMQContainer rabbitMQ = new RabbitMQContainer("rabbitmq:3.9.5-alpine");
 
   static {
-    postgres.start();
-    localStack.start();
-    rabbitMQ.start();
+    Startables.deepStart(
+        postgres,
+        localStack,
+        rabbitMQ
+    ).join();
   }
 
   @DynamicPropertySource

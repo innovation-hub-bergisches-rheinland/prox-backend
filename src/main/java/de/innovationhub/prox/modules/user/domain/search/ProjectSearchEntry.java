@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -67,11 +68,22 @@ public class ProjectSearchEntry extends AuditedAggregateRoot {
     return collection == null ? null : new ArrayList<>(collection);
   }
 
+  private static <T> boolean listEqualsIgnoreOrder(Collection<T> collection1,
+      Collection<T> collection2) {
+    if (collection1 == null) {
+      return collection2 == null;
+    }
+    if (collection2 == null) {
+      return collection1 == null;
+    }
+    return new HashSet<>(collection1).equals(new HashSet<>(collection2));
+  }
+
   // Note that this is not the same as equals()!
   // This method checks whether the search parameters are the same, but ignores the id.
   public boolean searchEquals(ProjectSearchEntry other) {
-    return Objects.equals(text, other.text) && Objects.equals(tags, other.tags)
-        && Objects.equals(states, other.states) && Objects.equals(moduleTypes,
-        other.moduleTypes) && Objects.equals(disciplines, other.disciplines);
+    return Objects.equals(text, other.text) && listEqualsIgnoreOrder(tags, other.tags)
+        && listEqualsIgnoreOrder(states, other.states) && listEqualsIgnoreOrder(moduleTypes,
+        other.moduleTypes) && listEqualsIgnoreOrder(disciplines, other.disciplines);
   }
 }

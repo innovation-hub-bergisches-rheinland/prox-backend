@@ -57,8 +57,7 @@ public class SearchHistory extends AuditedAggregateRoot {
   public void addSearch(ProjectSearchEntry search) {
     Objects.requireNonNull(search);
 
-    var existing = projectSearches.stream().filter(s -> s.searchEquals(search)).findFirst();
-    existing.ifPresent(projectSearchEntry -> projectSearches.remove(projectSearchEntry));
+    projectSearches.removeIf(projectSearch -> projectSearch.searchEquals(search));
 
     if (projectSearches.size() >= MAX_SEARCHES) {
       projectSearches.remove(0);

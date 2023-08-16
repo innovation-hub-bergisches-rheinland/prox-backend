@@ -9,6 +9,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class SearchHistory extends AuditedAggregateRoot {
 
   @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinTable(schema = PersistenceConfig.USER_SCHEMA)
+  @OrderBy("modifiedAt DESC")
   private List<ProjectSearchEntry> projectSearches = new ArrayList<>();
 
   protected SearchHistory(UUID id, UUID userId) {

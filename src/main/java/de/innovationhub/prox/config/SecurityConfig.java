@@ -57,10 +57,8 @@ class SecurityConfig {
                         "/organizations/**",
                         "/lecturers/**", "/disciplines/**", "/moduleTypes/**", "/users/**")
                     .permitAll()
-                    .requestMatchers("/user/**", "/user/profile")
+                    .requestMatchers("/user/**") // Checks for /lecturer will be enforced by controller
                     .authenticated()
-                    .requestMatchers("/user/profile/lecturer/**")
-                    .hasRole("professor")
                     .requestMatchers(HttpMethod.GET, "/actuator/health/**")
                     .permitAll()
                     .requestMatchers(HttpMethod.POST, "/tags/*/merge")

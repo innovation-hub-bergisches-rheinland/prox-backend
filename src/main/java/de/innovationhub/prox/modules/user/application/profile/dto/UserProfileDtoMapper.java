@@ -40,6 +40,9 @@ public abstract class UserProfileDtoMapper {
 
   @Named("retrieveTags")
   public List<TagDto> retrieveTags(UserProfile userProfile) {
+    var tagCollectionId = userProfile.getTagCollectionId();
+    if(tagCollectionId == null) return List.of();
+
     return tagCollectionFacade.getTagCollection(userProfile.getTagCollectionId()).map(
         TagCollectionDto::tags).orElse(List.of());
   }

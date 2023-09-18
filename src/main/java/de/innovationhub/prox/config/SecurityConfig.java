@@ -57,10 +57,10 @@ class SecurityConfig {
                         "/organizations/**",
                         "/lecturers/**", "/disciplines/**", "/moduleTypes/**", "/users/**")
                     .permitAll()
+                    .requestMatchers("/user/**", "/user/profile")
+                    .authenticated()
                     .requestMatchers("/user/profile/lecturer/**")
                     .hasRole("professor")
-                    .requestMatchers("/user/**")
-                    .authenticated()
                     .requestMatchers(HttpMethod.GET, "/actuator/health/**")
                     .permitAll()
                     .requestMatchers(HttpMethod.POST, "/tags/*/merge")

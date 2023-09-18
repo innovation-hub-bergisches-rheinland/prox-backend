@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 @SecurityRequirement(name = "oidc")
 @RequiredArgsConstructor
 @Tag(name = "User Profile")
-@PreAuthorize("hasRole('professor')")
 public class AuthenticatedUserLecturerProfileController {
 
   private final UserProfileDtoMapper dtoMapper;

@@ -57,7 +57,9 @@ class SecurityConfig {
                         "/organizations/**",
                         "/lecturers/**", "/disciplines/**", "/moduleTypes/**", "/users/**")
                     .permitAll()
-                    .requestMatchers("/user/**") // Checks for /lecturer will be enforced by controller
+                    .requestMatchers(HttpMethod.PUT, "/user/profile/lecturer")
+                    .hasRole("professor")
+                    .requestMatchers("/user", "/user/tags", "/user/avatar")
                     .authenticated()
                     .requestMatchers(HttpMethod.GET, "/actuator/health/**")
                     .permitAll()

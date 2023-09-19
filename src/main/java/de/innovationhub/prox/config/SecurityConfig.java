@@ -59,7 +59,7 @@ class SecurityConfig {
                     .permitAll()
                     .requestMatchers(HttpMethod.PUT, "/user/profile/lecturer")
                     .hasRole("professor")
-                    .requestMatchers("/user/profile", "/user/searchHistory", "/user/profile", "/user/profile/tags", "/user/profile/avatar")
+                    .requestMatchers("/user/**")
                     .authenticated()
                     .requestMatchers(HttpMethod.GET, "/actuator/health/**")
                     .permitAll()

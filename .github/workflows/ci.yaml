@@ -50,6 +50,10 @@ jobs:
           ./gradlew --stacktrace assemble --no-daemon --info
 
   test:
+    permissions:
+      id-token: write
+      contents: read
+      checks: write
 
     runs-on: ubuntu-latest
     needs: [validation]

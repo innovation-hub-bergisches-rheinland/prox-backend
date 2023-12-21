@@ -5,7 +5,7 @@ import de.innovationhub.prox.config.CacheConfig;
 import de.innovationhub.prox.modules.user.contract.profile.dto.UserProfileDto;
 import de.innovationhub.prox.modules.user.application.profile.dto.UserProfileDtoMapper;
 import de.innovationhub.prox.modules.user.application.profile.usecase.queries.FindAllLecturersByIdsHandler;
-import de.innovationhub.prox.modules.user.application.profile.usecase.queries.FindAllUserProfilesByIdsHandler;
+import de.innovationhub.prox.modules.user.application.profile.usecase.queries.FindAllUserProfilesByUserIdsHandler;
 import de.innovationhub.prox.modules.user.application.profile.usecase.queries.FindUserProfileHandler;
 import de.innovationhub.prox.modules.user.application.profile.usecase.queries.SearchUserHandler;
 import de.innovationhub.prox.modules.user.contract.profile.UserProfileFacade;
@@ -22,7 +22,7 @@ import org.springframework.data.domain.Pageable;
 public class UserProfileFacadeImpl implements UserProfileFacade {
 
   private final FindUserProfileHandler findUserProfileHandler;
-  private final FindAllUserProfilesByIdsHandler findAllUserProfilesByIdsHandler;
+  private final FindAllUserProfilesByUserIdsHandler findAllUserProfilesByUserIdsHandler;
   private final SearchUserHandler searchUserHandler;
   private final FindAllLecturersByIdsHandler findAllLecturersByIdsHandler;
   private final UserProfileDtoMapper userProfileDtoMapper;
@@ -36,8 +36,8 @@ public class UserProfileFacadeImpl implements UserProfileFacade {
 
   @Override
   @Cacheable(CacheConfig.USER_PROFILE)
-  public List<UserProfileDto> findByUserId(List<UUID> ids) {
-    return findAllUserProfilesByIdsHandler.handle(ids)
+  public List<UserProfileDto> findByUserIds(List<UUID> ids) {
+    return findAllUserProfilesByUserIdsHandler.handle(ids)
         .stream()
         .map(userProfileDtoMapper::toDtoUserProfile)
         .toList();

@@ -10,7 +10,7 @@ spring:
   datasource:
     password: prox-backend
     url: jdbc:postgresql://127.0.0.1:5432/postgres
-    username: prox-backend
+    username: postgres
   rabbitmq:
     host: ${RABBITMQ_HOST:127.0.0.1}
     port: ${RABBITMQ_PORT:5672}

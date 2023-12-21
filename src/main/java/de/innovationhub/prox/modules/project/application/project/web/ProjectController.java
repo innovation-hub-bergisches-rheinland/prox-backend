@@ -115,7 +115,6 @@ public class ProjectController {
   @Operation(security = {
       @SecurityRequirement(name = "oidc")
   })
-  @PreAuthorize("@projectPermissionEvaluator.hasPermission(#id, authentication)")
   public ResponseEntity<ProjectDto> commitment(@PathVariable("id") UUID id,
       @RequestBody ApplyCommitmentDto applyCommitmentDto) {
     var updatedProject = setSupervisors.handle(id, applyCommitmentDto.supervisorId());

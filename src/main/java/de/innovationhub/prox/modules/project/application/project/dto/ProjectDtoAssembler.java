@@ -50,7 +50,7 @@ public class ProjectDtoAssembler {
         .map(TagCollectionDto::tags)
         .orElse(Collections.emptyList());
 
-    var supervisors = userProfileFacade.findByUserId(
+    var supervisors = userProfileFacade.findByUserIds(
         project.getSupervisors()
             .stream()
             .map(Supervisor::getLecturerId)

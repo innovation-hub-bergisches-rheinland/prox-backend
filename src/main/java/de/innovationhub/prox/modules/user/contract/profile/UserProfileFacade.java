@@ -10,7 +10,7 @@ public interface UserProfileFacade {
 
   Optional<UserProfileDto> getByUserId(UUID id);
 
-  List<UserProfileDto> findByUserId(List<UUID> ids);
+  List<UserProfileDto> findByUserIds(List<UUID> ids);
 
   List<UserProfileDto> search(String query);
   List<UserProfileDto> findLecturersByIds(Collection<UUID> ids);

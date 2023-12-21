@@ -24,7 +24,7 @@ jobs:
 
     steps:
       - name: Check out repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
 
@@ -36,7 +36,7 @@ jobs:
 
     steps:
       - name: Check out repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Java
         uses: actions/setup-java@v3
@@ -60,7 +60,7 @@ jobs:
 
     steps:
       - name: Check out repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Java
         uses: actions/setup-java@v3
@@ -128,7 +128,7 @@ jobs:
 
     steps:
       - name: Check out repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Java
         uses: actions/setup-java@v3

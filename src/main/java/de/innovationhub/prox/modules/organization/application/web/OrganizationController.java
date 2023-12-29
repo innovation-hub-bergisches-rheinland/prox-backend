@@ -2,6 +2,7 @@ package de.innovationhub.prox.modules.organization.application.web;
 
 import de.innovationhub.prox.modules.organization.application.dto.AddMembershipRequestDto;
 import de.innovationhub.prox.modules.organization.application.dto.CreateOrganizationRequestDto;
+import de.innovationhub.prox.modules.organization.application.usecase.commands.DeleteOrganizationByIdHandler;
 import de.innovationhub.prox.modules.organization.contract.dto.MembershipDto;
 import de.innovationhub.prox.modules.organization.application.dto.MembershipsResponseDto;
 import de.innovationhub.prox.modules.organization.contract.dto.OrganizationDto;
@@ -58,6 +59,7 @@ public class OrganizationController {
   private final RemoveOrganizationMemberHandler removeMember;
   private final SetOrganizationLogoHandler setLogo;
   private final SetOrganizationTagsHandler setTags;
+  private final DeleteOrganizationByIdHandler delete;
 
   private final SearchOrganizationHandler search;
   private final OrganizationDtoAssembler dtoAssembler;
@@ -98,6 +100,19 @@ public class OrganizationController {
     var org = update.handle(id, updateOrganizationDto);
     var dto = dtoAssembler.toDto(org);
     return ResponseEntity.ok(dto);
+  }
+
+  @DeleteMapping("{id}")
+  @Operation(security = {
+      @SecurityRequirement(name = "oidc")
+  })
+  public ResponseEntity<Void> delete(
+      @PathVariable("id") UUID id
+  ) {
+    if (delete.handle(id)) {
+      return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+    else return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
   }
 
   @GetMapping("{id}/memberships")

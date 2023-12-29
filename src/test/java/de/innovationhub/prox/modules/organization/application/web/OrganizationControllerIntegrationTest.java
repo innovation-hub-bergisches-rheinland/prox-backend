@@ -73,7 +73,6 @@ class OrganizationControllerIntegrationTest extends AbstractIntegrationTest {
             Map.of(SocialMedia.FACEBOOK, "acmeltd")
         )
     );
-
     var id = given()
         .contentType(ContentType.JSON)
         .accept(ContentType.JSON)
@@ -87,6 +86,38 @@ class OrganizationControllerIntegrationTest extends AbstractIntegrationTest {
         .getUUID("id");
 
     assertThat(organizationRepository.existsById(id)).isTrue();
+  }
+
+  @Test
+  @WithMockUser(value = "00000000-0000-0000-0000-000000000001")
+  void shouldDeleteOrganization() {
+    var org = OrganizationFixtures.ACME_LTD;
+    organizationRepository.save(org);
+
+    given()
+        .accept(ContentType.JSON)
+        .when()
+        .delete("organizations/{id}", org.getId())
+        .then()
+        .status(HttpStatus.NO_CONTENT);
+
+    assertThat(organizationRepository.existsById(org.getId())).isFalse();
+  }
+
+  @Test
+  @WithMockUser(value = "00000000-0000-0000-0000-000000000002")
+  void shouldNotDeleteOrganization() {
+    var org = OrganizationFixtures.ACME_LTD;
+    organizationRepository.save(org);
+
+    given()
+        .accept(ContentType.JSON)
+        .when()
+        .delete("organizations/{id}", org.getId())
+        .then()
+        .status(HttpStatus.FORBIDDEN);
+
+    assertThat(organizationRepository.existsById(org.getId())).isTrue();
   }
 
   @Test

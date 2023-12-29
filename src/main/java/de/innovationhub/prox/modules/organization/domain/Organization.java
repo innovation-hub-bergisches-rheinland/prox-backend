@@ -3,6 +3,7 @@ package de.innovationhub.prox.modules.organization.domain;
 import de.innovationhub.prox.commons.buildingblocks.AuditedAggregateRoot;
 import de.innovationhub.prox.config.PersistenceConfig;
 import de.innovationhub.prox.modules.organization.domain.events.OrganizationCreated;
+import de.innovationhub.prox.modules.organization.domain.events.OrganizationDeleted;
 import de.innovationhub.prox.modules.organization.domain.events.OrganizationLogoSet;
 import de.innovationhub.prox.modules.organization.domain.events.OrganizationMemberAdded;
 import de.innovationhub.prox.modules.organization.domain.events.OrganizationMemberRemoved;
@@ -72,6 +73,10 @@ public class Organization extends AuditedAggregateRoot {
     var createdOrganization = new Organization(UUID.randomUUID(), name, List.of(founderMembership));
     createdOrganization.registerEvent(OrganizationCreated.from(createdOrganization));
     return createdOrganization;
+  }
+
+  public void deleteOrg(){
+     this.registerEvent(new OrganizationDeleted(this.id, this.name));
   }
 
   private boolean isMember(UUID user) {

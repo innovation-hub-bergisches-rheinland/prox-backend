@@ -23,7 +23,7 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@v4
       - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@v1
+        uses: gradle/wrapper-validation-action@v2
 
   release:
     name: Release new version

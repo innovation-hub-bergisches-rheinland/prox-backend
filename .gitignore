@@ -42,6 +42,10 @@
 .idea/modules.xml
 .idea/*.iml
 .idea/modules
+.idea/diff-generator.xml
+.idea/jpa.xml
+.idea/jpb-settings.xml
+.idea/
 *.iml
 *.ipr
 

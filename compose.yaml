@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:15.1-alpine
+    image: postgres:14.1-bullseye
     ports:
       - "5432:5432"
     volumes:
@@ -10,6 +10,17 @@ services:
       - POSTGRES_PASSWORD=prox-backend
       - POSTGRES_DB=postgres
       - PGDATA=/var/lib/postgresql/data/pgdata
+  db2:
+    image: postgres:14.1-bullseye
+    ports:
+      - "5434:5432"
+    volumes:
+      - prox-db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=prox-backend
+      - POSTGRES_DB=postgres
+      - PGDATA=/var/lib/postgresql/data/pgdata2
   rabbitmq:
     image: rabbitmq:3-management-alpine
     ports:
@@ -30,6 +41,13 @@ services:
       - "4566:4566"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+  pgAdmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=jannik-alx@gmx.de
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - "5050:80"
 
 # TODO: It is not really a good idea to setup keycloak locally as Keycloak has very poor support
 #       for configuration as code and realm importing at startup. Although it is possible, we should

@@ -88,3 +88,4 @@ config:
   # The displayName of the secret to use.
   # If not set a default secret will be created
   existingSecret: ""
+  activeProfiles: "kubernetes"

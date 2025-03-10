@@ -73,6 +73,8 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.config.existingSecret | default (include "prox-backend.fullname" .) }}
                   key: rabbitMqPassword
+            - name: SPRING_PROFILES_ACTIVE
+              value: {{ .Values.config.activeProfiles }}
           livenessProbe:
             # slow java
             initialDelaySeconds: 90

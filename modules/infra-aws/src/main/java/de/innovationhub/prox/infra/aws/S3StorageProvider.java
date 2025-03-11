@@ -5,9 +5,11 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import java.io.ByteArrayInputStream;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
+@Profile("aws")
 //@ConditionalOnBean({ AmazonS3Client.class })
 public class S3StorageProvider implements StorageProvider {
   private final AmazonS3Client s3;

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 @Configuration
 @RequiredArgsConstructor
@@ -25,6 +26,7 @@ public class AwsConfig {
 
   @Bean
   //@ConditionalOnClass(AmazonS3Client.class)
+  @Profile("aws")
   public AmazonS3Client s3(AWSCredentials credentials) {
     return (AmazonS3Client) AmazonS3ClientBuilder
         .standard()

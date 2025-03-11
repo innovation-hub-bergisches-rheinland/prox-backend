@@ -11,6 +11,7 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -20,6 +21,7 @@ import org.testcontainers.utility.DockerImageName;
 
 // TODO: We probably do not need to spin up spring boot at all. Re-evaluate test slices
 @SpringBootTest
+@Profile("aws")
 class S3StorageProviderIntegrationTest {
   @Autowired
   S3StorageProvider s3StorageProvider;

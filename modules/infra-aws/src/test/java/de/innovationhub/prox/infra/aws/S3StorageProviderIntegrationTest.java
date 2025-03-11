@@ -21,7 +21,7 @@ import org.testcontainers.utility.DockerImageName;
 
 // TODO: We probably do not need to spin up spring boot at all. Re-evaluate test slices
 @SpringBootTest
-@Profile("aws")
+@ActiveProfiles("aws")
 class S3StorageProviderIntegrationTest {
   @Autowired
   S3StorageProvider s3StorageProvider;

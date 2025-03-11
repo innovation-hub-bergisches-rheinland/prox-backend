@@ -6,6 +6,8 @@ import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import io.minio.http.Method;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import java.io.ByteArrayInputStream;
@@ -13,6 +15,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 @Profile("self-hosted")
+@Primary
 @Component
 public class MinioStorageProvider implements StorageProvider {
 

@@ -10,7 +10,7 @@ repositories {
 }
 
 dependencies {
-    implementation "io.freefair.gradle:lombok-plugin:8.14.2"
+    implementation "io.freefair.gradle:lombok-plugin:9.1.0"
     implementation "io.ebean:ebean-gradle-plugin:13.26.0"
     implementation "com.google.cloud.tools:jib-gradle-plugin:3.4.0"
     implementation "net.researchgate:gradle-release:3.0.2"

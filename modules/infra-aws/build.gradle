@@ -19,8 +19,8 @@ jar {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
-    api "com.amazonaws:aws-java-sdk-s3:1.12.796"
-    api "com.amazonaws:aws-java-sdk-s3:1.12.796"
+    api "com.amazonaws:aws-java-sdk-s3:1.12.797"
+    api "com.amazonaws:aws-java-sdk-s3:1.12.797"
     implementation("io.minio:minio:8.6.0")
     testImplementation "org.testcontainers:minio:1.21.4"
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
